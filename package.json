@@ -1,6 +1,6 @@
 {
   "name": "jpos-api",
-  "version": "1.0.95",
+  "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "start": "npm run build:live",
@@ -63,7 +63,7 @@
   },
   "description": "",
   "auto-updater": {
-    "repo": "devops-jazeera/jpos-api",
+    "repo": "devops-jazeera/jpos-prod-api",
     "branch": "master"
   }
 }
