@@ -1,0 +1,12 @@
+/inventtrans/previousselectedbatches:
+    get:
+        tags:
+            - Inventtrans
+        description: search.
+        parameters:
+            - name: invoiceid
+              in: query
+              required: true
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

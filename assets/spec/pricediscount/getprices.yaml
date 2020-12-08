@@ -1,0 +1,43 @@
+/price/getSizePrices:
+    post:
+        tags:
+            - PriceDiscount
+        description: post.
+        parameters:
+            - name: body
+              in: body
+              schema:
+                  type: object
+                  properties:
+                      data:
+                          type: object
+                          properties:
+                              currency:
+                                  type: string
+                                  example: "SAR"
+                              itemid:
+                                  type: date
+                                  example: "JA-38001"
+                              pricegroup:
+                                  type: string
+                                  example: "SP"
+                              custaccount:
+                                  type: string
+                                  example: CR26
+                              dataAreaid:
+                                  type: string
+                                  example: "ajp"
+                              warehouseid:
+                                  type: string
+                                  example: "DMAW-0027"
+                              configid:
+                                  type: string
+                                  example: "D-4277"
+                              inventsizeids:
+                                  type: array
+                                  items: 
+                                    example: ["DL019.00"]
+
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

@@ -1,0 +1,18 @@
+/userinfo:
+    get:
+        tags:
+            - UserInfo
+        description: search.
+        parameters:
+            - name: userName
+              in: query
+              required: false
+              type: string
+            - name: groupid
+              in: query
+              required: false
+              type: string
+
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

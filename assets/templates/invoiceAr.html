@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- <link href="https://fonts.googleapis.com/css?family=Raleway+Dots&display=swap" rel="stylesheet"> -->
+    <!-- <link href="http://allfont.net/allfont.css?fonts=dot-matrix" rel="stylesheet" type="text/css" /> -->
+    <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Language" content="ar-sy" />
+    <meta name="description" content="بيسب" />
+    <style>
+        @page {
+            size: A4;
+            margin: 10px;
+        }
+
+        body {
+            /* font-family: 'Raleway Dots'; */
+            font-family: "Times New Roman", Times, serif;
+            font-size: 13px;
+            width: 100%;
+            background: #fff;
+            padding: 0px;
+            direction: rtl;
+            /*margin: 0px;*/
+            /* margin: auto; */
+            /* color: #2e5170 !important; */
+        }
+
+        pre {
+            /* font-family: 'Raleway Dots', cursive !important; */
+            font-family: "Times New Roman", Times, serif;
+
+
+        }
+
+        .color {
+            color: #2e5170;
+        }
+
+        .top {
+            border: 1px solid #e8e7e7;
+            /* padding: 7px; */
+            text-align: center;
+        }
+
+        span {
+            color: #2a4b76;
+        }
+
+        .back {
+            text-align: center;
+            padding: 2px 6px;
+            background: #11a297;
+            color: #fff;
+        }
+
+        th,
+        td {
+            padding: 5px 14px;
+        }
+
+        td {
+            color: #262a41;
+        }
+
+        .bottom {
+            border: none;
+            border-bottom: 1px dotted #2a4b76;
+            padding: 12px;
+            margin-left: 20px;
+        }
+
+        .label {
+            position: relative;
+            top: 14px;
+        }
+
+        .form-text {
+            display: flex;
+            padding-top: 8px;
+        }
+
+        .two {
+            padding-top: 0px;
+        }
+
+
+        input {
+            outline: none;
+        }
+
+        .table-border {
+            margin: auto;
+            /*width: 99%;*/
+            width: 93%;
+        }
+
+        .address td {
+            color: white !important;
+            padding: 4px 5px !important;
+        }
+
+        .th {
+            /* border: 1px solid #2a4b76 !important; */
+            border-collapse: collapse !important;
+            /* color: #fff !important; */
+            font-size: 14px;
+
+        }
+
+        .td {
+            /* border-right: 1px solid #2a4b76 !important; */
+            border-collapse: collapse !important;
+        }
+
+        .table {
+            border: 1px solid #2a4b76 !important;
+            border-collapse: collapse !important;
+        }
+
+        .background {
+            /* background-color: #00a657 !important; */
+            /* color: #fff !important; */
+            border-bottom: 1px dotted #262a41 !important;
+            border-top: 1px dotted #262a41 !important;
+
+        }
+
+        .background th {
+            border: none !important;
+            padding: 8px;
+        }
+
+        .tab-data td {
+            border-right: none !important;
+            border-bottom: dotted 1px #8a8989;
+            font-size: 13px;
+            padding: 4px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+
+        .billing td {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .billing td:first-child {
+            font-weight: 600;
+        }
+
+        .desc-font td {
+            font-size: 10px;
+            text-align: left;
+            padding: 3px;
+            border: none;
+        }
+
+        .description-data td {
+            border: none;
+        }
+
+        .qty-border {
+            border-bottom: 1px solid #000;
+            width: 40px;
+            margin: auto;
+        }
+
+        /* .quotation-date {
+            padding: 4px 0px 3px 18px;
+            width: 94px;
+        } */
+
+        .page-header,
+        .page-header-space {
+            height: 94px;
+        }
+
+
+        .page-footer-space {
+            height: 77px;
+
+        }
+
+        .page-footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 70px;
+
+        }
+
+        .page-header {
+            position: fixed;
+            top: 0mm;
+            width: 100%;
+
+        }
+
+        .page {
+            page-break-after: always;
+        }
+
+        .footer-details h5 {
+            margin: 2px;
+        }
+
+        @page {
+            /* margin: 20mm */
+        }
+
+        @media print {
+
+
+            tfoot {
+                display: table-footer-group;
+            }
+
+
+        }
+
+        #bg__watermark {
+               display: block;
+               min-width: 100%;
+               opacity: 0.5;               
+           }
+           #bg__text__watermark {
+               color: lightgrey;
+               font-size: 120px;
+               text-align: center;
+                transform: rotate(-45deg);
+				transform-origin: 50% 50%;
+                -webkit-transform: rotate(-45deg);
+				-webkit-transform-origin: 50% 50%;
+               opacity: 0.9;
+               filter: alpha(opacity=50);
+               background-color: transparent;
+               background-size: 100%;
+               position: fixed;
+               margin: 50% auto;
+           }
+    </style>
+
+</head>
+
+<body>
+    <div id="bg__watermark">
+        <p id="bg__text__watermark">فقط للاختبار</p>
+    </div>
+
+    <div class="page-header" style="text-align: center">
+        <table align="center" style="background:#fff;width:94%">
+            <tr class="header">
+                <td style="width:70%;text-align:center"></td>
+                <td></td>
+                <td style="width:30%">
+                    <div class="tax top">
+                        <h5 class="tax color" style="color:#000;">تسعير المبيعات</h5>
+                        <h3 class="tax color" style="color:#000;">SQSQSQSQ-SQSQ</h3>
+                    </div>
+                </td>
+
+            </tr>
+        </table>
+        <br />
+
+    </div>
+
+    <div class="page-footer">
+        <table align="center" style="background:#fff;width:94%">
+            <tr class="">
+                <td style="width:30%">
+                    <div class="footer-details">
+                        <h5 class="tax color" style="color:#000;">مصنع الجزيرة للدهانات</h5>
+                        <h5 class="tax color" style="color:#000;">هاتف. 938474747283e3</h5>
+                        <h5 class="tax color" style="color:#000;">الفاكس. 938474747287e3</h5>
+                        <h5 class="tax color" style="color:#000;">www.jazeerapaints.com</h5>
+                    </div>
+                </td>
+                <td style="width:70%;text-align:center"></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+
+    <table style="width:100%">
+
+        <thead>
+            <tr>
+                <td>
+                    <!--place holder for the fixed-position header-->
+                    <div class="page-header-space"></div>
+                </td>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>
+                    <div class="">
+                        <div style="background:#fff">
+                            <h1 style="text-align:center;border-bottom: 1px dotted #262a41;width: 93%;margin:auto"></h1>
+                            <table align="center" width="98%">
+                                <tr class="header">
+                                    <td style="width:50%">
+                                        <table align="left">
+                                            <tr class="billing">
+                                                <td>من عند</td>
+                                                <td>:</td>
+                                                <td> MAIN STORE DAMMAM </td>
+                                            </tr>
+                                            <tr class="billing">
+                                                <td>هاتف</td>
+                                                <td>:</td>
+
+                                                <td>034567895</td>
+                                            </tr>
+                                            <tr class="billing">
+                                                <td>الفاكس</td>
+                                                <td>:</td>
+                                                <td> 03 234567</td>
+                                            </tr>
+                                            <tr class="billing">
+                                                <td>زبون</td>
+                                                <td>:</td>
+                                                <td> Al Rakah Showroom</td>
+                                            </tr>
+                                            <tr class="billing">
+                                                <td>يستلم الضريبة رقم</td>
+                                                <td>:</td>
+                                                <td> 03 234567</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td align="left" style="width:50%">
+                                        <table align="right">
+                                            <tr class="billing">
+                                                <td>المستعمل</td>
+                                                <td>:</td>
+                                                <td>Ashraf Ashraf Ashraf </td>
+                                            </tr>
+                                            <tr class="billing">
+                                                <td>صفحة</td>
+                                                <td>:</td>
+                                                <td> 1/1</td>
+                                            </tr>
+                                            <tr class="billing">
+                                                <td class="quotation-date">تاريخ الاقتباس</td>
+                                                <td>:</td>
+                                                <td class="quotation-date">10.5.2029 08.57 A.M</td>
+                                            </tr>
+                                            <tr class="billing">
+                                                <td>المورد الضريبة رقم</td>
+                                                <td>:</td>
+                                                <td>43435435453</td>
+                                            </tr>
+
+
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <!-- <h1 style="text-align:center;border-bottom: 1px dotted #262a41;width: 93%;margin:auto"></h1> -->
+                            <!-- <table align="center" width="98%">
+                                <tr class="header">
+                                    <td style="width:57%;">
+                                        <table align="left">
+                                            <tr class="billing">
+                                                <td>Customer</td>
+                                                <td>:</td>
+
+                                                <td>AL RAKAH SHOWROOM DAMMAM</td>
+                                            </tr>
+                                            <tr class="billing">
+                                                <td>Receiving</td>
+                                                <td>:</td>
+
+                                                <td>034567895</td>
+                                            </tr>
+                                            <tr class="billing">
+                                                <td>Vat No</td>
+                                                <td>:</td>
+
+                                                <td>03 234567</td>
+                                            </tr> <tr class="billing">
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                    <td align="left" style="width:31%;">
+                                        <table align="middle">
+                                            <tr class="billing">
+                                                <td>Supplier</td>
+                                                <td>:</td>
+                                                <td>300533832200003</td>
+                                            </tr>
+                                            <tr class="billing">
+                                                <td>Vat No</td>
+                                                <td>:</td>
+                                                <td> 0987654</td>
+                                            </tr>
+                                            <tr class="billing">
+                                                <td> </td>
+                                                <td></td>
+                                                <td> </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table> -->
+
+                            <!-- <h1 style="text-align:center;border-bottom: 1px dotted #e8e7e7;width: 90%;margin:auto"></h1> -->
+                        </div>
+
+                        <div class="table-border">
+                            <table class="" style="width:100%;margin:auto;border-collapse: collapse !important;">
+                                <tr class="background" style="font-size:12px">
+                                    <th class="th">رقم سري</th>
+                                    <th class="th">رقم الشيء</th>
+                                    <th class="th">وصف</th>
+                                    <th class="th">كمية</th>
+                                    <th class="th">السعر</th>
+                                    <th class="th">خصم</th>
+                                    <th class="th">الضريبة</th>
+                                    <th class="th">مجموع</th>
+                                </tr>
+                                <tr class="tab-data">
+                                    <td class="td">1</td>
+                                    <td class="td">
+                                        <div style="font-size:15px">Ja-25009</div>
+                                        <div>بحجم : Tin P 1LT</div>
+
+                                    </td>
+                                    <td class="td description-data">
+                                        <table style="border-collapse: collapse !important;">
+                                            <tr>
+
+                                                <td style="width: 100%;text-align: right" align="left">
+                                                    <div style="font-weight:600;font-size:16px">Wood Stain</div>
+                                                    <div>
+                                                        <table style="width:100%;">
+                                                            <tr class="desc-font">
+                                                                <td class="td">اسم اللون | الشفرة</td>
+                                                                <td>:</td>
+                                                                <td>Solid Brown | BR 0389</td>
+
+                                                            </tr>
+
+                                                        </table>
+                                                    </div>
+
+
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                    <td class="td">
+
+                                        1
+                                    </td>
+                                    <td class="td">
+
+                                        111
+                                    </td>
+                                    <td class="td">0.00</td>
+                                    <td class="td">
+
+                                        5.60
+                                    </td>
+                                    <td class="td">117.60 SAR</td>
+                                </tr>
+
+                                <tr class="tab-data">
+                                    <td class="td">1</td>
+                                    <td class="td">
+                                        <div style="font-size:15px">Ja-25009</div>
+                                        <div>بحجم : Tin P 1LT</div>
+
+                                    </td>
+                                    <td class="td description-data">
+                                        <table style="border-collapse: collapse !important;">
+                                            <tr>
+
+                                                <td style="width: 100%;text-align: right" align="left">
+                                                    <div style="font-weight:600;font-size:16px">Wood Stain</div>
+                                                    <div>
+                                                        <table style="width:100%;">
+                                                            <tr class="desc-font">
+                                                                <td class="td">اسم اللون | الشفرة</td>
+                                                                <td>:</td>
+                                                                <td>Solid Brown | BR 0389</td>
+
+                                                            </tr>
+
+                                                        </table>
+                                                    </div>
+
+
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                    <td class="td">
+
+                                        1
+                                    </td>
+                                    <td class="td">
+
+                                        111
+                                    </td>
+                                    <td class="td">0.00</td>
+                                    <td class="td">
+
+                                        5.60
+                                    </td>
+                                    <td class="td">117.60 SAR</td>
+                                </tr>
+                                <tr class="tab-data">
+                                    <td class="td">1</td>
+                                    <td class="td">
+                                        <div style="font-size:15px">Ja-25009</div>
+                                        <div>بحجم : Tin P 1LT</div>
+
+                                    </td>
+                                    <td class="td description-data">
+                                        <table style="border-collapse: collapse !important;">
+                                            <tr>
+
+                                                <td style="width: 100%;text-align: right" align="left">
+                                                    <div style="font-weight:600;font-size:16px">Wood Stain</div>
+                                                    <div>
+                                                        <table style="width:100%;">
+                                                            <tr class="desc-font">
+                                                                <td class="td">اسم اللون | الشفرة</td>
+                                                                <td>:</td>
+                                                                <td>Solid Brown | BR 0389</td>
+
+                                                            </tr>
+
+                                                        </table>
+                                                    </div>
+
+
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                    <td class="td">
+
+                                        1
+                                    </td>
+                                    <td class="td">
+
+                                        111
+                                    </td>
+                                    <td class="td">0.00</td>
+                                    <td class="td">
+
+                                        5.60
+                                    </td>
+                                    <td class="td">117.60 SAR</td>
+                                </tr>
+
+                                <tr class="tab-data">
+                                    <td class="td">1</td>
+                                    <td class="td">
+                                        <div style="font-size:15px">Ja-25009</div>
+                                        <div>بحجم : Tin P 1LT</div>
+
+                                    </td>
+                                    <td class="td description-data">
+                                        <table style="border-collapse: collapse !important;">
+                                            <tr>
+
+                                                <td style="width: 100%;text-align: right" align="left">
+                                                    <div style="font-weight:600;font-size:16px">Wood Stain</div>
+                                                    <div>
+                                                        <table style="width:100%;">
+                                                            <tr class="desc-font">
+                                                                <td class="td">اسم اللون | الشفرة</td>
+                                                                <td>:</td>
+                                                                <td>Solid Brown | BR 0389</td>
+
+                                                            </tr>
+
+                                                        </table>
+                                                    </div>
+
+
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                    <td class="td">
+
+                                        1
+                                    </td>
+                                    <td class="td">
+
+                                        111
+                                    </td>
+                                    <td class="td">0.00</td>
+                                    <td class="td">
+
+                                        5.60
+                                    </td>
+                                    <td class="td">117.60 SAR</td>
+                                </tr>
+
+
+                                <tr class="tab-data">
+                                    <td class="td">1</td>
+                                    <td class="td">
+                                        <div style="font-size:15px">Ja-25009</div>
+                                        <div>بحجم : Tin P 1LT</div>
+
+                                    </td>
+                                    <td class="td description-data">
+                                        <table style="border-collapse: collapse !important;">
+                                            <tr>
+
+                                                <td style="width: 100%;text-align: right" align="left">
+                                                    <div style="font-weight:600;font-size:16px">Wood Stain</div>
+                                                    <div>
+                                                        <table style="width:100%;">
+                                                            <tr class="desc-font">
+                                                                <td class="td">اسم اللون | الشفرة</td>
+                                                                <td>:</td>
+                                                                <td>Solid Brown | BR 0389</td>
+
+                                                            </tr>
+
+                                                        </table>
+                                                    </div>
+
+
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                    <td class="td">
+
+                                        1
+                                    </td>
+                                    <td class="td">
+
+                                        111
+                                    </td>
+                                    <td class="td">0.00</td>
+                                    <td class="td">
+
+                                        5.60
+                                    </td>
+                                    <td class="td">117.60 SAR</td>
+                                </tr>
+                                <tr class="tab-data">
+                                    <td class="td">1</td>
+                                    <td class="td">
+                                        <div style="font-size:15px">Ja-25009</div>
+                                        <div>بحجم : Tin P 1LT</div>
+
+                                    </td>
+                                    <td class="td description-data">
+                                        <table style="border-collapse: collapse !important;">
+                                            <tr>
+
+                                                <td style="width: 100%;text-align: right" align="left">
+                                                    <div style="font-weight:600;font-size:16px">Wood Stain</div>
+                                                    <div>
+                                                        <table style="width:100%;">
+                                                            <tr class="desc-font">
+                                                                <td class="td">اسم اللون | الشفرة</td>
+                                                                <td>:</td>
+                                                                <td>Solid Brown | BR 0389</td>
+
+                                                            </tr>
+
+                                                        </table>
+                                                    </div>
+
+
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                    <td class="td">
+
+                                        1
+                                    </td>
+                                    <td class="td">
+
+                                        111
+                                    </td>
+                                    <td class="td">0.00</td>
+                                    <td class="td">
+
+                                        5.60
+                                    </td>
+                                    <td class="td">117.60 SAR</td>
+                                </tr>
+                                <tr class="tab-data">
+                                    <td class="td">1</td>
+                                    <td class="td">
+                                        <div style="font-size:15px">Ja-25009</div>
+                                        <div>بحجم : Tin P 1LT</div>
+
+                                    </td>
+                                    <td class="td description-data">
+                                        <table style="border-collapse: collapse !important;">
+                                            <tr>
+
+                                                <td style="width: 100%;text-align: right" align="left">
+                                                    <div style="font-weight:600;font-size:16px">Wood Stain</div>
+                                                    <div>
+                                                        <table style="width:100%;">
+                                                            <tr class="desc-font">
+                                                                <td class="td">اسم اللون | الشفرة</td>
+                                                                <td>:</td>
+                                                                <td>Solid Brown | BR 0389</td>
+
+                                                            </tr>
+
+                                                        </table>
+                                                    </div>
+
+
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                    <td class="td">
+
+                                        1
+                                    </td>
+                                    <td class="td">
+
+                                        111
+                                    </td>
+                                    <td class="td">0.00</td>
+                                    <td class="td">
+
+                                        5.60
+                                    </td>
+                                    <td class="td">117.60 SAR</td>
+                                </tr>
+                                <tr class="tab-data">
+                                    <td class="td">1</td>
+                                    <td class="td">
+                                        <div style="font-size:15px">Ja-25009</div>
+                                        <div>بحجم : Tin P 1LT</div>
+
+                                    </td>
+                                    <td class="td description-data">
+                                        <table style="border-collapse: collapse !important;">
+                                            <tr>
+
+                                                <td style="width: 100%;text-align: right" align="left">
+                                                    <div style="font-weight:600;font-size:16px">Wood Stain</div>
+                                                    <div>
+                                                        <table style="width:100%;">
+                                                            <tr class="desc-font">
+                                                                <td class="td">اسم اللون | الشفرة</td>
+                                                                <td>:</td>
+                                                                <td>Solid Brown | BR 0389</td>
+
+                                                            </tr>
+
+                                                        </table>
+                                                    </div>
+
+
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                    <td class="td">
+
+                                        1
+                                    </td>
+                                    <td class="td">
+
+                                        111
+                                    </td>
+                                    <td class="td">0.00</td>
+                                    <td class="td">
+
+                                        5.60
+                                    </td>
+                                    <td class="td">117.60 SAR</td>
+                                </tr>
+                                <tr class="tab-data">
+                                    <td class="td">1</td>
+                                    <td class="td">
+                                        <div style="font-size:15px">Ja-25009</div>
+                                        <div>بحجم : Tin P 1LT</div>
+
+                                    </td>
+                                    <td class="td description-data">
+                                        <table style="border-collapse: collapse !important;">
+                                            <tr>
+
+                                                <td style="width: 100%;text-align: right" align="left">
+                                                    <div style="font-weight:600;font-size:16px">Wood Stain</div>
+                                                    <div>
+                                                        <table style="width:100%;">
+                                                            <tr class="desc-font">
+                                                                <td class="td">اسم اللون | الشفرة</td>
+                                                                <td>:</td>
+                                                                <td>Solid Brown | BR 0389</td>
+
+                                                            </tr>
+
+                                                        </table>
+                                                    </div>
+
+
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                    <td class="td">
+
+                                        1
+                                    </td>
+                                    <td class="td">
+
+                                        111
+                                    </td>
+                                    <td class="td">0.00</td>
+                                    <td class="td">
+
+                                        5.60
+                                    </td>
+                                    <td class="td">117.60 SAR</td>
+                                </tr>
+                                <tr class="tab-data">
+                                    <td class="td">1</td>
+                                    <td class="td">
+                                        <div style="font-size:15px">Ja-25009</div>
+                                        <div>بحجم : Tin P 1LT</div>
+
+                                    </td>
+                                    <td class="td description-data">
+                                        <table style="border-collapse: collapse !important;">
+                                            <tr>
+
+                                                <td style="width: 100%;text-align: right" align="left">
+                                                    <div style="font-weight:600;font-size:16px">Wood Stain</div>
+                                                    <div>
+                                                        <table style="width:100%;">
+                                                            <tr class="desc-font">
+                                                                <td class="td">اسم اللون | الشفرة</td>
+                                                                <td>:</td>
+                                                                <td>Solid Brown | BR 0389</td>
+
+                                                            </tr>
+
+                                                        </table>
+                                                    </div>
+
+
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                    <td class="td">
+
+                                        1
+                                    </td>
+                                    <td class="td">
+
+                                        111
+                                    </td>
+                                    <td class="td">0.00</td>
+                                    <td class="td">
+
+                                        5.60
+                                    </td>
+                                    <td class="td">117.60 SAR</td>
+                                </tr>
+                                <tr class="tab-data">
+                                    <td class="td">1</td>
+                                    <td class="td">
+                                        <div style="font-size:15px">Ja-25009</div>
+                                        <div>بحجم : Tin P 1LT</div>
+
+                                    </td>
+                                    <td class="td description-data">
+                                        <table style="border-collapse: collapse !important;">
+                                            <tr>
+
+                                                <td style="width: 100%;text-align: right" align="left">
+                                                    <div style="font-weight:600;font-size:16px">Wood Stain</div>
+                                                    <div>
+                                                        <table style="width:100%;">
+                                                            <tr class="desc-font">
+                                                                <td class="td">اسم اللون | الشفرة</td>
+                                                                <td>:</td>
+                                                                <td>Solid Brown | BR 0389</td>
+
+                                                            </tr>
+
+                                                        </table>
+                                                    </div>
+
+
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                    <td class="td">
+
+                                        1
+                                    </td>
+                                    <td class="td">
+
+                                        111
+                                    </td>
+                                    <td class="td">0.00</td>
+                                    <td class="td">
+
+                                        5.60
+                                    </td>
+                                    <td class="td">117.60 SAR</td>
+                                </tr>
+                                <tr class="tab-data">
+                                    <td class="td">1</td>
+                                    <td class="td">
+                                        <div style="font-size:15px">Ja-25009</div>
+                                        <div>بحجم : Tin P 1LT</div>
+
+                                    </td>
+                                    <td class="td description-data">
+                                        <table style="border-collapse: collapse !important;">
+                                            <tr>
+
+                                                <td style="width: 100%;text-align: right" align="left">
+                                                    <div style="font-weight:600;font-size:16px">Wood Stain</div>
+                                                    <div>
+                                                        <table style="width:100%;">
+                                                            <tr class="desc-font">
+                                                                <td class="td">اسم اللون | الشفرة</td>
+                                                                <td>:</td>
+                                                                <td>Solid Brown | BR 0389</td>
+
+                                                            </tr>
+
+                                                        </table>
+                                                    </div>
+
+
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                    <td class="td">
+
+                                        1
+                                    </td>
+                                    <td class="td">
+
+                                        111
+                                    </td>
+                                    <td class="td">0.00</td>
+                                    <td class="td">
+
+                                        5.60
+                                    </td>
+                                    <td class="td">117.60 SAR</td>
+                                </tr>
+                                <tr class="tab-data">
+                                    <td class="td">1</td>
+                                    <td class="td">
+                                        <div style="font-size:15px">Ja-25009</div>
+                                        <div>بحجم : Tin P 1LT</div>
+
+                                    </td>
+                                    <td class="td description-data">
+                                        <table style="border-collapse: collapse !important;">
+                                            <tr>
+
+                                                <td style="width: 100%;text-align: right" align="left">
+                                                    <div style="font-weight:600;font-size:16px">Wood Stain</div>
+                                                    <div>
+                                                        <table style="width:100%;">
+                                                            <tr class="desc-font">
+                                                                <td class="td">اسم اللون | الشفرة</td>
+                                                                <td>:</td>
+                                                                <td>Solid Brown | BR 0389</td>
+
+                                                            </tr>
+
+                                                        </table>
+                                                    </div>
+
+
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                    <td class="td">
+
+                                        1
+                                    </td>
+                                    <td class="td">
+
+                                        111
+                                    </td>
+                                    <td class="td">0.00</td>
+                                    <td class="td">
+
+                                        5.60
+                                    </td>
+                                    <td class="td">117.60 SAR</td>
+                                </tr>
+                                <tr class="tab-data">
+                                    <td class="td">1</td>
+                                    <td class="td">
+                                        <div style="font-size:15px">Ja-25009</div>
+                                        <div>بحجم : Tin P 1LT</div>
+
+                                    </td>
+                                    <td class="td description-data">
+                                        <table style="border-collapse: collapse !important;">
+                                            <tr>
+
+                                                <td style="width: 100%;text-align: right" align="left">
+                                                    <div style="font-weight:600;font-size:16px">Wood Stain</div>
+                                                    <div>
+                                                        <table style="width:100%;">
+                                                            <tr class="desc-font">
+                                                                <td class="td">اسم اللون | الشفرة</td>
+                                                                <td>:</td>
+                                                                <td>Solid Brown | BR 0389</td>
+
+                                                            </tr>
+
+                                                        </table>
+                                                    </div>
+
+
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                    <td class="td">
+
+                                        1
+                                    </td>
+                                    <td class="td">
+
+                                        111
+                                    </td>
+                                    <td class="td">0.00</td>
+                                    <td class="td">
+
+                                        5.60
+                                    </td>
+                                    <td class="td">117.60 SAR</td>
+                                </tr>
+                                <tr class="tab-data">
+                                    <td class="td">1</td>
+                                    <td class="td">
+                                        <div style="font-size:15px">Ja-25009</div>
+                                        <div>بحجم : Tin P 1LT</div>
+
+                                    </td>
+                                    <td class="td description-data">
+                                        <table style="border-collapse: collapse !important;">
+                                            <tr>
+
+                                                <td style="width: 100%;text-align: right" align="left">
+                                                    <div style="font-weight:600;font-size:16px">Wood Stain</div>
+                                                    <div>
+                                                        <table style="width:100%;">
+                                                            <tr class="desc-font">
+                                                                <td class="td">اسم اللون | الشفرة</td>
+                                                                <td>:</td>
+                                                                <td>Solid Brown | BR 0389</td>
+
+                                                            </tr>
+
+                                                        </table>
+                                                    </div>
+
+
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                    <td class="td">
+
+                                        1
+                                    </td>
+                                    <td class="td">
+
+                                        111
+                                    </td>
+                                    <td class="td">0.00</td>
+                                    <td class="td">
+
+                                        5.60
+                                    </td>
+                                    <td class="td">117.60 SAR</td>
+                                </tr>
+                                <tr class="tab-data">
+                                    <td class="td">1</td>
+                                    <td class="td">
+                                        <div style="font-size:15px">Ja-25009</div>
+                                        <div>بحجم : Tin P 1LT</div>
+
+                                    </td>
+                                    <td class="td description-data">
+                                        <table style="border-collapse: collapse !important;">
+                                            <tr>
+
+                                                <td style="width: 100%;text-align: right" align="left">
+                                                    <div style="font-weight:600;font-size:16px">Wood Stain</div>
+                                                    <div>
+                                                        <table style="width:100%;">
+                                                            <tr class="desc-font">
+                                                                <td class="td">اسم اللون | الشفرة</td>
+                                                                <td>:</td>
+                                                                <td>Solid Brown | BR 0389</td>
+
+                                                            </tr>
+
+                                                        </table>
+                                                    </div>
+
+
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </td>
+                                    <td class="td">
+
+                                        1
+                                    </td>
+                                    <td class="td">
+
+                                        111
+                                    </td>
+                                    <td class="td">0.00</td>
+                                    <td class="td">
+
+                                        5.60
+                                    </td>
+                                    <td class="td">117.60 SAR</td>
+                                </tr>
+
+            </tr>
+
+
+            </tr>
+
+            </tr>
+
+
+
+
+
+    </table>
+    <div style="background:#fff">
+        <!-- <h1
+          style="text-align:center;border: 2px solid #e8e7e7;width: 99.5%;margin:0px"
+        ></h1> -->
+        <table align="center" width="100%" style="border-bottom:1px dotted #8a8989;margin-top: 8px">
+            <tr class="header">
+                <td style="width:50%;">
+                    <table align="left">
+
+                    </table>
+                </td>
+                <td align="left" style="width:50%;">
+                    <table align="middle">
+                        <tr class="billing">
+                            <td>المجموع الكلي</td>
+                            <td>:</td>
+                            <td>421.00 SAR</td>
+                        </tr>
+                        <tr class="billing">
+                            <td>خصم</td>
+                            <td>:</td>
+                            <td>10.00 SAR</td>
+                        </tr>
+                        <tr class="billing">
+                            <td>الضريبة</td>
+                            <td>:</td>
+                            <td> 2334343</td>
+                        </tr>
+                        <tr class="billing">
+                            <td>شبكة كمية</td>
+                            <td>:</td>
+                            <td> 437.60 SAR</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        <table style="background: #fff;width: 100%;">
+            <tr>
+                <td style="width:33%;font-size:14px;font-weight: 600" align="right">
+                    مستلم
+                </td>
+                <td style="width:33%;font-size:14px;font-weight: 600" align="middle">
+                    تاجر
+                </td>
+                <td style="width:33%;font-size:14px;font-weight: 600" align="left">
+                    شركة
+                </td>
+            </tr>
+        </table>
+    </div>
+    </div>
+    </td>
+    </tr>
+    </tbody>
+
+    <tfoot>
+        <tr>
+            <td>
+                <!--place holder for the fixed-position footer-->
+                <div class="page-footer-space"></div>
+            </td>
+        </tr>
+    </tfoot>
+
+    </table>
+
+</body>
+
+</html>

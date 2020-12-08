@@ -1,0 +1,15 @@
+/inventtrans/selectedbatches:
+    get:
+        tags:
+            - Inventtrans
+        description: search.
+        parameters:
+            - name: salesid
+              in: query
+              required: true
+            - name: type
+              in: query
+              required: true
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

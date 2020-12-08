@@ -1,0 +1,35 @@
+/history/userinfo:
+    put:
+        tags:
+            - History
+        description: save user info. 
+        parameters:
+            - name: body
+              in: body
+              schema:
+                  type: object
+                  properties:
+                      data:
+                          type: object
+                          properties:
+                              id:
+                                type: string
+                              userName:
+                                  type: string
+                                  example: "krupa"
+                              email:
+                                  type: string
+                                  example: "kvarma@email.com"
+                              status:
+                                  type: string
+                                  example: "ACTIVE"
+                              groupid:
+                                  type: string
+                                  example: "b21d9c7b-ef9c-4272-9266-992791b6d890"
+                              phone:
+                                  type: Integer
+                                  example: 0512345678
+
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

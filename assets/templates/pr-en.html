@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Language" content="ar-sy" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+    <style>
+        @page {
+            size: A4;
+            margin: 10px;
+        }
+
+        body {
+        display: block;
+        font-family: 'Open Sans', sans-serif;
+        font-size:14px !important;
+        margin: auto;
+ 
+        }
+        .color {
+            color: #000;
+        }
+
+        .top {
+            border: 1px solid #000;
+            text-align: center;
+        }
+
+        span {
+            color: #000;
+        }
+
+        .back {
+            text-align: center;
+            padding: 2px 6px;
+            background: #11a297;
+            color: #fff;
+        }
+
+        th,
+        td {
+            padding: 5px 5px;
+        }
+
+        td {
+            color: #000;
+        }
+
+        .bottom {
+            border: none;
+            border-bottom: 1px dotted #000;
+            padding: 12px;
+            margin-left: 20px;
+        }
+
+        .label {
+            position: relative;
+            top: 14px;
+        }
+
+        .form-text {
+            display: flex;
+            padding-top: 8px;
+        }
+
+        .two {
+            padding-top: 0px;
+        }
+        input {
+            outline: none;
+        }
+
+        .table-border {
+            margin: auto;
+            width: 93%;
+        }
+
+        .address td {
+            color: white !important;
+            padding: 4px 5px !important;
+        }
+
+        .th {
+            border-collapse: collapse !important;
+            font-size: 14px;
+
+        }
+
+        .td {
+            border-collapse: collapse !important;
+        }
+
+        .table {
+            border: 1px solid #000 !important;
+            border-collapse: collapse !important;
+        }
+
+        .background {
+            border-bottom: 1px dotted #000 !important;
+            border-top: 1px dotted #000 !important;
+
+        }
+
+        .background th {
+            border: none !important;
+            padding: 8px;
+            font-weight: normal;
+        }
+
+        .tab-data td {
+            border-right: none !important;
+            border-bottom: dotted 1px #8a8989;
+            font-size: 13px;
+            padding: 3px;
+            text-align: center;
+        }
+        .billing td {
+            font-size: 14px;
+        }
+        .desc-font td {
+            font-size: 13px;
+            text-align: left;
+            border: none;
+        }
+
+        .description-data td {
+            border: none;
+        }
+
+        .qty-border {
+            border-bottom: 1px solid #000;
+            width: 40px;
+            margin: auto;
+        }
+        .page-header,
+        .page-header-space {
+            height: 80px;
+        }
+
+
+        .page-footer-space {
+            height: 80px;
+
+        }
+
+        .page-footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 80px;
+
+        }
+
+        .page-header {
+            position: fixed;
+            top: 0mm;
+            width: 100%;
+
+        }
+
+
+        .footer-details h5 {
+            margin: 2px;
+        }
+        @media print {  
+            tfoot {
+                display: table-footer-group;
+            }
+
+            @page {
+                margin: 2cm 0.5cm 1cm 0.5cm;
+            }
+        }
+
+        .copy-box {
+            border: 2px solid #000;
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        #background {
+            position: absolute;
+            z-index: 0;
+            display: block;
+            color: yellow;
+            left: 50%;
+            top: 18%;
+            transform: translate(-50%, -50%);
+        }
+        #bg-text {
+            color: #000;
+            font-size: 20px;
+            transform: rotate(300deg);
+            -webkit-transform: rotate(300deg);
+            border: 1px solid #000;
+            padding: 10px;
+        }
+
+        #bg__watermark {
+            display: block;
+            min-width: 100%;
+            opacity: 0.5;               
+        }
+        #bg__text__watermark {
+            color: lightgrey;
+            font-size: 120px;
+            text-align: center;
+            transform: rotate(-45deg);
+            transform-origin: 50% 50%;
+            -webkit-transform: rotate(-45deg);
+            -webkit-transform-origin: 50% 50%;
+            opacity: 0.9;
+            filter: alpha(opacity=50);
+            background-color: transparent;
+            background-size: 100%;
+            position: fixed;
+            margin: 50% auto;
+        }
+    </style>
+
+</head>
+
+<body>
+        {{#if originalPrinted}}
+        <div id="background">
+            <p id="bg-text">Copy</p>
+        </div>
+        {{/if}}
+
+ 
+        <div id="bg__watermark">
+            <p id="bg__text__watermark">Only for testing</p>
+        </div>
+
+    <div id="">
+        <table align="center" style="width:94%">
+            <tr class="">
+                <td style="width:30%">
+                    <div class="tax top">
+                        <p class="tax color" style="color:#000;">Purchase Return Id</p>
+                        <p class="tax color" style="color:#000;">{{salesId}}</p>
+                    </div>
+                </td>
+                <td style="width:70%;text-align:center"></td>
+
+                <td></td>
+            </tr>
+        </table>
+        <table style="width:100%">
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="">
+                            <div >
+                                <h1 style="text-align:center;border-bottom: 1px dotted #262a41;width: 93%;margin:auto">
+                                </h1>
+                                <table align="center" width="98%">
+                                    <tr class="header">
+                                        <td style="width:50%">
+                                            <table align="left">
+                                                <tr class="billing">
+                                                    <td>From</td>
+                                                    <td>:</td>
+                                                    <td>
+                                                        {{wareHouseNameEn}}
+                                                    </td>
+                                                </tr>
+                                                <tr class="billing">
+                                                    <td>Phone</td>
+                                                    <td>:</td>
+
+                                                    <td>
+                                                        {{phone}}
+                                                    </td>
+                                                </tr>
+                                                <tr class="billing">
+                                                    <td>Fax</td>
+                                                    <td>:</td>
+                                                    <td>
+                                                        {{fax}}
+                                                    </td>
+                                                </tr>
+                                                <tr class="billing">
+                                                    <td>Customer</td>
+                                                    <td>:</td>
+                                                    <td>
+                                                        {{nameAlias}} 
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td align="left" style="width:50%">
+                                            <table align="right">
+                                                <tr class="billing">
+                                                    <td>User</td>
+                                                    <td>:</td>
+                                                    <td>
+                                                        {{createdBy}}
+                                                    </td>
+                                                </tr>
+                                                <tr class="billing">
+                                                    <td>Page</td>
+                                                    <td>:</td>
+                                                    <td> 1/1</td>
+                                                </tr>
+                                                <tr class="billing">
+                                                    <td class="quotation-date">Return Date</td>
+                                                    <td>:</td>
+                                                    <td class="quotation-date">
+                                                        {{ReturnDate}}
+                                                    </td>
+                                                </tr>
+                                                <tr class="billing">
+                                                    <td>Purchase Order Id</td>
+                                                    <td>:</td>
+                                                    <td>{{purchaseOrderId}}</td>
+                                                </tr>
+
+
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+
+
+                            </div>
+
+                            <div class="table-border">
+                                <table class="" style="width:100%;margin:auto;border-collapse: collapse !important;">
+                                    <tr class="background" style="font-size:12px">
+                                        <th class="th">S.No</th>
+                                        <th class="th">Description</th>
+                                        <th class="th">Batch No</th>
+                                        <th class="th">Return Qty</th>
+                                        <th class="th">Price</th>
+                                        <th class="th">Vat</th>
+                                        <th class="th">Total</th>
+                                    </tr>
+                                    {{#each batches}} 
+
+                                    <tr class="tab-data">
+                                        <td class="td">{{this.sNo}}</td>
+                                        <td class="td description-data">
+                                            <table style="border-collapse: collapse !important;">
+                                                <tr>
+
+                                                    <td class="td" style="text-align: left" align="left">
+                                                        <span style="font-size:13px">
+                                                            {{nameen}}
+                                                        </span>
+                                                        <span>
+                                                         
+                                                        </span>
+
+
+                                                    </td>
+                                                </tr>
+                                                <tr class="desc-font">
+                                                    <td>
+                                                    <span class="td">Color Name | Size</span>
+                                                    <span>:</span>
+                                                    <span>
+                                                        {{configid}}| {{sizenameen}}
+                                                    </span>
+                                                </td>
+
+                                                </tr>
+
+                                            </table>
+                                        </td>
+                                        <td class="td">
+                                            {{batchno}}
+                                        </td>
+                                        <td class="td">
+
+                                            {{this.qty}}
+                                        </td>
+                                        <td class="td">
+
+                                            {{this.price}} SAR
+                                        </td>
+                                        <td class="td">
+                                            {{this.vatAmount}} SAR
+
+                                        </td>
+                                        <td class="td">
+                                            {{this.lineAmount}} SAR
+                                        </td>
+
+                                    </tr>
+                                    {{/each}}
+
+                </tr>
+
+
+                </tr>
+
+                </tr>
+        </table>
+        <div >
+            <table align="center" width="100%" style="border-bottom:1px dotted #8a8989;margin-top: 8px">
+                <tr class="header">
+                    <td style="width:50%;">
+                        <table align="left">
+
+                        </table>
+                    </td>
+                    <td align="right" style="width:50%;">
+                        <table align="middle">
+                            <tr class="billing">
+                                <td>Gross Total</td>
+                                <td>:</td>
+                                <td>
+                                    {{grossAmount }} SAR
+                                </td>
+                            </tr>
+                            <tr class="billing">
+                                <td>VAT(5%)</td>
+                                <td>:</td>
+                                <td>
+                                    {{vatAmount}} SAR
+                                </td>
+                            </tr>
+                            <tr class="billing">
+                                <td>Net Amount</td>
+                                <td>:</td>
+                                <td>
+                                    {{netAmount}} SAR
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <table style="background: #fff;width: 100%;">
+                <tr>
+                    <td style="width:33%;font-size:14px" align="left">
+                        Recipient
+                    </td>
+                    <td style="width:33%;font-size:14px;" align="middle">
+                        Seller
+                    </td>
+                    <td style="width:33%;font-size:14px;" align="right">
+                        Company
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    </td>
+    </tr>
+    </tbody>
+
+    <tfoot>
+        <tr>
+            <td>
+                <div class="page-footer-space"></div>
+            </td>
+        </tr>
+    </tfoot>
+
+    </table>
+    </div>
+</body>
+
+</html>

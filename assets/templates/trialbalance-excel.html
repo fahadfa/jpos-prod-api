@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Content-Language" content="ar-sy" />
+        <meta name="description" content="بيسب" />
+        <title>My First Web Page</title>
+    </head>
+    <body>
+        <h1>My Table</h1>
+        <table>
+            <tr>
+                <th>Ledger Account</th>
+                <th>Account Name</th>
+                <th>Opening Balance</th>
+                <th>Debit</th>
+                <th>Credit</th>
+                <th>Net Difference</th>
+                <th>Closing Balance</th>
+            </tr>
+            {{#each data}}
+            <tr></tr>
+            <tr class="tab-data">
+                <td>{{ this.accountNum }}</td>
+                <td>{{ this.nameEn }}</td>
+                <td>{{ this.openingBal }}</td>
+                <td>{{ this.debit }}</td>
+                <td>{{ this.credit }}</td>
+                <td>{{ this.closingBal }}</td>
+                <td>{{ this.closingBal }}</td>
+            </tr>
+            {{/each}}
+        </table>
+    </body>
+</html>

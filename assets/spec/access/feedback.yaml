@@ -1,0 +1,30 @@
+/web/contactus:
+    put:
+        summary: ContactUs
+        tags:
+            - Access
+        parameters:
+            - name: body
+              in: body
+              required: false
+              schema:
+                  type: object
+                  properties:
+                      data:
+                          type: object
+                          properties:
+                              name:
+                                  type: string
+                                  example: "support"
+                                  required: true
+                              email:
+                                  type: string
+                                  example: "admin@dfftech.com"
+                                  required: true
+                              message:
+                                  type: string
+                                  example: "1234"
+                                  required: true
+        responses:
+            200:
+                description: status 1 is success.

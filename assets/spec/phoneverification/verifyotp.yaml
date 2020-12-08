@@ -1,0 +1,27 @@
+/phoneverification/verifyotp:
+    post:
+        tags:
+            - PhoneVerification
+        description: otp.
+        parameters:
+            - name: body
+              in: body
+              schema:
+                  type: object
+                  properties:
+                      data:
+                          type: object
+                          properties:
+                              phoneNumber:
+                                  type: string
+                                  example: "9440220776"
+                              customerId:
+                                  type: string
+                                  example: "C05931"
+                              otp:
+                                  type: string
+                                  example: "1234"
+
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

@@ -1,0 +1,52 @@
+/history/usergroupconfig:
+    put:
+        tags:
+            - History
+        description: save UserGroupConfig.
+        parameters:
+            - name: body
+              in: body
+              schema:
+                  type: object
+                  properties:
+                      data:
+                          type: object
+                          properties:
+                              id:
+                                type: string
+                              groupname:
+                                  type: string
+                                  example: "krupa"
+                              usercount:
+                                  type: number
+                                  example: 1
+                              status:
+                                  type: string
+                                  example: "ACTIVE"
+                              comment:
+                                  type: string
+                                  example: ""
+                              createdBy:
+                                  type: string
+                                  example: "abcd"
+                              createddatetime:
+                                  type: string
+                                  example: ""
+                              lastmodifiedby:
+                                  type: string
+                                  example: ""
+                              lastmodifieddate:
+                                  type: string
+                                  example: ""
+                              deleted:
+                                  type: boolean
+                                  example: false
+                              permissiondata:
+                                  type: string
+                                  example: []
+                              role:
+                                  type: string
+                                  example: ROLE_NORMAL
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

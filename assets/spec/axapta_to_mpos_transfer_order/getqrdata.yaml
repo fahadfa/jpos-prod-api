@@ -1,0 +1,23 @@
+/transferorderfromaxapta/getqrdata:
+  post:
+    tags:
+      - Orders From Axapta
+    description: save.
+    parameters:
+      - name: body
+        in: body
+        schema:
+          type: object
+          properties:
+            data:
+              type: object
+              properties:
+                qrStringList:
+                  type: array
+                  items:
+                    type: string
+                    example: 2%2$OS01-20-01-01825^RMAW-0010^RMJW-0019|JG-11270+--+BRU001+-+50+0+0+0*JG-11270+--+BRU001+-+50+0+0+0*JG-11270+--+BRU001+-+50+0+0+0*JG-11270+--+BRU001+-+50+0+0+0*JG-11270+--+BRU001+-+50+0+0+0*JG-11270+--+BRU001+-+50+0+0+0*JG-11270+--+BRU001+-+50+0+0+0*JG-11270+--+BRU001+-+50+0+0+0*JG-11270+--+BRU001+-+50+0+0+0*JG-11270+--+BRU001+-+50+0+0+0
+
+    responses:
+      200:
+        description: "status:1 is success; status: 0 is failure;"

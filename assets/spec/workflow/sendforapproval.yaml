@@ -1,0 +1,21 @@
+/workflow/sendforapproval:
+    put:
+        tags:
+            - Workflow
+        description: save.
+        parameters:
+            - name: body
+              in: body
+              schema:
+                  type: object
+                  properties:
+                      data:
+                          type: object
+                          properties:
+                              orderId:
+                                  type: Integer
+                                  example: "SO01-18-80-184-18"
+
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

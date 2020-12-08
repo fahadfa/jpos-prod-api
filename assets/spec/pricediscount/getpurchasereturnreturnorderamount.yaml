@@ -1,0 +1,41 @@
+/price/purchasereturnorderamount:
+    post:
+        tags:
+            - PriceDiscount
+        description: save.
+        parameters:
+            - name: body
+              in: body
+              schema:
+                  type: object
+                  properties:
+                      data:
+                          type: object
+                          properties:
+                              salesid:
+                                  type: string
+                                  example: "SO03-11-444-19"
+                              selectedBatches:
+                                  type: array
+                                  items:
+                                      type: object
+                                      properties:
+                                          itemid:
+                                              type: string
+                                              example: JA-17006
+                                          qty:
+                                              type: number
+                                              example: 1
+                                          configid:
+                                              type: string
+                                              example: RAL 7004
+                                          batchno:
+                                              type: string
+                                              example: "-"
+                                          inventsizeid:
+                                              type: string
+                                              example: "TG000/00"
+
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

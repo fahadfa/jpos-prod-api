@@ -1,0 +1,65 @@
+/load/{code}:
+    get:
+        tags:
+            - Access
+        parameters:
+            - name: code
+              in: path
+              required: true
+              type: string
+            - name: key
+              in: query
+              required: false
+              type: string
+            - name: param
+              in: query
+              required: false
+              type: string
+            - name: custaccount
+              in: query
+              required: false
+              type: string
+            - name: custtype
+              in: query
+              required: false
+              type: string
+            - name: itemid
+              in: query
+              required: false
+              type: string
+            - name: configid
+              in: query
+              required: false
+              type: string
+            - name: batchno
+              in: query
+              required: false
+              type: string
+            # - name: baseId
+            #   in: query
+            #   required: false
+            #   type: string
+            # - name: colorId
+            #   in: query
+            #   required: false
+            #   type: string
+            # - name: itemId
+            #   in: query
+            #   required: false
+            #   type: string
+            # - name: configId
+            #   in: query
+            #   required: false
+            #   type: string
+            # - name: inventsizeid
+            #   in: query
+            #   required: false
+            #   type: string
+            # - name: batchno
+            #   in: query
+            #   required: false
+            #   type: string
+
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

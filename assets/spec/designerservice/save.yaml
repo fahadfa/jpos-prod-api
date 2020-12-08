@@ -1,0 +1,69 @@
+/designerservice:
+    put:
+        tags:
+           - Designerservice
+        description:
+           save.
+        parameters:
+          - name: body
+            in: body
+            schema:
+                type: object
+                properties:
+                    data:
+                        type: object
+                        properties:
+                            serviceid:
+                                type: number
+                                example: 9
+                            custphone:
+                                type: string
+                                example: "xyz"
+                            amount:
+                                type: number
+                                example: 9
+                            invoiceid:
+                                type: string
+                                example: "xyz"
+                            salesorderid:
+                                type: string
+                                example: "xyz"
+                            syncstatus:
+                                type: number
+                                example: 9
+                            dataareaid:
+                                type: string
+                                example: "xyz"
+                            recordtype:
+                                type: number
+                                example: 9
+                            settle:
+                                type: number
+                                example: 9
+                            selectedforsettle:
+                                type: number
+                                example: 9
+                            approvalstatus:
+                                type: number
+                                example: 9
+                            createdby:
+                                type: string
+                                example: "xyz"
+                            createddatetime:
+                                type: date
+                                example: "2000-01-01T00:00:00.000"
+                            lastmodifiedby:
+                                type: string
+                                example: "xyz"
+                            lastmodifieddate:
+                                type: date
+                                example: "2000-01-01T00:00:00.000" 
+                            customerid:
+                                type: object
+                                properties:
+                                    id:
+                                        type: string
+                                        example: null 
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

@@ -1,0 +1,95 @@
+/custtable:
+    put:
+        tags:
+            - Custtable
+        description: save.
+        parameters:
+            - name: body
+              in: body
+              schema:
+                  type: object
+                  properties:
+                      data:
+                          type: object
+                          properties:
+                              name:
+                                  type: string
+                                  example: "PS"
+                              namealias:
+                                  type: string
+                                  example: "PS"
+                              custgroup:
+                                  type: string
+                                  example: "PS"
+                              currency:
+                                  type: string
+                                  example: "SAR"
+                              custtype:
+                                  type: Integer
+                                  example: 11
+                              salesgroup:
+                                  type: string
+                                  example: "0"
+                              phone:
+                                  type: string
+                                  example: "9000899098"
+                              contactpersonid:
+                                  type: string
+                                  example: "Testing"
+                              invoiceaccount:
+                                  type: string
+                                  example: "0500000908"
+                              county:
+                                  type: string
+                                  example: "KSA"
+                              city:
+                                  type: string
+                                  example: "Riyadh"
+                              street:
+                                  type: string
+                                  example: "Testing"
+                              address:
+                                  type: string
+                                  example: "Testing"
+                              longitude:
+                                  type: Integer
+                                  example: 24.7136
+                              latitude:
+                                  type: Integer
+                                  example: 46.6753
+                              multilinedisc:
+                                  type: string
+                                  example: "CTools"
+                              linedisc:
+                                  type: string
+                                  example: "Testing"
+                              regionid:
+                                  type: string
+                                  example: "002"
+                              departmentid:
+                                  type: string
+                                  example: "3000"
+                              costcenterid:
+                                  type: string
+                                  example: "0201"
+                              employeeid:
+                                  type: string
+                                  example: "Testing"
+                              projectid:
+                                  type: string
+                                  example: "Testing"
+                              salesmanid:
+                                  type: string
+                                  example: "MSAJ"
+                              brandid:
+                                  type: string
+                                  example: "JA"
+                              productlineid:
+                                  type: string
+                                  example: "Testing"
+                              location:
+                                  type: string
+                                  example: "SAEED ALI AL-HASANIYAH Est"
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

@@ -1,0 +1,526 @@
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <title>JPOS</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   </head>
+   <body>
+
+    <!-- <p>Dear {{ data.name }},</p>
+    Please click on the below link to complete payment of {{data.amount}} SAR: <br />
+    {{data.link}} -->
+      <div style="background-color:#ffffff">
+         <div style="background-color:#ffffff">
+            <div style="Margin:0px auto;max-width:600px">
+               <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:40%">
+              
+                  <tbody>
+                        <tr>
+                           <td style="width:200px;text-align: center;
+                           margin: auto;"><img alt="logo" height="auto" src="https://ci4.googleusercontent.com/proxy/SqZB2H6kHVrMQIidCQQ3LWLPuZWX8W1akShij7iv4J7EKga80Z8n7J-egjN0cwBMaBFf57VyXkEihQNqneGBocxKHP6voTRrsQguoroCpwoYCDDb17hGBR0bpUE70IiS2dQzSImw7HEZn03SEFfPC4U=s0-d-e1-ft#https://s3.eu-central-1.amazonaws.com/paints-staging/staging/initial_images/email/new-logo.png" style="border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%" width="200"></td>
+                        </tr>
+               </table>
+            </div>
+            <div style="Margin:0px auto;max-width:600px">
+               <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:100%">
+                  <tbody>
+                     <tr>
+                        <td style="border:2px solid #ccc;direction:ltr;font-size:0px;padding:20px 0;text-align:center;vertical-align:top">
+
+
+                            <!-- customer name code and description starts -->
+                           <div style="Margin:0px auto;max-width:596px">
+                              <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:100%">
+                                 <tbody>
+                                    <tr>
+                                      
+                                        <td style="font-size:0px;padding:10px 25px;text-align: center !important">
+                                                         <div style="width:50%;float:left;font-family:roboto,Source Sans Pro;font-size:16px;font-weight:600;line-height:24px;text-align:left;color:#000000"> 
+                                                            {{data.salesTable.salesName}} <br>
+                                                            Thank you for shopping with us
+                                                         </div>
+                                                             <div style="text-align: right;float:left">
+                                                                  <a style="width:20%;padding:12px 80px 12px 80px;background:#00a657;color:#ffffff;font-family:roboto,Source Sans Pro;font-size:24px;font-weight:normal;line-height:65px;Margin:0;text-decoration:none;text-transform:none;text-align:right" target="_blank" href="{{data.link}}">PAY</a>
+                                                            </div>
+                                                      </td>
+                                    </tr>
+                                    <tr>
+                                            <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word">
+                                               <div style="font-family:roboto,Source Sans Pro;font-size:16px;line-height:24px;text-align:left;color:#777777">  Your order has been intialized, please click on pay to complete payment  </div>
+                                            </td>
+                                         </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+
+                            <!-- customer name code and description ends -->
+
+                           <!-- border top start-->
+                           <div style="Margin:0px auto;max-width:596px;">
+                              <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:100%">
+                                 <tbody>
+                                    <tr>
+                                    
+                                       <td style="font-size:0px;padding:10px 25px;word-break:break-word">
+                                            <p style="border-top:solid 1px #cccccc;font-size:1;margin:0px auto;width:100%"></p>
+                                         </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                            <!-- border top ends -->
+                           <!-- order number,date,value code starts (2nd section)-->
+                           <div style="Margin:0px auto;max-width:596px;">
+                              <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:100%">
+                                 <tbody>
+                                    <tr>
+                                       <td style="direction:ltr;padding:0px;vertical-align:top;font-family:roboto,Source Sans Pro;font-size:16px;font-weight:600;line-height:24px;color:#000000;padding-left: 50px;">
+                                           <div style="text-align:left;display:inline-block;width:100%;direction:ltr">
+                                             <div style="font-size:13px;text-align:left;direction:ltr;display:block;width:100%">
+                                              <table border="0" cellpadding="0" cellspacing="0" style="vertical-align:top" width="100%">
+                                                   <tbody> 
+                                                      <tr>
+                                                            <tr>
+                                            
+                                                                  <td style="width:40%">  Order Number</td>
+                                                                  <td style="width:10%">:</td>
+                                                                  <td style="width:60%"> {{data.salesTable.salesId}}</td>
+                                                               </tr>
+                                                               <tr>
+                                                                      
+                                                                     <td style="width:40%"> Order Date</td>
+                                                                     <td style="width:10%">:</td>
+                                                                     <td style="width:60%">{{data.salesTable.lastModifiedDate}} </td>
+                                                                  </tr>
+                                                               <tr>
+                                                                  
+                                                                  <td style="width:40%"> Order Value</td>
+                                                                  <td style="width:10%">:</td>
+                                                                  <td style="width:60%">{{data.salesTable.netAmount}}</td>
+                                                               </tr>
+                                                               <tr>
+                                                                      
+                                                                     <td style="width:40%">  Payment Status</td>
+                                                                     <td style="width:10%">:</td>
+                                                                     <td style="width:60%">Pending </td>
+                                                                  </tr>
+                                                                  <tr>
+                                                                      
+                                                                        <td style="width:40%">   VAT Number</td>
+                                                                        <td style="width:10%">:</td>
+                                                                        <td style="width:60%">300533832200003</td>
+                                                                     </tr> 
+                                                      
+                                                      </tr>
+                                                    </tbody>
+                                                </table> 
+                                             </div>
+                                        
+                                                      </tr>
+                                             
+                                          </div> 
+                                     
+
+                                     
+                           <!-- order number,date,value code ends (2nd section)-->
+                           <div style="Margin:0px auto;max-width:596px">
+                              <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:100%">
+                                 <tbody>
+                                    <tr>
+                                     
+                                       <td style="font-size:0px;padding:10px 25px;word-break:break-word">
+                                            <p style="border-top:solid 1px #cccccc;font-size:1;margin:0px auto;width:100%"></p>
+                                         </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+
+
+                           <div style="Margin:0px auto;max-width:596px">
+                              <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:100%">
+                                 <tbody>
+                                        <tr>
+                                                <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word">
+                                                   <div style="font-family:roboto,Source Sans Pro;font-size:18px;font-weight:600;line-height:24px;text-align:left;color:#000000">Order Details</div>
+                                                </td>
+                                             </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+
+
+                           <!-- Table heading item ,total code starts -->
+                           <div style="Margin:0px auto;max-width:596px">
+                              <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:100%">
+                                 <tbody>
+                                    <tr>
+                                     
+                                       <tr style="width:100%;direction:ltr;background-color:#00a657">
+                                            <td align="center" style="font-size:0px;padding:5px;word-break:break-word">
+                                               <div style="font-family:roboto,Source Sans Pro;font-size:16px;font-weight:600;line-height:24px;text-align:center;color:#ffffff">Item</div>
+                                            </td>
+                                            <td align="center" style="font-size:0px;padding:5px;word-break:break-word">
+                                                    <div style="font-family:roboto,Source Sans Pro;font-size:16px;font-weight:600;line-height:24px;text-align:center;color:#ffffff">Total</div>
+                                                 </td>
+                                         </tr>
+
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                           <!-- Table heading item ,total code ends -->
+
+                           <!-- Table data code starts (for loop)-->
+                           {{#each data.salesLine}}
+                           <div style="Margin:0px auto;max-width:596px">
+                              <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:100%">
+                               
+                                 <tbody>
+                                        <tr style="border-bottom:1px solid #ccc">
+                                           <td width="5%" align="left" style="font-size:0px;padding:10px 25px;word-break:break-word">
+                                              <table>
+                                                 <tbody>
+                                                    <tr>
+                                                       <td><img src="https://ci6.googleusercontent.com/proxy/ROvvTXOlXIa3uoIl5N1a6eQj7cCAVGsIMaS3Dfwm_FeH2JYmMBNu-ohBX7dHn42MWnZeblV0RcpojI84jCB1RY_JO6hR9C_9Z8yaAfY4QH2fl14O6eOPGRgXeUnDv1giEReQh0U4d8oR6UTgae_9vQRM8IoQbf7r4o60l_b0Bvna3gTlayGWzAWib6FX=s0-d-e1-ft#https://paints-staging.s3.amazonaws.com/staging/test/cDlIZWp2QlhGQ09LaDBQUENQa01nUT09/S05UbnpLUkcxSUlNS0VqQ0drZ0N0QT09.png" alt="paint-image" width="50" class="CToWUd"></td>
+                                                    </tr>
+                                                    <tr>
+                                                       <td bgcolor="#F3F1EB"><br><br></td>
+                                                    </tr>
+                                                 </tbody>
+                                              </table>
+                                           </td>
+                                           <td width="52%" style="padding:10px 25px;word-break:break-word;line-height:22px;table-layout:auto;">
+                                              <span style="text-transform:uppercase;font-size:15px;font-weight:600">  {{this.product.nameEn}} </span><br>
+                                              <p style="font-size:13px;margin:0;text-align: left"> 
+                                                   Color Name : {{this.color.code}} 
+                                                   <br>Color code : {{this.configId}}
+                                                   <br>  Size : {{this.size.code}} 
+                                                <br>Quantity : {{this.salesQty}} 
+                                                <br>  Color price: {{this.colorantprice}} {{this.currencyCode}}
+                                                <br>Unit price: {{this.unitPrice}} {{this.currencyCode}}
+                                                <br>  Product price : {{this.productPrice}} {{this.currencyCode}}</p>
+                                           </td>
+                                           <td width="43%" style="font-size:13px;margin:0;font-weight:600;padding:10px 25px;word-break:break-word;line-height:22px;table-layout:auto;">
+                                              <u></u>
+                                              <span style="color:#777">Sub Total </span>
+                                              <span style="float:right">SAR {{this.price}}</span><u></u><br><u></u>
+                                              <span style="color:#777">Discount </span>
+                                              <span style="float:right">SAR {{this.lineTotalDisc}}</span><u></u><br><u></u>
+                                              <span style="color:#777">VAT </span>
+                                              <span style="float:right">{{this.currencyCode}} {{this.vatamount}}</span><u></u><br>  <u></u>
+                                              <div style="border-top:2px solid #ccc;margin-top:5px">
+                                                 <span style="color:#777">Price </span>
+                                                 <span style="float:right">SAR  {{this.priceVat}}  </span>
+                                                 <div></div>
+                                              </div>
+                                           </td>
+                                        </tr>
+                                        <tr>
+                                           <td></td>
+                                        </tr>
+                                     </tbody>
+                              </table>
+                           </div>
+
+                           {{/each}}
+                           <!-- Table data code ends (for loop)-->
+
+
+                           <!-- Grand total code starts -->
+
+                           <div style="Margin:0px auto;max-width:596px">
+                              <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:100%">
+                                 <tbody>
+                                    <tr>
+                                       <td style="direction:ltr;font-size:0px;padding:0px;padding-top:10px;text-align:center;vertical-align:top">
+                                          <div style="font-size:0;line-height:0;text-align:left;display:inline-block;width:100%;direction:ltr">
+                                             <div style="font-size:13px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:57%">
+                                                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                                   <tbody>
+                                                      <tr>
+                                                         <td style="vertical-align:top;padding-left:18%">
+                                                            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                                               <tbody>
+                                                                  <tr>
+                                                                     <td align="left" style="font-size:0px;padding:10px 20px;word-break:break-word">
+                                                                        <div style="font-family:roboto,Source Sans Pro;font-size:16px;font-weight:600;line-height:24px;text-align:left;color:#000000">Net Subtotal<br>Shipping<br>Tax Value<br>  Discount<br>  <strong>Total</strong></div>
+                                                                     </td>
+                                                                  </tr>
+                                                               </tbody>
+                                                            </table>
+                                                         </td>
+                                                      </tr>
+                                                   </tbody>
+                                                </table>
+                                             </div>
+                                             <div style="font-size:13px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:1%">
+                                                <table border="0" cellpadding="0" cellspacing="0" style="vertical-align:top" width="100%">
+                                                   <tbody>
+                                                      <tr>
+                                                         <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word">
+                                                            <div style="font-family:roboto,Source Sans Pro;font-size:16px;line-height:24px;text-align:left;color:#000000">:<br>:<br>:<br>  :<br>  :</div>
+                                                         </td>
+                                                      </tr>
+                                                   </tbody>
+                                                </table>
+                                             </div>
+                                             <div style="font-size:13px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:40%">
+                                                <table border="0" cellpadding="0" cellspacing="0" style="vertical-align:top" width="100%">
+                                                   <tbody>
+                                                      <tr>
+                                                         <td align="right" style="font-size:0px;padding:10px 25px;word-break:break-word">
+                                                            <div style="font-family:roboto,Source Sans Pro;font-size:16px;font-weight:600;line-height:24px;text-align:right;color:#000000"> {{data.salesTable.amount}} SAR<br> {{data.salesTable.shippingAmount}} SAR<br> {{data.salesTable.vatamount}} SAR<br>  {{data.salesTable.disc}} SAR<br>  <strong>{{data.salesTable.netAmount}} SAR</strong></div>
+                                                         </td>
+                                                      </tr>
+                                                   </tbody>
+                                                </table>
+                                             </div>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                           <!-- Grand Total code ends -->
+
+
+                           <!-- Pay code starts -->
+                           <div style="Margin:0px auto;max-width:596px">
+                              <table align="center" border="0" cellpadding="0" cellspacing="0" style="">
+                                 <tbody>
+                                    <!-- <td align="center" bgcolor="#00a657" style="border:none;border-radius:0;padding:15px;background:#00a657" valign="middle"> -->
+                                       <a style="width:40%;padding:12px 120px 12px 120px;background:#00a657;color:#ffffff;font-family:roboto,Source Sans Pro;font-size:24px;font-weight:normal;line-height:65px;Margin:0;text-decoration:none;text-transform:none;text-align:center" target="_blank" href="{{data.link}}">PAY</a>
+                                    <!-- </td> -->
+                                 </tbody>
+                              </table>
+                           </div>
+
+                           <!-- Pay btn code ends -->
+
+                           <div style="Margin:0px auto;max-width:596px">
+                              <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:100%">
+                                 <tbody>
+                                    <tr>
+                                       <td style="direction:ltr;font-size:0px;padding:0px;text-align:center;vertical-align:top">
+                                          <div style="font-size:13px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%">
+                                             <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                                <tbody>
+                                                   <tr>
+                                                      <td style="background-color:#efefef;vertical-align:top;padding:5px 0">
+                                                         <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                                                            <tbody>
+                                                               <tr>
+                                                                  <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word">
+                                                                     <div style="font-family:roboto,Source Sans Pro;font-size:18px;line-height:24px;text-align:center;color:#000000">Need help or got questions? Go to <a >Jazeera Paints Support</a> page</div>
+                                                                  </td>
+                                                               </tr>
+                                                            </tbody>
+                                                         </table>
+                                                      </td>
+                                                   </tr>
+                                                </tbody>
+                                             </table>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                           <div style="Margin:0px auto;max-width:596px">
+                              <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:100%">
+                                 <tbody>
+                                    <tr>
+                                       <td style="direction:ltr;font-size:0px;padding:0px;text-align:center;vertical-align:top">
+                                          <div style="font-size:13px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%">
+                                             <table border="0" cellpadding="0" cellspacing="0" style="vertical-align:top" width="100%">
+                                                <tbody>
+                                                   <tr>
+                                                      <td style="font-size:0px;word-break:break-word">
+                                                         <div style="height:50px">&nbsp;</div>
+                                                      </td>
+                                                   </tr>
+                                                </tbody>
+                                             </table>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                           <div style="Margin:0px auto;max-width:596px">
+                              <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:100%">
+                                 <tbody>
+                                    <tr>
+                                       <td style="direction:ltr;font-size:0px;padding:0px;text-align:center;vertical-align:top">
+                                          <div style="font-size:13px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%">
+                                             <table border="0" cellpadding="0" cellspacing="0" style="vertical-align:top" width="100%">
+                                                <tbody>
+                                                   <tr>
+                                                      <td style="font-size:0px;padding:10px 25px;word-break:break-word">
+                                                         <p style="border-top:solid 1px #cccccc;font-size:1;margin:0px auto;width:100%"></p>
+                                                      </td>
+                                                   </tr>
+                                                </tbody>
+                                             </table>
+                                          </div>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+
+                           <!-- contact details code starts -->
+
+                           <!-- <div style="Margin:0px auto;max-width:596px">
+                              <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:100%">
+                                 <tbody>
+                                    <tr>
+                                            <td align="left" style="font-size:0px;padding:10px 25px;padding-bottom:0;word-break:break-word">
+                                               <div style="font-family:roboto,Source Sans Pro;font-size:18px;font-weight:600;line-height:24px;text-align:left;color:#000000">Contact Information</div>
+                                            </td>
+                                         </tr>
+                                         <tr>
+                                            <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word">
+                                               <div style="font-family:roboto,Source Sans Pro;font-size:16px;line-height:24px;text-align:left;color:#000000"> Mr. Sree Sree <br>Tel: 9014630061 <br>Email : <a >mkhadeer@jazeeratechnologies.<wbr>com</a> <br>  </div>
+                                            </td>
+                                         </tr>
+                                 </tbody>
+                              </table>
+                           </div> -->
+                            <!-- contact details code ends -->
+
+                           <!-- delivery address code starts -->
+                           <!-- <div style="Margin:0px auto;max-width:596px">
+                              <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:100%">
+                                 <tbody>
+                                        <tr>
+                                                <td align="left" style="font-size:0px;padding:10px 25px;padding-bottom:0;word-break:break-word">
+                                                   <div style="font-family:roboto,Source Sans Pro;font-size:18px;font-weight:600;line-height:24px;text-align:left;color:#000000">Delivery Address</div>
+                                                </td>
+                                             </tr>
+                                             <tr>
+                                                <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word">
+                                                   <div style="font-family:roboto,Source Sans Pro;font-size:16px;line-height:24px;text-align:left;color:#000000"> Exit 9 <br> Riyadh <br> Riyadh Province  <br> Saudi Arabia <br>  <a  target="_blank">Exact Location</a>  </div>
+                                                </td>
+                                             </tr>
+                                 </tbody>
+                              </table>
+                           </div> -->
+                           <!-- delivery address code ends -->
+
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+            <!-- jazeera mail content code starts -->
+            <div style="Margin:0px auto;max-width:600px">
+               <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:100%">
+                  <tbody>
+                        <tr>
+                                <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word">
+                                   <div style="font-family:roboto,Source Sans Pro;font-size:12px;line-height:18px;text-align:center;color:#000000">You recieved this email because your email address was used at Jazeera Paints site. If you believe this was a mistake or this message is difficult to read, please <a  >Contact Administrator</a></div>
+                                </td>
+                             </tr>
+                  </tbody>
+               </table>
+            </div>
+            <!-- jazeera mail content code ends -->
+
+            <!-- <div style="height:100px">&nbsp;</div> -->
+            <!-- footer email content code starts -->
+            <div style="Margin:0px auto;max-width:600px">
+               <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:100%">
+                  <tbody>
+                        <tr>
+                                <td align="left" style="font-size:0px;padding:10px;word-break:break-word">
+                                   <div style="font-family:roboto,Source Sans Pro;font-size:12px;line-height:18px;text-align:left;color:#777777">I have received the invoice &amp; goods; after matching them I accept all the contents. Dear esteemed customer, we are deeply sorry to inform you that the goods should note be returned after one month from the issuance date of the invoice for the white color, but the colored goods are not refunded. The use of Jazeera Paints; from primer up to final coat provides you with quality and beauty of the paint you like, and our company is not responsible by not following the adopted paint system from us. In order to serve you better, please keep the original invoice and submit it at the time of return.</div>
+                                </td>
+                             </tr>
+                  </tbody>
+               </table>
+            </div>
+            <!-- footer email content code ends -->
+
+
+            <!-- Customer Service Center details code starts -->
+            <div style="Margin:0px auto;max-width:600px">
+               <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:100%">
+                  <tbody>
+                     <tr>
+                        <td style="direction:ltr;font-size:0px;padding:0px;text-align:center;vertical-align:top">
+                           <div style="font-size:13px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%">
+                              <table border="0" cellpadding="0" cellspacing="0" style="vertical-align:top" width="100%">
+                                 <tbody>
+                                    <tr>
+                                       <td align="left" style="font-size:0px;padding:0 10px;word-break:break-word">
+                                          <div style="font-family:roboto,Source Sans Pro;font-size:12px;font-weight:600;line-height:24px;text-align:left;color:#000000">Customer Service Center</div>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td align="left" style="font-size:0px;padding:0 10px;word-break:break-word">
+                                          <div style="font-family:roboto,Source Sans Pro;font-size:12px;font-weight:600;line-height:18px;text-align:left;color:#777777">Call from inside Saudi Arabia : 92 0000 085<br>Call from outside Saudi Arabia : +966 92 0000 085<br>VAT number: 300533832200003</div>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                           <div style="font-size:13px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%">
+                              <table border="0" cellpadding="0" cellspacing="0" style="vertical-align:top" width="100%">
+                                 <tbody>
+                                    <tr>
+                                       <td align="right" style="font-size:0px;padding:10px 25px;padding-top:40px;word-break:break-word">
+                                          <div style="font-family:roboto,Source Sans Pro;font-size:12px;line-height:24px;text-align:right;color:#777777"><a href="http://www.jazeerapaints.com" target="_blank" >www.jazeerapaints.com</a></div>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+            <!-- Customer Service Center details code ends -->
+
+<!-- footer color images code starts -->
+
+            <div style="background:url(https://ci3.googleusercontent.com/proxy/F2u5VmMl8Z77FvzAt8XWKsCPbr_Y61JRc7U-e5G8yJDNUhNZd6_RYLPRL1BxnbMjEwrbUOvXT8_z30cfSEUayknDbhU=s0-d-e1-ft#https://jazeerapaints.com/images/email/footer.png) top center/cover no-repeat;Margin:0px auto;max-width:600px">
+               <div style="line-height:0;font-size:0">
+                  <table align="center" background="https://ci3.googleusercontent.com/proxy/F2u5VmMl8Z77FvzAt8XWKsCPbr_Y61JRc7U-e5G8yJDNUhNZd6_RYLPRL1BxnbMjEwrbUOvXT8_z30cfSEUayknDbhU=s0-d-e1-ft#https://jazeerapaints.com/images/email/footer.png" border="0" cellpadding="0" cellspacing="0" style="background:url(https://ci3.googleusercontent.com/proxy/F2u5VmMl8Z77FvzAt8XWKsCPbr_Y61JRc7U-e5G8yJDNUhNZd6_RYLPRL1BxnbMjEwrbUOvXT8_z30cfSEUayknDbhU=s0-d-e1-ft#https://jazeerapaints.com/images/email/footer.png) top center/cover no-repeat;width:100%">
+                     <tbody>
+                        <tr>
+                           <td style="direction:ltr;font-size:0px;padding:21px 0;text-align:center;vertical-align:top">
+                              <div style="font-size:13px;text-align:left;direction:ltr;display:inline-block;vertical-align:top;width:100%">
+                                 <table border="0" cellpadding="0" cellspacing="0" style="vertical-align:top" width="100%"></table>
+                              </div>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+<!-- footer color images code ends -->
+
+
+         </div>
+      </div>
+   </body>
+</html>
+
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+    <head>
+        <title>Payment Link</title>
+    </head>
+
+    <body>
+        <p>Dear {{ data.name }},</p>
+        Please click on the below link to complete payment of {{data.amount}} SAR: <br />
+        {{data.link}}
+    </body>
+</html> -->

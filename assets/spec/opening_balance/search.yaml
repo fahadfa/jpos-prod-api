@@ -1,0 +1,29 @@
+/openingbalance:
+  post:
+    tags:
+      - OpeningBalance
+    description: save.
+    parameters:
+      - name: body
+        in: body
+        schema:
+          type: object
+          properties:
+            server:
+              type: string
+              example: ""
+            username:
+              type: string
+              example: ""
+            password:
+              type: string
+              example: ""
+            database:
+              type: string
+              example: ""
+            date:
+              type: string
+              example: "2020-01-01"
+    responses:
+      200:
+        description: "status:1 is success; status: 0 is failure;"

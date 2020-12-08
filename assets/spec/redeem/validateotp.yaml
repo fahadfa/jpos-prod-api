@@ -1,0 +1,22 @@
+/redeem/validateotp:
+    post:
+        tags:
+            - Redeem
+        parameters:
+            - name: body
+              in: body
+              schema:
+                  type: object
+                  properties:
+                      data:
+                          type: object
+                          properties:
+                              otp_token:
+                                  type: string
+                                  example: "1234"
+                              otp:
+                                  type: integer
+                                  example: "1234"
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

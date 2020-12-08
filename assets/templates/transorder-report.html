@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Language" content="ar-sy" />
+    <meta name="description" content="بيسب" />
+  </head>
+  <style>
+    @page {
+      size: A4;
+      margin: 10px;
+    }
+
+    @media print {
+      tfoot {
+        display: table-footer-group;
+      }
+
+      @page {
+        margin: 2cm 0.5cm 1cm 0.5cm;
+      }
+    }
+
+    body {
+      font-family: " Courier New", Courier, monospace !important;
+      font-size: 14px;
+      /* width: 100%; */
+      background: #fff;
+      padding: 0px;
+      font-weight: normal !important;
+      /* width: 210mm; */
+    }
+
+    table {
+      page-break-inside: auto;
+    }
+
+    tr {
+      page-break-inside: avoid;
+      page-break-after: always;
+      border-bottom: 1px dotted #8a8989;
+      padding: 1px;
+    }
+
+    thead {
+      display: table-header-group;
+    }
+
+    tfoot {
+      display: table-footer-group;
+    }
+
+    th,
+    td {
+      padding: 5px 5px;
+    }
+
+    #bg__watermark {
+      display: block;
+      min-width: 100%;
+      opacity: 0.5;
+    }
+
+    #bg__text__watermark {
+      color: lightgrey;
+      font-size: 120px;
+      text-align: center;
+      transform: rotate(-45deg);
+      transform-origin: 50% 50%;
+      -webkit-transform: rotate(-45deg);
+      -webkit-transform-origin: 50% 50%;
+      opacity: 0.9;
+      filter: alpha(opacity=50);
+      background-color: transparent;
+      background-size: 100%;
+      position: fixed;
+      margin: 50% auto;
+    }
+
+    .mainheading {
+      text-align: center;
+      font-weight: 600;
+      font-size: 20px;
+      margin: 20px auto;
+    }
+
+    #headertbl {
+      width: 100%;
+      margin: 20px auto;
+    }
+
+    .tdleft {
+      text-align: left;
+    }
+
+    .tdright {
+      text-align: right;
+    }
+
+    .tdcenter {
+      text-align: center;
+    }
+
+    .textbold {
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    table.dash {
+      border: 1px dashed #cccccc;
+      border-collapse: collapse;
+    }
+
+    table.dash td,
+    table.dash th {
+      border: 1px dashed #cccccc;
+    }
+  </style>
+
+  <body>
+    <div id="bg__watermark">
+      <p id="bg__text__watermark">Only for testing</p>
+    </div>
+
+    <div class="mainheading">Transfer Orders</div>
+
+    <table id="headertbl" width="98%">
+      <tr>
+        <td valign="top" style="width:50%">
+          <table align="left">
+            {{#if fromDate}}
+            <tr class="billing">
+              <td>From Date</td>
+              <td>:</td>
+              <td>{{fromDate}}</td>
+            </tr>
+            {{/if}} {{#if fromWareHouseId}}
+            <tr class="billing">
+              <td>From Warehouse</td>
+              <td>:</td>
+              <td>{{fromWareHouseId}}</td>
+            </tr>
+            {{/if}} {{#if printDate}}
+            <tr class="billing">
+              <td>Print Date</td>
+              <td>:</td>
+              <td>{{printDate}}</td>
+            </tr>
+            {{/if}} {{#if status}}
+            <tr class="billing">
+              <td>Status</td>
+              <td>:</td>
+              <td>{{status}}</td>
+            </tr>
+            {{/if}}
+          </table>
+        </td>
+        <td valign="top" style="width:50%">
+          <table align="right">
+            {{#if toDate}}
+            <tr class="billing">
+              <td>To Date</td>
+              <td>:</td>
+              <td>{{toDate}}</td>
+            </tr>
+            {{/if}} {{#if toWareHouseId}}
+            <tr class="billing">
+              <td>To Warehouse</td>
+              <td>:</td>
+              <td>{{toWareHouseId}}</td>
+            </tr>
+            {{/if}} {{#if user}}
+            <tr class="billing">
+              <td>Print By</td>
+              <td>:</td>
+              <td>{{user}}</td>
+            </tr>
+            {{/if}}
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <table class="dash" width="100%" cellpadding="0" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Sales Id</th>
+          <th>From Warehouse</th>
+          <th>To Warehouse</th>
+          <th>Delivery Date</th>
+          <th>Quantity</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each data}}
+        <tr class="tab-data">
+          <td width="20%">{{this.salesId}}</td>
+          <td>{{this.fromWareHouseNameEn}}</td>
+          <td class="tdcenter">{{this.toWareHouseNameEn}}</td>
+          <td class="tdcenter">{{this.deliverydate}}</td>
+          <td class="tdright">{{this.quantity}}</td>
+          <td class="tdcenter">{{this.statusEn}}</td>
+        </tr>
+        {{/each}}
+        <tr class="textbold">
+          <td class="tdright" colspan="4">Total</td>
+          <td class="tdright">
+            {{ total }}
+          </td>
+          <td class="tdright">&nbsp;</td>
+          <td class="tdright">&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+/salestable/convertpurchaseordertosalesorder:
+    put:
+        tags:
+            - SalesTable
+        description: save.
+        parameters:
+            - name: body
+              in: body
+              schema:
+                  type: object
+                  properties:
+                      data:
+                          type: object
+                          properties:
+                              salesId:
+                                  type: string
+                                  example: null
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

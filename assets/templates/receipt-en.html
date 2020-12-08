@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Language" content="ar-sy" />
+    <meta name="description" content="بيسب" />
+  </head>
+  <style>
+    @page {
+      size: A4;
+      margin: 10px;
+    }
+
+    @media print {
+      tfoot {
+        display: table-footer-group;
+      }
+
+      @page {
+        margin: 2cm 0.5cm 1cm 0.5cm;
+      }
+    }
+
+    body {
+      font-family: " Courier New", Courier, monospace !important;
+      font-size: 14px;
+      background: #fff;
+      padding: 0px;
+      font-weight: normal !important;
+    }
+
+    table {
+      page-break-inside: auto;
+    }
+
+    tr {
+      page-break-inside: avoid;
+      page-break-after: always;
+      border-bottom: 1px dotted #8a8989;
+      padding: 1px;
+    }
+
+    thead {
+      display: table-header-group;
+    }
+
+    tfoot {
+      display: table-footer-group;
+    }
+
+    th,
+    td {
+      padding: 5px 5px;
+    }
+
+    #bg__watermark {
+      display: block;
+      min-width: 100%;
+      opacity: 0.5;
+    }
+
+    #bg__text__watermark {
+      color: lightgrey;
+      font-size: 120px;
+      text-align: center;
+      transform: rotate(-45deg);
+      transform-origin: 50% 50%;
+      -webkit-transform: rotate(-45deg);
+      -webkit-transform-origin: 50% 50%;
+      opacity: 0.9;
+      filter: alpha(opacity=50);
+      background-color: transparent;
+      background-size: 100%;
+      position: fixed;
+      margin: 50% auto;
+    }
+
+    .mainheading {
+      text-align: left;
+      font-weight: 600;
+      font-size: 20px;
+      margin: 20px auto;
+      border-bottom: 1px solid #000000;
+      border-width: thick;
+    }
+
+    #headertbl {
+      width: 100%;
+      margin: 20px auto;
+    }
+
+    .tdleft {
+      text-align: left;
+    }
+
+    .tdright {
+      text-align: right;
+    }
+
+    .tdcenter {
+      text-align: center;
+    }
+
+    .textbold {
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    table.dash {
+      border: 1px dashed #cccccc;
+      border-collapse: collapse;
+    }
+
+    table.dash td,
+    table.dash th {
+      border: 1px dashed #cccccc;
+    }
+  </style>
+
+  <body>
+    <div id="bg__watermark">
+      <p id="bg__text__watermark">Only for testing</p>
+    </div>
+
+    <div class="mainheading">Receipt Header</div>
+
+    <table id="headertbl" width="100%" style="border-bottom: 1px solid #000000;">
+      <tr>
+        <td valign="top" style="width: 50%;">
+          <table align="left">
+            <tr>
+              <td>Company Name</td>
+              <td>:</td>
+              <td>Al Jazeera Paints</td>
+            </tr>
+            <tr class="billing">
+              <td>Plot</td>
+              <td>:</td>
+              <td>1900</td>
+            </tr>
+            <tr class="billing">
+              <td>Area</td>
+              <td>:</td>
+              <td>Gachibowli, Hyderabad</td>
+            </tr>
+            <tr class="billing">
+              <td>Phone</td>
+              <td>:</td>
+              <td>+966 7 221 1111</td>
+            </tr>
+          </table>
+        </td>
+        <td valign="top" style="width: 50%;">
+          <table align="right">
+            <tr>
+              <td>Print Date</td>
+              <td>:</td>
+              <td>{{transDate}}</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <table width="100%">
+      <tr>
+        <td width="5%">Showroom:</td>
+        <td width="90%" class="textbold">{{wareHouseNameEn}}</td>
+      </tr>
+      <tr>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+      <tr>
+        <td align="right" colspan="2">Receipt No: <span class="textbold">{{id}}</span></td>
+      </tr>
+      <tr>
+        <td colspan="2">&nbsp;</td>
+      </tr>
+    </table>
+    <table class="dash" width="100%" cellpadding="0" cellspacing="0">
+      <tr class="">
+        <td class="tdleft textbold" width="20%">Total</td>
+        <td class="tdleft" width="20%">#{{amount}}#</td>
+        <td class="tdleft" width="60%">{{worden}}</td>
+      </tr>
+      <tr class="">
+        <td class="tdleft textbold">Customer</td>
+        <td class="tdleft">{{custid}}</td>
+        <td class="tdleft">{{custnameen}}</td>
+      </tr>
+      {{#if isbank}}
+      <tr class="">
+        <td class="tdleft textbold">Bank</td>
+        <td class="tdleft">{{bankid}}</td>
+        <td class="tdleft">{{banknameen}}</td>
+      </tr>
+      {{/if}}
+      <tr class="">
+        <td class="tdleft textbold">Remarks</td>
+        <td class="tdleft" colspan="2">{{remarks}}</td>
+      </tr>
+    </table>
+  </body>
+</html>

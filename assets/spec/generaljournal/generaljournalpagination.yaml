@@ -1,0 +1,17 @@
+/generaljournal/paginate:
+    get:
+        tags:
+            - GeneralJournal
+        description: entity.
+        parameters:
+            - name: count
+              in: query
+              required: false
+              type: string
+            - name: page
+              in: query
+              required: false
+              type: string
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

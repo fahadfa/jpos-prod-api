@@ -1,0 +1,21 @@
+/auth:
+    post:
+        summary: Sign In
+        tags:
+            - Access
+        parameters:
+            - name: body
+              in: body
+              required: false
+              schema:
+                  type: object
+                  properties:
+                      userName:
+                          type: string
+                          example: ""
+                      password:
+                          type: string
+                          example: ""
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

@@ -1,0 +1,216 @@
+/fiscalyearclose:
+    put:
+        tags:
+            - FiscalYearClose
+        description: save.
+        parameters:
+            - name: body
+              in: body
+              schema:
+                  type: object
+                  properties:
+                      data:
+                          type: object
+                          properties:
+                              accountNum:
+                                  type: string
+                                  example: "LA-37-19"
+                              accountName:
+                                  type: string
+                                  example: "مخطط النخبه"
+                              accountType:
+                                  type: Integer
+                                  example: 1
+                              blockedInJournal:
+                                  type: integer
+                                  example: 0
+                              debcredProposal:
+                                  type: Integer
+                                  example: 0
+                              sruCode:
+                                  type: string
+                                  example: null
+                              conversionPrinciple:
+                                  type: Integer
+                                  example: 0
+                              openingAccount:
+                                  type: string
+                                  example: null
+                              companyGroupAccount:
+                                  type: string
+                                  example: null
+                              dimSpec:
+                                  type: Integer
+                                  example: 0
+                              taxCode:
+                                  type: string
+                                  example: null
+                              mandatoryTaxCode:
+                                  type: Integer
+                                  example: 0
+                              currencyCode:
+                                  type: string
+                                  example: null
+                              mandatoryCurrency:
+                                  type: Integer
+                                  example: 0
+                              mandatoryPosting:
+                                  type: Integer
+                                  example: 0
+                              user_:
+                                  type: string
+                                  example: null
+                              mandatoryUser:
+                                  type: Integer
+                                  example: 0
+                              debcredCheck:
+                                  type: Integer
+                                  example: 0
+                              column_:
+                                  type: Integer
+                                  example: 0
+                              taxDirection:
+                                  type: Integer
+                                  example: 0
+                              lineSub:
+                                  type: Integer
+                                  example: 0
+                              lineExceed:
+                                  type: Integer
+                                  example: 0
+                              underLinenumerals:
+                                  type: Integer
+                                  example: 0
+                              underLineTxt:
+                                  type: Integer
+                                  example: 0
+                              italic:
+                                  type: Integer
+                                  example: 0
+                              boldTypeFace:
+                                  type: Integer
+                                  example: 0
+                              exchAdjusted:
+                                  type: Integer
+                                  example: 0
+                              accountNameAlias:
+                                  type: string
+                                  example: "abcd"
+                              closed:
+                                  type: Integer
+                                  example: 0
+                              debCredBalanceDemand:
+                                  type: Integer
+                                  example: 0
+                              taxFree:
+                                  type: Integer
+                                  example: 0
+                              taxItemGroup:
+                                  type: string
+                                  example: 0
+                              monetary:
+                                  type: Integer
+                                  example: 0
+                              totalByPeriodFr:
+                                  type: Integer
+                                  example: 0
+                              accountCategoryRef:
+                                  type: Integer
+                                  example: 0
+                              mandatoryPaymReference:
+                                  type: Integer
+                                  example: 0
+                              dataareaid:
+                                  type: string
+                                  example: "ajp"
+                              recVersion:
+                                  type: Integer
+                                  example: 0
+                              recId:
+                                  type: Integer
+                                  example: 0
+                              modifiedDatetime:
+                                  type: string
+                                  example: "2012-03-31T05:39:23.000Z"
+                              deletedBy:
+                                  type: string
+                                  example: "abcd"
+                              deletedDatetime:
+                                  type: string
+                                  example: "2012-03-31T05:39:23.000Z"
+                              createdBy:
+                                  type: string
+                                  example: "SAEED"
+                              createdDatetime:
+                                  type: string
+                                  example: "2012-03-31T05:39:23.000Z"
+                              lastModifiedBy:
+                                  type: string
+                                  example: "SAEED"
+                              lastModifiedDate:
+                                  type: string
+                                  example: "2012-03-31T05:39:23.000Z"
+                              deleted:
+                                  type: boolean
+                                  example: 0
+                              balance:
+                                  type: Integer
+                                  example: 1000
+                              financialDataareaid:
+                                  type: string
+                                  example: "fdjp"
+                              locked:
+                                  type: Integer
+                                  example: 0
+                              region:
+                                  type: string
+                                  example: null
+                              costcenter:
+                                  type: string
+                                  example: null
+                              department:
+                                  type: string
+                                  example: null
+                              employee:
+                                  type: string
+                                  example: null
+                              project:
+                                  type: string
+                                  example: null
+                              salesman:
+                                  type: string
+                                  example: null
+                              brand:
+                                  type: string
+                                  example: null
+                              productline:
+                                  type: string
+                                  example: null
+                              mandatoryRegion:
+                                  type: Integer
+                                  example: 0
+                              mandatorydDepartment:
+                                  type: Integer
+                                  example: 1
+                              mandatoryCostcenter:
+                                  type: Integer
+                                  example: 0
+                              mandatoryEmployee:
+                                  type: Integer
+                                  example: 0
+                              mandatoryProjectline:
+                                  type: Integer
+                                  example: 0
+                              mandatorySalesman:
+                                  type: Integer
+                                  example: 0
+                              mandatoryBrand:
+                                  type: Integer
+                                  example: 0
+                              mandatoryproductLine:
+                                  type: Integer
+                                  example: 0
+
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

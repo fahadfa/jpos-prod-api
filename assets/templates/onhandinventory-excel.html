@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Content-Language" content="ar-sy" />
+        <meta name="description" content="بيسب" />
+        <title>My First Web Page</title>
+    </head>
+    <body>
+        <h1>My Table</h1>
+        <table>
+            <tr>
+                <th>S.N0</th>
+                <th>Warehouse</th>
+                <th>Product</th>
+                <th>ItemId</th>
+                <th>Color</th>
+                <th>Size</th>
+                {{#if batchCheck}}
+                <th>Batch</th>
+                {{/if}}
+                <th class="th">Physical Available</th>
+                <th class="th">Reserved</th>
+                <th class="th">Total Available</th>
+                {{#if batchCheck}}
+                <th>Expiry Date</th>
+                {{/if}}
+            </tr>
+            {{#each data}}
+            <tr>
+                <td>{{ this.sNo }}</td>
+                <td>{{ this.WareHouseNameEn }}</td>
+                <td>{{ this.nameen }}</td>
+                <td>{{ this.itemid }}</td>
+                <td>{{ this.configid }}</td>
+                <td>{{ this.inventsizeid }}</td>
+                {{#if batchCheck}}
+                <td>{{ this.batchno }}</td>
+                {{/if}}
+                <td class="td">
+                    {{ this.physicalAvailable }}
+                </td>
+                <td class="td">
+                    {{ this.reservedQuantity }}
+                </td>
+                <td class="td">
+                    {{ this.totalAvailable }}
+                </td>
+                {{#if batchCheck}}
+                <td>{{ this.batchexpdate }}</td>
+                {{/if}}
+            </tr>
+            {{/each}}
+        </table>
+    </body>
+</html>

@@ -1,0 +1,21 @@
+/userinfo/paginate:
+    get:
+        tags:
+            - UserInfo
+        description: entity.
+        parameters:
+            - name: skip
+              in: query
+              required: false
+              type: string
+            - name: take
+              in: query
+              required: false
+              type: string
+            - name: filter
+              in: query
+              required: false
+              type: string
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

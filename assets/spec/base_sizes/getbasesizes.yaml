@@ -1,0 +1,44 @@
+/basesizes:
+    post:
+        tags:
+            - BaseSizes
+        description: save.
+        parameters:
+            - name: body
+              in: body
+              schema:
+                  type: object
+                  properties:
+                      data:
+                          type: object
+                          properties:
+                              currency:
+                                  type: string
+                                  example: "SAR"
+                              itemid:
+                                  type: string
+                                  example: "JA-16034"
+                              custaccount:
+                                  type: string
+                                  example: ER22
+                              dataareaid:
+                                  type: string
+                                  example: "ajp"
+                              inventsizeid:
+                                  type: string
+                                  example: "TL000/1LT"
+                              warehouseid:
+                                  type: string
+                                  example: "DMAW-0027"
+                              pricegroup:
+                                  type: string
+                                  example: "SP"
+                              configid:
+                                  type: string
+                                  example: "S 0560-G30Y"
+                              baseId:
+                                  type: interger
+                                  example: 304
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

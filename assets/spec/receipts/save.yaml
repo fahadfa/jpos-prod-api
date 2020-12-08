@@ -1,0 +1,59 @@
+/receipts/save:
+    put:
+        tags:
+            - Receipts
+        description: save.
+        parameters:
+            - name: body
+              in: body
+              schema:
+                  type: object
+                  properties:
+                      data:
+                          type: object
+                          properties:
+                            status:
+                                type: string
+                                example: "CREATED"
+                            voucherSeries:
+                                type: string
+                                example: Daily Jou
+                            name:
+                                type: string
+                                example: 'HYD-001'
+                            dataareaid:
+                                type: string
+                                example: 'ajp'
+                            description:
+                                type: string
+                                example: "test"
+                            legerJournalTras:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        accountNum:
+                                            type: string
+                                            example: "123456789"
+                                        lineNum:
+                                            type: number
+                                            example: 1
+                                        amountCurDebit:
+                                            type: string
+                                            example: 100
+                                        amountCurCredit:
+                                            type: string
+                                            example: 100
+                                        transdDate: 
+                                            type: string
+                                            example: '2020-05-20'
+                                        accountType:
+                                            type: number
+                                            example: 0
+                                        txt:
+                                            type: string
+                                            example: "test"
+
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

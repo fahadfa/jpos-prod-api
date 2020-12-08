@@ -1,0 +1,45 @@
+/menu:
+    put:
+        tags:
+           - Menu
+        description:
+           save.
+        parameters:
+          - name: body
+            in: body
+            schema:
+                type: object
+                properties:
+                    data:
+                        type: object
+                        properties:
+                            id:
+                                type: number
+                                example: null
+                            name:
+                                type: string
+                                example: "xyz"
+                            nameAr:
+                                type: string
+                                example: "xyz"
+                            link:
+                                type: string
+                                example: "xyz"
+                            icon:
+                                type: string
+                                example: "xyz"
+                            active:
+                                type: boolean
+                                example: true
+                            parent:
+                                type: number
+                                example: 9
+                            createdDate:
+                                type: date
+                                example: "2000-01-01T00:00:00.000"
+                            updatedDate:
+                                type: date
+                                example: "2000-01-01T00:00:00.000"  
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

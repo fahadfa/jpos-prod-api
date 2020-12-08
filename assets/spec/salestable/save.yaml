@@ -1,0 +1,235 @@
+/salestable:
+    put:
+        tags:
+            - SalesTable
+        description: save.
+        parameters:
+            - name: body
+              in: body
+              schema:
+                  type: object
+                  properties:
+                      data:
+                          type: object
+                          properties:
+                              salesId:
+                                  type: string
+                                  example: null
+                              salesName:
+                                  type: date
+                                  example: "SAEED ALI AL-HASANIYAH Est"
+                              custAccount:
+                                  type: string
+                                  example: "DMVSA-0076"
+                              invoiceAccount:
+                                  type: string
+                                  example: "DMVSA-0076"
+                              deliveryDate:
+                                  type: string
+                                  example: "2016-04-08 19:13:37"
+                              currencyCode:
+                                  type: string
+                                  example: "SAR"
+                              dataAreaid:
+                                  type: string
+                                  example: "ajp"
+                              custGroup:
+                                  type: string
+                                  example: "P01"
+                              shippingDateRequested:
+                                  type: string
+                                  example: "2016-04-08 19:13:37"
+                              mobileNo:
+                                  type: string
+                                  example: "9000000000"
+                              transkind:
+                                  type: string
+                                  example: "SALESQUOTATION"
+                              amount:
+                                  type: Integer
+                                  example: 1710
+                              disc:
+                                  type: integer
+                                  example: 0
+                              netAmount:
+                                  type: integer
+                                  example: 1710
+                              cityCode:
+                                  type: string
+                                  example: "ABCD"
+                              districtCode:
+                                  type: string
+                                  example: "ABCD"
+                              latitude:
+                                  type: string
+                                  example: "0000"
+                              longitude:
+                                  type: string
+                                  example: "0000"
+                              painter:
+                                  type: string
+                                  example: "ABCD"
+                              taxGroup:
+                                  type: string
+                                  example: "VAT_GRP_5%"
+                              sumtax:
+                                  type: integer
+                                  example: 72.60
+                              instantDiscChecked:
+                                  type: boolean
+                                  example: false
+                              vatAmount:
+                                  type: integer
+                                  example: 0
+                              invoiceDate:
+                                  type: string
+                                  example: "2016-04-08 19:13:37"
+                              multiLineDiscountGroupId:
+                                  type: string
+                                  example: "CTools"
+                              isCash:
+                                  type: boolean
+                                  example: true
+
+                              salesLine:
+                                  type: array
+                                  items:
+                                      type: object
+                                      properties:
+                                          lineNum:
+                                              type: integer
+                                              example: 1
+                                          itemId:
+                                              type: string
+                                              example: "JI-28006"
+                                          name:
+                                              type: string
+                                              example: "AL-JAZEERA GREEN PUTTY"
+                                          salesPrice:
+                                              type: integer
+                                              example: 60
+                                          currencyCode:
+                                              type: string
+                                              example: "SAR"
+                                          salesQty:
+                                              type: integer
+                                              example: 40
+                                          lineAmount:
+                                              type: integer
+                                              example: 342
+                                          salesUnit:
+                                              type: string
+                                              example: "LTR"
+                                          priceUnit:
+                                              type: integer
+                                              example: 0
+                                          qtyOrdered:
+                                              type: integer
+                                              example: 40
+                                          custAccount:
+                                              type: string
+                                              example: "DMVSA-0076"
+                                          investSizeId:
+                                              type: string
+                                              example: "TK000/3KG"
+                                          remainSalesPhysical:
+                                              type: integer
+                                              example: 40
+                                          remainsalesfinancial:
+                                              type: integer
+                                              example: 0
+                                          dataareaid:
+                                              type: string
+                                              example: "ajp"
+                                          custgroup:
+                                              type: string
+                                              example: "P1"
+                                          configId:
+                                              type: string
+                                              example: "CLEAR"
+                                          inventLocationId:
+                                              type: string
+                                              example: "DMVSA-0076"
+                                          salesDeliverNow:
+                                              type: integer
+                                              example: 0
+                                          salesstatus:
+                                              type: boolean
+                                              example: true
+                                          batchNo:
+                                              type: string
+                                              example: "-"
+                                          instantDisc:
+                                              type: integer
+                                              example: 0
+                                          voucherDisc:
+                                              type: Integer
+                                              example: 0
+                                          redeeDisc:
+                                              type: Integer
+                                              example: 0
+                                          promotiondisc:
+                                              type: Integer
+                                              example: 0
+                                          lineTotalDisc:
+                                              type: Integer
+                                              example: 0
+                                          lineSalesTax:
+                                              type: Integer
+                                              example: 0
+                                          netAmtTax:
+                                              type: Integer
+                                              example: 0
+                                          lineSalesTaxPercent:
+                                              type: Integer
+                                              example: 0
+                                          taxGroup:
+                                              type: string
+                                              example: "VAT_GRP_5%"
+                                          taxItemGroup:
+                                              type: string
+                                              example: "VAT_GRP_5%"
+                                          linediscamt:
+                                              type: integer
+                                              example: 0
+                                          customDiscAmt:
+                                              type: integer
+                                              example: 0
+                                          supplmultipleqty:
+                                              type: integer
+                                              example: 0
+                                          supplfreeqty:
+                                              type: integer
+                                              example: 0
+                                          multilndisc:
+                                              type: integer
+                                              example: 0
+                                          multilnPercent:
+                                              type: integer
+                                              example: 0
+                                          endDisc:
+                                              type: integer
+                                              example: 0
+                                          linesalestaxperent:
+                                              type: integer
+                                              example: 0
+                                          hexCode:
+                                              type: string
+                                              example: "#076874"
+                                          colorantId:
+                                              type: string
+                                              example: "S 0505-Y50R"
+                                          colorantprice:
+                                              type: integer
+                                              example:
+                                          baseProduct: Boolean;
+                                          totalReturnedQuantity: Number;
+                                          totalSettledAmount: Number;
+                                          coloranthexcode: string;
+                                          coloractive: Boolean;
+                                          colorantactive: Boolean;
+                                          customPrice: Number;
+
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

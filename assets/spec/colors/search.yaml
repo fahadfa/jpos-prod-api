@@ -1,0 +1,14 @@
+/colors:
+  get:
+    tags:
+      - Colors
+    description:
+      search.
+    parameters:
+      - name: id
+        in: query
+        required: false
+        type: string
+    responses:
+        200:
+            description: "status:1 is success; status: 0 is failure;"

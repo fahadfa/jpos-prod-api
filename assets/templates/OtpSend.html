@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Password Reset</title>
+    </head>
+
+    <body>
+        <div style="background-color:#F9F9F9 ;width: 60%;height: 50%;padding-top: 3%;padding-bottom: 3%">
+            <div style="width: 50%;height: 30%;background-color:white;box-shadow:  3px 3px 10px #888888 ;padding: 40px;margin: auto;border-radius: 10px;">
+                <h1 style="text-align: center;font-family: 'Roboto', sans-serif;">
+                    Rest Password
+                </h1>
+                <p style="font-family: 'Roboto', sans-serif;line-height: 30px;">Hi {{ data.name }},</p>
+                <p style="font-family: 'Roboto', sans-serif;line-height: 25px;">
+                    You told us you forgot your password. If you really did, Enter below OTP to choose a new password for Group code
+                </p>
+                <br />
+                <h2 style="text-align:center">{{ data.token }}</h2>
+                <br />
+                <p>
+                    If you didn't mean to reset your password, then you can just ignore this email; your password will not change.
+                </p>
+            </div>
+        </div>
+    </body>
+</html>

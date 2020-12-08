@@ -1,0 +1,26 @@
+/salestable/paginate/ordershipmentdetails:
+    post:
+        tags:
+            - SalesTable
+        description: save.
+        parameters:
+            - name: body
+              in: body
+              schema:
+                  type: object
+                  properties:
+                      data:
+                          type: object
+                          properties:
+                              page:
+                                  type: integer
+                                  example: 1
+                              pageCount:
+                                  type: integer
+                                  example: 10
+                              filter:
+                                  type: string
+                                  example: "os"
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

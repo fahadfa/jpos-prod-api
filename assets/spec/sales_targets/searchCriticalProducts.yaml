@@ -1,0 +1,15 @@
+/salestarget/search/criticalinventory:
+    get:
+      tags:
+        - salestargets
+      description: search.
+      parameters:
+        - name: inventlocationid
+          in: query
+          required: true
+          type: string
+          example: "RMAW-0010"
+      responses:
+        200:
+          description: "status:1 is success; status: 0 is failure;"
+  

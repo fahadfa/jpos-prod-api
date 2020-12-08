@@ -1,0 +1,17 @@
+/inventitempurchsetup:
+    get:
+        tags:
+            - InventItemSalesSetup
+        description: search.
+        parameters:
+            - name: itemid
+              in: query
+              required: false
+              type: string
+            - name: leadtime
+              in: query
+              required: false
+              type: number  
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

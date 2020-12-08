@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Content-Language" content="ar-sy" />
+        <meta name="description" content="بيسب" />
+        <title>My First Web Page</title>
+    </head>
+    <body>
+        <h1>My Table</h1>
+        <table>
+            <tr>
+                <th>Journal Date</th>
+                <th>Journal Number</th>
+                <th>Account Name</th>
+                <th>Transaction Text</th>
+                <th>Amount</th>
+                <th>Accumulated</th>
+            </tr>
+            {{#each data}}
+            <tr>
+                <td>{{ this.journalDate }}</td>
+                <td>{{ this.journalNum }}</td>
+                <td>{{ this.nameEn }}</td>
+                <td>{{ this.transactionText }}</td>
+                <td>{{ this.amount }}</td>
+                <td>{{ this.accumulated }}</td>
+            </tr>
+            {{/each}}
+        </table>
+    </body>
+</html>

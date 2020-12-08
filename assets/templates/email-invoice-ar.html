@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Language" content="ar-sy" />
+  <meta name="description" content="بيسب" />
+</head>
+<style>
+  body {
+    font-family: " Courier New", Courier, monospace !important;
+    font-size: 10px;
+    background: #fff;
+    padding: 0px;
+    font-weight: normal !important;
+    direction: rtl;
+  }
+
+  table {
+    page-break-inside: auto;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: always;
+    border-bottom: 1px dotted #8a8989;
+    padding: 1px;
+  }
+
+  thead {
+    /* display: table-header-group; */
+  }
+
+  tfoot {
+    /* display: table-footer-group; */
+  }
+
+  th,
+  td {
+    padding: 2px 5px;
+  }
+
+  #bg__watermark {
+    display: block;
+    min-width: 100%;
+    opacity: 0.5;
+  }
+
+  #bg__text__watermark {
+    color: lightgrey;
+    font-size: 120px;
+    text-align: center;
+    transform: rotate(-45deg);
+    transform-origin: 50% 50%;
+    -webkit-transform: rotate(-45deg);
+    -webkit-transform-origin: 50% 50%;
+    opacity: 0.9;
+    filter: alpha(opacity=50);
+    background-color: transparent;
+    background-size: 100%;
+    position: fixed;
+    margin: 50% auto;
+  }
+
+  .mainheading {
+    text-align: center;
+    font-weight: 600;
+    font-size: 20px;
+    margin: 20px auto;
+  }
+
+  #headertbl {
+    width: 100%;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    /* padding-top: 100px; */
+  }
+
+  .tdleft {
+    text-align: left;
+  }
+
+  .tdright {
+    text-align: right;
+  }
+
+  .tdcenter {
+    text-align: center;
+  }
+
+  .textbold {
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  table.dash {
+    border: 1px dashed #cccccc;
+    border-collapse: collapse;
+  }
+
+  table.dash td,
+  table.dash th {
+    border: 1px dashed #cccccc;
+  }
+
+  #gtotal {
+    margin-top: 10px;
+  }
+
+  #gtotal,
+  #gtotal td,
+  #gtotal th {
+    border: 1px solid #eae8e8;
+  }
+
+  #disctable,
+  #disctable td,
+  #disctable th,
+  #tblfootertotal,
+  #tblfootertotal td {
+    border: 0;
+  }
+
+  table.dash tbody {
+    border: 1px dashed #cccccc;
+  }
+
+  .copy-text {
+    color: #000;
+    font-size: 20px;
+    border: 1px solid #000;
+    font-weight: 600;
+    padding: 10px;
+    margin: 20px;
+  }
+
+  .inline-table {
+    border-bottom: 1px solid black;
+    padding: 0px !important;
+    margin: 0px !important;
+  }
+
+  .textboldtd {
+    font-size: 12px;
+    font-weight: bold;
+  }
+
+  @page {
+    size: A4;
+    margin: 10px;
+  }
+
+  @media print {
+    #headertbl {
+      width: 100%;
+      margin-top: 0px;
+      margin-bottom: 20px;
+      padding-top: 50px;
+    }
+
+    /* table.dash {
+        margin-top:120px;
+        border: 1px dashed #cccccc;
+        border-collapse: collapse;
+    } */
+
+    tfoot {
+      /* display: table-footer-group; */
+    }
+
+    thead {
+      /* display: table-footer-group; */
+    }
+
+    @page {
+      margin: 2cm 0.5cm 1cm 0.5cm;
+    }
+  }
+</style>
+
+<body>
+  <!-- <div id="bg__watermark"> -->
+  <!-- <p id="bg__text__watermark">Only for testing</p> -->
+  <!-- </div> -->
+  <!-- logo code starts -->
+  <table align="center" border="0" cellpadding="0" cellspacing="0" style="width:220px">
+    <tbody>
+      <tr>
+        <td style="text-align: center;
+                    margin: auto;">
+          <img alt="logo" height="auto"
+            src="https://s3.eu-central-1.amazonaws.com/paints-staging/staging/initial_images/email/new-logo.png" />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- logo code ends -->
+
+  <table id="headertbl">
+    <tr>
+      <td colspan="3" valign="top" style="width:33%">
+        <table style="text-align:left;">
+          <tr class="billing">
+            <td class="textboldtd" valign="top">من عند</td>
+            <td valign="top">:</td>
+            <td>
+              {{data.salesTable.warehouse.nameAlias}}
+            </td>
+          </tr>
+          <tr class="billing">
+            <td class="textboldtd" valign="top">هاتف</td>
+            <td valign="top">:</td>
+
+            <td>
+              {{data.salesTable.mobileNo}}
+            </td>
+          </tr>
+          <tr class="billing">
+            <td class="textboldtd" valign="top">الزبون</td>
+            <td valign="top">:</td>
+            <td>
+              {{data.salesTable.salesName}}
+            </td>
+          </tr>
+          <tr class="billing">
+            <td class="textboldtd">تسليم العنوان</td>
+            <td>:</td>
+            <td>
+              {{data.salesTable.deliveryAddress}}
+            </td>
+          </tr>
+          <tr class="billing">
+            <td class="textboldtd">نوع الدفع</td>
+            <td>:</td>
+            <td>
+              {{data.salesTable.paymentType}}
+            </td>
+          </tr>
+        </table>
+      </td>
+      <td colspan="3" valign="bottom" style="width:33%">
+        <table align="center" style="text-align:center">
+          <tr>
+            <td>فاتورة المبيعات</td>
+          </tr>
+          <tr>
+            <td><span style="font-size:14px;font-weight: bold; ">{{data.salesTable.salesId}}</span></td>
+          </tr>
+        </table>
+      </td>
+      <td colspan="4" valign="top" style="width:33%">
+        <table align="right">
+          <tr class="billing">
+            <td class="textboldtd">المستعمل</td>
+            <td>:</td>
+            <td>
+              {{data.salesTable.createdby}}
+            </td>
+          </tr>
+          <tr class="billing">
+            <td class="textboldtd">تاريخ الفاتورة</td>
+            <td>:</td>
+            <td class="quotation-date">
+              {{data.salesTable.date}}
+            </td>
+          </tr>
+
+          {{#if data.salesTable.voucherdiscchecked}}
+          <tr class="billing">
+            <td class="textboldtd">رقم القسيمة</td>
+            <td>:</td>
+            <td class="quotation-date">
+              {{data.salesTable.voucherNum}}
+            </td>
+          </tr>
+          {{/if}}
+
+          <tr class="billing">
+            <td class="textboldtd">رقم المورد ضريبة القيمة المضافة</td>
+            <td>:</td>
+            <td>300533832200003</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <table class="dash" width="100%" cellpadding="0" cellspacing="0">
+    <thead>
+      <tr>
+        <th class="th">رقم سري</th>
+        <th class="th">رقم الشيء</th>
+        <th class="th">وصف</th>
+        <th class="th">كمية</th>
+        <th class="th">السعر</th>
+        <th class="th">سعر التلوين</th>
+        <th class="th">خصم</th>
+        <th class="th">كمية الشبكة</th>
+        <th class="th">
+          <table style="border-collapse: collapse !important;border:none !important;width:100%; text-align: center;">
+            <tr class="td">
+              <td class="inline-table"
+                style="border-collapse: collapse !important;border-top:none;border-left:none;border-right:none">
+                ضريبة القيمة المضافة %
+              </td>
+            </tr>
+            <tr class="">
+              <td class="td" style="border-collapse: collapse !important;border:none !important">
+                كمية
+              </td>
+            </tr>
+          </table>
+        </th>
+        <th class="th">صافي القيمة بعد ضريبة القيمة المضافة</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each data.salesLine}}
+      <tr class="tab-data">
+        <td class="tdcenter">{{this.sNo}}</td>
+        <td class="tdleft">
+          <div style="font-size:10px">
+            {{this.itemid}}
+          </div>
+        </td>
+        <td class="td description-data">
+          <span style="font-size:10px">
+            {{this.productNameAr}}, {{# if this.colorantId}} {{this.colorantId}}, {{else}} {{this.configId}}, {{/if}}
+            {{this.inventsizeid}}, {{this.batchNo}}
+          </span>
+        </td>
+        <td class="tdcenter" style="text-align: center;">
+          {{this.quantity}}
+        </td>
+        <td class="tdright" style="text-align: center;">
+          {{this.productPrice}}
+        </td>
+        <td class="tdright" style="text-align: center;">
+          {{this.colorantPrice}}
+        </td>
+        <td class="tdright" style="text-align: center;">
+          {{this.lineTotalDisc}}
+        </td>
+        <td class="tdright" style="text-align: center;">{{this.lineAmountBeforeVat}}</td>
+        <td class="tdcenter" style="text-align: center;">
+          <table id="disctable" width="100%" style="text-align: center;">
+            <tr class="td inline-table">
+              <td class="inline-table" style="border-bottom:1px solid;">5%</td>
+            </tr>
+            <tr>
+              <td class="td" style="border:none !important;text-align: center;">{{this.vatAmount}}</td>
+            </tr>
+          </table>
+        </td>
+        <td class="tdright" style="text-align: center;">
+          {{this.lineAmount}}
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  <table id="gtotal" class="textbold" align="right" width="100%" cellpadding="0" cellspacing="0">
+    <tr class="tdright">
+      <td class="tdcenter">طلب المبيعات</td>
+      <td class="tdleft">المجموع الكلي</td>
+      <td class="tdcenter">{{data.salesTable.quantity}}</td>
+      <td class="tdright">
+        {{data.salesTable.amount}}
+      </td>
+    </tr>
+    <!-- <tr class="tdright">
+            <td rowspan="4">&nbsp;</td>
+            <td class="tdright">Total Quantity</td>
+            <td>:</td>
+            <td>
+                {{data.salesTable.quantity}}
+            </td>
+        </tr> -->
+    <tr class="tdright">
+      <td rowspan="3">&nbsp;</td>
+      <td colspan="2" class="tdleft">خصم</td>
+      <td class="tdright">
+        {{data.salesTable.disc}}
+      </td>
+    </tr>
+    <tr class="tdright">
+      <td colspan="2" class="tdleft">ضريبة القيمة المضافة (%5)</td>
+      <td class="tdright">
+        {{data.salesTable.vatamount}}
+      </td>
+    </tr>
+    <tr class="tdright">
+      <td colspan="2" class="tdleft">كمية الشحن</td>
+      <td class="tdright">
+        {{data.salesTable.shippingAmount}}
+      </td>
+    </tr>
+    <tr class="tdright">
+      <td rowspan="3">&nbsp;</td>
+      <td colspan="2" class="tdleft">كمية الشبكة</td>
+      <td class="tdright">
+        {{data.salesTable.netAmount}}
+      </td>
+    </tr>
+  </table>
+
+  <!-- <div style="padding-top: 120px;">&nbsp;</div> -->
+
+  <table width="100%" style="background: #fff;border-top:1px dotted #8a8989;padding-top: 30px;">
+    <tr>
+      <td style="width:33%;font-size:15px; text-align: left;">
+        مستلم
+      </td>
+      <td style="width:33%;font-size:15px; text-align: center;">
+        تاجر
+      </td>
+      <td style="width:33%;font-size:15px;text-align: right;">
+        شركة
+      </td>
+    </tr>
+  </table>
+</body>
+
+</html>

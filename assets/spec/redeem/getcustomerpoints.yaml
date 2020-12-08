@@ -1,0 +1,17 @@
+/redeem/getcustomerpoints:
+    get:
+        tags:
+            - Redeem
+        description: search.
+        parameters:
+            - name: mobile
+              in: query
+              required: false
+              type: string
+            - name: inventLocationId
+              in: query
+              required: false
+              type: string
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

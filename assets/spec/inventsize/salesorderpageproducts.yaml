@@ -1,0 +1,26 @@
+/inventsize/salesorderpagesizes:
+   get:
+       tags:
+           - Sizes
+       description: search.
+       parameters:
+           - name: itemid
+             in: query
+             required: true
+             type: string
+           - name: configid
+             in: query
+             required: true
+             type: string
+           - name: custaccount
+             in: query
+             required: true
+             type: string
+           - name: pricegroup
+             in: query
+             required: true
+             type: string
+       responses:
+           200:
+               description: "status:1 is success; status: 0 is failure;"
+

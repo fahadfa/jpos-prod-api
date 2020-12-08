@@ -1,0 +1,30 @@
+/basesizecolors:
+    put:
+        tags:
+            - BaseSizesColors
+        description: save.
+        parameters:
+            - name: body
+              in: body
+              schema:
+                  type: object
+                  properties:
+                      data:
+                          type: object
+                          properties:
+                              baseCode:
+                                  type: string
+                                  example: "JA-15032B"
+                              colorCode:
+                                  type: string
+                                  example: "GR-0006"
+                              sizeCode:
+                                  type: string
+                                  example: "TL000/3LT" 
+                              price:
+                                  type: string
+                                  example: "10"
+                              
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

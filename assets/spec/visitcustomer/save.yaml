@@ -1,0 +1,54 @@
+/visitcustomer:
+    put:
+        tags:
+            - VisitCustomer
+        description: save.
+        parameters:
+            - name: body
+              in: body
+              schema:
+                  type: object
+                  properties:
+                      data:
+                          type: object
+                          properties:
+                              visitorId:
+                                  type: number
+                                  example: 2
+                              visitorSequenceNumber:
+                                  type: string
+                                  example: "VST003-0301-19-2"
+                              salesmanName:
+                                  type: string
+                                  example: "akbar"
+                              salesmanId:
+                                  type: string
+                                  example: "ASM"
+                              showroomId:
+                                  type: string
+                                  example: "003"
+                              userGroupId:
+                                  type: string
+                                  example: "0532456789"
+                              visitorMobileNumber:
+                                  type: string
+                                  example: "0532456789"
+                              visitorName:
+                                  type: string
+                                  example: "akbar"
+                              purchased:
+                                  type: string
+                                  example: "No"
+                              visitorType:
+                                  type: string
+                                  example: ""
+                              description:
+                                  type: sring
+                                  example: "Painters"
+                              dataareaid:
+                                  type: string
+                                  example: "ajp"
+
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

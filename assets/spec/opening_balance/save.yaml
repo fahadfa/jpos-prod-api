@@ -1,0 +1,47 @@
+/openingbalance:
+  put:
+    tags:
+      - OpeningBalance
+    description: save.
+    parameters:
+      - name: body
+        in: body
+        schema:
+          type: object
+          properties:
+            data:
+              type: array
+              items:
+                type: object
+                properties:
+                  itemid:
+                    type: string
+                    example: "JA-11001"
+                  configid:
+                    type: string
+                    example: "  WHITE"
+                  inventsizeid:
+                    type: string
+                    example: "DK025.00"
+                  batchno:
+                    type: string
+                    example: "B16-010736"
+                  qty:
+                    type: integer
+                    example: 4
+                  invoiceid:
+                    type: integer
+                    example: "OPEN_BALANCE"
+                  dataareaid:
+                    type: string
+                    example: "ajp"
+                  invnetlocationid:
+                    type: string
+                    example: "SDBW-0058"
+                  transactionclosed:
+                    type: boolean
+                    example: true
+
+    responses:
+      200:
+        description: "status:1 is success; status: 0 is failure;"

@@ -1,0 +1,13 @@
+/history/usergroupconfig:
+    get:
+        tags:
+            - History
+        description: search UserGroupConfig.
+        parameters:
+            - name: groupname
+              in: query
+              required: false
+              type: string
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

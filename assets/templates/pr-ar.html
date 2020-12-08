@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Language" content="ar-sy" />
+   <style>
+        @page {
+            size: A4;
+            margin: 10px;
+        }
+
+        body {
+            font-family: ' Courier New', Courier, monospace !important;
+            font-size: 14px;
+            width: 100%;
+            background: #fff;
+            padding: 0px;
+            font-weight: normal !important;
+        }
+
+
+        .color {
+            color: #2e5170;
+        }
+
+        .top {
+            border: 1px solid #000;
+            text-align: center;
+        }
+
+        .back {
+            text-align: center;
+            padding: 2px 6px;
+            background: #11a297;
+            color: #fff;
+        }
+
+        th,
+        td {
+            padding: 5px 5px;
+        }
+        .bottom {
+            border: none;
+            border-bottom: 1px dotted #2a4b76;
+            padding: 12px;
+            margin-left: 20px;
+        }
+
+        .label {
+            position: relative;
+            top: 14px;
+        }
+
+        .form-text {
+            display: flex;
+            padding-top: 8px;
+        }
+
+        .two {
+            padding-top: 0px;
+        }
+
+
+        input {
+            outline: none;
+        }
+
+        .table-border {
+            margin: auto;
+            width: 93%;
+        }
+
+        .address td {
+            color: white !important;
+            padding: 4px 5px !important;
+        }
+
+        .th {
+            border-collapse: collapse !important;
+            font-size: 14px;
+
+        }
+
+        .td {
+            border-collapse: collapse !important;
+        }
+
+        .table {
+            border: 1px solid #2a4b76 !important;
+            border-collapse: collapse !important;
+        }
+
+        .background {
+            border-bottom: 1px dotted #262a41 !important;
+            border-top: 1px dotted #262a41 !important;
+
+        }
+
+        .background th {
+            border: none !important;
+            padding: 8px;
+        }
+
+        .tab-data td {
+            border-right: none !important;
+            border-bottom: dotted 1px #8a8989;
+            padding: 3px;
+            text-align: center;
+        }
+
+
+        .desc-font td {
+            font-size: 14px;
+            text-align: left;
+            border: none;
+        }
+
+        .description-data td {
+            border: none;
+        }
+
+        .qty-border {
+            border-bottom: 1px solid #000;
+            width: 40px;
+            margin: auto;
+        }
+
+
+        .page-header,
+        .page-header-space {
+            height: 80px;
+        }
+
+
+        .page-footer-space {
+            height: 80px;
+
+        }
+
+        .page-footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 80px;
+
+        }
+
+        .page-header {
+            position: fixed;
+            top: 0mm;
+            width: 100%;
+
+        }
+
+        .footer-details h5 {
+            margin: 2px;
+        }
+
+        @media print {
+
+            tfoot {
+                display: table-footer-group;
+            }
+
+            @page {
+                margin: 2cm 0.5cm 1cm 0.5cm;
+            }
+        }
+
+        .copy-box {
+            border: 2px solid #000;
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        #background {
+            position: absolute;
+            z-index: 0;
+            display: block;
+            color: yellow;
+            left: 50%;
+            top: 18%;
+            transform: translate(-50%, -50%);
+        }
+
+        #bg-text {
+            color: #000;
+            font-size: 20px;
+            transform: rotate(300deg);
+            -webkit-transform: rotate(300deg);
+            border: 1px solid #000;
+            padding: 10px;
+        }
+
+        #bg__watermark {
+            display: block;
+            min-width: 100%;
+            opacity: 0.5;               
+        }
+        #bg__text__watermark {
+            color: lightgrey;
+            font-size: 120px;
+            text-align: center;
+            transform: rotate(-45deg);
+            transform-origin: 50% 50%;
+            -webkit-transform: rotate(-45deg);
+            -webkit-transform-origin: 50% 50%;
+            opacity: 0.9;
+            filter: alpha(opacity=50);
+            background-color: transparent;
+            background-size: 100%;
+            position: fixed;
+            margin: 50% auto;
+        }
+    </style>
+
+</head>
+
+<body>
+    {{#if originalPrinted}}
+    <div id="background">
+        <p id="bg-text">نسخ</p>
+    </div>
+    {{/if}}
+
+    <div id="bg__watermark">
+        <p id="bg__text__watermark">فقط للاختبار</p>
+    </div>
+
+
+<div>
+        <table align="center" style="width:94%">
+            <tr class="">
+                <td style="width:30%">
+                    <div class="tax top">
+                        <h5 class="tax color" style="color:#000;">رقم الفاتورة</h5>
+                        <h3 class="tax color" style="color:#000;">{{salesId}}</h3>
+                    </div>
+                </td>
+                <td style="width:70%;text-align:center"></td>
+
+                <td></td>
+            </tr>
+        </table>
+        <table style="width:100%;direction: rtl">
+
+            <!-- <thead>
+            <tr>
+                <td>
+                    <div class="page-header-space"></div>
+                </td>
+            </tr>
+        </thead> -->
+
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="">
+                            <div >
+                                <h1 style="text-align:center;border-bottom: 1px dotted #262a41;width: 93%;margin:auto">
+                                </h1>
+                                <table align="center" width="98%">
+                                    <tr class="header">
+                                        <td style="width:50%">
+                                            <table align="left">
+                                                <tr class="billing">
+                                                    <td>من عند</td>
+                                                    <td>:</td>
+                                                    <td>
+                                                        {{wareHouseNameAr}}
+                                                    </td>
+                                                </tr>
+                                                <tr class="billing">
+                                                    <td>هاتف</td>
+                                                    <td>:</td>
+
+                                                    <td>
+                                                        {{phone}}
+                                                    </td>
+                                                </tr>
+                                                <tr class="billing">
+                                                    <td>الفاكس</td>
+                                                    <td>:</td>
+                                                    <td>
+                                                        03 234567
+                                                    </td>
+                                                </tr>
+                                                <tr class="billing">
+                                                    <td>زبون</td>
+                                                    <td>:</td>
+                                                    <td>
+                                                        {{nameAlias}} 
+                                                    </td>
+                                                </tr>
+                                                <!-- <tr class="billing">
+                                                    <td>يستلم الضريبة رقم</td>
+                                                    <td>:</td>
+                                                    <td>
+                                                        {{customer.vatNum}}
+                                                    </td>
+                                                </tr> -->
+                                            </table>
+                                        </td>
+                                        <td align="left" style="width:50%">
+                                            <table align="right">
+                                                <tr class="billing">
+                                                    <td>المستعمل</td>
+                                                    <td>:</td>
+                                                    <td>
+                                                        {{createdBy}}
+                                                    </td>
+                                                </tr>
+                                                <tr class="billing">
+                                                    <td>صفحة</td>
+                                                    <td>:</td>
+                                                    <td> 1/1</td>
+                                                </tr>
+                                                <tr class="billing">
+                                                    <td class="quotation-date">تاريخ الطلب</td>
+                                                    <td>:</td>
+                                                    <td class="quotation-date">
+                                                        {{ReturnDate}}
+                                                    </td>
+                                                </tr>
+                                                <tr class="billing">
+                                                    <td>Purchase Order Id</td>
+                                                    <td>:</td>
+                                                    <td>{{purchaseOrderId}}</td>
+                                                </tr>
+
+
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </table>
+
+
+                            </div>
+
+                            <div class="table-border">
+                                <table class="" style="width:100%;margin:auto;border-collapse: collapse !important;direction: rtl">
+                                    <tr class="background" style="font-size:14px">
+                                        <th class="th">رقم سري</th>
+                                        <th class="th">وصف</th>
+                                        <th class="th">رقم الدفعة</th>
+                                        <th class="th">كمية العودة</th>
+                                        <th class="th">السعر</th>
+                                        <th class="th">الضريبة</th>
+                                        <th class="th">مجموع</th>
+                                    </tr>
+                                    {{#each batches}} 
+
+                                    <tr class="tab-data">
+                                        <td class="td">{{this.sNo}}</td>
+                                        <td class="td description-data">
+                                            <table style="border-collapse: collapse !important;">
+                                                <tr>
+                                                    <td style="text-align: left" align="left">
+                                                        <span style="font-weight:600;font-size:14px">
+                                                            {{nameen}}
+                                                        </span>
+                                                        <span>
+                                                         
+                                                        </span>
+
+
+                                                    </td>
+                                                </tr>
+                                                <tr class="desc-font">
+                                                    <td>
+                                                    <span class="td">اسم اللون | بحجم</span>
+                                                    <span>:</span>
+                                                    <span>
+                                                        {{configid}} |{{sizenamear}}
+                                                    </span>
+                                                </td>
+
+                                                </tr>
+
+                                            </table>
+                                        </td>
+                                        <td class="td">{{batchno}}</td>
+
+                                        <td class="td">
+                                            {{this.qty}}
+                                        </td>
+                                        <td class="td">
+
+                                            {{this.price}} ريال
+                                        </td>
+                                        <td class="td">
+                                            {{this.vatAmount}} ريال
+
+                                        </td>
+                                        <td class="td">
+                                            {{this.lineAmount}} ريال
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+
+                </tr>
+
+
+                </tr>
+
+                </tr>
+
+
+
+
+
+        </table>
+        <div >
+            <table align="center" width="100%" style="border-bottom:1px dotted #8a8989;margin-top: 8px">
+                <tr class="header">
+                    <td align="right" style="width:50%;">
+                        <table align="right">
+                            <tr class="billing">
+                                <td>المجموع الكلي</td>
+                                <td>:</td>
+                                <td>
+                                    {{netAmount}} ريال
+                                </td>
+                            </tr>
+                            <tr class="billing">
+                                <td>(5%)الضريبة</td>
+                                <td>:</td>
+                                <td>
+                                    {{vatAmount}} ريال
+                                </td>
+                            </tr>
+                            <tr class="billing">
+                                <td>Net المبلغ</td>
+                                <td>:</td>
+                                <td>
+                                    {{grossAmount}} ريال
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <table style="background: #fff;width: 100%;">
+                <tr>
+                    <td style="width:33%;font-size:14px;" align="right">
+                            مستلم
+                    </td>
+                    <td style="width:33%;font-size:14px;" align="middle">
+                            تاجر
+                    </td>
+                    <td style="width:33%;font-size:14px;" align="left">
+                            شركة
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    </td>
+    </tr>
+    </tbody>
+
+    <tfoot>
+        <tr>
+            <td>
+                <!--place holder for the fixed-position footer-->
+                <div class="page-footer-space"></div>
+            </td>
+        </tr>
+    </tfoot>
+
+    </table>
+    </div>
+</body>
+
+</html>

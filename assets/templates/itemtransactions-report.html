@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Language" content="ar-sy" />
+  <meta name="description" content="بيسب" />
+</head>
+<style>
+  @page {
+    size: A4;
+    margin: 10px;
+  }
+
+  @media print {
+    tfoot {
+      display: table-footer-group;
+    }
+
+    @page {
+      margin: 2cm 0.5cm 1cm 0.5cm;
+    }
+  }
+
+  body {
+    font-family: " Courier New", Courier, monospace !important;
+    font-size: 14px;
+    background: #fff;
+    padding: 0px;
+    font-weight: normal !important;
+  }
+
+  table {
+    page-break-inside: auto;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: always;
+    border-bottom: 1px dotted #8a8989;
+    padding: 1px;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tfoot {
+    display: table-footer-group;
+  }
+
+  th,
+  td {
+    padding: 5px 5px;
+  }
+
+  #bg__watermark {
+    display: block;
+    min-width: 100%;
+    opacity: 0.5;
+  }
+
+  #bg__text__watermark {
+    color: lightgrey;
+    font-size: 120px;
+    text-align: center;
+    transform: rotate(-45deg);
+    transform-origin: 50% 50%;
+    -webkit-transform: rotate(-45deg);
+    -webkit-transform-origin: 50% 50%;
+    opacity: 0.9;
+    filter: alpha(opacity=50);
+    background-color: transparent;
+    background-size: 100%;
+    position: fixed;
+    margin: 50% auto;
+  }
+
+  .mainheading {
+    text-align: center;
+    font-weight: 600;
+    font-size: 20px;
+    margin: 20px auto;
+  }
+
+  #headertbl {
+    width: 100%;
+    margin: 20px auto;
+  }
+
+  .tdleft {
+    text-align: left;
+  }
+
+  .tdright {
+    text-align: right;
+  }
+
+  .tdcenter {
+    text-align: center;
+  }
+
+  .textbold {
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  table.dash {
+    border: 1px dashed #cccccc;
+    border-collapse: collapse;
+  }
+  table.dash td, table.dash th {
+    border: 1px dashed #cccccc;
+  }
+</style>
+
+<body>
+  <div id="bg__watermark">
+    <p id="bg__text__watermark">Only for testing</p>
+  </div>
+
+  <div class="mainheading">Item Transaction Report</div>
+
+
+  <table id="headertbl" width="98%">
+    
+    <tr>
+        <td valign="top" style="width:50%">
+            <table>
+                {{#if user}}
+                <tr>
+                    <td width="30%">Print Date</td>
+                    <td width="5%">:</td>
+                    <td width="65%">{{printDate}}</td>
+                </tr>
+                {{/if}}  
+                {{#if fromDate}}
+                <tr>                       
+                  <td>From Date</td>
+                  <td>:</td>
+                  <td>{{fromDate}}</td>
+                </tr>
+                {{/if}}
+                {{#if product}}
+                <tr>                 
+                  <td>Product</td>
+                  <td>:</td>
+                  <td>{{product}}</td>
+                </tr>
+                {{/if}} 
+                {{#if batchno}}
+                <tr>
+                  <td>Batch No</td>
+                  <td>:</td>
+                  <td>{{batchno}}</td>
+                </tr>
+                {{/if}} 
+                {{#if wareHouseNameEn}}
+              <tr>                       
+                <td valign="top">Warehouse</td>
+                <td>:</td>
+                <td>{{wareHouseNameEn}}</td>
+              </tr>
+              {{else}}
+              <tr>                       
+                <td valign="top">Warehouse</td>
+                <td>:</td>
+                <td>{{wareHouseNameAr}}</td>
+              </tr>
+              {{/if}}        
+            </table>
+        </td>
+        <td align="right" width="50%" valign="top">
+          <table align="right">
+             {{#if user}}
+              <tr>
+                  <td>Print By</td>
+                  <td>:</td>
+                  <td>{{user}}</td>
+              </tr>
+              {{/if}}
+              {{#if toDate}}
+              <tr>                  
+                <td>To Date</td>
+                <td>:</td>
+                <td>{{toDate}}</td>                  
+              </tr>
+              {{/if}}
+              {{#if color}}
+              <tr>                       
+                <td>Color</td>
+                <td>:</td>
+                <td>{{color}}</td>
+              </tr>
+              {{/if}}
+              {{#if inventsizeid}}
+              <tr>                  
+                <td>Size</td>
+                <td>:</td>
+                <td>{{inventsizeid}}</td>                  
+              </tr>
+              {{/if}}
+              {{#if transType}}
+              <tr>                  
+                <td>Trans Type</td>
+                <td>:</td>
+                <td>{{transType}}</td>                  
+              </tr>
+              {{/if}}
+          </table>
+        </td> 
+    </tr>
+   
+</table>
+
+  <table class="dash" width="100%" cellpadding="0" cellspacing="0">
+    <thead>
+      <tr>
+        <th width="25%">Sales Id</th>
+        <th width="15%">Date</th>
+        <th width="15%">Color</th>
+        <th width="10%">Size</th>
+        <th width="10%">Batch</th>
+        <th width="10%">Location</th>
+        <th width="5%">Qty In</th>
+        <th width="5%">Qty Out</th>
+        <th width="5%">Balance</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each data}}
+      <tr>
+        <td colspan="9" class="td" class="textbold">
+          <strong>
+            {{this.itemid}}: {{this.itemNameEn}}        
+          </strong>
+        </td>
+      </tr>
+      {{#each data}}
+      <tr>
+        <td class="tdleft">{{ this.invoiceid }}</td>
+        <td class="tdleft">{{ this.date }}</td>
+        <td class="tdleft">{{ this.configid }}</td>
+        <td class="tdleft">
+          {{#if this.sizeNameEn}}
+            {{ this.sizeNameEn }}
+          {{else}}
+            {{ this.sizeNameAr }}
+          {{/if}}
+        </td>
+        <td class="tdleft">{{ this.batchno }}</td>
+        <td>{{ this.inventlocationid }}</td>
+        <td class="tdright">{{ this.qtyIn }}</td>
+        <td class="tdright">{{ this.qtyOut }}</td>
+        <td class="tdright">{{ this.balance }}</td>
+      </tr>
+      {{/each}}
+      <tr class="textbold">
+        <td colspan="6" class="tdright">Total</td>
+        <td class="tdright">{{this.totalQtyIn}}</td>
+        <td class="tdright">{{this.totalQtyOut}}</td>
+        <td class="tdright">{{this.totalBalance}}</td>
+      </tr>
+      {{/each}} 
+    </tbody>
+  </table>
+
+</body>
+
+</html>

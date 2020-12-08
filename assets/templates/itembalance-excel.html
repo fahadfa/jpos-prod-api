@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Content-Language" content="ar-sy" />
+        <meta name="description" content="بيسب" />
+        <title>My First Web Page</title>
+    </head>
+    <body>
+        <h1>My Table</h1>
+        <table>
+            <tr class="background" style="font-size:14px">
+                <th>S.No</th>
+                <th>Warehouse</th>
+                <th>Product</th>
+                <th>ItemId</th>
+                <th>Color</th>
+                <th>Size</th>
+                <th>Batch</th>
+                <th>qty</th>
+                <th>Expiry Date</th>
+            </tr>
+            {{#each data}}
+
+            <tr class="tab-data">
+                <td>{{ this.sNo }}</td>
+                <td>{{ this.WareHouseNameEn }}</td>
+                <td>{{ this.nameen }}</td>
+                <td>{{ this.itemid }}</td>
+                <td>{{ this.configid }}</td>
+                <td>{{ this.sizeNameEn }}</td>
+                <td>{{ this.batchno }}</td>
+                <td>{{ this.availability }}</td>
+                <td>{{ this.batchexpdate }}</td>
+            </tr>
+            {{/each}}
+        </table>
+    </body>
+</html>

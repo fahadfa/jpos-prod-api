@@ -1,0 +1,21 @@
+/basesizecolors/basesizecolor:
+    get:
+        tags:
+            - BaseSizesColors
+        description: entity.
+        parameters:
+            - name: itemid
+              in: query
+              required: true
+              type: string
+            - name: configid
+              in: query
+              required: true
+              type: string
+            - name: sizeid
+              in: query
+              required: true
+              type: string
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

@@ -1,0 +1,39 @@
+/phoneverification:
+    put:
+        tags:
+            - PhoneVerification
+        description: save.
+        parameters:
+            - name: body
+              in: body
+              schema:
+                  type: object
+                  properties:
+                      data:
+                          type: object
+                          properties:
+                              id:
+                                  type: string
+                                  example: null
+                              phoneNumber:
+                                  type: string
+                                  example: ""
+                              otpSent:
+                                  type: string
+                                  example: ""
+                              verificationStatus:
+                                  type: string
+                                  example: ""
+                              customerId:
+                                  type: string
+                                  example: ""
+                              dataareaid:
+                                  type: string
+                                  example: ""
+                              countryCode:
+                                  type: string
+                                  example: ""
+
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

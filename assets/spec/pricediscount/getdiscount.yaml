@@ -1,0 +1,66 @@
+/price/discount:
+    post:
+        tags:
+            - PriceDiscount
+        description: save.
+        parameters:
+            - name: body
+              in: body
+              schema:
+                  type: object
+                  properties:
+                      data:
+                          type: object
+                          properties:
+                              currency:
+                                  type: string
+                                  example: "SAR"
+                              pricegroup:
+                                  type: string
+                                  example: "AP"
+                              dataAreaid:
+                                  type: string
+                                  example: "ajp"
+                              warehouseid:
+                                  type: string
+                                  example: "DMAW-0027"
+                              custaccount:
+                                  type: string
+                                  example: "C00008"
+                              grossTotal:
+                                  type: number
+                                  example: 960
+
+                              selectedItems:
+                                  type: array
+                                  items:
+                                      type: object
+                                      properties:
+                                          itemid:
+                                              type: string
+                                              example: JA-15042
+                                          configid:
+                                              type: string
+                                              example: WHITE
+                                          inventsizeid:
+                                              type: string
+                                              example: DL018.00
+                                          price:
+                                              type: number
+                                              example: 320
+                                          colorantprice:
+                                              type: number
+                                              example: 0
+                                          quantity:
+                                              type: number
+                                              example: 3
+                                          lineamount:
+                                              type: number
+                                              example: 960
+                                          
+                                          
+
+
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

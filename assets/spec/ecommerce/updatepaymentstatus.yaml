@@ -1,0 +1,20 @@
+/ecommerce/updatepaymentstatus:
+  post:
+    tags:
+      - Ecommerce
+    description: save.
+    parameters:
+      - name: body
+        in: body
+        schema:
+          type: object
+          properties:
+            data:
+              type: object
+              properties:
+                orderId:
+                  type: string
+                  example: null
+    responses:
+      200:
+        description: "status:1 is success; status: 0 is failure;"

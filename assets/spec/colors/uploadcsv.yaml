@@ -1,0 +1,15 @@
+/colors/uploadcsv:
+    post:
+        tags:
+            - Colors
+        description: save.
+        consumes:
+            - multipart/form-data
+        parameters:
+              in: formData
+              name: file
+              type: file
+              description: The file to upload.
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

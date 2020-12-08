@@ -1,0 +1,45 @@
+/menugroup:
+    put:
+        tags:
+           - MenuGroup
+        description:
+           save.
+        parameters:
+          - name: body
+            in: body
+            schema:
+                type: object
+                properties:
+                    data:
+                        type: object
+                        properties:
+                            id:
+                                type: number
+                                example: null
+                            writeAccess:
+                                type: boolean
+                                example: true
+                            deleteAccess:
+                                type: boolean
+                                example: true
+                            createdDate:
+                                type: date
+                                example: "2000-01-01T00:00:00.000"
+                            updatedDate:
+                                type: date
+                                example: "2000-01-01T00:00:00.000" 
+                            group:
+                                type: object
+                                properties:
+                                    id:
+                                        type: string
+                                        example: null
+                            menu:
+                                type: object
+                                properties:
+                                    id:
+                                        type: string
+                                        example: null 
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

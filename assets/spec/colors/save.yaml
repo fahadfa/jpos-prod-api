@@ -1,0 +1,33 @@
+/colors:
+    put:
+        tags:
+            - Colors
+        description: save.
+        parameters:
+            - name: body
+              in: body
+              schema:
+                  type: object
+                  properties:
+                      data:
+                          type: object
+                          properties:
+                              nameArabic:
+                                  type: string
+                                  example: "TEST"
+                              nameEnglish:
+                                  type: string
+                                  example: "TEST"
+                              code:
+                                  type: string
+                                  example: "TEST" 
+                              hexCode:
+                                  type: string
+                                  example: "TEST"
+                              id:
+                                  type: Integer
+                                  example: TEST
+                              
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

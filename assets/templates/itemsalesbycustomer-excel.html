@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Content-Language" content="ar-sy" />
+        <meta name="description" content="بيسب" />
+        <title>My First Web Page</title>
+    </head>
+    <body>
+        <h1>My Table</h1>
+        <table>
+            <tr>
+                <th>Item Name</th>
+                <th>Color</th>
+                <th>Size</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Line Amount</th>
+            </tr>
+            {{#each data}}
+            <tr>
+                <td class="td">{{ this.nameEn }}</td>
+                <td class="td">{{ this.configId }}</td>
+                <td class="td">{{ this.sizeNameEn }}</td>
+                <td class="td">{{ this.quantity }}</td>
+                <td class="td">{{ this.price }}</td>
+                <td class="td">{{ this.lineAmount }}</td>
+            </tr>
+            {{/each}}
+        </table>
+    </body>
+</html>

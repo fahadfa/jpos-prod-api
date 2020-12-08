@@ -1,0 +1,27 @@
+/workflow:
+    put:
+        tags:
+            - Workflow
+        description: save.
+        parameters:
+            - name: body
+              in: body
+              schema:
+                  type: object
+                  properties:
+                      data:
+                          type: object
+                          properties:
+                              id:
+                                  type: string
+                                  example: WF_01-9-18
+                              orderType:
+                                  type: number
+                                  example: 7
+                              status:
+                                  type: string
+                                  example: "accept/reject"
+
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

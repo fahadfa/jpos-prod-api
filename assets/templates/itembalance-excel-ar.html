@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Content-Language" content="ar-sy" />
+        <meta name="description" content="بيسب" />
+        <title>My First Web Page</title>
+    </head>
+    <body style="font-family: ' Courier New', Courier, monospace !important;">
+        <h1>My Table</h1>
+        <table>
+            <tr class="background" style="font-size:14px">
+                <th>الرقم التسلسلي</th>
+                <th>المستودع</th>
+                <th>المنتج</th>
+                <th>معرف العنصر</th>
+                <th>اللون</th>
+                <th>بحجم</th>
+                <th>دفعة</th>
+                <th>كمية</th>
+                <th>تاريخ الانتهاء</th>
+            </tr>
+
+            {{#each data}}
+            <tr class="tab-data">
+                <td>{{ this.sNo }}</td>
+                <td>{{ this.WareHouseNameAr }}</td>
+                <td>{{ this.namear }}</td>
+                <td>{{ this.itemid }}</td>
+                <td>{{ this.configid }}</td>
+                <td>{{ this.sizeNameAr }}</td>
+                <td>{{ this.batchno }}</td>
+                <td>{{ this.availability }}</td>
+                <td>{{ this.batchexpdate }}</td>
+            </tr>
+            {{/each}}
+        </table>
+    </body>
+</html>

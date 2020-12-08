@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Content-Language" content="ar-sy" />
+        <meta name="description" content="بيسب" />
+        <title>My First Web Page</title>
+    </head>
+    <body style="font-family: ' Courier New', Courier, monospace !important;">
+        <h1>My Table</h1>
+        <table>
+            <tr>
+                <th>لرقم التسلسلي</th>
+                <th>المستودع</th>
+                <th>المنتج</th>
+                <th>معرف العنصر</th>
+                <th>اللون</th>
+                <th>بحجم</th>
+                {{#if batchCheck}}
+                <th class="th">دفعة</th>
+                {{/if}}
+                <th class="th">توافر المادية</th>
+                <th class="th">محجوز</th>
+                <th class="th">إجمالي توافر</th>
+                {{#if batchCheck}}
+                <th class="th">تاريخ الانتهاء</th>
+                {{/if}}
+            </tr>
+            {{#each data}}
+            <tr>
+                <td>{{ this.sNo }}</td>
+                <td>{{ this.WareHouseNameAr }}</td>
+                <td>{{ this.namear }}</td>
+                <td>{{ this.itemid }}</td>
+                <td>{{ this.configid }}</td>
+                <td>{{ this.inventsizeid }}</td>
+                {{#if batchCheck}}
+                <td>{{ this.batchno }}</td>
+                {{/if}}
+                <td class="td">
+                    {{ this.physicalAvailable }}
+                </td>
+                <td class="td">
+                    {{ this.reservedQuantity }}
+                </td>
+                <td class="td">
+                    {{ this.totalAvailable }}
+                </td>
+                {{#if batchCheck}}
+                <td>{{ this.batchexpdate }}</td>
+                {{/if}}
+            </tr>JA-25017
+            {{/each}}
+        </table>
+    </body>
+</html>

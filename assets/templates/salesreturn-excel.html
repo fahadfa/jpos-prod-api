@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Content-Language" content="ar-sy" />
+        <meta name="description" content="بيسب" />
+        <title>My First Web Page</title>
+    </head>
+    <body>
+        <h1>My Table</h1>
+        <table>
+            <tr>
+                <th>Retur Order Id</th>
+                <th>Customer Name</th>
+                <th>Customer Code</th>
+                <th>Payment mode</th>
+                <th>Gross Amount</th>
+                <th>Discount</th>
+                <th>Net Amount</th>
+                <th>Status</th>
+            </tr>
+            {{#each data}}
+            <tr>
+                <td>{{ this.salesId }}</td>
+                <td>{{ this.nameAlias }}</td>
+                {{# if this.walkincustomer}}
+                {{# if this.phone}}
+                <td class="td">{{ this.phone }}</td>
+                {{else}}
+                <td class="td">{{ this.custaccount }}</td>
+                {{/if}}
+                {{else}}
+                <td class="td">{{ this.custaccount }}</td>
+                {{/ if}}
+                <td>{{ this.paymentMode }}</td>
+                <td>{{ this.grossAmount }}</td>
+                <td>{{ this.discount }}</td>
+                <td>{{ this.netAmount }}</td>
+                <td>{{ this.status }}</td>
+            </tr>
+            {{/each}}
+        </table>
+    </body>
+</html>

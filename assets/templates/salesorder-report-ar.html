@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Language" content="ar-sy" />
+    <meta name="description" content="بيسب" />
+  </head>
+  <style>
+    @page {
+      size: A4;
+      margin: 10px;
+    }
+
+    @media print {
+      tfoot {
+        display: table-footer-group;
+      }
+
+      @page {
+        margin: 2cm 0.5cm 1cm 0.5cm;
+      }
+    }
+
+    body {
+      font-family: " Courier New", Courier, monospace !important;
+      font-size: 14px;
+      background: #fff;
+      padding: 0px;
+      font-weight: normal !important;
+      direction: rtl;
+    }
+
+    table {
+      page-break-inside: auto;
+    }
+
+    tr {
+      page-break-inside: avoid;
+      page-break-after: always;
+      border-bottom: 1px dotted #8a8989;
+      padding: 1px;
+    }
+
+    thead {
+      display: table-header-group;
+    }
+
+    tfoot {
+      display: table-footer-group;
+    }
+
+    th,
+    td {
+      padding: 5px 5px;
+    }
+
+    #bg__watermark {
+      display: block;
+      min-width: 100%;
+      opacity: 0.5;
+    }
+
+    #bg__text__watermark {
+      color: lightgrey;
+      font-size: 120px;
+      text-align: center;
+      transform: rotate(-45deg);
+      transform-origin: 50% 50%;
+      -webkit-transform: rotate(-45deg);
+      -webkit-transform-origin: 50% 50%;
+      opacity: 0.9;
+      filter: alpha(opacity=50);
+      background-color: transparent;
+      background-size: 100%;
+      position: fixed;
+      margin: 50% auto;
+    }
+
+    .mainheading {
+      text-align: center;
+      font-weight: 600;
+      font-size: 20px;
+      margin: 20px auto;
+    }
+
+    #headertbl {
+      width: 100%;
+      margin: 20px auto;
+    }
+
+    .tdleft {
+      text-align: left;
+    }
+
+    .tdright {
+      text-align: right;
+    }
+
+    .tdcenter {
+      text-align: center;
+    }
+
+    .textbold {
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    table.dash {
+      border: 1px dashed #cccccc;
+      border-collapse: collapse;
+    }
+
+    table.dash td,
+    table.dash th {
+      border: 1px dashed #cccccc;
+    }
+  </style>
+
+  <body>
+    <div id="bg__watermark">
+      <p id="bg__text__watermark">فقط للاختبار</p>
+    </div>
+
+    <div class="mainheading">تقرير المبيعات</div>
+
+    <table id="headertbl" width="98%">
+      <tr>
+        <td valign="top" style="width:50%">
+          <table align="right">
+            {{#if fromDate}}
+            <tr class="billing">
+              <td>من التاريخ</td>
+              <td>:</td>
+              <td>{{fromDate}}</td>
+            </tr>
+            {{/if}} {{#if printDate}}
+            <tr class="billing">
+              <td>تاريخ الطباعة</td>
+              <td>:</td>
+              <td>{{printDate}}</td>
+            </tr>
+            {{/if}}
+          </table>
+        </td>
+        <td valign="top" style="width:50%">
+          <table align="left">
+            {{#if toDate}}
+            <tr class="billing">
+              <td>حتى الآن</td>
+              <td>:</td>
+              <td>{{toDate}}</td>
+            </tr>
+            {{/if}} {{#if status}}
+            <tr class="billing">
+              <td>الحالة</td>
+              <td>:</td>
+              <td>{{status}}</td>
+            </tr>
+            {{/if}} {{#if user}}
+            <tr class="billing">
+              <td>طبع بواسطة</td>
+              <td>:</td>
+              <td>{{user}}</td>
+            </tr>
+            {{/if}}
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <table class="dash" width="100%" cellpadding="0" cellspacing="0">
+      <thead>
+        <tr>
+          <th width="20%">رقم الفاتورة</th>
+          <!-- <th width="10%">Sales Man Id</th> -->
+
+          <th width="15%">آخر تعديل</th>
+          <th width="5%">اسم</th>
+          <th width="5%">كود العميل</th>
+          <th width="5%">طريقة الدفع أو الدفع</th>
+          <th width="5%">فاتورة</th>
+          <th width="5%">اكتب</th>
+          <th width="5%">الحالة</th>
+          <th width="10%">المبلغ الإجمالي</th>
+          <th width="10%">خصم</th>
+          <th width="10%">الضرائب</th>
+          <th width="10%">الكميه</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each data}}
+        <tr>
+          <td class="tdcenter">{{ this.salesId }}</td>
+          <!-- <td>{{ this.salesManId }}</td> -->
+
+          <td class="tdcenter">{{ this.lastmodifieddate }}</td>
+          <td class="tdcenter">{{ this.name }}</td>
+          {{# if this.walkincustomer}} {{# if this.phone}}
+          <td class="tdcenter">{{ this.phone }}</td>
+          {{else}}
+          <td class="tdcenter">{{ this.custaccount }}</td>
+          {{/if}} {{else}}
+          <td class="tdcenter">{{ this.custaccount }}</td>
+          {{/ if}}
+          <td class="tdcenter">{{ this.paymentModeAr }}</td>
+          <td class="tdcenter">
+            {{#if voucherdiscchecked}} {{ this.vouchernum }} {{else}} --- {{/if}}
+          </td>
+          <td class="tdcenter">{{ this.transkindAr }}</td>
+          <td class="tdcenter">{{ this.statusAr }}</td>
+          <td class="tdright">{{ this.grossAmount }}</td>
+          <td class="tdright">{{ this.discount }}</td>
+          <td class="tdright">{{ this.vatAmount }}</td>
+          <td class="tdright">{{ this.netAmount }}</td>
+        </tr>
+        {{/each}}
+        <tr class="textbold">
+          <td colspan="7">&nbsp;</td>
+          <td class="tdleft">مجموع</td>
+          <td class="tdright">{{ grossAmount }}</td>
+          <td class="tdright">{{ discount }}</td>
+          <td class="tdright">{{vatAmount}}</td>
+          <td class="tdright">{{ netAmount }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>

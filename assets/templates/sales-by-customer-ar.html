@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Language" content="ar-sy" />
+    <meta name="description" content="بيسب" />
+  </head>
+  <style>
+    @page {
+      size: A4;
+      margin: 10px;
+    }
+
+    @media print {
+      tfoot {
+        display: table-footer-group;
+      }
+
+      @page {
+        margin: 2cm 0.5cm 1cm 0.5cm;
+      }
+    }
+
+    body {
+      font-family: " Courier New", Courier, monospace !important;
+      font-size: 14px;
+      /* width: 100%; */
+      background: #fff;
+      padding: 0px;
+      font-weight: normal !important;
+      /* width: 210mm; */
+    }
+
+    table {
+      page-break-inside: auto;
+    }
+
+    tr {
+      page-break-inside: avoid;
+      page-break-after: always;
+      border-bottom: 1px dotted #8a8989;
+      padding: 1px;
+    }
+
+    thead {
+      display: table-header-group;
+    }
+
+    tfoot {
+      display: table-footer-group;
+    }
+
+    th,
+    td {
+      padding: 5px 5px;
+    }
+
+    #bg__watermark {
+      display: block;
+      min-width: 100%;
+      opacity: 0.5;
+    }
+
+    #bg__text__watermark {
+      color: lightgrey;
+      font-size: 120px;
+      text-align: center;
+      transform: rotate(-45deg);
+      transform-origin: 50% 50%;
+      -webkit-transform: rotate(-45deg);
+      -webkit-transform-origin: 50% 50%;
+      opacity: 0.9;
+      filter: alpha(opacity=50);
+      background-color: transparent;
+      background-size: 100%;
+      position: fixed;
+      margin: 50% auto;
+    }
+
+    .mainheading {
+      text-align: center;
+      font-weight: 600;
+      font-size: 20px;
+      margin: 20px auto;
+    }
+
+    #headertbl {
+      width: 100%;
+      margin: 20px auto;
+    }
+
+    .tdleft {
+      text-align: left;
+    }
+
+    .tdright {
+      text-align: right;
+    }
+
+    .textbold {
+      font-weight: bold;
+      font-size: 16px;
+    }
+    table.dash {
+      border: 1px dashed #cccccc;
+      border-collapse: collapse;
+    }
+    table.dash td {
+      border: 1px dashed #cccccc;
+    }
+  </style>
+  <body>
+    <div id="bg__watermark">
+      <p id="bg__text__watermark">فقط للاختبار</p>
+    </div>
+    <div class="mainheading">
+      المبيعات من قبل بائع - عرض العملاء
+    </div>
+    <table id="headertbl">
+      <tr>
+        <td class="tdright">{{printDate}}</td>
+        <td>:</td>
+        <td class="tdleft">تاريخ الطباعة</td>
+        <td colspan="6">&nbsp;</td>
+        <td class="tdright">{{headers.wnamealias}}</td>
+        <td>:</td>
+        <td class="tdright">مستودع</td>
+      </tr>
+      <!-- <tr>
+        <td class="tdleft">{{headers.printtime}}</td>
+        <td>:</td>
+        <td class="tdleft">وقت الطباعة</td>
+        <td colspan="6">&nbsp;</td>
+        <td class="tdright">{{headers.salesman}}</td>
+        <td>:</td>
+        <td class="tdright">بائع</td>
+      </tr> -->
+      <tr>
+        <td class="tdleft">{{headers.toDate}}</td>
+        <td>:</td>
+        <td class="tdleft">حتى تاريخه</td>
+        <td colspan="6">&nbsp;</td>
+        <td class="tdright">{{headers.fromDate}}</td>
+        <td>:</td>
+        <td class="tdright">من التاريخ</td>
+      </tr>
+      <tr>
+        <td class="tdleft"></td>
+        <td></td>
+        <td class="tdleft"></td>
+        <td colspan="6">&nbsp;</td>
+        <td class="tdright">{{headers.salesman}}</td>
+        <td>:</td>
+        <td class="tdright">بائع</td>
+      </tr>
+    </table>
+
+    <table width="100%" class="dash" cellpadding="1" cellspacing="0">
+      <thead>
+        <tr class="heading">
+          <th>كمية الشبكة</th>
+          <th>ضريبة القيمة المضافة</th>
+          <th>الخصم</th>
+          <th>المبلغ الإجمالي</th>
+          <th>اسم العميل</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each data}}
+        <tr>
+          <td colspan="5" class="textbold tdright"><strong>{{this.salesgroup.salesman}}</strong></td>
+        </tr>
+        {{#each salesdata}}
+        <tr>
+          <td class="tdright">{{this.netamount}}</td>
+          <td class="tdright">{{this.vatamount}}</td>
+          <td class="tdright">{{this.disc}}</td>
+          <td class="tdright">{{this.amount}}</td>
+          <td class="tdleft">{{this.customername}}</td>
+        </tr>
+        {{/each}}
+        <tr class="textbold">
+          <td class="tdright">{{this.salesgroup.netamount}}</td>
+          <td class="tdright">{{this.salesgroup.vatamount}}</td>
+          <td class="tdright">{{this.salesgroup.disc}}</td>
+          <td class="tdright">{{this.salesgroup.amount}}</td>
+          <td class="tdleft">مجموع</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </body>
+</html>

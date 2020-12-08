@@ -1,0 +1,51 @@
+/inventtrans/checkinventory:
+  post:
+    tags:
+      - Inventtrans
+    description: save.
+    parameters:
+      - name: body
+        in: body
+        schema:
+          type: object
+          properties:
+            data:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example:
+                itemId:
+                  type: string
+                  example: "JL-11001"
+                qty:
+                  type: Integer
+                  example: "-69.000000000000"
+                transferid:
+                  type: string
+                  example: "SO03-11-335-19"
+                invoiceid:
+                  type: string
+                  example: "INV03-11-199-19"
+                dataareaid:
+                  type: string
+                  example: "ajp"
+                configid:
+                  type: string
+                  example: "CLEAR"
+                inventbatch:
+                  type: string
+                  example: "B17-028716"
+                inventlocationid:
+                  type: string
+                  example: "DMAW-0027"
+                transactionclosed:
+                  type: string
+                  example: "B17-028716"
+                inventsizeid:
+                  type: string
+                  example: "STANDARD"
+
+    responses:
+      200:
+        description: "status:1 is success; status: 0 is failure;"

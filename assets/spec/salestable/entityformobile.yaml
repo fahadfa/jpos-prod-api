@@ -1,0 +1,13 @@
+/salestable/mobile/{salesId}:
+    get:
+        tags:
+            - SalesTable
+        description: entity.
+        parameters:
+            - name: salesId
+              in: path
+              required: true
+              type: string
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

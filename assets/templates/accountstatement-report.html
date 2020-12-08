@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Language" content="ar-sy" />
+    <meta name="description" content="بيسب" />
+</head>
+<style>
+    @page {
+        size: A4;
+        margin: 10px;
+    }
+
+    @media print {
+        tfoot {
+            display: table-footer-group;
+        }
+
+        @page {
+            margin: 2cm 0.5cm 1cm 0.5cm;
+        }
+    }
+
+    body {
+        font-family: " Courier New", Courier, monospace !important;
+        font-size: 14px;
+        background: #fff;
+        padding: 0px;
+        font-weight: normal !important;
+    }
+    h2, h4{margin:0px; padding: 0px;}
+
+    table {
+        page-break-inside: auto;
+    }
+
+    tr {
+        page-break-inside: avoid;
+        page-break-after: always;
+        border-bottom: 1px dotted #8a8989;
+        padding: 1px;
+    }
+
+    thead {
+        display: table-header-group;
+    }
+
+    tfoot {
+        display: table-footer-group;
+    }
+
+    th,
+    td {
+        padding: 5px 5px;
+    }
+
+    #bg__watermark {
+        display: block;
+        min-width: 100%;
+        opacity: 0.5;
+    }
+
+    #bg__text__watermark {
+        color: lightgrey;
+        font-size: 120px;
+        text-align: center;
+        transform: rotate(-45deg);
+        transform-origin: 50% 50%;
+        -webkit-transform: rotate(-45deg);
+        -webkit-transform-origin: 50% 50%;
+        opacity: 0.9;
+        filter: alpha(opacity=50);
+        background-color: transparent;
+        background-size: 100%;
+        position: fixed;
+        margin: 50% auto;
+    }
+
+    .mainheading {
+        text-align: center;
+        font-weight: 600;
+        font-size: 20px;
+        margin: 20px auto;
+    }
+
+    #headertbl {
+        width: 100%;
+        margin: 20px auto;
+    }
+
+    .tdleft {
+        text-align: left;
+    }
+
+    .tdright {
+        text-align: right;
+    }
+
+    .tdcenter {
+        text-align: center;
+    }
+
+    .textbold {
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    table.dash {
+        border: 1px dashed #cccccc;
+        border-collapse: collapse;
+    }
+
+    table.dash td,
+    table.dash th {
+        border: 1px dashed #cccccc;
+    }
+</style>
+
+<body>
+    <div id="bg__watermark">
+        <p id="bg__text__watermark">Only for testing</p>
+    </div>
+
+    <!-- <div class="mainheading">Account Statement</div> -->
+
+    <table id="headertbl" width="98%" border="0">
+        <tr>
+            <td width="20%">&nbsp;</td>
+            <td width="50%" class="tdcenter">
+                <h2>Ledger Account: </h2>
+            </td>
+        </tr>
+        <tr>
+            <td width="20%">&nbsp;</td>
+            <td width="50%" class="tdcenter"><h4>Account Statement</h4></td>
+            <td width="30%" class="tdright">
+                {{#if printDate}}
+                    Print Date: {{printDate}}
+                {{/if}}
+            </td>
+        </tr>
+        <tr>
+            <td width="20%">&nbsp;</td>
+            <td width="50%" class="tdcenter">
+                <table align="center">                    
+                    {{#if fromDate}}
+                    <tr>
+                        <td>{{fromDate}}</td>
+                        <td>To</td>
+                        <td>{{toDate}}</td>
+                    </tr>
+                    {{/if}}                    
+                </table>
+            </td>
+        </tr>
+        
+        <!-- <tr>
+            <td valign="top" style="width:50%">
+                <table align="left">
+                    {{#if ledgerAccount}}
+                    <tr class="billing">
+                        <td>Ledger Account</td>
+                        <td>:</td>
+                        <td>{{ledgerAccount}}</td>
+                    </tr>
+                    {{/if}}
+                    {{#if fromDate}}
+                    <tr>
+                        <td>From Date</td>
+                        <td>:</td>
+                        <td>{{fromDate}}</td>
+                    </tr>
+                    {{/if}}
+                    
+                    {{#if printDate}}
+                    <tr>
+                        <td>Print Date</td>
+                        <td>:</td>
+                        <td>{{printDate}}</td>
+                    </tr>
+                    {{/if}}
+                </table>
+            </td>
+            <td valign="top" style="width:50%">
+                <table align="right">
+                    {{#if ledgerAccount}}
+                    <tr class="billing">
+                        <td colspan="3">&nbsp;</td>
+                    </tr>
+                    {{/if}}
+                    {{#if toDate}}
+                    <tr>
+                        <td>To Date</td>
+                        <td>:</td>
+                        <td>{{toDate}}</td>
+                    </tr>
+                    {{/if}}                    
+                    {{#if user}}
+                    <tr>
+                        <td>Print By</td>
+                        <td>:</td>
+                        <td>{{user}}</td>
+                    </tr>
+                    {{/if}}
+                </table>
+            </td>
+        </tr> -->
+    </table>
+    <table class="dash" width="100%" cellpadding="0" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Journal Date</th>
+                <th>Journal Number</th>
+                <!-- <th class='th'>Account Name</th> -->
+                <th>Transaction Text</th>
+                <th>Amount</th>
+                <th>Accumulated</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each data}}
+            <tr>
+                <td class="tdcenter">{{ this.journalDate }}</td>
+                <td class="td">{{ this.journalNum }}</td>
+                <!-- <td class="tdcenter">{{this.nameEn}}</td> -->
+                <td class="tdleft">{{ this.transactionText }}</td>
+                <td class="tdright">{{ this.amount }}</td>
+                <td class="tdright">{{ this.accumulated }}</td>
+            </tr>
+            {{/each}}
+            <tr class="textbold">
+            </tr>
+        </tbody>
+    </table>
+</body>
+
+</html>

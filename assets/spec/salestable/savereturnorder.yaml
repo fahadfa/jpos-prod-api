@@ -1,0 +1,60 @@
+/salestable/returnorder:
+    put:
+        tags:
+            - SalesTable
+        description: save.
+        parameters:
+            - name: body
+              in: body
+              schema:
+                  type: object
+                  properties:
+                      data:
+                          type: object
+                          properties:
+                              salesId:
+                                  type: string
+                                  example: null
+                              total:
+                                  type: integer
+                                  example: 0
+                              grossTotal:
+                                  type: integer
+                                  example: 0
+                              discount:
+                                  type: integer
+                                  example: 0
+                              vatPrice:
+                                  type: integer
+                                  example: 0
+
+                              selectedBatches:
+                                  type: array
+                                  items:
+                                      type: object
+                                      properties:
+                                          itemid:
+                                              type: string
+                                              example: JA-15032
+                                          qty:
+                                              type: string
+                                              example: ""
+                                          configid:
+                                              type: string
+                                              example: ""
+                                          inventsizeid:
+                                              type: string
+                                              example: ""
+                                          batchno:
+                                              type: string
+                                              example: ""
+                                          batchexpdate:
+                                              type: string
+                                              example: ""
+                                          returnQuantity:
+                                              type: string
+                                              example: ""
+
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

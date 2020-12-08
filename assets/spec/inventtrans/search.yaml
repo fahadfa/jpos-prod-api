@@ -1,0 +1,20 @@
+/inventtrans:
+    get:
+        tags:
+            - Inventtrans
+        description: search.
+        parameters:
+            - name: itemId
+              in: query
+              required: false
+              type: string
+            - name: configid
+              in: query
+              required: false
+              type: string
+            - name: inventsizeid
+              in: query
+              required: false
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

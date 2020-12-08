@@ -1,0 +1,13 @@
+/salestable/search/customersreferedbypaniter:
+    get:
+        tags:
+            - SalesTable
+        description: search.
+        parameters:
+            - name: inventlocationid
+              in: query
+              required: false
+              type: string            
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

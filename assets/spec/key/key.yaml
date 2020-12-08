@@ -1,0 +1,21 @@
+/key:
+  post:
+    summary: key
+    tags:
+      - Access
+    parameters:
+      - name: body
+        in: body
+        required: false
+        schema:
+          type: object
+          properties:
+            data:
+              type: object
+              properties:
+                key:
+                  type: string
+                  example: ""
+    responses:
+      200:
+        description: "status:1 is success; status: 0 is failure;"

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Language" content="ar-sy" />
+    <meta name="description" content="بيسب" />
+    <style>
+        body {
+            font-family: ' Courier New', Courier, monospace !important;
+            font-size: 11px;
+            width: 100%;
+            background: #fff;
+            padding: 0px;
+            font-weight: normal !important;
+            width: 98%;
+        }
+
+        thead {
+            display: table-header-group;
+        }
+
+        .td {
+            background: hotpink;
+            display: table-cell;
+            height: 8px;
+            width: 200px;
+        }
+
+        #invoiceDetails td,
+        #invoiceDetails th {
+            text-align: center;
+            vertical-align: middle;
+            border: 1px solid #c1c1c1;
+            border-style: dotted;
+            padding: 10px;
+        }
+
+        .inline-table {
+            border-bottom: 1px solid black;
+            padding: 0px !important;
+            margin: 0px !important;
+        }
+
+        .copy-text {
+            color: #000;
+            font-size: 20px;
+            border: 1px solid #000;
+            font-weight: 600;
+            padding: 10px;
+            margin: 20px;
+        }
+
+        @page {
+            margin: 20mm;
+        }
+
+        @media print {
+            #headertbl {
+                width: 100%;
+                margin-top: 0px;
+                padding-top: 100px;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            tfoot {
+                display: table-footer-group;
+            }
+
+            button {
+                display: none;
+            }
+
+            body {
+                margin: 0;
+            }
+        }
+
+        #bg__watermark {
+            display: block;
+            min-width: 100%;
+            opacity: 0.5;
+        }
+
+        #bg__text__watermark {
+            color: lightgrey;
+            font-size: 120px;
+            text-align: center;
+            transform: rotate(-45deg);
+            transform-origin: 50% 50%;
+            -webkit-transform: rotate(-45deg);
+            -webkit-transform-origin: 50% 50%;
+            opacity: 0.9;
+            filter: alpha(opacity=50);
+            background-color: transparent;
+            background-size: 100%;
+            position: fixed;
+            margin: 50% auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="bg__watermark">
+        <p id="bg__text__watermark">Only for testing</p>
+    </div>
+    {{#each salesLine}}
+    <section style="page-break-before: always;">
+        <table id="headertbl">
+            <tr>
+                <td width="40%">
+                    <table style="text-align:left;">
+                        <tr class="billing">
+                            <img src="{{qr}}" height="200" width="200">
+                        </tr>
+                    </table>
+                </td>
+                <td width="20%" style="text-align:center">
+
+                    <table style="text-align:center">
+                        {{#if this.originalPrinted}}
+                        <tr>
+                            <td class="copy-text">COPY</td>
+                        </tr>
+                        {{/if}}
+                        <tr>
+                            <td>Shipment Order Id</td>
+                        </tr><br>
+                        <tr>
+                            <span style="font-weight:800">
+                                <td> <span style="font-size:9.75px !important"> {{this.salesId}} </span></td>
+                            </span>
+                        </tr>
+                    </table>
+                </td>
+                <td style="text-align: left" width="40%">
+                    <table align="right">
+                        <tr class="billing">
+                            <td valign="top">Fax</td>
+                            <td valign="top">:</td>
+                            <td>
+                                {{fax}}
+                            </td>
+                        </tr>
+                        <tr class="billing">
+                            <td class="quotation-date">Order Date</td>
+                            <td>:</td>
+                            <td class="quotation-date">
+                                {{this.createddatetime}}
+                            </td>
+                        </tr>
+                        <tr class="billing">
+                            <td valign="top">From</td>
+                            <td valign="top">:</td>
+                            <td>
+                                {{this.fwnamealias}}
+                            </td>
+                        </tr>
+                        <tr class="billing">
+                            <td>To</td>
+                            <td>:</td>
+                            <td>
+                                {{this.twnamealias}}
+                            </td>
+                        </tr>
+                        <tr class="billing">
+                            <td>Transfer Order Id</td>
+                            <td>:</td>
+                            <td>
+                                {{this.interCompanyOriginalSalesId}}
+                            </td>
+                        </tr>
+                        <tr class="billing">
+                            <td>Notes</td>
+                            <td>:</td>
+                            <td>
+                                {{this.notes}}
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <table id="invoiceDetails" style="margin-top: 10px;" width="100%" class="item-table" cellpadding="0"
+                        cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th class="th" width="10%">S.No</th>
+                                <th class="th" width="20%">Item No</th>
+                                <th class="th">Description</th>
+                                <th class="th" width="20%">Batch No</th>
+                                <th class="th" width="10%">Qty</th>
+                        </thead>
+                        {{#each lines}}
+                        <tr class="tab-data">
+                            <td class="td">{{this.sNo}}</td>
+                            <td class="td">
+                                <div style="font-size:12px">
+                                    {{this.itemid}}
+                                </div>
+                            </td>
+                            <td class="td description-data">
+                                <span style="font-size:12px">
+                                    {{this.prodNameEn}},
+                                    {{this.configid}},
+                                    {{#if this.colorantid}}
+                                    {{this.colorantid}},
+                                    {{/if}}
+                                    {{this.inventsizeid}}
+                                </span>
+                            </td>
+                            <td class="td">
+                                {{this.batchno}}
+                            </td>
+                            <td class="td">
+                                {{this.salesQty}}
+                            </td>
+                        </tr>
+                        {{/each}}
+
+                    </table>
+
+
+                    <table width="100%" style="text-align:right; border-bottom:1px dotted #8a8989;margin-top: 8px;">
+
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>&nbsp;</td>
+                            <td>
+                                Total Quantity:{{ this.quantity }}
+                            </td>
+                        </tr>
+
+                    </table>
+
+
+                    <table width="100%" style="background: #fff;">
+                        <tr>
+                            <td style="width:33%;font-size:15px; text-align: left;">
+                                Recipient
+                            </td>
+                            <td style="width:33%;font-size:15px; text-align: center;">
+                                Seller
+                            </td>
+                            <td style="width:33%;font-size:15px;text-align: right;">
+                                Company
+                            </td>
+                        </tr>
+                    </table>
+
+                </td>
+            </tr>
+        </table>
+    </section>
+    {{/each}}
+</body>
+
+</html>

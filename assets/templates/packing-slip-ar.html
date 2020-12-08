@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Language" content="ar-sy" />
+    <meta name="description" content="بيسب" />
+    <style>
+      /* Styles go here */
+
+      body {
+        font-family: " Courier New", Courier, monospace !important;
+        font-size: 14px;
+        width: 100%;
+        background: #fff;
+        padding: 0px;
+        font-weight: normal !important;
+        direction: rtl;
+      }
+
+      th,
+      td {
+        padding: 2px 2px;
+      }
+
+      .background {
+        border-bottom: 1px dotted #262a41 !important;
+        border-top: 1px dotted #262a41 !important;
+      }
+
+      .background th {
+        border: 0.5px solid black;
+      }
+
+      .tab-data td {
+        padding: 3px;
+        text-align: center;
+      }
+
+      .desc-font td {
+        font-size: 14px;
+        text-align: left;
+        border: none;
+      }
+
+      .qty-border {
+        border-bottom: 1px solid #000;
+        width: 40px;
+        margin: auto;
+      }
+
+      @page {
+        margin: 1cm;
+      }
+
+      @media print {
+        tfoot {
+          display: table-footer-group;
+          border: 0 !important;
+          border-color: 1px solid #fff;
+        }
+
+        @page {
+          margin: 2cm 0.5cm 1cm 0.5cm;
+        }
+
+        #footer {
+          border: none;
+          border: 0;
+        }
+      }
+
+      .copy-box {
+        border: 2px solid #000;
+        padding: 10px;
+        text-align: center;
+        font-size: 18px;
+      }
+
+      .inline-table {
+        border-bottom: 1px solid black;
+        padding: 0px !important;
+        margin: 0px !important;
+      }
+
+      .copy-text {
+        color: #000;
+        font-size: 20px;
+        border: 1px solid #000;
+        font-weight: 600;
+        padding: 10px;
+        margin: 20px;
+      }
+
+      .item-table,
+      .item-table th,
+      .item-table td {
+        border: 1px dotted #ccc;
+        border-collapse: collapse;
+      }
+
+      /* css for page divide for header and footer */
+      .page-header,
+      .page-header-space {
+        height: 80px;
+      }
+
+      .page-footer,
+      .page-footer-space {
+        height: 50px;
+      }
+
+      .page-footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background: #fff;
+        /* for demo */
+      }
+
+      .page-header {
+        position: fixed;
+        top: 0mm;
+        width: 100%;
+        background: #fff;
+        /* for demo */
+      }
+
+      .page {
+        page-break-after: always;
+      }
+
+      @page {
+        margin: 20mm;
+      }
+
+      @media print {
+        thead {
+          display: table-header-group;
+        }
+
+        tfoot {
+          display: table-footer-group;
+        }
+
+        button {
+          display: none;
+        }
+
+        body {
+          margin: 0;
+        }
+      }
+
+      #bg__watermark {
+        display: block;
+        min-width: 100%;
+        opacity: 0.5;
+      }
+      #bg__text__watermark {
+        color: lightgrey;
+        font-size: 120px;
+        text-align: center;
+        transform: rotate(-45deg);
+        transform-origin: 50% 50%;
+        -webkit-transform: rotate(-45deg);
+        -webkit-transform-origin: 50% 50%;
+        opacity: 0.9;
+        filter: alpha(opacity=50);
+        background-color: transparent;
+        background-size: 100%;
+        position: fixed;
+        margin: 50% auto;
+      }
+      #headertbl {
+        width: 100%;
+        margin-top: 80px;
+        margin-bottom: 20px;
+        /* padding-top: 100px; */
+      }
+      @media print {
+        #headertbl {
+          width: 100%;
+          margin-top: 0px;
+          margin-bottom: 20px;
+          padding-top: 100px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <section style="page-break-before: always;">
+      <div id="bg__watermark">
+        <p id="bg__text__watermark">فقط للاختبار</p>
+      </div>
+      <!-- 
+      <div class="page-header" style="text-align: center;"></div>
+  
+      <div class="page-footer"></div> -->
+      {{#each salesLine}}
+      <table>
+        <thead>
+          <tr>
+            <td>
+              <div class="page-header-space"></div>
+            </td>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>
+              <div class="page">
+                <table align="center" width="98%">
+                  <tr class="header">
+                    <td style="width: 35%;">
+                      <table align="left">
+                        {{#if wname}}
+                        <tr class="billing">
+                          <td>من</td>
+                          <td>:</td>
+                          <td>
+                            {{wname}}
+                          </td>
+                        </tr>
+                        {{/if}} {{#if cphone}}
+                        <tr class="billing">
+                          <td>الهاتف</td>
+                          <td>:</td>
+                          <td>
+                            {{cphone}}
+                          </td>
+                        </tr>
+                        {{/if}} {{#if fax}}
+                        <tr class="billing">
+                          <td>الفاكس</td>
+                          <td>:</td>
+                          <td><!-- 03 234567 -->{{fax}}</td>
+                        </tr>
+                        {{/if}} {{#if cname}}
+                        <tr class="billing">
+                          <td>العميل</td>
+                          <td>:</td>
+                          <td>
+                            {{cname}}
+                          </td>
+                        </tr>
+                        {{/if}}
+                      </table>
+                    </td>
+                    <td style="width: 30%;" align="center">
+                      {{#if documentStatus}}
+                      <span class="copy-text">نسخ</span>
+                      {{/if}}
+                      <br />
+                      <table style="text-align: center; border: 1px dotted #ccc;">
+                        <tr>
+                          <td><span>سند تسليم</span></td>
+                        </tr>
+                        <br />
+                        <tr>
+                          <span style="font-weight: 600;">
+                            <td><span>{{salesId}} </span></td>
+                          </span>
+                        </tr>
+                      </table>
+                    </td>
+                    <td align="left" style="width: 35%;">
+                      <table align="right">
+                        {{#if createdby}}
+                        <tr class="billing">
+                          <td>المستخدم</td>
+                          <td>:</td>
+                          <td>
+                            {{createdby}}
+                          </td>
+                        </tr>
+                        {{/if}}
+                        <tr class="billing">
+                          <td>الصفحة</td>
+                          <td>:</td>
+                          <td>{{this.page}} | {{this.totalPages}}</td>
+                        </tr>
+                        <tr class="billing">
+                          <td class="quotation-date">تاريخ الفاتورة</td>
+                          <td>:</td>
+                          <td class="quotation-date">
+                            {{createddatetime}}
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+
+                <table style="width: 100%; margin: auto;" class="item-table">
+                  <tr>
+                    <th class="th">الرقم</th>
+                    <th class="th">رقم العنصر</th>
+                    <th class="th">الوصف</th>
+                    <th class="th">اللون</th>
+                    <th class="th">الحجم</th>
+                    <th class="th">رقم التشغيلة,</th>
+                    <th class="th">تلوين</th>
+                    <th class="th">الكمية</th>
+                  </tr>
+                  {{#each lines}}
+                  <tr class="tab-data">
+                    <td class="td">{{this.sNo}}</td>
+                    <td class="td">
+                      <div style="font-size: 13px;">
+                        {{this.itemid}}
+                      </div>
+                    </td>
+                    <td class="td description-data">
+                      <span style="font-size: 14px;">
+                        {{this.prodNameAr}}
+                      </span>
+                    </td>
+                    <td class="td">{{this.configid}}</td>
+                    <td class="td">
+                      {{this.inventsizeid}}
+                    </td>
+                    <td class="td">
+                      {{this.batchno}}
+                    </td>
+                    <td class="td">
+                      {{this.colorantid}}
+                    </td>
+                    <td class="td">
+                      {{this.salesQty}}
+                    </td>
+                  </tr>
+                  {{/ each}}
+                </table>
+
+                <table width="100%" style="text-align: left; margin-top: 8px;">
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>
+                      الكمية الإجمالية:{{ quantity }}
+                    </td>
+                  </tr>
+                </table>
+
+                <table style="width: 100%; border-collapse: collapse;">
+                  <tr style="border: 1px dotted #ccc !important;">
+                    <td style="font-size: 13px;" align="right" colspan="2">
+                      نؤكد أننا تلقينا جميع العناصر دون أي ضرر
+                    </td>
+
+                    <td align="left">{{quantity}}</td>
+                  </tr>
+                </table>
+
+                {{/each}}
+                <table style="width: 100%; border-collapse: collapse;">
+                  <!-- <tr style="border: 1px dotted #ccc !important;">
+                    <td style="font-size: 13px;" align="right" colspan="2">
+                      نؤكد أننا تلقينا جميع العناصر دون أي ضرر
+                    </td>
+  
+                    <td align="left">{{quantity}}</td>
+                  </tr> -->
+                  <tr>
+                    <td style="font-size: 14px; width: 33%;" align="right">
+                      مستلم
+                    </td>
+                    <td style="font-size: 14px; width: 33%;" align="middle">
+                      بائع
+                    </td>
+                    <td style="font-size: 14px; width: 33%;" align="left">
+                      ركة
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 33%;" align="right">اسم المتلقي :</td>
+                    <td style="width: 33%;" align="middle">{{this.salesman}}</td>
+                    <td style="width: 33%;" align="left"></td>
+                  </tr>
+                  <tr>
+                    <td>تاريخ :</td>
+                  </tr>
+                  <tr>
+                    <td>التوقيع :</td>
+                  </tr>
+                </table>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    {{#unless documentStatus}}
+    <section style="page-break-before: always;">
+      <div id="bg__watermark">
+        <p id="bg__text__watermark">فقط للاختبار</p>
+      </div>
+      <!-- 
+      <div class="page-header" style="text-align: center;"></div>
+  
+      <div class="page-footer"></div> -->
+      {{#each salesLine}}
+      <table>
+        <thead>
+          <tr>
+            <td>
+              <div class="page-header-space"></div>
+            </td>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>
+              <div class="page">
+                <table align="center" width="98%">
+                  <tr class="header">
+                    <td style="width: 35%;">
+                      <table align="left">
+                        {{#if wname}}
+                        <tr class="billing">
+                          <td>من</td>
+                          <td>:</td>
+                          <td>
+                            {{wname}}
+                          </td>
+                        </tr>
+                        {{/if}} {{#if cphone}}
+                        <tr class="billing">
+                          <td>الهاتف</td>
+                          <td>:</td>
+                          <td>
+                            {{cphone}}
+                          </td>
+                        </tr>
+                        {{/if}} {{#if fax}}
+                        <tr class="billing">
+                          <td>الفاكس</td>
+                          <td>:</td>
+                          <td><!-- 03 234567 -->{{fax}}</td>
+                        </tr>
+                        {{/if}} {{#if cname}}
+                        <tr class="billing">
+                          <td>العميل</td>
+                          <td>:</td>
+                          <td>
+                            {{cname}}
+                          </td>
+                        </tr>
+                        {{/if}}
+                      </table>
+                    </td>
+                    <td style="width: 30%;" align="center">
+                      {{#if documentStatus}}
+                      <span class="copy-text">نسخ</span>
+                      {{/if}}
+                      <br />
+                      <table style="text-align: center; border: 1px dotted #ccc;">
+                        <tr>
+                          <td><span>سند تسليم</span></td>
+                        </tr>
+                        <br />
+                        <tr>
+                          <span style="font-weight: 600;">
+                            <td><span>{{salesId}} </span></td>
+                          </span>
+                        </tr>
+                      </table>
+                    </td>
+                    <td align="left" style="width: 35%;">
+                      <table align="right">
+                        {{#if createdby}}
+                        <tr class="billing">
+                          <td>المستخدم</td>
+                          <td>:</td>
+                          <td>
+                            {{createdby}}
+                          </td>
+                        </tr>
+                        {{/if}}
+                        <tr class="billing">
+                          <td>الصفحة</td>
+                          <td>:</td>
+                          <td>{{this.page}} | {{this.totalPages}}</td>
+                        </tr>
+                        <tr class="billing">
+                          <td class="quotation-date">تاريخ الفاتورة</td>
+                          <td>:</td>
+                          <td class="quotation-date">
+                            {{createddatetime}}
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+
+                <table style="width: 100%; margin: auto;" class="item-table">
+                  <tr>
+                    <th class="th">الرقم</th>
+                    <th class="th">رقم العنصر</th>
+                    <th class="th">الوصف</th>
+                    <th class="th">اللون</th>
+                    <th class="th">الحجم</th>
+                    <th class="th">رقم التشغيلة,</th>
+                    <th class="th">تلوين</th>
+                    <th class="th">الكمية</th>
+                  </tr>
+                  {{#each lines}}
+                  <tr class="tab-data">
+                    <td class="td">{{this.sNo}}</td>
+                    <td class="td">
+                      <div style="font-size: 13px;">
+                        {{this.itemid}}
+                      </div>
+                    </td>
+                    <td class="td description-data">
+                      <span style="font-size: 14px;">
+                        {{this.prodNameAr}}
+                      </span>
+                    </td>
+                    <td class="td">{{this.configid}}</td>
+                    <td class="td">
+                      {{this.inventsizeid}}
+                    </td>
+                    <td class="td">
+                      {{this.batchno}}
+                    </td>
+                    <td class="td">
+                      {{this.colorantid}}
+                    </td>
+                    <td class="td">
+                      {{this.salesQty}}
+                    </td>
+                  </tr>
+                  {{/ each}}
+                </table>
+
+                <table width="100%" style="text-align: left; margin-top: 8px;">
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>
+                      الكمية الإجمالية:{{ quantity }}
+                    </td>
+                  </tr>
+                </table>
+
+                <table style="width: 100%; border-collapse: collapse;">
+                  <tr style="border: 1px dotted #ccc !important;">
+                    <td style="font-size: 13px;" align="right" colspan="2">
+                      نؤكد أننا تلقينا جميع العناصر دون أي ضرر
+                    </td>
+
+                    <td align="left">{{quantity}}</td>
+                  </tr>
+                </table>
+
+                {{/each}}
+                <table style="width: 100%; border-collapse: collapse;">
+                  <!-- <tr style="border: 1px dotted #ccc !important;">
+                    <td style="font-size: 13px;" align="right" colspan="2">
+                      نؤكد أننا تلقينا جميع العناصر دون أي ضرر
+                    </td>
+  
+                    <td align="left">{{quantity}}</td>
+                  </tr> -->
+                  <tr>
+                    <td style="font-size: 14px; width: 33%;" align="right">
+                      مستلم
+                    </td>
+                    <td style="font-size: 14px; width: 33%;" align="middle">
+                      بائع
+                    </td>
+                    <td style="font-size: 14px; width: 33%;" align="left">
+                      ركة
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="width: 33%;" align="right">اسم المتلقي :</td>
+                    <td style="width: 33%;" align="middle">{{this.salesman}}</td>
+                    <td style="width: 33%;" align="left"></td>
+                  </tr>
+                  <tr>
+                    <td>تاريخ :</td>
+                  </tr>
+                  <tr>
+                    <td>التوقيع :</td>
+                  </tr>
+                </table>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    {{/unless}}
+  </body>
+</html>

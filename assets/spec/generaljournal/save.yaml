@@ -1,0 +1,119 @@
+/generaljournal:
+    put:
+        tags:
+            - GeneralJournal
+        description: save.
+        parameters:
+            - name: body
+              in: body
+              schema:
+                  type: object
+                  properties:
+                      data:
+                          type: object
+                          properties:
+                              journalNum:
+                                  type: string
+                                  example: "J18-000835"
+                              name:
+                                  type: string
+                                  example: "اضافي"
+                              voucherSeries:
+                                  type: string
+                                  example: VEN_Pay
+                              log:
+                                  type: string
+                                  example: null
+                              journaType:
+                                  type: Integer
+                                  example: 4
+                              journalName:
+                                  type: string
+                                  example: APPAY
+                              posted:
+                                  type: Integer
+                                  example: 1
+                              currencyCode:
+                                  type: string
+                                  example: null
+                              postedDatetime:
+                                  type: string
+                                  example: "2018-01-04T00:24:31.000Z"
+                              createdBy:
+                                  type: Integer
+                                  example: ebard
+                              dataareaid:
+                                  type: string
+                                  example: ajp
+                              recversion:
+                                  type: Integer
+                                  example: 699423593
+                              recid:
+                                  type: Integer
+                                  example: 5637726747
+                              cashdate:
+                                  type: string
+                                  example: "2018-01-04T00:24:41.000Z"
+                              modifiedDatetime:
+                                  type: string
+                                  example: "2018-01-04T00:24:41.000Z"
+                              modifiedBy:
+                                  type: string
+                                  example: ebard
+                              syncStatus:
+                                  type: string
+                                  example: 1
+                              deleted:
+                                  type: boolean
+                                  example: false
+                              lastModifiedBy:
+                                  type: string
+                                  example: "abcd"
+                              lastModifiedDate:
+                                  type: string
+                                  example: "2018-01-04T00:24:41.000Z"
+                              deletedby:
+                                  type: string
+                                  example: null
+                              deletedDateTime:
+                                  type: string
+                                  example: "2018-01-04T00:24:41.000Z"
+                              postedBy:
+                                  type: string
+                                  example: "abcd"
+                              createdDatetime:
+                                  type: string
+                                  example: "2018-01-04T00:24:41.000Z"
+                              description:
+                                  type: string
+                                  example: "abcd"
+                              financialDataareaid:
+                                  type: string
+                                  example: "fajp"
+                              region:
+                                  type: string
+                                  example: null
+                              costcenter:
+                                  type: string
+                                  example: null
+                              department:
+                                  type: string
+                                  example: null
+                              employee:
+                                  type: string
+                                  example: null
+                              project:
+                                  type: string
+                                  example: null
+                              salesman:
+                                  type: string
+                                  example: null
+                              brand:
+                                  type: string
+                                  example: null
+                              productline:
+                                  type: string
+                                  example: null
+        responses:
+            200:
+                description: "status:1 is success; status: 0 is failure;"

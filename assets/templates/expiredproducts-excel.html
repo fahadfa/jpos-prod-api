@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Content-Language" content="ar-sy" />
+        <meta name="description" content="بيسب" />
+        <title>My First Web Page</title>
+    </head>
+    <body>
+        <h1>My Table</h1>
+        <table>
+            <tr>
+                <th>Item Code - Item Name</th>
+                <th>Color</th>
+                <th>Size</th>
+                <th>Batch</th>
+                <th>Expiry Date</th>
+                <th>Expiry Days</th>
+                <th>Qty In</th>
+                <th>Qty Out</th>
+                <th>Balance</th>
+            </tr>
+            {{#each data}}
+            <tr>
+                <td>{{ this.itemid }} - {{ this.nameEn }}</td>
+                <td>{{ this.configid }}</td>
+                <td>{{ this.sizeNameEn }}</td>
+                <td>{{ this.batchno }}</td>
+                <td>{{ this.expDate }}</td>
+                <td>{{ this.expDays }}</td>
+                <td>{{ this.qtyIn }}</td>
+                <td>{{ this.qtyOut }}</td>
+                <td>{{ this.balance }}</td>
+            </tr>
+            {{/each}}
+        </table>
+    </body>
+</html>

@@ -1,0 +1,13 @@
+/cache/{code}:
+  get:
+    tags:
+      - Access
+    parameters:
+      - name: code
+        in: path
+        required: true
+        type: string
+        example: init
+    responses:
+      200:
+        description: "status:1 is success; status: 0 is failure;"
