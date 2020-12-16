@@ -51,11 +51,11 @@ var AuthService = /** @class */ (function () {
     };
     AuthService.prototype.reteriveUserDetails = function (accountObj) {
         return __awaiter(this, void 0, void 0, function () {
-            var responseData, menuList, salesmanids, wareHouse, wareHouseNamear, wareHouseNameEn, error_1;
+            var responseData, menuList, salesmanids, wareHouse, wareHouseNamear, wareHouseNameEn, offlineSystems, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 7, , 8]);
+                        _a.trys.push([0, 10, , 11]);
                         responseData = {};
                         return [4 /*yield*/, this.menuGroupRepository.search({ group: { groupid: accountObj.groupid }, active: true })];
                     case 1:
@@ -123,18 +123,31 @@ var AuthService = /** @class */ (function () {
                                     message: "INVALID_USERNAME/PASSWORD",
                                 })];
                         }
-                        if (process && process.env && process.env.ENV_STORE_ID) {
-                            if (responseData && responseData.user && responseData.user.inventlocationid != process.env.ENV_STORE_ID) {
-                                return [2 /*return*/, Promise.reject({
-                                        message: "User not releated to this store.",
-                                    })];
-                            }
+                        if (!(process && process.env && process.env.ENV_STORE_ID && process.env.ENV_STORE_ID != "")) return [3 /*break*/, 7];
+                        if (responseData &&
+                            responseData.identity &&
+                            responseData.identity.inventlocationid != process.env.ENV_STORE_ID) {
+                            return [2 /*return*/, Promise.reject({
+                                    message: "User not releated to this store.",
+                                })];
                         }
-                        return [2 /*return*/, Promise.resolve(responseData)];
-                    case 7:
+                        return [3 /*break*/, 9];
+                    case 7: return [4 /*yield*/, this.rawQuery.offlineSystems()];
+                    case 8:
+                        offlineSystems = _a.sent();
+                        offlineSystems = offlineSystems.find(function (v) { return v.id == responseData.identity.inventlocationid; });
+                        console.log(offlineSystems);
+                        if (offlineSystems) {
+                            return [2 /*return*/, Promise.reject({
+                                    message: "This User Cannot Login From Online ",
+                                })];
+                        }
+                        _a.label = 9;
+                    case 9: return [2 /*return*/, Promise.resolve(responseData)];
+                    case 10:
                         error_1 = _a.sent();
                         return [2 /*return*/, Promise.reject(error_1)];
-                    case 8: return [2 /*return*/];
+                    case 11: return [2 /*return*/];
                 }
             });
         });

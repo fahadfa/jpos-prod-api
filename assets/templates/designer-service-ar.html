@@ -265,6 +265,14 @@
                         <td>:</td>
                         <td>300533832200003</td>
                       </tr>
+
+                      {{#if this.interCompanyOriginalSalesId}}
+                      <tr class="billing">
+                          <td>معرف خدمة المصمم</td>
+                          <td>:</td>
+                          <td>{{this.interCompanyOriginalSalesId}}</td>
+                      </tr>
+                      {{/if}}
                     </table>
                   </td>
                 </tr>
@@ -357,7 +365,7 @@
                         <td style="font-size: 13px; font-weight: 600">{{disc}}</td>
                       </tr>
                       <tr class="billing">
-                        <td style="font-size: 15px; font-weight: 600">(5%)ضريبة القيمة المضافة</td>
+                        <td style="font-size: 15px; font-weight: 600">({{this.vat}}%)ضريبة القيمة المضافة</td>
                         <td>:</td>
                         <td style="font-size: 13px; font-weight: 600">{{vatamount}}</td>
                       </tr>

@@ -131,7 +131,7 @@ var InventoryOnHandReport = /** @class */ (function () {
                         query += " where i.inventlocationid in (" + inQueryStr_1.substr(0, inQueryStr_1.length - 1) + ") ";
                         return [3 /*break*/, 3];
                     case 2:
-                        query += " where i.inventlocationid='" + params.key + "'  ";
+                        query += " where i.inventlocationid='" + params.inventlocationid + "'  ";
                         _a.label = 3;
                     case 3:
                         if (params.itemId) {

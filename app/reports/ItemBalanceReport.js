@@ -158,7 +158,7 @@ var ItemBalanceReport = /** @class */ (function () {
                         query += " and i.inventlocationid in (" + inQueryStr_1.substr(0, inQueryStr_1.length - 1) + ") and (transactionclosed = true) ";
                         return [3 /*break*/, 3];
                     case 2:
-                        query += " and i.inventlocationid='" + params.key + "' and (transactionclosed = true) ";
+                        query += " and i.inventlocationid='" + params.inventlocationid + "' and (transactionclosed = true) ";
                         _a.label = 3;
                     case 3:
                         if (params.itemId) {

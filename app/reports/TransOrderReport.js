@@ -177,7 +177,7 @@ var TransOrderReport = /** @class */ (function () {
                         regionalWarehouses[0].regionalwarehouse.split(",").map(function (item) {
                             inQueryStr_1 += "'" + item + "',";
                         });
-                        inQueryStr_1 += "'" + params.key + "',";
+                        inQueryStr_1 += "'" + params.inventlocationid + "',";
                         query += " and s.inventlocationid in (" + inQueryStr_1.substr(0, inQueryStr_1.length - 1) + ") ";
                         return [3 /*break*/, 3];
                     case 2:
@@ -211,7 +211,7 @@ var TransOrderReport = /** @class */ (function () {
                         regionalWarehouses[0].regionalwarehouse.split(",").map(function (item) {
                             inQueryStr_2 += "'" + item + "',";
                         });
-                        inQueryStr_2 += "'" + params.key + "',";
+                        inQueryStr_2 += "'" + params.inventlocationid + "',";
                         query += " and s.custaccount in (" + inQueryStr_2.substr(0, inQueryStr_2.length - 1) + ") ";
                         return [3 /*break*/, 6];
                     case 5:

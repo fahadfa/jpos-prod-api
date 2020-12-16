@@ -1515,7 +1515,7 @@ var RawQuery = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        query = "select distinct id from sync_source where (type != 'ONLINE' OR type != '')";
+                        query = "select distinct id from sync_source where type != 'ONLINE'";
                         return [4 /*yield*/, this.db.query(query)];
                     case 1:
                         data = _a.sent();

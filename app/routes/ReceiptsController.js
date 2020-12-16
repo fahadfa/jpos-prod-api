@@ -60,6 +60,7 @@ var ReceiptsController = /** @class */ (function () {
                         this.service.sessionInfo = request.body.sessionInfo;
                         App_1.App.PrintLog(this.moduleName(), "Search", this.service.sessionInfo);
                         reqData = request.query ? request.query : {};
+                        reqData.name = request.body.sessionInfo.inventlocationid;
                         return [4 /*yield*/, App_1.App.ValildateUserAccess(this.service.sessionInfo, this.moduleName(), Props_1.Props.ACCESS_READ)];
                     case 1:
                         if (!_a.sent()) return [3 /*break*/, 3];

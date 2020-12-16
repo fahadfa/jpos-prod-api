@@ -116,6 +116,7 @@ var DesignerServiceReport = /** @class */ (function () {
                         data_1.salesLine.map(function (v) {
                             data_1.quantity += parseInt(v.salesQty);
                         });
+                        data_1.vat = data_1.salesLine.length > 0 ? parseInt(data_1.salesLine[0].vat) : "-";
                         console.log(data_1);
                         return [4 /*yield*/, queryRunner.commitTransaction()];
                     case 10:

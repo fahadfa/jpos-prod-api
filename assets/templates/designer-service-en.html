@@ -316,7 +316,13 @@
                                             <td>:</td>
                                             <td>300533832200003</td>
                                         </tr>
-
+                                        {{#if this.interCompanyOriginalSalesId}}
+                                        <tr>
+                                            <td>Designer Service Id</td>
+                                            <td>:</td>
+                                            <td>{{this.interCompanyOriginalSalesId}}</td>
+                                        </tr>
+                                        {{/if}}
 
 
 
@@ -442,7 +448,7 @@
                                             </td>
                                         </tr>
                                         <tr class="billing">
-                                            <td>VAT(5%)</td>
+                                            <td>VAT({{this.vat}}%)</td>
                                             <td>:</td>
                                             <td style="font-size:12px;font-weight:600">
                                                 {{vatamount}} SAR

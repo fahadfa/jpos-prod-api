@@ -141,7 +141,7 @@ var ExpiredProductsReport = /** @class */ (function () {
                         regionalWarehouses[0].regionalwarehouse.split(",").map(function (item) {
                             inQueryStr_1 += "'" + item + "',";
                         });
-                        inQueryStr_1 += "'" + params.key + "',";
+                        inQueryStr_1 += "'" + params.inventlocationid + "',";
                         query += " and i.inventlocationid in (" + inQueryStr_1.substr(0, inQueryStr_1.length - 1) + ") ";
                         return [3 /*break*/, 3];
                     case 2:

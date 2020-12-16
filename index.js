@@ -72,6 +72,7 @@ var run = function () { return __awaiter(_this, void 0, void 0, function () {
                 Log_1.log.log(Config.dbOptions);
                 if (!(!conn || !conn.isConnected)) return [3 /*break*/, 2];
                 Watcher_1.WatcherInit();
+                console.table(Config.dbOptions);
                 return [4 /*yield*/, typeorm_1.createConnection(Config.dbOptions)];
             case 1:
                 conn = _a.sent();
@@ -256,10 +257,11 @@ process.on("uncaughtException", function (err) {
             run();
         }
         else {
-            if (ENV_STORE_ID && err) {
+            Log_1.log.error("======= ERROR STORE ID ========= " + ENV_STORE_ID);
+            if (ENV_STORE_ID) {
                 try {
-                    var errorObj = err;
                     Log_1.log.error("======= ERROR ========= ");
+                    var errorObj = err;
                     Log_1.log.error(JSON.stringify(errorObj));
                     Log_1.log.error("ERROR-CODE :: " + errorObj.code);
                     Log_1.log.error("======== ERROR ======== ");
@@ -268,6 +270,7 @@ process.on("uncaughtException", function (err) {
                     }
                 }
                 catch (error) {
+                    Log_1.log.error("======= CATCH ERROR ========= ");
                     Log_1.log.error(error);
                 }
             }
