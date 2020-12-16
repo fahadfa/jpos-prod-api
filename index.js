@@ -256,6 +256,21 @@ process.on("uncaughtException", function (err) {
             run();
         }
         else {
+            if (ENV_STORE_ID && err) {
+                try {
+                    var errorObj = err;
+                    Log_1.log.error("======= ERROR ========= ");
+                    Log_1.log.error(JSON.stringify(errorObj));
+                    Log_1.log.error("ERROR-CODE :: " + errorObj.code);
+                    Log_1.log.error("======== ERROR ======== ");
+                    if (errorObj && errorObj.code == "57P03") {
+                        sysService_1.SysService.ResetService();
+                    }
+                }
+                catch (error) {
+                    Log_1.log.error(error);
+                }
+            }
             Log_1.log.error(err);
         }
     }, 5000);
