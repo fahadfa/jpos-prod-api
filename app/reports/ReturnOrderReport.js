@@ -69,7 +69,7 @@ var ReturnOrderReport = /** @class */ (function () {
     }
     ReturnOrderReport.prototype.execute = function (params) {
         return __awaiter(this, void 0, void 0, function () {
-            var queryRunner, data_1, batchesList, result, new_data_1, i_1, date_1, statusQuery, salesLineQuery, inventtransQuery_1, designerServices, _i, designerServices_1, service, salesLine, sNo_1, date, inventtransQuery, error_1;
+            var queryRunner, data_1, batchesList, result, new_data_1, i_1, date, statusQuery, salesLineQuery, inventtransQuery, designerServices, _i, designerServices_1, service, salesLine, sNo_1, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -82,7 +82,7 @@ var ReturnOrderReport = /** @class */ (function () {
                         _a.sent();
                         _a.label = 3;
                     case 3:
-                        _a.trys.push([3, 16, 18, 20]);
+                        _a.trys.push([3, 15, 17, 19]);
                         return [4 /*yield*/, this.query_to_data(params)];
                     case 4:
                         data_1 = _a.sent();
@@ -121,25 +121,18 @@ var ReturnOrderReport = /** @class */ (function () {
                         });
                         data_1.batches = new_data_1;
                         if (!(data_1.status != "POSTED")) return [3 /*break*/, 12];
-                        date_1 = new Date().toISOString();
-                        statusQuery = "UPDATE salestable SET \n                          originalprinted = 'true',\n                          status = 'POSTED',\n                          lastmodifieddate = '" + date_1 + "' \n                          WHERE salesid = '" + params.salesId + "' or \n                          salesgroup = '" + params.salesId + "' or \n                          deliverystreet = '" + params.salesId + "'";
+                        date = new Date().toISOString();
+                        statusQuery = "UPDATE salestable SET \n                          originalprinted = 'true',\n                          status = 'POSTED',\n                          lastmodifieddate = '" + date + "' \n                          WHERE salesid = '" + params.salesId + "' or \n                          salesgroup = '" + params.salesId + "' or \n                          deliverystreet = '" + params.salesId + "'";
                         // await this.rawQuery.updateSalesTable(params.salesId.toUpperCase(), "POSTED");
                         queryRunner.query(statusQuery);
-                        salesLineQuery = " UPDATE salesline SET \n        status = 'POSTED',\n        lastmodifieddate = '" + date_1 + "' \n        WHERE salesid = '" + params.salesId + "' ";
+                        salesLineQuery = " UPDATE salesline SET \n        status = 'POSTED',\n        lastmodifieddate = '" + date + "' \n        WHERE salesid = '" + params.salesId + "' ";
                         queryRunner.query(salesLineQuery);
-                        inventtransQuery_1 = "UPDATE inventtrans SET transactionclosed = " + true + ", reserve_status = 'POSTED' ";
-                        if (date_1) {
-                            inventtransQuery_1 += ",dateinvent = '" + date_1 + "' ";
+                        inventtransQuery = "UPDATE inventtrans SET transactionclosed = " + true + ", reserve_status = 'POSTED' ";
+                        if (date) {
+                            inventtransQuery += ",dateinvent = '" + date + "' ";
                         }
-                        inventtransQuery_1 += " WHERE invoiceid = '" + params.salesId.toUpperCase() + "'";
-                        return [4 /*yield*/, queryRunner.query(inventtransQuery_1)
-                            // let batches: any = await this.inventTransDAO.findAll({ invoiceid: params.salesId });
-                            // for (let item of batches) {
-                            // item.transactionClosed = true;
-                            // this.inventTransDAO.save(item);
-                            // await this.updateInventoryService.updateInventtransTable(item, false, true, queryRunner);
-                            // }
-                        ];
+                        inventtransQuery += " WHERE invoiceid = '" + params.salesId.toUpperCase() + "'";
+                        return [4 /*yield*/, queryRunner.query(inventtransQuery)];
                     case 6:
                         _a.sent();
                         // let batches: any = await this.inventTransDAO.findAll({ invoiceid: params.salesId });
@@ -201,27 +194,23 @@ var ReturnOrderReport = /** @class */ (function () {
                         data_1.salesLine.map(function (v) {
                             data_1.quantity += parseInt(v.salesQty);
                         });
-                        date = new Date().toISOString();
-                        inventtransQuery = "UPDATE inventtrans SET transactionclosed = " + true + ", reserve_status = 'POSTED' ";
-                        inventtransQuery += " WHERE invoiceid = '" + params.salesId.toUpperCase() + "'";
-                        return [4 /*yield*/, queryRunner.query(inventtransQuery)];
-                    case 14:
-                        _a.sent();
+                        // console.log(data);
                         return [4 /*yield*/, queryRunner.commitTransaction()];
-                    case 15:
+                    case 14:
+                        // console.log(data);
                         _a.sent();
                         return [2 /*return*/, data_1];
-                    case 16:
+                    case 15:
                         error_1 = _a.sent();
                         return [4 /*yield*/, queryRunner.rollbackTransaction()];
-                    case 17:
+                    case 16:
                         _a.sent();
                         throw error_1;
-                    case 18: return [4 /*yield*/, queryRunner.release()];
-                    case 19:
+                    case 17: return [4 /*yield*/, queryRunner.release()];
+                    case 18:
                         _a.sent();
                         return [7 /*endfinally*/];
-                    case 20: return [2 /*return*/];
+                    case 19: return [2 /*return*/];
                 }
             });
         });

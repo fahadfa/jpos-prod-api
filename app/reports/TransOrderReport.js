@@ -51,12 +51,13 @@ var TransOrderReport = /** @class */ (function () {
                         return [4 /*yield*/, this.query_to_data(params)];
                     case 1:
                         data = _a.sent();
-                        data.map(function (item) {
+                        data.map(function (item, index) {
                             item.statusVal = params.lang == "en" ? item.statusEn : item.statusAr;
+                            item.sNo = index + 1;
                             item.deliverydate = App_1.App.convertUTCDateToLocalDate(new Date(item.createddatetime), parseInt(params.timeZoneOffSet));
                             item.lastmodifieddate = App_1.App.convertUTCDateToLocalDate(new Date(item.lastmodifieddate), parseInt(params.timeZoneOffSet));
                         });
-                        // console.log(data);
+                        console.log(data);
                         return [2 /*return*/, data];
                     case 2:
                         error_1 = _a.sent();
@@ -150,16 +151,22 @@ var TransOrderReport = /** @class */ (function () {
     };
     TransOrderReport.prototype.query_to_data = function (params) {
         return __awaiter(this, void 0, void 0, function () {
-            var query, warehouseQuery, regionalWarehouses, inQueryStr_1, warehouseQuery, regionalWarehouses, inQueryStr_2;
+            var fDate, tDate, fromDate, toDate, query, warehouseQuery, regionalWarehouses, inQueryStr_1, warehouseQuery, regionalWarehouses, inQueryStr_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        fDate = new Date(params.fromDate);
+                        fDate.setHours(0, 0, 0);
+                        tDate = new Date(params.toDate);
+                        tDate.setHours(0, 0, 0);
+                        fromDate = App_1.App.convertUTCDateToLocalDate(fDate, params.timeZoneOffSet);
+                        toDate = App_1.App.convertUTCDateToLocalDate(tDate, params.timeZoneOffSet);
                         query = "\n            select \n                distinct\n                  s.salesid as \"salesId\",\n                  s.createddatetime as \"createddatetime\",\n                  s.lastmodifieddate as \"lastmodifieddate\",\n                  s.lastmodifieddate as \"deliverydate\",\n                  s.status as status,\n                  als.en as \"statusEn\",\n                  als.ar as \"statusAr\",                  \n                  alt.en as \"transkindEn\",\n                  alt.ar as \"transkindAr\",\n                  \n            ";
                         if (params.transkind == "TRANSFERORDER" || params.transkind == "ORDERSHIPMENT") {
                             query += "\n              s.inventlocationid as \"fromWareHouse\",\n                    s.custaccount as \"ToWareHouse\",\n                    fwh.name as \"fromWareHouseNameAr\",\n                    fwh.namealias as \"fromWareHouseNameEn\",\n                    twh.name as \"toWareHouseNameAr\",\n                    twh.namealias as \"toWareHouseNameEn\",\n                    (select coalesce(sum(sl.salesqty), 0) from salesline sl where sl.salesid=s.salesid) as quantity\n              from salestable s\n                  left join inventlocation fwh on fwh.inventlocationid=s.inventlocationid\n                  left join inventlocation twh on twh.inventlocationid=s.custaccount\n                  left join app_lang als on als.id = s.status\n                  left join app_lang alt on alt.id = s.transkind\n              where  s.createddatetime >= '" + params.fromDate + "' ::date\n                AND  s.createddatetime < ('" + params.toDate + "' ::date + '1 day'::interval) \n            ";
                         }
                         else {
-                            query += "\n                  s.inventlocationid as \"ToWareHouse\",\n                        s.custaccount as \"fromWareHouse\",\n                        fwh.name as \"fromWareHouseNameAr\",\n                        fwh.namealias as \"fromWareHouseNameEn\",\n                        twh.name as \"toWareHouseNameAr\",\n                        twh.namealias as \"toWareHouseNameEn\",\n                        (select coalesce(sum(sl.salesqty), 0) from salesline sl where sl.salesid=s.salesid) as quantity\n                  from salestable s\n                      left join inventlocation twh on twh.inventlocationid=s.inventlocationid\n                      left join inventlocation fwh on fwh.inventlocationid=s.custaccount\n                      left join app_lang als on als.id = s.status\n                      left join app_lang alt on alt.id = s.transkind\n                  where  s.createddatetime >= '" + params.fromDate + "' ::date\n                  AND  s.createddatetime < ('" + params.toDate + "' ::date + '1 day'::interval) \n             ";
+                            query += "\n                  s.inventlocationid as \"ToWareHouse\",\n                        s.custaccount as \"fromWareHouse\",\n                        fwh.name as \"fromWareHouseNameAr\",\n                        fwh.namealias as \"fromWareHouseNameEn\",\n                        twh.name as \"toWareHouseNameAr\",\n                        twh.namealias as \"toWareHouseNameEn\",\n                        (select coalesce(sum(sl.salesqty), 0) from salesline sl where sl.salesid=s.salesid) as quantity\n                  from salestable s\n                      left join inventlocation twh on twh.inventlocationid=s.inventlocationid\n                      left join inventlocation fwh on fwh.inventlocationid=s.custaccount\n                      left join app_lang als on als.id = s.status\n                      left join app_lang alt on alt.id = s.transkind\n                  where  s.createddatetime >= '" + fromDate + "' ::timestamp\n                  AND  s.createddatetime < ('" + toDate + "' ::timestamp + '1 day'::interval) \n             ";
                         }
                         if (!(params.fromWareHouseId == "ALL")) return [3 /*break*/, 2];
                         warehouseQuery = "select regionalwarehouse from usergroupconfig where inventlocationid= '" + params.key + "' limit 1";

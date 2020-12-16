@@ -259,6 +259,7 @@ var SyncPrevTransactionsService = /** @class */ (function () {
                                         else {
                                             line.COLORANTPRICE = 0;
                                         }
+                                        line.INVENTTRANSID = line.INVENTTRANSID ? line.INVENTTRANSID : "";
                                         line.link_id = line.RECID;
                                         line.applied_discounts = [];
                                         line.is_parent = false;

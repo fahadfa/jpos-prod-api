@@ -91,7 +91,6 @@ var SalesByCustomerReport = /** @class */ (function () {
                         }
                         _loop_1 = function (item) {
                             saleslist = result.data.find(function (ele) { return ele.salesgroup.salesmanId == item.salesmanId; });
-                            console.log(saleslist);
                             if (saleslist) {
                                 this_1.updateAmount(saleslist, item);
                                 saleslist.salesdata.push(item);
@@ -127,6 +126,12 @@ var SalesByCustomerReport = /** @class */ (function () {
         });
     };
     SalesByCustomerReport.prototype.updateAmount = function (saleslist, item) {
+        if (item && item.transkind == "RETURNORDER") {
+            item.amount = -Number.parseFloat(item.amount);
+            item.netamount = -Number.parseFloat(item.netamount);
+            item.vatamount = -Number.parseFloat(item.vatamount);
+            item.disc = item.disc ? -Number.parseFloat(item.disc) : 0;
+        }
         saleslist.salesgroup.amount += Number.parseFloat(item.amount);
         saleslist.salesgroup.netamount += Number.parseFloat(item.netamount);
         saleslist.salesgroup.vatamount += Number.parseFloat(item.vatamount);
@@ -153,17 +158,23 @@ var SalesByCustomerReport = /** @class */ (function () {
     };
     SalesByCustomerReport.prototype.salesData = function (params) {
         return __awaiter(this, void 0, void 0, function () {
-            var sql, rows;
+            var fDate, tDate, fromDate, toDate, sql, rows;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        sql = "\n      select\n        st.salesname as customername,\n        als.en as \"statusEn\",\n        als.ar as \"statusAr\",\n        alt.en as \"transkindEn\",\n        alt.ar as \"transkindAr\",\n        to_char(sum(st.vatamount), 'FM999999999990.00') as vatamount,\n        to_char(sum(st.netamount), 'FM999999999990.00') as \"netamount\",\n        to_char(sum(st.disc), 'FM999999999990.00') as disc,\n        to_char(sum(st.amount) , 'FM999999999990.00') as amount,\n        w.namealias as wnamealias,\n        w.name as wname,\n        d.description as salesman,\n        d.num as \"salesmanId\"\n      from\n        salestable st\n      left join inventlocation w on\n        w.inventlocationid = st.inventlocationid\n      inner join dimensions d on\n        d.num = st.dimension6_\n      left join app_lang als on als.id = st.status\n      left join app_lang alt on alt.id = st.transkind\n      where\n        1 = 1\n        and st.transkind not in ('SALESQUOTATION', 'ORDERSHIPEMT', 'TRANSFERORDER', 'ORDERRECEIVE', 'INVENTORYMOVEMENT')\n        AND st.status in ('POSTED', 'PAID', 'PRINTED')\n        and st.lastmodifieddate between '" + params.fromDate + "' and ('" + params.toDate + "'::date + '2 day'::interval)\n        and st.inventlocationid = '" + params.inventlocationid + "'\n  ";
+                        fDate = new Date(params.fromDate);
+                        fDate.setHours(0, 0, 0);
+                        tDate = new Date(params.toDate);
+                        tDate.setHours(0, 0, 0);
+                        fromDate = App_1.App.convertUTCDateToLocalDate(fDate, params.timeZoneOffSet ? params.timeZoneOffSet : 0);
+                        toDate = App_1.App.convertUTCDateToLocalDate(tDate, params.timeZoneOffSet ? params.timeZoneOffSet : 0);
+                        sql = "\n      select\n        st.salesid as \"salesid\",\n        st.salesname as customername,\n        als.en as \"statusEn\",\n        als.ar as \"statusAr\",\n        alt.en as \"transkindEn\",\n        alt.ar as \"transkindAr\",\n        st.transkind as \"transkind\",\n        to_char(sum(st.vatamount), 'FM999999999990.00') as vatamount,\n        to_char(sum(st.netamount), 'FM999999999990.00') as \"netamount\",\n        to_char(sum(st.disc), 'FM999999999990.00') as disc,\n        to_char(sum(st.amount) , 'FM999999999990.00') as amount,\n        w.namealias as wnamealias,\n        w.name as wname,\n        d.description as salesman,\n        d.num as \"salesmanId\"\n      from\n        salestable st\n      left join inventlocation w on\n        w.inventlocationid = st.inventlocationid\n      inner join dimensions d on\n        d.num = st.dimension6_\n      left join app_lang als on als.id = st.status\n      left join app_lang alt on alt.id = st.transkind\n      where\n        1 = 1\n        and st.transkind not in ('SALESQUOTATION', 'ORDERSHIPEMT', 'TRANSFERORDER', 'ORDERRECEIVE', 'INVENTORYMOVEMENT')\n        AND st.status in ('POSTED', 'PAID', 'PRINTED')\n        and st.lastmodifieddate between '" + fromDate + "'::timestamp and ('" + toDate + "'::timestamp + '2 day'::interval)\n        and st.inventlocationid = '" + params.inventlocationid + "'\n  ";
                         if (params.salesmanid) {
                             sql = sql + (" and d.num = '" + params.salesmanid + "' ");
                         }
                         sql =
                             sql +
-                                " \n    group by st.salesname, w.namealias, w.name, d.description, als.en, als.ar, alt.en, alt.ar ,  d.num\n    order by customername";
+                                " \n    group by st.salesname, w.namealias, w.name, d.description, als.en, als.ar, alt.en, alt.ar ,  d.num, st.transkind, st.salesid\n    order by customername";
                         return [4 /*yield*/, this.db.query(sql)];
                     case 1:
                         rows = _a.sent();

@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
 var Inventbatch_1 = require("../entities/Inventbatch");
+var SalesLine_1 = require("../entities/SalesLine");
 var Inventorytrans = /** @class */ (function () {
     function Inventorytrans() {
     }
@@ -151,6 +152,11 @@ var Inventorytrans = /** @class */ (function () {
         typeorm_1.ManyToOne(function (type) { return Inventbatch_1.Inventbatch; }),
         __metadata("design:type", Inventbatch_1.Inventbatch)
     ], Inventorytrans.prototype, "inventbatch", void 0);
+    __decorate([
+        typeorm_1.JoinColumn({ name: "sales_line_id" }),
+        typeorm_1.ManyToOne(function (type) { return SalesLine_1.SalesLine; }),
+        __metadata("design:type", SalesLine_1.SalesLine)
+    ], Inventorytrans.prototype, "salesLine", void 0);
     Inventorytrans = __decorate([
         typeorm_1.Entity("inventtrans")
     ], Inventorytrans);

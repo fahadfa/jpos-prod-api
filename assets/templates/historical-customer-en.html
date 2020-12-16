@@ -207,16 +207,8 @@
       <tbody>
         {{#each data}}
         <tr>
-          <td>{{ this.salesId }}</td>
-          <td class="tdcenter">{{ this.lastmodifieddate }}</td>
-          <!-- <td class="tdcenter">{{ this.customername }}</td> -->
-          <!-- {{# if this.walkincustomer}} {{# if this.phone}}
-          <td class="tdcenter">{{ this.phone }}</td>
-          {{else}}
-          <td class="tdcenter">{{ this.custAccount }}</td>
-          {{/if}} {{else}}
-          <td class="tdcenter">{{ this.custAccount }}</td>
-          {{/ if}} -->
+          <td class="tdcenter">{{ this.salesId }}</td>
+          <td class="tdcenter">{{ this.lastmodifieddate }}</td>         
           <td class="tdcenter">{{ this.paymentMode }}</td>
           <td class="tdcenter">{{#if voucherdiscchecked}} {{ this.vouchernum }} {{else}} --- {{/if}}</td>
           <td class="tdcenter">{{ this.transkindEn }}</td>

@@ -1,132 +1,132 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Language" content="ar-sy" />
+    <meta name="description" content="بيسب" />
+  </head>
+  <style>
+    @page {
+      size: A4;
+      margin: 10px;
+    }
 
-<head>
-  <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
-  <meta http-equiv="Content-Language" content="ar-sy" />
-  <meta name="description" content="بيسب" />
-</head>
-<style>
-  @page {
-    size: A4;
-    margin: 10px;
-  }
+    @media print {
+      tfoot {
+        display: table-footer-group;
+      }
 
-  @media print {
+      @page {
+        margin: 2cm 0.5cm 1cm 0.5cm;
+      }
+    }
+
+    body {
+      font-family: " Courier New", Courier, monospace !important;
+      font-size: 14px;
+      background: #fff;
+      padding: 0px;
+      font-weight: normal !important;
+    }
+
+    table {
+      page-break-inside: auto;
+    }
+
+    tr {
+      page-break-inside: avoid;
+      page-break-after: always;
+      border-bottom: 1px dotted #8a8989;
+      padding: 1px;
+    }
+
+    thead {
+      display: table-header-group;
+    }
+
     tfoot {
       display: table-footer-group;
     }
 
-    @page {
-      margin: 2cm 0.5cm 1cm 0.5cm;
+    th,
+    td {
+      padding: 5px 5px;
     }
-  }
 
-  body {
-    font-family: " Courier New", Courier, monospace !important;
-    font-size: 14px;
-    background: #fff;
-    padding: 0px;
-    font-weight: normal !important;
-  }
+    #bg__watermark {
+      display: block;
+      min-width: 100%;
+      opacity: 0.5;
+    }
 
-  table {
-    page-break-inside: auto;
-  }
+    #bg__text__watermark {
+      color: lightgrey;
+      font-size: 120px;
+      text-align: center;
+      transform: rotate(-45deg);
+      transform-origin: 50% 50%;
+      -webkit-transform: rotate(-45deg);
+      -webkit-transform-origin: 50% 50%;
+      opacity: 0.9;
+      filter: alpha(opacity=50);
+      background-color: transparent;
+      background-size: 100%;
+      position: fixed;
+      margin: 50% auto;
+    }
 
-  tr {
-    page-break-inside: avoid;
-    page-break-after: always;
-    border-bottom: 1px dotted #8a8989;
-    padding: 1px;
-  }
+    .mainheading {
+      text-align: center;
+      font-weight: 600;
+      font-size: 20px;
+      margin: 20px auto;
+    }
 
-  thead {
-    display: table-header-group;
-  }
+    #headertbl {
+      width: 100%;
+      margin: 20px auto;
+    }
 
-  tfoot {
-    display: table-footer-group;
-  }
+    table#headertbl th {
+      border: none;
+    }
+    .tdleft {
+      text-align: left;
+    }
 
-  th,
-  td {
-    padding: 5px 5px;
-  }
+    .tdright {
+      text-align: right;
+    }
 
-  #bg__watermark {
-    display: block;
-    min-width: 100%;
-    opacity: 0.5;
-  }
+    .tdcenter {
+      text-align: center;
+    }
 
-  #bg__text__watermark {
-    color: lightgrey;
-    font-size: 120px;
-    text-align: center;
-    transform: rotate(-45deg);
-    transform-origin: 50% 50%;
-    -webkit-transform: rotate(-45deg);
-    -webkit-transform-origin: 50% 50%;
-    opacity: 0.9;
-    filter: alpha(opacity=50);
-    background-color: transparent;
-    background-size: 100%;
-    position: fixed;
-    margin: 50% auto;
-  }
+    .textbold {
+      font-weight: bold;
+      font-size: 16px;
+    }
 
-  .mainheading {
-    text-align: center;
-    font-weight: 600;
-    font-size: 20px;
-    margin: 20px auto;
-  }
+    table.dash {
+      border: 1px dashed #cccccc;
+      border-collapse: collapse;
+    }
 
-  #headertbl {
-    width: 100%;
-    margin: 20px auto;
-  }
+    table.dash td,
+    table.dash th {
+      border: 1px dashed #cccccc;
+    }
+  </style>
 
-table#headertbl th{
-  border: none;
-}
-  .tdleft {
-    text-align: left;
-  }
+  <body>
+    <div id="bg__watermark">
+      <p id="bg__text__watermark">فقط للاختبار</p>
+    </div>
 
-  .tdright {
-    text-align: right;
-  }
+    <div class="mainheading">تقير حركة المنتج</div>
 
-  .tdcenter {
-    text-align: center;
-  }
-
-  .textbold {
-    font-weight: bold;
-    font-size: 16px;
-  }
-
-  table.dash {
-    border: 1px dashed #cccccc;
-    border-collapse: collapse;
-  }
-
-  table.dash td, table.dash th {
-    border: 1px dashed #cccccc;
-  }
-</style>
-
-<body>
-  <div id="bg__watermark">
-    <p id="bg__text__watermark">فقط للاختبار</p>
-  </div>
-
-  <div class="mainheading">البند تقرير المعاملات</div>
-
-  <table id="headertbl" width="100%">
-    <tr>
+    <table id="headertbl" width="100%">
+      <tr>
         <!-- <td valign="top" style="width:33%">
           <table align="left">
                
@@ -158,143 +158,127 @@ table#headertbl th{
             {{/if}}
           </table>
         </td> -->
-        <td valign="top" style="width:50%">
+        <td valign="top" style="width: 50%">
           <table align="left">
             {{#if user}}
             <tr>
-              <td class="tdright">{{user}}</td> 
-              <td>:</td> 
+              <td class="tdright">{{user}}</td>
+              <td>:</td>
               <td class="tdright">طباعة بواسطة</td>
             </tr>
-            {{/if}}
-            {{#if toDate}}
+            {{/if}} {{#if toDate}}
             <tr>
-             <td class="tdright">{{toDate}}</td> 
-             <td>:</td>  
-             <td class="tdright">حتى الآن</td>
+              <td class="tdright">{{toDate}}</td>
+              <td>:</td>
+              <td class="tdright">حتى الآن</td>
             </tr>
-            {{/if}}
-            {{#if color}}
+            {{/if}} {{#if color}}
             <tr>
               <td class="tdright">{{color}}</td>
               <td>:</td>
               <td class="tdright">اللون</td>
             </tr>
+            {{/if}} {{#if inventsizeid}}
+            <tr>
+              <td class="tdright">{{inventsizeid}}</td>
+              <td>:</td>
+              <td class="tdright">بحجم</td>
+            </tr>
+            {{/if}} {{#if transType}}
+            <tr>
+              <td class="tdright">{{transType}}</td>
+              <td>:</td>
+              <td class="tdright">نوع العابر</td>
+            </tr>
             {{/if}}
-            {{#if inventsizeid}}
-              <tr>                  
-                <td class="tdright">{{inventsizeid}}</td>
-                <td>:</td>
-                <td class="tdright">بحجم</td>                  
-              </tr>
-              {{/if}}
-              {{#if transType}}
-              <tr>       
-                <td class="tdright">{{transType}}</td>  
-                <td>:</td>
-                <td class="tdright">نوع العابر</td>
-              </tr>
-              {{/if}}
-
           </table>
-        </td>  
-        <td valign="top" style="width:50%">
+        </td>
+        <td valign="top" style="width: 50%">
           <table align="right">
-              {{#if user}}
-              <tr>
-                  <td class="tdright">{{printDate}}</td>
-                  <td>:</td>
-                  <td class="tdright">تاريخ الطباعة</td>
-              </tr>
-              {{/if}}  
-              {{#if fromDate}}
-              <tr>
-                  <td class="tdright">{{fromDate}}</td>
-                  <td>:</td>
-                  <td class="tdright">من التاريخ</td>
-              </tr>
-              {{/if}}
-              {{#if product}}
-              <tr>                 
-                <td class="tdright">{{product}}</td>
-                <td>:</td>
-                <td class="tdright">المنتج</td>
-              </tr>
-              {{/if}} 
-              {{#if batchno}}
-              <tr>
-                <td class="tdright">{{batchno}}</td>
-                <td>:</td>
-                <td class="tdright">رقم الحزمة</td>
-              </tr>
-              {{/if}}     
-              {{#if wareHouseNameEn}}
-              <tr>                       
-                <td class="tdright">{{wareHouseNameEn}}</td>
-                <td>:</td>
-                <td class="tdright" valign="top">مستودع</td>
-              </tr>
-              {{else}}
-              <tr>    
-                <td class="tdright">{{wareHouseNameAr}}</td>  
-                <td>:</td>
-                <td class="tdright" valign="top">مستودع</td>                
-              </tr>
-              {{/if}}     
+            {{#if user}}
+            <tr>
+              <td class="tdright">{{printDate}}</td>
+              <td>:</td>
+              <td class="tdright">تاريخ الطباعة</td>
+            </tr>
+            {{/if}} {{#if fromDate}}
+            <tr>
+              <td class="tdright">{{fromDate}}</td>
+              <td>:</td>
+              <td class="tdright">من التاريخ</td>
+            </tr>
+            {{/if}} {{#if product}}
+            <tr>
+              <td class="tdright">{{product}}</td>
+              <td>:</td>
+              <td class="tdright">المنتج</td>
+            </tr>
+            {{/if}} {{#if batchno}}
+            <tr>
+              <td class="tdright">{{batchno}}</td>
+              <td>:</td>
+              <td class="tdright">رقم الحزمة</td>
+            </tr>
+            {{/if}} {{#if wareHouseNameEn}}
+            <tr>
+              <td class="tdright">{{wareHouseNameEn}}</td>
+              <td>:</td>
+              <td class="tdright" valign="top">مستودع</td>
+            </tr>
+            {{else}}
+            <tr>
+              <td class="tdright">{{wareHouseNameAr}}</td>
+              <td>:</td>
+              <td class="tdright" valign="top">مستودع</td>
+            </tr>
+            {{/if}}
           </table>
-      </td>
-    </tr>
-  </table>
-
-
-  <table class="dash" width="100%" cellpadding="0" cellspacing="0">
-    <thead>
-      <tr>
-        <th width="5%">توازن</th>
-        <th width="5%">الكمية خارج</th>
-        <th width="5%">الكمية في</th>
-        <th width="10%">موقعك</th>
-        <th width="10%">دفعة</th>
-        <th width="10%">بحجم</th>
-        <th width="15%">اللون</th>
-        <th width="15%">تاريخ الصفقة</th>
-        <th width="25%">رقم تعريف المبيعات</th>
-      </tr>
-    </thead>
-    <tbody>
-
-      {{#each data}}
-      <tr>
-        <td class="tdright" colspan="9" class="td" class="textbold">
-          <strong>
-            {{this.itemNameAr}} : {{this.itemid}}   
-          </strong>
         </td>
       </tr>
-          {{#each data}}
-          <tr class="tab-data">
-            <td class="tdright" width="5%">{{ this.balance }}</td>
-            <td class="tdright" width="5%">{{ this.qtyOut }}</td>
-            <td class="tdright" width="5%">{{ this.qtyIn }}</td>
-            <td class="tdcenter" width="10%">{{ this.inventlocationid }}</td>
-            <td class="tdcenter" width="10%">{{ this.batchno }}</td>
-            <td class="tdcenter" width="10%">{{ this.sizeNameAr }}</td>
-            <td class="tdcenter" width="15%">{{ this.configid }}</td>
-            <td class="tdcenter" width="15%">{{ this.date }}</td>
-            <td class="tdright" width="25%">{{ this.invoiceid }}</td>
-          </tr>
-          {{/each}}
-      <tr class="textbold">
-        <td class="tdright">{{this.totalBalance}}</td>
-        <td class="tdright">{{this.totalQtyOut}}</td>
-        <td class="tdright">{{this.totalQtyIn}}</td>
-        <td colspan="6" class="tdleft">مجموع</td>
-      </tr>
-    {{/each}}
+    </table>
 
-    </tbody>
-  </table>
-
-</body>
-
+    <table class="dash" width="100%" cellpadding="0" cellspacing="0">
+      <thead>
+        <tr>
+          <th width="5%">توازن</th>
+          <th width="5%">الكمية خارج</th>
+          <th width="5%">الكمية في</th>
+          <th width="10%">موقعك</th>
+          <th width="10%">دفعة</th>
+          <th width="10%">بحجم</th>
+          <th width="15%">اللون</th>
+          <th width="15%">تاريخ الصفقة</th>
+          <th width="25%">رقم تعريف المبيعات</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each data}}
+        <tr>
+          <td class="tdright" colspan="9" class="td" class="textbold">
+            <strong> {{this.itemNameAr}} : {{this.itemid}} </strong>
+          </td>
+        </tr>
+        {{#each data}}
+        <tr class="tab-data">
+          <td class="tdright" width="5%">{{ this.balance }}</td>
+          <td class="tdright" width="5%">{{ this.qtyOut }}</td>
+          <td class="tdright" width="5%">{{ this.qtyIn }}</td>
+          <td class="tdcenter" width="10%">{{ this.inventlocationid }}</td>
+          <td class="tdcenter" width="10%">{{ this.batchno }}</td>
+          <td class="tdcenter" width="10%">{{ this.sizeNameAr }}</td>
+          <td class="tdcenter" width="15%">{{ this.configid }}</td>
+          <td class="tdcenter" width="15%">{{ this.date }}</td>
+          <td class="tdright" width="25%">{{ this.invoiceid }}</td>
+        </tr>
+        {{/each}}
+        <tr class="textbold">
+          <td class="tdright">{{this.totalBalance}}</td>
+          <td class="tdright">{{this.totalQtyOut}}</td>
+          <td class="tdright">{{this.totalQtyIn}}</td>
+          <td colspan="6" class="tdleft">مجموع</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </body>
 </html>

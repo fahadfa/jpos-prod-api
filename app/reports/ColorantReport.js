@@ -131,11 +131,17 @@ var ColorantReport = /** @class */ (function () {
     };
     ColorantReport.prototype.query_to_data = function (params) {
         return __awaiter(this, void 0, void 0, function () {
-            var query, warehouseQuery, regionalWarehouses, inQueryStr_1;
+            var fDate, tDate, fromDate, toDate, query, warehouseQuery, regionalWarehouses, inQueryStr_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = "\n    select \n        distinct\n        sl.salesid as \"salesId\",\n        sl.itemid as itemid,\n        sl.colorantid as colorant,\n        sl.colorantprice  as price,\n        to_char(sl.salesprice,  'FM999999999.00') as \"salesPrice\",\n        to_char(sl.salesqty, 'FM999999990') as quantity,\n        to_char((sl.salesqty * sl.colorantprice), 'FM999999990.00') as \"totalAmount\",\n        sl.inventsizeid as inventsizeid,\n        sz.description as \"sizeNameEn\",\n        sz.\"name\" as \"sizeNameAr\",\n        w.name as \"wareHouseNameAr\",\n        w.namealias as \"wareHouseNameEn\",\n        st.transkind as transkind\n        from salesline sl\n        left join inventlocation w on w.inventlocationid=sl.inventlocationid\n        left join inventsize sz on sz.inventsizeid = sl.inventsizeid and sz.itemid = sl.itemid \n        left join salestable st on st.salesid = sl.salesid\n        where sl.createddatetime >= '" + params.fromDate + "' ::date\n        and  sl.createddatetime < ('" + params.toDate + "' ::date + '1 day'::interval)\n        and st.transkind not in ('SALESQUOTATION', 'TRANSFERORDER') and st.status in ('POSTED', 'PAID', 'PRINTED') AND sl.colorantprice > 0\n   ";
+                        fDate = new Date(params.fromDate);
+                        fDate.setHours(0, 0, 0);
+                        tDate = new Date(params.toDate);
+                        tDate.setHours(0, 0, 0);
+                        fromDate = App_1.App.convertUTCDateToLocalDate(fDate, params.timeZoneOffSet ? params.timeZoneOffSet : 0);
+                        toDate = App_1.App.convertUTCDateToLocalDate(tDate, params.timeZoneOffSet ? params.timeZoneOffSet : 0);
+                        query = "\n    select \n        distinct\n        sl.salesid as \"salesId\",\n        sl.itemid as itemid,\n        sl.colorantid as colorant,\n        sl.colorantprice  as price,\n        to_char(sl.salesprice,  'FM999999999.00') as \"salesPrice\",\n        to_char(sl.salesqty, 'FM999999990') as quantity,\n        to_char((sl.salesqty * sl.colorantprice), 'FM999999990.00') as \"totalAmount\",\n        sl.inventsizeid as inventsizeid,\n        sz.description as \"sizeNameEn\",\n        sz.\"name\" as \"sizeNameAr\",\n        w.name as \"wareHouseNameAr\",\n        w.namealias as \"wareHouseNameEn\",\n        st.transkind as transkind\n        from salesline sl\n        left join inventlocation w on w.inventlocationid=sl.inventlocationid\n        left join inventsize sz on sz.inventsizeid = sl.inventsizeid and sz.itemid = sl.itemid \n        left join salestable st on st.salesid = sl.salesid\n        where sl.createddatetime >= '" + fromDate + "' ::timestamp\n        and  sl.createddatetime < ('" + toDate + "' ::timestamp + '1 day'::interval)\n        and st.transkind not in ('SALESQUOTATION', 'TRANSFERORDER') and st.status in ('POSTED', 'PAID', 'PRINTED') AND sl.colorantprice > 0\n   ";
                         if (params.inventlocationid != "ALL") {
                             query += "  and sl.inventlocationid = '" + params.inventlocationid + "' ";
                         }

@@ -185,6 +185,7 @@
   <table class="dash" width="100%" cellpadding="0" cellspacing="0">
     <thead>
       <tr>
+        <th>S.No</th>
         <th>Sales Id</th>
         <th>From Warehouse</th>
         <th>To Warehouse</th>
@@ -196,6 +197,7 @@
     <tbody>
       {{#each data}}
       <tr class="tab-data">
+        <td >{{this.sNo}}</td>
         <td width="20%">{{this.salesId}}</td>
         <td>{{this.fromWareHouseNameEn}}</td>
         <td class="tdcenter">{{this.toWareHouseNameEn}}</td>

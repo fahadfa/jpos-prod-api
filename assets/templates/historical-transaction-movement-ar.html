@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Language" content="ar-sy" />
+    <meta name="description" content="بيسب" />
+    <style>
+      body {
+        font-family: " Courier New", Courier, monospace !important;
+        font-size: 11px;
+        width: 100%;
+        background: #fff;
+        padding: 0px;
+        font-weight: normal !important;
+        width: 98%;
+        direction: rtl;
+      }
+
+      thead {
+        display: table-header-group;
+      }
+
+      #invoiceDetails td,
+      #invoiceDetails th {
+        text-align: center;
+        vertical-align: middle;
+        border: 1px solid #c1c1c1;
+        border-style: dotted;
+        padding: 10px;
+      }
+
+      .inline-table {
+        border-bottom: 1px solid black;
+        padding: 0px !important;
+        margin: 0px !important;
+      }
+
+      .copy-text {
+        color: #000;
+        font-size: 20px;
+        border: 1px solid #000;
+        font-weight: 600;
+        padding: 10px;
+        margin: 20px;
+      }
+
+      @page {
+        margin: 20mm;
+      }
+
+      @media print {
+        thead {
+          display: table-header-group;
+        }
+
+        tfoot {
+          display: table-footer-group;
+        }
+
+        button {
+          display: none;
+        }
+
+        body {
+          margin: 0;
+        }
+      }
+
+      #bg__watermark {
+        display: block;
+        min-width: 100%;
+        opacity: 0.5;
+      }
+
+      #bg__text__watermark {
+        color: lightgrey;
+        font-size: 120px;
+        text-align: center;
+        transform: rotate(-45deg);
+        transform-origin: 50% 50%;
+        -webkit-transform: rotate(-45deg);
+        -webkit-transform-origin: 50% 50%;
+        opacity: 0.9;
+        filter: alpha(opacity=50);
+        background-color: transparent;
+        background-size: 100%;
+        position: fixed;
+        margin: 50% auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="bg__watermark">
+      <p id="bg__text__watermark">فقط للاختبار</p>
+    </div>
+
+    <table width="98%" style="margin-top: 100px;" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="40%">
+          <table style="text-align: right;">
+            <tr class="billing">
+              <td>من</td>
+              <td>:</td>
+              <td>
+                {{wname}}
+              </td>
+            </tr>
+            <tr class="billing">
+              <td>فاكس</td>
+              <td>:</td>
+              <td><!-- 03 234567 -->{{fax}}</td>
+            </tr>
+            <tr class="billing">
+              <td>اسم الحركة</td>
+              <td>:</td>
+              <td>
+                IMOV
+              </td>
+            </tr>
+          </table>
+        </td>
+        <td width="20%" style="text-align: center;">
+          <table style="text-align: center; font-size: 18px;">
+            <!-- {{#if originalPrinted}}
+            <tr>
+              <td class="copy-text">نسخة</td>
+            </tr>
+            {{/if}} -->
+            <tr>
+              <td><span style="font-size: 15px !important;">كود الحركة</span></td>
+            </tr>
+            <br />
+            <tr>
+              <span style="font-weight: 600;">
+                <td><span style="font-size: 13px;"> {{salesId}} </span></td>
+              </span>
+            </tr>
+          </table>
+        </td>
+        <td style="text-align: right;" width="40%">
+          <table style="text-align: right;">
+            <tr class="billing">
+              <td>اسم المستخدم</td>
+              <td>:</td>
+              <td>
+                {{createdby}}
+              </td>
+            </tr>
+            <tr class="billing">
+              <td class="quotation-date">تاريخ الفاتورة</td>
+              <td>:</td>
+              <td class="quotation-date">
+                {{createddatetime}}
+              </td>
+            </tr>
+            <tr class="billing">
+              <td class="quotation-date">نوع الحركة</td>
+              <td>:</td>
+              <td class="quotation-date">
+                {{movementtypear}}
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="3">
+          <table
+            id="invoiceDetails"
+            style="margin-top: 40px;"
+            width="100%"
+            class="item-table"
+            cellpadding="0"
+            cellspacing="0"
+          >
+            <thead>
+              <tr>
+                <th class="th">رقم سري</th>
+                <th class="th">رقم المنتج</th>
+                <th class="th">وصف المنتج</th>
+                <!-- <th class="th">الملونات</th> -->
+                <th class="th">رقم الدفعة</th>
+                <th class="th">كمية</th>
+              </tr>
+            </thead>
+            {{#each salesLine}}
+            <tr class="tab-data" style="font-size: 13px !important;">
+              <td class="td">{{this.sNo}}</td>
+              <td class="td">
+                <div style="font-size: 13px;">
+                  {{this.itemid}}
+                </div>
+              </td>
+              <td class="td description-data">
+                <span style="font-size: 13px;">
+                  {{this.prodNameAr}},{{this.configid}}, {{this.colorant}}, {{this.inventsizeid}}
+                </span>
+                <span> </span>
+              </td>
+
+              <!-- <td class="td">{{deliveryDate}}</td> -->
+              <td class="td">
+                {{this.batchno}}
+              </td>
+              <td class="td">
+                {{this.salesQty}}
+              </td>
+            </tr>
+            {{/each}}
+          </table>
+          <table width="100%" style="text-align: left;  margin-top: 8px;">
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>
+                الكمية الإجمالية:{{ quantity }}
+              </td>
+            </tr>
+          </table>
+          <table width="100%" style="background: #fff;">
+            <tr>
+              <td style="width: 33%; font-size: 15px; text-align: right;">
+                المستلم
+                <!-- receipt -->
+              </td>
+              <td style="width: 33%; font-size: 15px; text-align: center;">
+                البائع
+              </td>
+              <td style="width: 33%; font-size: 15px; text-align: left;">
+                الشركة
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

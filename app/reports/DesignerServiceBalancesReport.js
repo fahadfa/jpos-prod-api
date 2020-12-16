@@ -96,11 +96,17 @@ var DesignerServiceBalancesReport = /** @class */ (function () {
     };
     DesignerServiceBalancesReport.prototype.query_to_data = function (params) {
         return __awaiter(this, void 0, void 0, function () {
-            var query;
+            var fDate, tDate, fromDate, toDate, query;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = "          \nselect distinct d.invoiceid, d.customerid, d.custphone,\ncast(coalesce(d.balanceamount, 0) as Decimal(10,2)) as \"balanceAmount\",\ncast((coalesce(d.designerserviceamount, 0) - coalesce(d.balanceamount, 0)) as Decimal(10,2)) as \"usedAmount\",\ncast(coalesce(d.designerserviceamount, 0) as Decimal(10,2)) \nas \"designerserviceAmount\",st.lastmodifieddate,st.status from\n(\nselect\na.invoiceid,\na.customerid,\na.custphone,\n(select ABS(sum(b.amount)) from designerservice b where b.invoiceid=a.invoiceid \nand b.customerid = a.customerid and b.custphone= a.custphone \ngroup by b.invoiceid, b.customerid, b.custphone )\nas balanceamount,\n(select ABS(sum(e.amount)) from \ndesignerservice e where e.amount > 0 \nand  e.recordtype = 1 and e.invoiceid=a.invoiceid and e.customerid = a.customerid and e.custphone = a.custphone group by e.invoiceid, e.customerid, e.custphone)\nas designerserviceamount\nfrom designerservice a \n--                where a.customerid = '0554076508'\n)  \nas d \ninner join salestable as st on d.invoiceid=st.salesid \nwhere d.balanceamount > 0\nand st.inventlocationid ='" + params.inventlocationid + "'\nand st.lastmodifieddate ::Date>='" + params.fromDate + "'\nand st.lastmodifieddate ::Date<='" + params.toDate + "'";
+                        fDate = new Date(params.fromDate);
+                        fDate.setHours(0, 0, 0);
+                        tDate = new Date(params.toDate);
+                        tDate.setHours(0, 0, 0);
+                        fromDate = App_1.App.convertUTCDateToLocalDate(fDate, params.timeZoneOffSet ? params.timeZoneOffSet : 0);
+                        toDate = App_1.App.convertUTCDateToLocalDate(tDate, params.timeZoneOffSet ? params.timeZoneOffSet : 0);
+                        query = "          \nselect distinct d.invoiceid, d.customerid, d.custphone,\ncast(coalesce(d.balanceamount, 0) as Decimal(10,2)) as \"balanceAmount\",\ncast((coalesce(d.designerserviceamount, 0) - coalesce(d.balanceamount, 0)) as Decimal(10,2)) as \"usedAmount\",\ncast(coalesce(d.designerserviceamount, 0) as Decimal(10,2)) \nas \"designerserviceAmount\",st.lastmodifieddate,st.status from\n(\nselect\na.invoiceid,\na.customerid,\na.custphone,\n(select ABS(sum(b.amount)) from designerservice b where b.invoiceid=a.invoiceid \nand b.customerid = a.customerid and b.custphone= a.custphone \ngroup by b.invoiceid, b.customerid, b.custphone )\nas balanceamount,\n(select ABS(sum(e.amount)) from \ndesignerservice e where e.amount > 0 \nand  e.recordtype = 1 and e.invoiceid=a.invoiceid and e.customerid = a.customerid and e.custphone = a.custphone group by e.invoiceid, e.customerid, e.custphone)\nas designerserviceamount\nfrom designerservice a \n--                where a.customerid = '0554076508'\n)  \nas d \ninner join salestable as st on d.invoiceid=st.salesid \nwhere d.balanceamount > 0\nand st.inventlocationid ='" + params.inventlocationid + "'\nand st.lastmodifieddate ::Date>='" + fromDate + "' ::timestamp\nand st.lastmodifieddate ::Date<='" + toDate + "' ::timestamp";
                         if (params.status != "ALL") {
                             if (params.status == "RESERVED") {
                                 query += " and st.status in ('RESERVED') ";

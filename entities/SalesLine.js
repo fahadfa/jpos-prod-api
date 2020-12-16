@@ -14,6 +14,7 @@ var SalesTable_1 = require("../entities/SalesTable");
 var Inventtable_1 = require("./Inventtable");
 var Configtable_1 = require("./Configtable");
 var InventSize_1 = require("./InventSize");
+var InventTrans_1 = require("./InventTrans");
 var SalesLine = /** @class */ (function () {
     function SalesLine() {
     }
@@ -359,6 +360,11 @@ var SalesLine = /** @class */ (function () {
         typeorm_1.ManyToOne(function (type) { return SalesTable_1.SalesTable; }),
         __metadata("design:type", SalesTable_1.SalesTable)
     ], SalesLine.prototype, "salestable", void 0);
+    __decorate([
+        typeorm_1.JoinColumn({ name: "id" }),
+        typeorm_1.OneToMany(function (type) { return InventTrans_1.Inventorytrans; }, function (inventtrans) { return inventtrans.salesLine; }),
+        __metadata("design:type", Array)
+    ], SalesLine.prototype, "inventtrans", void 0);
     SalesLine = __decorate([
         typeorm_1.Entity("salesline")
     ], SalesLine);

@@ -98,30 +98,39 @@ var ConfigtableService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 6, , 7]);
-                        if (!params.itemid) return [3 /*break*/, 4];
-                        // var t0 = new Date().getTime();
+                        _a.trys.push([0, 9, , 10]);
+                        Items = void 0;
+                        if (!params.itemid) return [3 /*break*/, 7];
+                        if (!(params.itemid == "HSN-00001")) return [3 /*break*/, 2];
                         params.inventlocationid = this.sessionInfo.inventlocationid;
-                        return [4 /*yield*/, this.rawQuery.getColorCodesInStock(params)];
+                        return [4 /*yield*/, this.rawQuery.getColorantCodesInStock(params)];
                     case 1:
                         Items = _a.sent();
-                        data = [];
-                        if (!(Items.length > 0)) return [3 /*break*/, 3];
-                        return [4 /*yield*/, this.configtableDAO.search(params, Items)];
+                        return [3 /*break*/, 4];
                     case 2:
+                        params.inventlocationid = this.sessionInfo.inventlocationid;
+                        return [4 /*yield*/, this.rawQuery.getColorCodesInStock(params)];
+                    case 3:
+                        Items = _a.sent();
+                        _a.label = 4;
+                    case 4:
+                        data = [];
+                        if (!(Items.length > 0)) return [3 /*break*/, 6];
+                        return [4 /*yield*/, this.configtableDAO.search(params, Items)];
+                    case 5:
                         data = _a.sent();
                         console.log(data.length);
-                        _a.label = 3;
-                    case 3: 
+                        _a.label = 6;
+                    case 6: 
                     // var t1 = new Date().getTime();
                     // console.log("took " + (t1 - t0) / 1000 + " milliseconds.");
                     return [2 /*return*/, data];
-                    case 4: throw "itemid Required";
-                    case 5: return [3 /*break*/, 7];
-                    case 6:
+                    case 7: throw "itemid Required";
+                    case 8: return [3 /*break*/, 10];
+                    case 9:
                         error_3 = _a.sent();
                         throw error_3;
-                    case 7: return [2 /*return*/];
+                    case 10: return [2 /*return*/];
                 }
             });
         });

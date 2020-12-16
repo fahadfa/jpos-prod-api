@@ -82,12 +82,20 @@ var InventtransService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
+                        _a.trys.push([0, 5, , 6]);
                         t0 = new Date().getTime();
                         params.inventlocationid = this.sessionInfo.inventlocationid;
-                        return [4 /*yield*/, this.rawQuery.inventoryOnHand(params)];
+                        data = void 0;
+                        if (!(params.itemId == "HSN-00001")) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.rawQuery.inventoryOnHandForColorant(params)];
                     case 1:
                         data = _a.sent();
+                        return [3 /*break*/, 4];
+                    case 2: return [4 /*yield*/, this.rawQuery.inventoryOnHand(params)];
+                    case 3:
+                        data = _a.sent();
+                        _a.label = 4;
+                    case 4:
                         // let data: any = await this.rawQuery.getInventTransFromView(params);
                         data.map(function (v) {
                             v.availabilty = parseInt(v.availabilty);
@@ -95,10 +103,10 @@ var InventtransService = /** @class */ (function () {
                             v.totalAvailable = parseInt(v.totalAvailable);
                         });
                         return [2 /*return*/, data];
-                    case 2:
+                    case 5:
                         error_2 = _a.sent();
                         throw error_2;
-                    case 3: return [2 /*return*/];
+                    case 6: return [2 /*return*/];
                 }
             });
         });
@@ -176,6 +184,7 @@ var InventtransService = /** @class */ (function () {
                         return [4 /*yield*/, this.rawQuery.getSelectedBatches(params)];
                     case 7:
                         data = _b.sent();
+                        console.log(data, "=====================================");
                         salesorderlines_1 = [];
                         returnorderlines_1 = [];
                         data.map(function (v) {
@@ -422,13 +431,15 @@ var InventtransService = /** @class */ (function () {
                                 }
                             }
                             else {
-                                result_2.push({
-                                    itemid: v.itemid,
-                                    configId: v.configId,
-                                    inventsizeid: v.inventsizeid,
-                                    selectedQuantity: v.salesQty,
-                                    availabilty: 0,
-                                });
+                                if (v.itemid != "HSN-00001") {
+                                    result_2.push({
+                                        itemid: v.itemid,
+                                        configId: v.configId,
+                                        inventsizeid: v.inventsizeid,
+                                        selectedQuantity: v.salesQty,
+                                        availabilty: 0,
+                                    });
+                                }
                             }
                         });
                         return [2 /*return*/, result_2];

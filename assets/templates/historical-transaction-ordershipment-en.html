@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Language" content="ar-sy" />
+    <meta name="description" content="بيسب" />
+    <style>
+      body {
+        font-family: " Courier New", Courier, monospace !important;
+        font-size: 11px;
+        width: 100%;
+        background: #fff;
+        padding: 0px;
+        font-weight: normal !important;
+        width: 98%;
+      }
+
+      thead {
+        display: table-header-group;
+      }
+
+      .td {
+        /* background: hotpink; */
+        display: table-cell;
+        height: 8px;
+        width: 200px;
+      }
+
+      #invoiceDetails td,
+      #invoiceDetails th {
+        text-align: center;
+        vertical-align: middle;
+        border: 1px solid #c1c1c1;
+        border-style: dotted;
+        padding: 10px;
+      }
+
+      .inline-table {
+        border-bottom: 1px solid black;
+        padding: 0px !important;
+        margin: 0px !important;
+      }
+
+      .copy-text {
+        color: #000;
+        font-size: 20px;
+        border: 1px solid #000;
+        font-weight: 600;
+        padding: 10px;
+        margin: 20px;
+      }
+
+      @page {
+        margin: 20mm;
+      }
+
+      @media print {
+        #headertbl {
+          width: 100%;
+          margin-top: 0px;
+          padding-top: 100px;
+        }
+
+        thead {
+          display: table-header-group;
+        }
+
+        tfoot {
+          display: table-footer-group;
+        }
+
+        button {
+          display: none;
+        }
+
+        body {
+          margin: 0;
+        }
+      }
+
+      #bg__watermark {
+        display: block;
+        min-width: 100%;
+        opacity: 0.5;
+      }
+
+      #bg__text__watermark {
+        color: lightgrey;
+        font-size: 120px;
+        text-align: center;
+        transform: rotate(-45deg);
+        transform-origin: 50% 50%;
+        -webkit-transform: rotate(-45deg);
+        -webkit-transform-origin: 50% 50%;
+        opacity: 0.9;
+        filter: alpha(opacity=50);
+        background-color: transparent;
+        background-size: 100%;
+        position: fixed;
+        margin: 50% auto;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="bg__watermark">
+      <p id="bg__text__watermark">Only for testing</p>
+    </div>
+
+    <section style="page-break-before: always">
+      <table width="100%" id="headertbl">
+        <tr>
+          <td colspan="3" valign="top" style="width: 33%">
+            <table style="text-align: left">
+              <tr class="billing">
+                <td class="textboldtd" valign="top">From</td>
+                <td valign="top">:</td>
+                <td>{{this.wnamealias}}</td>
+              </tr>
+
+              <tr class="billing">
+                <td class="textboldtd" valign="top">Fax</td>
+                <td valign="top">:</td>
+                <td>{{this.fax}}</td>
+              </tr>
+
+              <tr class="billing">
+                <td class="textboldtd" valign="top">Transfer Order Id</td>
+                <td valign="top">:</td>
+                <td>{{this.interCompanyOriginalSalesId}}</td>
+              </tr>
+            </table>
+          </td>
+          <td colspan="3" valign="top" style="width: 33%; font-size: 14px">
+            <table style="text-align: center">
+              <tr>
+                <td>Shipment Order Id</td>
+              </tr>
+              <br />
+              <tr>
+                <span style="font-weight: 800">
+                  <td>{{this.salesId}}</td>
+                </span>
+              </tr>
+            </table>
+          </td>
+          <td colspan="3" valign="top" style="width: 33%">
+            <table style="text-align: left">
+              <tr class="billing">
+                <td class="textboldtd" valign="top">To</td>
+                <td valign="top">:</td>
+                <td>{{this.twnamealias}}</td>
+              </tr>
+              <tr class="billing">
+                <td class="textboldtd" valign="top">Order Date</td>
+                <td valign="top">:</td>
+                <td>{{this.createddatetime}}</td>
+              </tr>
+
+              <tr class="billing">
+                <td class="textboldtd" valign="top">Notes</td>
+                <td valign="top">:</td>
+                <td></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+
+      <table
+        id="invoiceDetails"
+        style="margin-top: 10px"
+        width="100%"
+        class="item-table"
+        cellpadding="0"
+        cellspacing="0"
+      >
+        <thead>
+          <tr>
+            <th class="th" width="10%">S.No</th>
+            <th class="th" width="20%">Item No</th>
+            <th class="th">Description</th>
+            <th class="th" width="20%">Batch No</th>
+            <th class="th" width="10%">Qty</th>
+          </tr>
+        </thead>
+
+        {{#each salesLine}}
+        <tr class="tab-data">
+          <td class="td">{{this.sNo}}</td>
+          <td class="td">
+            <div style="font-size: 12px">{{this.itemid}}</div>
+          </td>
+          <td class="td description-data">
+            <span style="font-size: 12px">
+              {{this.prodNameEn}}, {{this.configid}}, {{#if this.colorantid}} {{this.colorantid}}, {{/if}}
+              {{this.inventsizeid}}
+            </span>
+          </td>
+          <td class="td">{{this.batchno}}</td>
+          <td class="td">{{this.salesQty}}</td>
+        </tr>
+        {{/each}}
+      </table>
+      <table width="100%" style="text-align:right;font-size: 12px;margin-top: 8px;">
+
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>
+                Total Quantity:{{ this.quantity }}
+            </td>
+        </tr>
+
+    </table>
+
+      <table width="100%" style="background: #fff;padding-top: 10px;">
+        <tr>
+            <td style="width:33%;font-size:15px; text-align: left;">
+                Recipient
+            </td>
+            <td style="width:33%;font-size:15px; text-align: center;">
+                Seller
+            </td>
+            <td style="width:33%;font-size:15px;text-align: right;">
+                Company
+            </td>
+        </tr>
+    </table>
+
+    </section>
+  </body>
+</html>

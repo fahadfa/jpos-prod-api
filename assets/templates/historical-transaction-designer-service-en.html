@@ -210,7 +210,7 @@
     <div class="page-footer">
     </div>
 
-    <table>
+    <table width="100%">
         <thead>
             <tr>
                 <td>
@@ -274,10 +274,10 @@
                                     </table>
                                 </td>
                                 <td style="width:30%" align="center">
-                                    {{#if originalPrinted}}
+                                    <!-- {{#if originalPrinted}}
                                     <span class="copy-text">COPY</span>
                                     {{/if}}
-                                    <br>
+                                    <br> -->
                                     <table style="text-align:center">
 
                                         <tr>
@@ -316,7 +316,13 @@
                                             <td>:</td>
                                             <td>300533832200003</td>
                                         </tr>
-
+                                        {{#if this.isDesignerServiceReturn}}
+                                        <tr>
+                                            <td>Designer Service Id</td>
+                                            <td>:</td>
+                                            <td>{{this.interCompanyOriginalSalesId}}</td>
+                                        </tr>
+                                        {{/if}}
 
 
 
@@ -352,14 +358,15 @@
                                 </th>
                                 <th class="th" style="font-weight:normal">Net Amnt after VAT</th>
                             </tr>
+                            
                             {{#each salesLine}}
+                           
                             <tr class="tab-data">
                                 <td class="td">{{this.sNo}}</td>
                                 <td class="td">
                                     <div style="font-size:13px">
                                         {{this.itemid}}
                                     </div>
-
 
                                 </td>
                                 <td class="td description-data">
@@ -403,7 +410,6 @@
                                 </td>
 
                             </tr>
-
                             {{/each}}
 
 

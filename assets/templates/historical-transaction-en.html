@@ -222,7 +222,9 @@
                 <td class="textboldtd" valign="top">Customer</td>
                 <td valign="top">:</td>
                 <td>
-                  {{this.invoiceAccount}} - {{this.customername}}
+
+                  {{#if this.invoiceAccount}} {{this.invoiceAccount}} {{else}} {{this.custAccount}} {{/if}}
+                  - {{this.customername}}
                 </td>
               </tr>
               <tr class="billing">
@@ -258,16 +260,16 @@
           <td colspan="3" valign="bottom" style="width: 33%;">
             <table align="center" style="text-align: center;">
               <!-- {{#if this.originalPrinted}} -->
-              <tr>
+              <!-- <tr>
                 <td class="copy-text">Historical Transaction</td>
-              </tr>
+              </tr> -->
               <!-- {{/if}} -->
               <!-- <tr>
                 <td>Historical Transaction
                 </td>
               </tr> -->
               <tr>
-                <td><span style="font-size: 14px; font-weight: bold;">{{salesId}}</span></td>
+                <td><span style="font-size: 16px; font-weight: bold;">{{salesId}}</span></td>
               </tr>
             </table>
           </td>
@@ -580,11 +582,11 @@
           </td>
           <td colspan="3" valign="bottom" style="width: 33%;">
             <table align="center" style="text-align: center;">
-              {{#if this.originalPrinted}}
+              <!-- {{#if this.originalPrinted}}
               <tr>
                 <td class="copy-text">COPY</td>
               </tr>
-              {{/if}}
+              {{/if}} -->
               <tr>
                 <td>Sales Invoice</td>
               </tr>

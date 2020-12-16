@@ -99,11 +99,17 @@ var RedeemPointsReport = /** @class */ (function () {
     };
     RedeemPointsReport.prototype.query_to_data = function (params) {
         return __awaiter(this, void 0, void 0, function () {
-            var query;
+            var fDate, tDate, fromDate, toDate, query;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = "select\n    s.salesid,\n    s.invoiceaccount as \"custAccount\",\n    c.\"name\" as \"customerNameAr\",\n    c.namealias as \"customerNameEn\",\n    to_char(s.redeempts, 'FM999999999') as \"redeemPoints\",\n    s.redeemptsamt  as \"redeemAmount\",\n    s.createddatetime as \"createdDateTime\",\n    s.lastmodifieddate  as \"lastModifiedDate\",\n    s.inventlocationid  as inventlocationid\n    from salestable s\n    left join custtable c on c.accountnum  = s.invoiceaccount\n    where redeempts > 0 and s.inventlocationid ='" + params.inventlocationid + "'\nand s.lastmodifieddate ::Date>='" + params.fromDate + "'\nand s.lastmodifieddate ::Date<='" + params.toDate + "'";
+                        fDate = new Date(params.fromDate);
+                        fDate.setHours(0, 0, 0);
+                        tDate = new Date(params.toDate);
+                        tDate.setHours(0, 0, 0);
+                        fromDate = App_1.App.convertUTCDateToLocalDate(fDate, params.timeZoneOffSet ? params.timeZoneOffSet : 0);
+                        toDate = App_1.App.convertUTCDateToLocalDate(tDate, params.timeZoneOffSet ? params.timeZoneOffSet : 0);
+                        query = "select\n    s.salesid,\n    s.invoiceaccount as \"custAccount\",\n    c.\"name\" as \"customerNameAr\",\n    c.namealias as \"customerNameEn\",\n    to_char(s.redeempts, 'FM999999999') as \"redeemPoints\",\n    s.redeemptsamt  as \"redeemAmount\",\n    s.createddatetime as \"createdDateTime\",\n    s.lastmodifieddate  as \"lastModifiedDate\",\n    s.inventlocationid  as inventlocationid\n    from salestable s\n    left join custtable c on c.accountnum  = s.invoiceaccount\n    where redeempts > 0 and s.inventlocationid ='" + params.inventlocationid + "'\nand s.lastmodifieddate ::timestamp>='" + fromDate + "'\nand s.lastmodifieddate ::timestamp<='" + toDate + "'";
                         if (params.custaccount) {
                             query += "and s.invoiceaccount= '" + params.custaccount + "'";
                         }

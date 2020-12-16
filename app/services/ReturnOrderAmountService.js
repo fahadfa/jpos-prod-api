@@ -78,6 +78,9 @@ var ReturnOrderAmountService = /** @class */ (function () {
                         return [4 /*yield*/, this.date_diff_indays(new Date(salesOrderData.lastModifiedDate).toISOString(), new Date().toISOString())];
                     case 2:
                         date_dif = _b.sent();
+                        if (date_dif > 30) {
+                            throw "RETURN_OF_ITEMS_WILL_ACCEPT_ONLY_WITH_IN_45_DAYS";
+                        }
                         return [4 /*yield*/, this.salesTableDAO.search({
                                 interCompanyOriginalSalesId: reqData.salesid.toUpperCase(),
                             })];

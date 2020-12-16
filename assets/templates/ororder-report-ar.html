@@ -186,6 +186,7 @@
   <table class="dash" width="100%" cellpadding="0" cellspacing="0">
     <thead>
       <tr>
+        <th class="th">لا</th>
         <th class="th">رقم الفاتورة</th>
         <th class="th">من المستودع</th>
         <th class="th">إلى المستودع</th>
@@ -197,6 +198,7 @@
     <tbody>
       {{#each data}}
       <tr class="tab-data">
+        <td>{{this.sNo}}</td>
         <td width="20%">{{this.salesId}}</td>
         <td>{{this.fromWareHouseNameAr}}</td>
         <td>{{this.toWareHouseNameAr}}</td>

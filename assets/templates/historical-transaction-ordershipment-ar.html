@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Language" content="ar-sy" />
+    <meta name="description" content="بيسب" />
+  </head>
+  <style>
+    body {
+        font-family: " Courier New", Courier, monospace !important;
+        font-size: 11px;
+        width: 100%;
+        background: #fff;
+        padding: 0px;
+        font-weight: normal !important;
+        width: 98%;
+        direction: rtl;
+      }
+
+      thead {
+        display: table-header-group;
+      }
+
+      .td {
+        /* background: hotpink; */
+        display: table-cell;
+        height: 8px;
+        width: 200px;
+      }
+
+      #invoiceDetails td,
+      #invoiceDetails th {
+        text-align: center;
+        vertical-align: middle;
+        border: 1px solid #c1c1c1;
+        border-style: dotted;
+        padding: 10px;
+      }
+
+      .inline-table {
+        border-bottom: 1px solid black;
+        padding: 0px !important;
+        margin: 0px !important;
+      }
+
+      .copy-text {
+        color: #000;
+        font-size: 20px;
+        border: 1px solid #000;
+        font-weight: 600;
+        padding: 10px;
+        margin: 20px;
+      }
+
+      @page {
+        margin: 20mm;
+      }
+
+      @media print {
+        #headertbl {
+          width: 100%;
+          margin-top: 0px;
+          padding-top: 100px;
+        }
+
+        thead {
+          display: table-header-group;
+        }
+
+        tfoot {
+          display: table-footer-group;
+        }
+
+        button {
+          display: none;
+        }
+
+        body {
+          margin: 0;
+        }
+      }
+
+      #bg__watermark {
+        display: block;
+        min-width: 100%;
+        opacity: 0.5;
+      }
+
+      #bg__text__watermark {
+        color: lightgrey;
+        font-size: 120px;
+        text-align: center;
+        transform: rotate(-45deg);
+        transform-origin: 50% 50%;
+        -webkit-transform: rotate(-45deg);
+        -webkit-transform-origin: 50% 50%;
+        opacity: 0.9;
+        filter: alpha(opacity=50);
+        background-color: transparent;
+        background-size: 100%;
+        position: fixed;
+        margin: 50% auto;
+      }
+  </style>
+
+  <body>
+    <section style="page-break-before: always;">
+      <div id="bg__watermark">
+        <p id="bg__text__watermark">فقط للاختبار</p>
+      </div>
+
+      <table width="100%" id="headertbl">
+        <tr>
+          <td colspan="3" valign="top" style="width: 33%">
+            <table style="text-align: left">
+              <tr class="billing">
+                <td class="textboldtd" valign="top">من عند</td>
+                <td valign="top">:</td>
+                <td>{{this.wnamealias}}</td>
+              </tr>
+
+              <tr class="billing">
+                <td class="textboldtd" valign="top">فاكس</td>
+                <td valign="top">:</td>
+                <td>{{this.fax}}</td>
+              </tr>
+
+              <tr class="billing">
+                <td class="textboldtd" valign="top">معرف أمر التحويل</td>
+                <td valign="top">:</td>
+                <td>{{this.interCompanyOriginalSalesId}}</td>
+              </tr>
+            </table>
+          </td>
+          <td colspan="3" valign="top" style="width: 33%; font-size: 14px">
+            <table style="text-align: center">
+              <tr>
+                <td>معرّف طلب الشحن</td>
+              </tr>
+              <br />
+              <tr>
+                <span style="font-weight: 800">
+                  <td>{{this.salesId}}</td>
+                </span>
+              </tr>
+            </table>
+          </td>
+          <td colspan="3" valign="top" style="width: 33%">
+            <table style="text-align: left">
+              <tr class="billing">
+                <td class="textboldtd" valign="top">إلى</td>
+                <td valign="top">:</td>
+                <td>{{this.twnamealias}}</td>
+              </tr>
+              <tr class="billing">
+                <td class="textboldtd" valign="top">تاريخ الطلب</td>
+                <td valign="top">:</td>
+                <td>{{this.createddatetime}}</td>
+              </tr>
+
+              <tr class="billing">
+                <td class="textboldtd" valign="top">ملاحظات</td>
+                <td valign="top">:</td>
+                <td></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+
+      <table
+      id="invoiceDetails"
+      style="margin-top: 10px"
+      width="100%"
+      class="item-table"
+      cellpadding="0"
+      cellspacing="0"
+    >
+      <thead>
+        <tr>
+          <th class="th" width="10%">لا</th>
+          <th class="th" width="20%">رقم الشيء</th>
+          <th class="th">وصف</th>
+          <th class="th" width="20%">رقم الحزمة</th>
+          <th class="th" width="10%">كمية</th>
+        </tr>
+      </thead>
+
+      {{#each salesLine}}
+      <tr class="tab-data">
+        <td class="td">{{this.sNo}}</td>
+        <td class="td">
+          <div style="font-size: 12px">{{this.itemid}}</div>
+        </td>
+        <td class="td description-data">
+          <span style="font-size: 12px">
+            {{this.prodNameEn}}, {{this.configid}}, {{#if this.colorantid}} {{this.colorantid}}, {{/if}}
+            {{this.inventsizeid}}
+          </span>
+        </td>
+        <td class="td">{{this.batchno}}</td>
+        <td class="td">{{this.salesQty}}</td>
+      </tr>
+      {{/each}}
+    </table>
+
+    <table width="100%" style="text-align:left;margin-top: 8px;">
+      <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>
+          الكمية الإجمالية:{{ this.quantity }}
+        </td>
+      </tr>
+    </table>
+
+    <table width="100%" style="background: #fff;">
+      <tr>
+        <td style="width:33%;font-size:15px; text-align: right;">
+          المستلم
+          <!-- receipt -->
+        </td>
+        <td style="width:33%;font-size:15px; text-align:center;">
+          البائع
+        </td>
+        <td style="width:33%;font-size:15px; text-align: left;">
+          الشركة
+        </td>
+      </tr>
+    </table>
+      
+    
+    </section>
+
+
+ 
+  </body>
+</html>

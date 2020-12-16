@@ -62,6 +62,36 @@ var SalesTableDAO = /** @class */ (function () {
                             "salesLine.size",
                             "salesLine.size.product",
                         ],
+                        join: {
+                            alias: "salestable",
+                            innerJoinAndSelect: {
+                                salesLine: "salestable.salesLine",
+                                inventtrans: "salesLine.inventtrans",
+                                color: "salesLine.color",
+                                size: "salesLine.size",
+                                product: "size.product",
+                            },
+                        },
+                    })];
+            });
+        });
+    };
+    SalesTableDAO.prototype.transferorderEntity = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.dao.findOne(id, {
+                        relations: [
+                            "warehouse",
+                            // "customer",
+                            "movementType",
+                            // "toWarehouse",
+                            "salesLine",
+                            // "salesLine.appliedDiscounts",
+                            // "salesLine.product",
+                            "salesLine.color",
+                            "salesLine.size",
+                            "salesLine.size.product",
+                        ],
                     })];
             });
         });

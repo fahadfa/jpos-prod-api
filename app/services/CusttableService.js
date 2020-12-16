@@ -322,6 +322,14 @@ var CusttableService = /** @class */ (function () {
                                     item.inventlocation = this.sessionInfo.inventlocationid;
                                     item.createdDateTime = new Date(App_1.App.DateNow());
                                     item.createdby = this.sessionInfo.userName;
+                                    item.citycode = this.sessionInfo.showroomCityCode;
+                                    item.districtcode = this.sessionInfo.showroomDistrictCode;
+                                    item.countryCode = this.sessionInfo.showroomCountryCode
+                                        ? this.sessionInfo.showroomCountryCode
+                                        : "KSA: Kingdom of Saudi Arabia";
+                                    item.walkincustomer = true;
+                                    item.paymtermid = "CASH";
+                                    item.dataareaId = this.sessionInfo.dataareaid;
                                 }
                                 // item.accountnum = await this.getAccountNum();
                             }

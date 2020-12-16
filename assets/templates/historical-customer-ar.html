@@ -209,37 +209,18 @@
         {{#each data}}
         <tr>
           <td class="tdcenter">{{ this.salesId }}</td>
-          <!-- <td>{{ this.salesManId }}</td> -->
-
-          <td class="tdcenter">{{ this.lastmodifieddate }}</td>
-          <!-- <td class="tdcenter">{{ this.customername }}</td> -->
-          <!-- {{# if this.walkincustomer}} {{# if this.phone}}
-          <td class="tdcenter">{{ this.phone }}</td>
-          {{else}}
-          <td class="tdcenter">{{ this.custAccount }}</td>
-          {{/if}} {{else}}
-          <td class="tdcenter">{{ this.custAccount }}</td>
-          {{/ if}} -->
-          <td class="tdcenter">{{ this.paymentModeAr }}</td>
-          <td class="tdcenter">
-            {{#if voucherdiscchecked}} {{ this.vouchernum }} {{else}} --- {{/if}}
-          </td>
-          <td class="tdcenter">{{ this.transkindAr }}</td>
-          <td class="tdcenter">{{ this.statusAr }}</td>
-          <td class="tdright">{{ this.grossAmount }}</td>
-          <td class="tdright">{{ this.discount }}</td>
-          <td class="tdright">{{ this.vatAmount }}</td>
+          <td class="tdcenter">{{ this.lastmodifieddate }}</td>         
+          <td class="tdcenter">{{ this.paymentMode }}</td>
+          <td class="tdcenter">{{#if voucherdiscchecked}} {{ this.vouchernum }} {{else}} --- {{/if}}</td>
+          <td class="tdcenter">{{ this.transkindEn }}</td>
+          <td class="tdcenter">{{ this.statusEn }}</td>
+          <td class="tdright">{{ this.amount }}</td>
+          <td class="tdright">{{ this.disc }}</td>
+          <td class="tdright">{{this.vatamount}}</td>
           <td class="tdright">{{ this.netAmount }}</td>
         </tr>
         {{/each}}
-        <tr class="textbold">
-          <td colspan="7">&nbsp;</td>
-          <td class="tdleft">مجموع</td>
-          <td class="tdright">{{ amount }}</td>
-          <td class="tdright">{{ disc}}</td>
-          <td class="tdright">{{vatamount}}</td>
-          <td class="tdright">{{ netAmount }}</td>
-        </tr>
+       
       </tbody>
     </table>
   </body>

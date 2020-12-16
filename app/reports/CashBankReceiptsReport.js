@@ -129,13 +129,19 @@ var CashBankReceiptsReport = /** @class */ (function () {
     };
     CashBankReceiptsReport.prototype.query_to_data = function (params) {
         return __awaiter(this, void 0, void 0, function () {
-            var query;
+            var query, fDate, tDate, fromDate, toDate;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         query = " \n      select \n      jt.journalnum as journalnum,\n      jt.accountnum as custaccount,\n      concat(jt.accountnum, ' : ',  jt.namearabic) as customer,\n      j.description as remarks,\n      to_char(j.lastmodifieddate, 'DD-MM-YYYY') as date,\n      to_char(jt.amountcurcredit , 'FM999999999990.00') as amount,\n      j.log as type,\n      al.en as \"typeEn\",\n      al.ar as \"typeAr\",\n      j.name as \"warehouse\",\n      w.name as \"wareHouseNameAr\",\n      w.namealias as \"wareHouseNameEn\"\n      from ledgerjournaltrans jt \n      inner join ledgerjournaltable j on j.journalnum = jt.journalnum\n      left join inventlocation w on w.inventlocationid=j.name\n      left join app_lang al on al.id = j.log\n      where jt.accounttype = 1\n    ";
                         if (params.fromDate && params.toDate) {
-                            query += "and j.lastmodifieddate >= '" + params.fromDate + "' ::date\n      AND  j.lastmodifieddate < ('" + params.toDate + "' ::date + '1 day'::interval) ";
+                            fDate = new Date(params.fromDate);
+                            fDate.setHours(0, 0, 0);
+                            tDate = new Date(params.toDate);
+                            tDate.setHours(0, 0, 0);
+                            fromDate = App_1.App.convertUTCDateToLocalDate(fDate, params.timeZoneOffSet ? params.timeZoneOffSet : 0);
+                            toDate = App_1.App.convertUTCDateToLocalDate(tDate, params.timeZoneOffSet ? params.timeZoneOffSet : 0);
+                            query += "and j.lastmodifieddate >= '" + fromDate + "' ::timestamp\n      AND  j.lastmodifieddate < ('" + toDate + "' ::timestamp + '1 day'::interval) ";
                         }
                         if (params.receiptType && params.receiptType != "ALL") {
                             query += " and j.log = '" + params.receiptType + "' ";

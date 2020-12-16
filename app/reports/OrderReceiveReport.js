@@ -52,7 +52,7 @@ var OrderReceiveReport = /** @class */ (function () {
     }
     OrderReceiveReport.prototype.execute = function (params) {
         return __awaiter(this, void 0, void 0, function () {
-            var queryRunner, id, status_1, data_1, salesLine, i_1, checkPrevData, date, query, salesLineQuery, inventtransQuery_1, inventtransQuery, error_1;
+            var queryRunner, id, status_1, data_1, salesLine, i_1, checkPrevData, date, query, salesLineQuery, inventtransQuery, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -65,7 +65,7 @@ var OrderReceiveReport = /** @class */ (function () {
                         _a.sent();
                         _a.label = 3;
                     case 3:
-                        _a.trys.push([3, 12, 14, 16]);
+                        _a.trys.push([3, 11, 13, 15]);
                         id = params.salesId;
                         return [4 /*yield*/, this.query_to_data(id)];
                     case 4:
@@ -77,7 +77,7 @@ var OrderReceiveReport = /** @class */ (function () {
                         salesLine = _a.sent();
                         i_1 = 1;
                         salesLine.map(function (v) {
-                            v.sNo += i_1;
+                            v.sNo = i_1;
                             i_1 += 1;
                         });
                         data_1.salesLine = salesLine;
@@ -105,36 +105,30 @@ var OrderReceiveReport = /** @class */ (function () {
                         _a.sent();
                         salesLineQuery = " UPDATE salesline SET \n        status = 'POSTED',\n        lastmodifieddate = '" + date + "' \n        WHERE salesid = '" + params.salesId + "' ";
                         queryRunner.query(salesLineQuery);
-                        inventtransQuery_1 = "UPDATE inventtrans SET transactionclosed = " + true + " ,reserve_status = 'POSTED' ";
+                        inventtransQuery = "UPDATE inventtrans SET transactionclosed = " + true + " ,reserve_status = 'POSTED' ";
                         if (date) {
-                            inventtransQuery_1 += ",dateinvent = '" + date + "' ";
+                            inventtransQuery += ",dateinvent = '" + date + "' ";
                         }
-                        inventtransQuery_1 += " WHERE invoiceid = '" + params.salesId.toUpperCase() + "'";
-                        return [4 /*yield*/, this.db.query(inventtransQuery_1)];
+                        inventtransQuery += " WHERE invoiceid = '" + params.salesId.toUpperCase() + "' and itemid !='HSN-00001' ";
+                        return [4 /*yield*/, this.db.query(inventtransQuery)];
                     case 8:
                         _a.sent();
                         _a.label = 9;
-                    case 9:
-                        inventtransQuery = "UPDATE inventtrans SET transactionclosed = " + true + ", reserve_status = 'POSTED' ";
-                        inventtransQuery += " WHERE invoiceid = '" + params.salesId.toUpperCase() + "'";
-                        return [4 /*yield*/, queryRunner.query(inventtransQuery)];
+                    case 9: return [4 /*yield*/, queryRunner.commitTransaction()];
                     case 10:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.commitTransaction()];
-                    case 11:
-                        _a.sent();
                         return [2 /*return*/, data_1];
-                    case 12:
+                    case 11:
                         error_1 = _a.sent();
                         return [4 /*yield*/, queryRunner.rollbackTransaction()];
-                    case 13:
+                    case 12:
                         _a.sent();
                         throw error_1;
-                    case 14: return [4 /*yield*/, queryRunner.release()];
-                    case 15:
+                    case 13: return [4 /*yield*/, queryRunner.release()];
+                    case 14:
                         _a.sent();
                         return [7 /*endfinally*/];
-                    case 16: return [2 /*return*/];
+                    case 15: return [2 /*return*/];
                 }
             });
         });

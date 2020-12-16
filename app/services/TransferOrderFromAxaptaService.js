@@ -134,41 +134,40 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                         i = 1;
                         for (_i = 0, _a = data.orderLines; _i < _a.length; _i++) {
                             v = _a[_i];
-                            if (v.item_id != "HSN-00001" && v.invent_size_id != "GROUP") {
-                                salesLine = new SalesLine_1.SalesLine();
-                                salesLine.salesId = v.transfer_id;
-                                salesLine.lineNum = i;
-                                salesLine.itemid = v.item_id;
-                                salesLine.configId = v.config_id;
-                                salesLine.itemName = v.item_name;
-                                salesLine.inventsizeid = v.invent_size_id;
-                                salesLine.salesQty = parseInt(v.shipped_qty);
-                                salesLine.dataareaid = v.data_area_id.toLowerCase();
-                                salesLine.inventLocationId = data.invent_location_id_to;
-                                salesLine.batchNo = v.batch_no;
-                                salesLine.custAccount = data.invent_location_id_from;
-                                // salesLine.colors = await this.colorsDAO.findOne({ code: v.config_id });
-                                // salesLine.baseSizes = await this.baseSizeDAO.findOneforaxaptadata({ base: { code: v.item_id }, sizes: { code: v.invent_size_id } });
-                                salesLine.lastModifiedDate = new Date(App_1.App.DateNow());
-                                salesLine.createddatetime = new Date(App_1.App.DateNow());
-                                batches = {};
-                                batches.qty = parseInt(v.shipped_qty);
-                                batches.itemid = salesLine.itemid;
-                                batches.transrefid = salesLine.salesId;
-                                batches.invoiceid = salesLine.salesId;
-                                batches.batchno = salesLine.batchNo;
-                                batches.configid = salesLine.configId;
-                                batches.reservationid = salesLine.colorantId;
-                                batches.inventsizeid = salesLine.inventsizeid;
-                                batches.inventlocationid = salesLine.inventLocationId;
-                                batches.dataareaid = salesLine.dataareaid.toLowerCase();
-                                batches.transactionClosed = false;
-                                batches.dateinvent = new Date(App_1.App.DateNow());
-                                salesLine.batches = batches;
-                                // await this.updateInventoryService.updateInventtransTable(batches);
-                                salesData.salesLines.push(salesLine);
-                                i += 1;
-                            }
+                            salesLine = new SalesLine_1.SalesLine();
+                            salesLine.salesId = v.transfer_id;
+                            salesLine.lineNum = i;
+                            salesLine.itemid = v.item_id;
+                            salesLine.configId = v.config_id;
+                            salesLine.itemName = v.item_name;
+                            salesLine.inventsizeid = v.invent_size_id;
+                            salesLine.salesQty = parseInt(v.shipped_qty);
+                            salesLine.dataareaid = v.data_area_id.toLowerCase();
+                            salesLine.inventLocationId = data.invent_location_id_to;
+                            salesLine.batchNo = v.batch_no;
+                            salesLine.custAccount = data.invent_location_id_from;
+                            // salesLine.colors = await this.colorsDAO.findOne({ code: v.config_id });
+                            // salesLine.baseSizes = await this.baseSizeDAO.findOneforaxaptadata({ base: { code: v.item_id }, sizes: { code: v.invent_size_id } });
+                            salesLine.lastModifiedDate = new Date(App_1.App.DateNow());
+                            salesLine.createddatetime = new Date(App_1.App.DateNow());
+                            batches = {};
+                            batches.qty = parseInt(v.shipped_qty);
+                            batches.itemid = salesLine.itemid;
+                            batches.transrefid = salesLine.salesId;
+                            batches.invoiceid = salesLine.salesId;
+                            batches.batchno = salesLine.batchNo;
+                            batches.configid = salesLine.configId;
+                            batches.reservationid = salesLine.colorantId;
+                            batches.inventsizeid = salesLine.inventsizeid;
+                            batches.inventlocationid = salesLine.inventLocationId;
+                            batches.dataareaid = salesLine.dataareaid.toLowerCase();
+                            batches.transactionClosed = false;
+                            batches.dateinvent = new Date(App_1.App.DateNow());
+                            salesLine.batches = batches;
+                            // await this.updateInventoryService.updateInventtransTable(batches);
+                            salesData.salesLines.push(salesLine);
+                            i += 1;
+                            // }
                         }
                         return [4 /*yield*/, App_1.App.getItemNamesInSalesLines(salesData.salesLines, this.inventtableDAO)];
                     case 2:
@@ -202,7 +201,7 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                         _a.sent();
                         _a.label = 3;
                     case 3:
-                        _a.trys.push([3, 21, 23, 25]);
+                        _a.trys.push([3, 21, 25, 27]);
                         console.log(data);
                         if (!(data.inventLocationId == this.sessionInfo.inventlocationid)) return [3 /*break*/, 19];
                         salesData = void 0;
@@ -240,6 +239,9 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                         }
                         return [3 /*break*/, 7];
                     case 10:
+                        data.isInsert = salesData.isInsert;
+                        data.numberSequenceGroup = salesData.numberSequenceGroup;
+                        data.nextrec = salesData.nextrec;
                         salesLines = data.salesLines;
                         delete salesData.salesLines;
                         // await this.salesTableDAO.save(salesData);
@@ -283,19 +285,24 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                         return [2 /*return*/, { status: 1, id: salesData.salesId, message: Props_1.Props.SAVED_SUCCESSFULLY }];
                     case 18: return [3 /*break*/, 20];
                     case 19: throw { status: 0, message: "INVOICE_ID_NOT_RELATED_TO_THIS_STORE" };
-                    case 20: return [3 /*break*/, 25];
+                    case 20: return [3 /*break*/, 27];
                     case 21:
                         error_3 = _a.sent();
                         Log_1.log.error(error_3);
-                        return [4 /*yield*/, queryRunner.rollbackTransaction()];
+                        if (!data.isInsert) return [3 /*break*/, 23];
+                        return [4 /*yield*/, this.rawQuery.updateNumberSequence(data.numberSequenceGroup, parseInt(data.nextrec) - 1)];
                     case 22:
                         _a.sent();
-                        throw error_3;
-                    case 23: return [4 /*yield*/, queryRunner.release()];
+                        _a.label = 23;
+                    case 23: return [4 /*yield*/, queryRunner.rollbackTransaction()];
                     case 24:
                         _a.sent();
+                        throw error_3;
+                    case 25: return [4 /*yield*/, queryRunner.release()];
+                    case 26:
+                        _a.sent();
                         return [7 /*endfinally*/];
-                    case 25: return [2 /*return*/];
+                    case 27: return [2 /*return*/];
                 }
             });
         });
@@ -393,6 +400,7 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                         salesId = data.format.replace(hashString, year) + "-" + data.nextrec;
                         //console.log(salesId);
                         item.numberSequenceGroup = data.numbersequence;
+                        item.isInsert = true;
                         return [4 /*yield*/, this.rawQuery.updateNumberSequence(data.numbersequence, data.nextrec)];
                     case 29:
                         _b.sent();
@@ -493,7 +501,7 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                     case 2:
                         salesOrderWithId = _c.sent();
                         console.log("Sales==============>", salesOrderWithId);
-                        salestable.lastModifiedDate = salesOrderWithId.lastModifiedDate;
+                        salestable.lastModifiedDate = salesOrderWithId ? salesOrderWithId.lastModifiedDate : new Date(App_1.App.DateNow());
                         _c.label = 3;
                     case 3:
                         scannedPages_1.push(parseInt(salestable.page));
@@ -509,38 +517,40 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                             salesline = {};
                             lineArray = item.split("+");
                             if (lineArray[0] == "HSN-00001") {
-                                salesLines[salesLines.length - 1].colorantId = lineArray[1];
+                                if (salesLines[salesLines.length - 1]) {
+                                    salesLines[salesLines.length - 1].colorantId = lineArray[1];
+                                    salesLines[salesLines.length - 1].batches.reservationid = lineArray[1];
+                                }
                             }
-                            else {
-                                salesline.salesId = salestable.salesId;
-                                salesline.itemid = lineArray[0];
-                                salesline.configId = lineArray[1];
-                                salesline.inventsizeid = lineArray[2];
-                                // salesline.batch = { batchNo: lineArray[3], quantity: parseInt(lineArray[4]) };
-                                salesline.salesQty = parseInt(lineArray[4]);
-                                salesline.lastModifiedDate = new Date(App_1.App.DateNow());
-                                salesline.createddatetime = new Date(App_1.App.DateNow());
-                                salesline.inventLocationId = salestable.inventLocationId;
-                                salesline.batchNo = lineArray[3];
-                                salesline.dataareaid = this.sessionInfo.dataareaid;
-                                salesline.custAccount = salestable.custAccount;
-                                salesline.numberSequenceGroupId = salestable.numberSequenceGroup;
-                                batches = {};
-                                batches.qty = salesline.salesQty;
-                                batches.itemid = salesline.itemid;
-                                batches.transrefid = salesline.salesId;
-                                batches.invoiceid = salesline.salesId;
-                                batches.batchno = salesline.batchNo;
-                                batches.configid = salesline.configId;
-                                batches.inventsizeid = salesline.inventsizeid;
-                                batches.inventlocationid = salesline.inventLocationId;
-                                batches.dataareaid = salesline.dataareaid;
-                                batches.transactionClosed = false;
-                                batches.dateinvent = new Date(App_1.App.DateNow());
-                                salesline.batches = batches;
-                                console.log("===", salesLines.length);
-                                salesLines.push(salesline);
-                            }
+                            salesline.salesId = salestable.salesId;
+                            salesline.itemid = lineArray[0];
+                            salesline.configId = lineArray[1];
+                            salesline.inventsizeid = lineArray[2];
+                            // salesline.batch = { batchNo: lineArray[3], quantity: parseInt(lineArray[4]) };
+                            salesline.salesQty = parseInt(lineArray[4]);
+                            salesline.lastModifiedDate = new Date(App_1.App.DateNow());
+                            salesline.createddatetime = new Date(App_1.App.DateNow());
+                            salesline.inventLocationId = salestable.inventLocationId;
+                            salesline.batchNo = lineArray[3];
+                            salesline.dataareaid = this.sessionInfo.dataareaid;
+                            salesline.custAccount = salestable.custAccount;
+                            salesline.numberSequenceGroupId = salestable.numberSequenceGroup;
+                            batches = {};
+                            batches.qty = salesline.salesQty;
+                            batches.itemid = salesline.itemid;
+                            batches.transrefid = salesline.salesId;
+                            batches.invoiceid = salesline.salesId;
+                            batches.batchno = salesline.batchNo;
+                            batches.configid = salesline.configId;
+                            batches.inventsizeid = salesline.inventsizeid;
+                            batches.inventlocationid = salesline.inventLocationId;
+                            batches.dataareaid = salesline.dataareaid;
+                            batches.transactionClosed = false;
+                            batches.reserveStatus = "RECEIVED";
+                            batches.reservationid = salesline.colorantId;
+                            batches.dateinvent = new Date(App_1.App.DateNow());
+                            salesline.batches = batches;
+                            salesLines.push(salesline);
                         }
                         return [4 /*yield*/, App_1.App.getItemNamesInSalesLines(salesLines, this.inventtableDAO)];
                     case 4:

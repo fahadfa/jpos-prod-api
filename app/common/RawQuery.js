@@ -150,12 +150,13 @@ var RawQuery = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        date = moment().format();
+                        date = new Date().toISOString();
                         query = "UPDATE numbersequencetable\n        SET nextrec = " + (parseInt(value) + 1) + ",\n        lastmodifieddate = '" + date + "' ";
                         query += " WHERE numbersequence = '" + numberSequence + "'";
                         return [4 /*yield*/, this.db.query(query)];
                     case 1:
                         data = _a.sent();
+                        console.log("number sequence updated");
                         return [2 /*return*/, data];
                 }
             });
@@ -291,6 +292,27 @@ var RawQuery = /** @class */ (function () {
             });
         });
     };
+    RawQuery.prototype.inventoryOnHandForColorant = function (reqData) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result;
+            return __generator(this, function (_a) {
+                result = [
+                    {
+                        itemid: reqData.itemId,
+                        configid: reqData.configid,
+                        inventsizeid: reqData.inventsizeid,
+                        batchNo: "-",
+                        batchno: "-",
+                        availabilty: 999999,
+                        reservedQuantity: 0,
+                        totalAvailable: 999999,
+                        batchexpdate: "-",
+                    },
+                ];
+                return [2 /*return*/, result];
+            });
+        });
+    };
     RawQuery.prototype.getWareHouseDetails = function (wareHouseId) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
@@ -350,7 +372,7 @@ var RawQuery = /** @class */ (function () {
                                 else {
                                     query += "where  i.transrefid = '" + reqData.salesid + "' and transactionclosed=" + transactionclosed + " ";
                                 }
-                                query += " and i.itemid !='HSN-00001' order by sl.link_id ";
+                                query += " order by sl.link_id ";
                                 // query +=
                                 //     reqData.type == "RETURNORDER" || reqData.type == "INVENTORYMOVEMENT" || reqData.type == "PURCHASEORDER"
                                 //         ? ` and i.invoiceid = '${reqData.salesid}'`
@@ -360,6 +382,7 @@ var RawQuery = /** @class */ (function () {
                                 throw "Sales Order Id Required";
                             }
                         }
+                        console.log(query);
                         return [4 /*yield*/, this.db.query(query)];
                     case 2:
                         data = _a.sent();
@@ -513,13 +536,35 @@ var RawQuery = /** @class */ (function () {
             });
         });
     };
+    RawQuery.prototype.getColorantCodesInStock = function (param) {
+        return __awaiter(this, void 0, void 0, function () {
+            var query, data, new_data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        query = "\n                  select c.configid from configtable c\n                  where  c.itemid = '" + param.itemid + "'\n               ";
+                        return [4 /*yield*/, this.db.query(query)];
+                    case 1:
+                        data = _a.sent();
+                        new_data = [];
+                        new_data = data.map(function (element) {
+                            return element.configid;
+                        });
+                        return [2 /*return*/, new_data];
+                }
+            });
+        });
+    };
     RawQuery.prototype.getSizeCodes = function (param) {
         return __awaiter(this, void 0, void 0, function () {
             var query, data, new_data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = "select distinct lower(sz.inventsizeid) as inventsizeid from inventsize sz\n               inner join inventtable i on i.itemid = sz.itemid\n               inner join configtable c on c.itemid = sz.itemid\n                where sz.itemid = '" + param.itemid + "' and c.configid = '" + param.configid + "'";
+                        query = "select distinct lower(sz.inventsizeid) as inventsizeid from inventsize sz\n               inner join inventtable i on i.itemid = sz.itemid\n               inner join configtable c on c.itemid = sz.itemid\n                where sz.itemid = '" + param.itemid + "' and c.configid = '" + param.configid + "' ";
+                        if (param.itemid == "HSN-00001") {
+                            query += " and sz.inventsizeid = 'GROUP' ";
+                        }
                         return [4 /*yield*/, this.db.query(query)];
                     case 1:
                         data = _a.sent();
@@ -602,7 +647,8 @@ var RawQuery = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = "\n            select amount as price, tinventsizeid as inventsizeid, configid, itemrelation as itemid, accountrelation as accountrelation\n            from pricedisctable \n            where (itemcode = 0) and (accountcode = 1 or accountcode = 0) \n            and currency = '" + data.currency + "' and \n            lower(itemrelation) = lower('" + data.itemid + "') and (lower(configid)=lower('" + data.configid + "') or configid='--') and \n            (lower(accountrelation) = lower('" + data.pricegroup + "') or lower(accountrelation) = lower('" + data.custaccount + "') \n            ) and lower(tinventsizeid) in (" + data.inventsizeids + ")\n            ";
+                        query = "\n            select amount as price, tinventsizeid as inventsizeid, configid, itemrelation as itemid, accountrelation as accountrelation\n            from pricedisctable \n            where relation = 4 and (itemcode = 0) and (accountcode = 1 or accountcode = 0) \n            and currency = '" + data.currency + "' and \n            lower(itemrelation) = lower('" + data.itemid + "') and (lower(configid)=lower('" + data.configid + "') or configid='--') and \n            (lower(accountrelation) = lower('" + data.pricegroup + "') or lower(accountrelation) = lower('" + data.custaccount + "') \n            ) and lower(tinventsizeid) in (" + data.inventsizeids + ")\n            ";
+                        console.log(query);
                         return [4 /*yield*/, this.db.query(query)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -692,6 +738,23 @@ var RawQuery = /** @class */ (function () {
             });
         });
     };
+    RawQuery.prototype.getLineDiscPercentage = function (accountrelation, currency, dataareaid, custaccount) {
+        return __awaiter(this, void 0, void 0, function () {
+            var query, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        query = "select itemcode, accountcode, itemrelation, percent1 from pricedisctable where module=1 and \n        itemcode in (0,1) and accountcode in(0,1,2)  and dataareaid='" + dataareaid + "' and \n        (accountrelation='" + accountrelation + "' or accountrelation='" + custaccount + "' )";
+                        currency = currency ? currency : "SAR";
+                        query += " and currency = '" + currency + "' ";
+                        return [4 /*yield*/, this.db.query(query)];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, data];
+                }
+            });
+        });
+    };
     RawQuery.prototype.checkItemIncludeForDiscount = function (disctype, itemid, dataareaid) {
         return __awaiter(this, void 0, void 0, function () {
             var query, data, dummyData;
@@ -718,7 +781,7 @@ var RawQuery = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = "SELECT itemrelation, ACCOUNTRELATION, quantityamountfrom, quantityamountto,\n       CURRENCY,PERCENT1 FROM \n       PRICEDISCTABLE WHERE MODULE = 1 AND \n       ITEMCODE = 1 AND ACCOUNTCODE = 1 AND \n       ACCOUNTRELATION = '" + accountrelation + "' AND DATAAREAID = '" + dataareaid + "' AND CURRENCY='" + currency + "'";
+                        query = "SELECT itemrelation, ACCOUNTRELATION, quantityamountfrom, quantityamountto,\n       CURRENCY,PERCENT1 FROM \n       PRICEDISCTABLE WHERE MODULE = 1 AND \n       ITEMCODE = 1 AND ACCOUNTCODE = 1 AND relation = 6 and \n       ACCOUNTRELATION = '" + accountrelation + "' AND DATAAREAID = '" + dataareaid + "' AND CURRENCY='" + currency + "'";
                         return [4 /*yield*/, this.db.query(query)];
                     case 1:
                         data = _a.sent();
@@ -1452,7 +1515,7 @@ var RawQuery = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        query = "select distinct id from sync_source where type != 'ONLINE'";
+                        query = "select distinct id from sync_source where (type != 'ONLINE' OR type != '')";
                         return [4 /*yield*/, this.db.query(query)];
                     case 1:
                         data = _a.sent();

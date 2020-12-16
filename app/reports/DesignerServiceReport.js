@@ -142,6 +142,7 @@ var DesignerServiceReport = /** @class */ (function () {
             return __generator(this, function (_a) {
                 renderData = result;
                 file = params.lang == "en" ? "designer-service-en" : "designer-service-ar";
+                renderData.user = params.user ? params.user : "";
                 try {
                     return [2 /*return*/, App_1.App.HtmlRender(file, renderData)];
                 }
