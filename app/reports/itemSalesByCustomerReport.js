@@ -161,8 +161,8 @@ var itemSalesByCustomerReport = /** @class */ (function () {
                         if (params.transType && params.transType != "ALL") {
                             query += " and  st.transkind = '" + params.transType + "' ";
                         }
-                        if (params.batchNo) {
-                            query += " and  i.batchno = '" + params.batchNo + "' ";
+                        if (params.batchno) {
+                            query += " and  i.batchno = '" + params.batchno + "' ";
                         }
                         if (params.accountnum) {
                             query += " and  ( s.mobileno ='" + params.accountnum + "' or s.invoiceaccount='" + params.accountnum + "' or s.custaccount='" + params.accountnum + "') ";

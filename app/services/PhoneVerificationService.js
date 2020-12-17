@@ -37,6 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var App_1 = require("../../utils/App");
 var Sms_1 = require("../../utils/Sms");
+var Props_1 = require("../../constants/Props");
 var PhoneVerification_1 = require("../../entities/PhoneVerification");
 var PhoneVerificationDAO_1 = require("../repos/PhoneVerificationDAO");
 var PhoneVerificationService = /** @class */ (function () {
@@ -193,6 +194,7 @@ var PhoneVerificationService = /** @class */ (function () {
                         phoneVerification.createdDateTime = new Date(App_1.App.DateNow());
                         phoneVerification.countryCode = item.countryCode ? item.countryCode : 966;
                         phoneVerification.otpExpiryTime = new Date(App_1.App.DateNow());
+                        phoneVerification.otpExpiryTime = new Date(phoneVerification.otpExpiryTime.getTime() + 10 * 60 * 1000);
                         return [4 /*yield*/, this.save(phoneVerification)];
                     case 1:
                         data = _a.sent();
@@ -215,29 +217,33 @@ var PhoneVerificationService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 7, , 8]);
+                        _a.trys.push([0, 9, , 10]);
                         return [4 /*yield*/, this.phoneVerificationDAO.findOne({
                                 phoneNumber: item.phoneNumber,
                                 customerId: item.customerId,
                             })];
                     case 1:
                         phoneVerification = _a.sent();
-                        if (!phoneVerification) return [3 /*break*/, 5];
-                        if (!(phoneVerification.otpSent == item.otp)) return [3 /*break*/, 3];
-                        // if (phoneVerification.otpExpiryTime < new Date()) {
+                        if (!phoneVerification) return [3 /*break*/, 7];
+                        if (!(phoneVerification.otpSent == item.otp)) return [3 /*break*/, 5];
+                        console.log(phoneVerification.otpExpiryTime, new Date(App_1.App.DateNow()));
+                        console.log(phoneVerification.otpExpiryTime < new Date(App_1.App.DateNow()));
+                        if (!(phoneVerification.otpExpiryTime.getTime() > new Date(App_1.App.DateNow()).getTime())) return [3 /*break*/, 3];
                         phoneVerification.verificationStatus = "Verified";
                         return [4 /*yield*/, this.save(phoneVerification)];
                     case 2:
                         _a.sent();
                         return [2 /*return*/, { message: "VERIFIED", status: true }];
-                    case 3: throw { message: "INVALID_OTP" };
+                    case 3: throw Props_1.Props.OTP_EXPIRED;
                     case 4: return [3 /*break*/, 6];
-                    case 5: throw { message: "INVALID_MOBILE_NUMBER" };
+                    case 5: throw { message: "INVALID_OTP" };
                     case 6: return [3 /*break*/, 8];
-                    case 7:
+                    case 7: throw { message: "INVALID_MOBILE_NUMBER" };
+                    case 8: return [3 /*break*/, 10];
+                    case 9:
                         error_6 = _a.sent();
                         throw error_6;
-                    case 8: return [2 /*return*/];
+                    case 10: return [2 /*return*/];
                 }
             });
         });

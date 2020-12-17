@@ -81,7 +81,7 @@ var DiscountService = /** @class */ (function () {
                             .map(function (d) {
                             return d.linkId;
                         });
-                        console.log("=====================", promotionalItems_1);
+                        // console.log("=====================", promotionalItems);
                         reqData.selectedItems.map(function (v) {
                             v.lineNum = reqData.selectedItems.indexOf(v);
                             reqData.grossTotal += parseFloat(v.price) * parseFloat(v.quantity);
@@ -200,7 +200,7 @@ var DiscountService = /** @class */ (function () {
     };
     DiscountService.prototype.calDiscount = function (reqData, discountBlockItemsArray) {
         return __awaiter(this, void 0, void 0, function () {
-            var getDiscountsList, checkDiscounts, promotionalDiscountItems, buyOneGetOneDiscountItems, salesDiscountItems, discounts, isTotalDiscount, isLineDiscount, isMultiLineDiscount, totalPercentage, linePercentage, multilineDiscRanges, multilineQuantity, multiLineItemCode, multlineDiscItems, total, totalBeforeVat, grossTotal, vouchers, isValidVoucher, isVoucherApplied, voucherDiscountedItems, message, instantDiscountRanges, isInstantDiscount, instantDiscountExcludeItems, isCashDisc, voucherType, voucherAmount, inQueryStr_1, voucherDiscountedItem, _loop_1, this_1, _i, _a, item;
+            var getDiscountsList, checkDiscounts, promotionalDiscountItems, buyOneGetOneDiscountItems, salesDiscountItems, discounts, isTotalDiscount, isMultiLineDiscount, totalPercentage, linePercentageData, multilineDiscRanges, multilineQuantity, multiLineItemCode, multlineDiscItems, total, totalBeforeVat, grossTotal, vouchers, isValidVoucher, isVoucherApplied, voucherDiscountedItems, message, instantDiscountRanges, isInstantDiscount, instantDiscountExcludeItems, isCashDisc, voucherType, voucherAmount, inQueryStr_1, voucherDiscountedItem, _loop_1, this_1, _i, _a, item;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, this.getDiscountsList(reqData)];
@@ -214,14 +214,22 @@ var DiscountService = /** @class */ (function () {
                         reqData.discount = 0;
                         reqData.voucherdiscamt = 0;
                         isTotalDiscount = discounts[0].enddisc && discounts[0].enddisc != "" ? true : false;
-                        isLineDiscount = discounts[0].linedisc && discounts[0].linedisc != "" ? true : false;
                         isMultiLineDiscount = discounts[0].multilinedisc && discounts[0].multilinedisc != "" ? true : false;
                         return [4 /*yield*/, this.rawQuery.getTotalDiscPercentage(discounts[0].enddisc, reqData.currency, this.sessionInfo.dataareaid)];
                     case 2:
                         totalPercentage = _b.sent();
                         return [4 /*yield*/, this.rawQuery.getLineDiscPercentage(discounts[0].linedisc, reqData.currency, this.sessionInfo.dataareaid, reqData.custaccount)];
                     case 3:
-                        linePercentage = _b.sent();
+                        linePercentageData = _b.sent();
+                        if (linePercentageData && linePercentageData.length > 0) {
+                            reqData.selectedItems.forEach(function (element) {
+                                var linePercentage = linePercentageData.find(function (v) { return v.itemrelation == element.itemid || v.itemrelation == discounts[0].linedisc; });
+                                linePercentage = linePercentage ? linePercentage.percent1 : 0;
+                                if (linePercentage > 0) {
+                                    reqData.instantDiscGrossTotal -= parseFloat(element.price) * parseFloat(element.quantity);
+                                }
+                            });
+                        }
                         return [4 /*yield*/, this.rawQuery.getMultiDiscRanges(discounts[0].multilinedisc, reqData.currency, this.sessionInfo.dataareaid)];
                     case 4:
                         multilineDiscRanges = _b.sent();
@@ -348,10 +356,20 @@ var DiscountService = /** @class */ (function () {
                             return 0;
                         });
                         _loop_1 = function (item) {
-                            var isNoDiscount, isValidVoucherItem, instantDiscountPercent, isSalesDiscount, _i, instantDiscountRanges_1, data, multilinefilter, salesDiscount, condition, appliedDiscounts, freeQty, freeItem, promotionalDiscountAmount, buy_one_get_one, promotionalDiscountDetails, isPromotionDiscount, isBuyOneGetOneDiscount, buyOneGetOneDiscountDetails, selectedQuantity, parentQuantity, freeItems, _a, _b, _c, j, i, freeItems, _d, _e, _f, j, i, itemDiscount;
+                            var isLineDiscount, linedisc, linePercentage, isNoDiscount, isValidVoucherItem, instantDiscountPercent, isSalesDiscount, _i, instantDiscountRanges_1, data, multilinefilter, salesDiscount, condition, appliedDiscounts, freeQty, freeItem, promotionalDiscountAmount, buy_one_get_one, promotionalDiscountDetails, isPromotionDiscount, isBuyOneGetOneDiscount, buyOneGetOneDiscountDetails, selectedQuantity, parentQuantity, freeItems, _a, _b, _c, j, i, freeItems, _d, _e, _f, j, i, itemDiscount;
                             return __generator(this, function (_g) {
                                 switch (_g.label) {
                                     case 0:
+                                        isLineDiscount = discounts[0].linedisc && discounts[0].linedisc != "" ? true : false;
+                                        linedisc = checkDiscounts.find(function (v) { return v.itemid == item.itemid; });
+                                        linePercentage = linePercentageData.find(function (v) { return v.itemrelation == item.itemid || v.itemrelation == linedisc.linedisc; });
+                                        linePercentage = linePercentage ? linePercentage.percent1 : 0;
+                                        if (isLineDiscount && linePercentage <= 0) {
+                                            isLineDiscount = false;
+                                        }
+                                        else if (linePercentage > 0) {
+                                            isLineDiscount = true;
+                                        }
                                         isNoDiscount = false;
                                         isValidVoucherItem = isValidVoucher;
                                         instantDiscountPercent = 0;
@@ -368,7 +386,7 @@ var DiscountService = /** @class */ (function () {
                                                 }
                                             }
                                         }
-                                        // console.log("instantDiscountPercent:", instantDiscountPercent, reqData.instantDiscGrossTotal)
+                                        console.log("instantDiscountPercent:", instantDiscountPercent, reqData.instantDiscGrossTotal);
                                         isMultiLineDiscount = multilineDiscRanges.length > 0 ? true : false;
                                         if (isMultiLineDiscount) {
                                             multilinefilter = checkDiscounts.filter(function (v) { return v.multilinedisc == multilineDiscRanges[0].itemrelation && v.itemid == item.itemid; });
@@ -654,7 +672,7 @@ var DiscountService = /** @class */ (function () {
                                     case 25:
                                         if (!(isInstantDiscount &&
                                             !isNoDiscount &&
-                                            !isSalesDiscount &&
+                                            !isLineDiscount &&
                                             !isPromotionDiscount &&
                                             !isBuyOneGetOneDiscount &&
                                             !item.isPromotionDiscountApplied)) return [3 /*break*/, 27];
@@ -859,18 +877,18 @@ var DiscountService = /** @class */ (function () {
     };
     DiscountService.prototype.lineDiscount = function (item, reqData, checkDiscounts, linePercentage) {
         return __awaiter(this, void 0, void 0, function () {
-            var linedisc;
             return __generator(this, function (_a) {
                 console.log("lineDiscount");
-                linedisc = checkDiscounts.find(function (v) { return v.itemid == item.itemid; });
                 // console.log(linedisc);
                 // let dummyData: any = {};
                 // dummyData.linedisc = "";
                 // linedisc = linedisc ? linedisc : dummyData;
                 // console.log(linePercentage);
-                // if (linedisc && linedisc.linedisc && linedisc.linedisc != "") {
-                linePercentage = linePercentage.find(function (v) { return v.itemrelation == item.itemid || v.itemrelation == linedisc.linedisc; });
-                linePercentage = linePercentage ? linePercentage.percent1 : 0;
+                // // if (linedisc && linedisc.linedisc && linedisc.linedisc != "") {
+                // linePercentage = linePercentage.find(
+                //   (v: any) => v.itemrelation == item.itemid || v.itemrelation == linedisc.linedisc
+                // );
+                // linePercentage = linePercentage ? linePercentage.percent1 : 0;
                 // } else {
                 //   linePercentage = 0;
                 // }
