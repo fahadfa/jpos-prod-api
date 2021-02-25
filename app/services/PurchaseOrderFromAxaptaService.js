@@ -73,7 +73,6 @@ var PurchaseOrderFromAxaptaService = /** @class */ (function () {
                         return [4 /*yield*/, this.getPurchaseOrder(purchaseID, this.sessionInfo.inventlocationid)];
                     case 1:
                         axaptaData = _a.sent();
-                        console.log("data-----------------", axaptaData);
                         return [4 /*yield*/, this.mapSalesData(axaptaData)];
                     case 2: return [2 /*return*/, _a.sent()];
                     case 3:
@@ -156,9 +155,9 @@ var PurchaseOrderFromAxaptaService = /** @class */ (function () {
                         _a.sent();
                         salesData.status = 1;
                         return [2 /*return*/, salesData];
-                    case 4: throw { status: 1, message: "INVOICE_ID_NOT_RELATED_TO_THIS_STORE" };
+                    case 4: throw { status: 0, message: "INVOICE_ID_NOT_RELATED_TO_THIS_STORE" };
                     case 5: return [3 /*break*/, 7];
-                    case 6: throw { status: 1, message: "DATA_NOT_FOUND" };
+                    case 6: throw { status: 0, message: "DATA_NOT_FOUND" };
                     case 7: return [3 /*break*/, 9];
                     case 8:
                         error_2 = _a.sent();
@@ -189,7 +188,7 @@ var PurchaseOrderFromAxaptaService = /** @class */ (function () {
                     case 4:
                         salesData = _a.sent();
                         if (!salesData) return [3 /*break*/, 5];
-                        throw { message: "ALREADY_RECEIVED" };
+                        throw { status: 0, message: "ALREADY_RECEIVED" };
                     case 5: return [4 /*yield*/, this.usergroupconfigDAO.findOne({
                             groupid: this.sessionInfo.groupid,
                         })];
@@ -201,10 +200,8 @@ var PurchaseOrderFromAxaptaService = /** @class */ (function () {
                         salesLines = data.salesLines;
                         delete salesData.salesLines;
                         salesData.linesCount = salesLines.length;
-                        // await this.salesTableDAO.save(salesData);
                         return [4 /*yield*/, queryRunner.manager.getRepository(SalesTable_1.SalesTable).save(salesData)];
                     case 7:
-                        // await this.salesTableDAO.save(salesData);
                         _a.sent();
                         _i = 0, salesLines_1 = salesLines;
                         _a.label = 8;
@@ -222,10 +219,8 @@ var PurchaseOrderFromAxaptaService = /** @class */ (function () {
                         batches = item.batches;
                         batches.invoiceid = salesData.salesId;
                         batches.salesLineId = item.id;
-                        // await this.salesLineDAO.save(item);
                         return [4 /*yield*/, queryRunner.manager.getRepository(SalesLine_1.SalesLine).save(item)];
                     case 9:
-                        // await this.salesLineDAO.save(item);
                         _a.sent();
                         return [4 /*yield*/, this.updateInventoryService.updateInventtransTable(batches, false, true, queryRunner)];
                     case 10:
@@ -287,8 +282,6 @@ var PurchaseOrderFromAxaptaService = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 2:
                         error_4 = _a.sent();
-                        // console.log(Object.keys(error));
-                        // console.log(error.response.data.Message);
                         throw { status: 0, message: error_4 };
                     case 3: return [2 /*return*/];
                 }
@@ -305,7 +298,6 @@ var PurchaseOrderFromAxaptaService = /** @class */ (function () {
                         return [4 /*yield*/, this.getAgentPurchaseOrder(purchaseID)];
                     case 1:
                         axaptaData = _a.sent();
-                        console.log("data-----------------", axaptaData);
                         if (!(axaptaData.invent_location_id.trim() == this.sessionInfo.inventlocationid)) return [3 /*break*/, 3];
                         return [4 /*yield*/, this.mapAgentpurcaseOrder(axaptaData)];
                     case 2: return [2 /*return*/, _a.sent()];
@@ -372,7 +364,6 @@ var PurchaseOrderFromAxaptaService = /** @class */ (function () {
                         custAccount = _a.sent();
                         customer = custAccount ? custAccount : {};
                         salesData.salesmanId = customer.salesmanid;
-                        // salesData.inventLocationId = this.sessionInfo.inventlocationid;
                         salesData.taxGroup = data.tax_group;
                         salesData.amount = data.gross_amount;
                         salesData.disc = data.total_disc;
@@ -400,19 +391,6 @@ var PurchaseOrderFromAxaptaService = /** @class */ (function () {
                             line.currencyCode = v.currency_code;
                             line.dataareaid = salesData.dataareaid;
                             line.inventLocationId = salesData.inventLocationId;
-                            // let batches: any = {};
-                            // batches.qty = parseInt(v.purch_qty);
-                            // batches.itemid = line.itemid;
-                            // batches.transrefid = line.salesId;
-                            // batches.invoiceid = line.salesId;
-                            // batches.batchno = line.batchNo;
-                            // batches.configid = line.configId;
-                            // batches.inventsizeid = line.inventsizeid;
-                            // batches.inventlocationid = line.inventLocationId;
-                            // batches.dataareaid = line.dataareaid;
-                            // batches.transactionClosed = false;
-                            // batches.dateinvent = new Date(App.DateNow());
-                            // line.batches = batches;
                             salesLine.push(line);
                         });
                         return [4 /*yield*/, App_1.App.getItemNamesInSalesLines(salesLine, this.inventtableDAO)];
@@ -436,7 +414,7 @@ var PurchaseOrderFromAxaptaService = /** @class */ (function () {
                     case 1:
                         salesData = _a.sent();
                         if (!salesData) return [3 /*break*/, 2];
-                        throw { message: "ALREADY_RECEIVED" };
+                        throw { status: 0, message: "ALREADY_RECEIVED" };
                     case 2:
                         salesData = data;
                         salesData.interCompanyOriginalSalesId = data.salesId;
@@ -469,7 +447,6 @@ var PurchaseOrderFromAxaptaService = /** @class */ (function () {
                         _a.trys.push([0, 2, , 3]);
                         token = void 0;
                         url = Props_1.Props.REDEEM_URL + "?clientId=" + Props_1.Props.REDEEM_CLIENT_ID + "&clientSecret=" + Props_1.Props.REDEEM_CLIENT_SECRET;
-                        console.log(url);
                         return [4 /*yield*/, this.axios.post(url)];
                     case 1:
                         data = _a.sent();

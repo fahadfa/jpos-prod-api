@@ -75,7 +75,7 @@ var SalestargetService = /** @class */ (function () {
                         pricediscgroupData = _a.sent();
                         returnData = { message: "SAVED_SUCCESSFULLY" };
                         return [2 /*return*/, returnData];
-                    case 3: throw { message: "INVALID_DATA" };
+                    case 3: throw { status: 0, message: "INVALID_DATA" };
                     case 4: return [3 /*break*/, 6];
                     case 5:
                         error_1 = _a.sent();
@@ -102,9 +102,6 @@ var SalestargetService = /** @class */ (function () {
                         dayNos = workWeeks.map(function (item) {
                             return item.dayNo;
                         });
-                        console.log("*******************  workweeks **********************");
-                        console.log(dayNos);
-                        console.log("*******************************************");
                         return [4 /*yield*/, this.holidaysListDAO.searchNot({
                                 type: "WEEkend",
                             })];
@@ -113,14 +110,10 @@ var SalestargetService = /** @class */ (function () {
                         holidaysList = holidays.map(function (item) {
                             return _this.calender.getMomentDate(new Date(item.date)).format("YYYY-MM-DD");
                         });
-                        console.log("***************** Holidays ************************");
-                        console.log(holidaysList);
-                        console.log("*****************************************");
                         this.calender.setWorkingDays("ar_SA", dayNos, holidaysList);
                         this.calender.setWorkingDays("en", dayNos, holidaysList);
                         this.calender.setHolidaysList("ar_SA", holidaysList);
                         this.calender.setHolidaysList("en", holidaysList);
-                        console.log(this.calender.isBusinessDay(holidaysList[0]));
                         return [4 /*yield*/, this.getDayTargetStatus(data)];
                     case 3:
                         day = _a.sent();
@@ -168,9 +161,7 @@ var SalestargetService = /** @class */ (function () {
                         _c.trys.push([0, 10, , 11]);
                         if (!(data.unittime && data.inventlocationid)) return [3 /*break*/, 9];
                         dates = this.getDatesFromUnitTime(data.unittime);
-                        console.log("dates================", dates);
                         previousdates = this.getDatesFromUnitTime(data.unittime, true);
-                        console.log("Previous===================", previousdates);
                         if (!(dates.from && dates.to)) return [3 /*break*/, 8];
                         return [4 /*yield*/, this.saleslineRepository.findTop20FromToDate(data.inventlocationid, dates.from, dates.to)];
                     case 1:
@@ -180,7 +171,6 @@ var SalestargetService = /** @class */ (function () {
                                 return product.itemid;
                             })
                             : [];
-                        console.log(ids);
                         if (!(ids.length > 0)) return [3 /*break*/, 3];
                         return [4 /*yield*/, this.saleslineRepository.findTop20FromToDateWithItemIds(data.inventlocationid, previousdates.from, previousdates.to, ids)];
                     case 2:
@@ -191,15 +181,12 @@ var SalestargetService = /** @class */ (function () {
                         _c.label = 4;
                     case 4:
                         previousproducts_1 = _a;
-                        console.log("products===========", products_1);
-                        console.log("privious products===========", previousproducts_1);
                         products_1 = products_1.map(function (item, index) {
                             var productNameObj = previousproducts_1.find(function (privoiusProduct) {
                                 return item.itemid == privoiusProduct.itemid;
                             });
                             return productNameObj ? Object.assign({}, products_1[index], productNameObj) : products_1[index];
                         });
-                        console.log("after products===========", products_1);
                         products_1 = products_1.map(function (item) {
                             if (!item.hasOwnProperty("previousamount")) {
                                 item["previousamount"] = 0;
@@ -222,10 +209,9 @@ var SalestargetService = /** @class */ (function () {
                             });
                             return productNameObj ? Object.assign({}, products_1[index], productNameObj) : products_1[index];
                         });
-                        console.log(result);
                         return [2 /*return*/, result];
-                    case 8: throw { message: "INVALID_DATA" };
-                    case 9: throw { message: "INVALID_DATA" };
+                    case 8: throw { status: 0, message: "INVALID_DATA" };
+                    case 9: throw { status: 0, message: "INVALID_DATA" };
                     case 10:
                         error_3 = _c.sent();
                         throw error_3;
@@ -292,7 +278,6 @@ var SalestargetService = /** @class */ (function () {
                         return [4 /*yield*/, this.getCurrentMonthTargetAmount(data.inventlocationid, prevoiusDateYear, previusDateMonth)];
                     case 2:
                         previousMonthTaget = _a.sent();
-                        console.log("================ is today working ===============", currentDate, "===============", this.calender.isBusinessDay(currentDate));
                         currentDayTarget = this.calender.isBusinessDay(new Date(App_1.App.DateNow()))
                             ? this.getTargetAmont(currentMonthTaget, currentDateMonthWorkingDays)
                             : 0;
@@ -305,9 +290,6 @@ var SalestargetService = /** @class */ (function () {
                         return [4 /*yield*/, this.getCurrentDaySales(data, { lastmodifieddate: previousDate })];
                     case 4:
                         yesterdaySale = _a.sent();
-                        console.log("=======================DAY======================");
-                        console.log(todaySales, " yesterday ", yesterdaySale);
-                        console.log("=============================================");
                         currentPercentage = currentDayTarget ? ((todaySales - currentDayTarget) / currentDayTarget) * 100 : 0;
                         previousPercentageDecimal = todaySales == 0 ? Infinity : ((yesterdaySale - todaySales) / todaySales) * 100;
                         previousPercentage = previousPercentageDecimal == Infinity ? 100 : previousPercentageDecimal;
@@ -315,22 +297,11 @@ var SalestargetService = /** @class */ (function () {
                         salesStatus.currentSale = todaySales;
                         salesStatus.previousSale = yesterdaySale;
                         salesStatus.currentSalesPercent = currentPercentage ? currentPercentage : 0;
-                        console.log("=======================DAY percent ======================");
-                        console.log(previousPercentage, " yesterday percent ", previousPercentage ? previousPercentage : 0);
-                        console.log("=============================================");
                         salesStatus.previousSalesPercent = previousPercentage ? previousPercentage : 0;
                         salesStatus.previousSalesPercentStatus = salesStatus.previousSalesPercent >= 0 ? "up" : "down";
                         salesStatus.currentSalesPercentStatus = salesStatus.currentSalesPercent >= 0 ? "up" : "down";
-                        console.log("=======================DAY Before  percent ======================");
-                        console.log(salesStatus.previousSalesPercent);
-                        console.log(Math.abs(salesStatus.previousSalesPercent));
-                        console.log(Math.round(Math.abs(salesStatus.previousSalesPercent)));
-                        console.log("=============================================");
                         salesStatus.currentSalesPercent = Math.abs(salesStatus.currentSalesPercent);
                         salesStatus.previousSalesPercent = Math.abs(salesStatus.previousSalesPercent);
-                        console.log("=======================DAY percent ======================");
-                        console.log(salesStatus.currentSalesPercent, " yesterday percent ", salesStatus.previousSalesPercent);
-                        console.log("=============================================");
                         salesStatus.currentTarget = currentDayTarget;
                         return [2 /*return*/, salesStatus];
                 }
@@ -357,9 +328,6 @@ var SalestargetService = /** @class */ (function () {
                         return [4 /*yield*/, this.getSalesFromToDate(data, previousWeekDates)];
                     case 4:
                         previousWeekSales = _a.sent();
-                        console.log("=================================================");
-                        console.log("========currentWeekSales=================", currentWeekSales);
-                        console.log("=========previousWeekSales=========================", previousWeekSales);
                         currentpercentage = currentTargetAmount
                             ? ((currentWeekSales - currentTargetAmount) / currentTargetAmount) * 100
                             : 0;
@@ -393,8 +361,6 @@ var SalestargetService = /** @class */ (function () {
                         return [4 /*yield*/, this.getSalesFromToDate(data, previousMonthDates)];
                     case 2:
                         previousMonthSales = _a.sent();
-                        console.log("----------------- currentMonthSales-----------------", currentMonthSales);
-                        console.log("----------------- previousMonthSales-----------------", previousMonthSales);
                         return [4 /*yield*/, this.getTargetAmountsBasedOnDates(data, currentMonthDates)];
                     case 3:
                         currentTargetAmount = _a.sent();
@@ -436,23 +402,18 @@ var SalestargetService = /** @class */ (function () {
                         return [4 /*yield*/, this.getSalesFromToDate(data, previousMonthDates)];
                     case 2:
                         previousMonthSales = _a.sent();
-                        console.log("===============currentYearSales===================", currentMonthSales);
-                        console.log("===============previousYearSales===================", previousMonthSales);
                         return [4 /*yield*/, this.getTargetAmountsBasedOnDates(data, currentMonthDates, true)];
                     case 3:
                         currentTargetAmount = _a.sent();
                         return [4 /*yield*/, this.getTargetAmountsBasedOnDates(data, previousMonthDates, true)];
                     case 4:
                         previousTargetAmount = _a.sent();
-                        console.log("===============currentTargetAmount===================", currentTargetAmount);
-                        console.log("===============previousTargetAmount===================", previousTargetAmount);
                         currentPercentage = currentTargetAmount
                             ? ((currentMonthSales - currentTargetAmount) / currentTargetAmount) * 100
                             : 0;
                         previousPercentage = currentMonthSales
                             ? ((previousMonthSales - currentMonthSales) / currentMonthSales) * 100
                             : 0;
-                        console.log("=============== currentTargetAmount===================", currentTargetAmount);
                         salesStatus = new SalesStatus_1.SalesStatus();
                         salesStatus.currentSale = currentMonthSales;
                         salesStatus.previousSale = previousMonthSales;
@@ -481,19 +442,15 @@ var SalestargetService = /** @class */ (function () {
                         currentDateMonthWorkingDays = !onlyYear
                             ? this.calender.getCurrentMonthWorkingDays(dates.fromDate)
                             : this.calender.getCurrentYearWorkingDays(dates.fromDate);
-                        console.log("---------  working  --------", currentDateMonthWorkingDays);
                         return [4 /*yield*/, this.getCurrentMonthTargetAmount(data.inventlocationid, dates.fromYear, !onlyYear ? dates.fromMonth : null)];
                     case 1:
                         currentMonthTaget = _a.sent();
-                        console.log("currentMonthTaget   in ", currentMonthTaget);
                         currentMonthTagetSegmentedTarget = 0;
                         currentDateMonthSegmentedWorkingDays = 0;
                         currentDayTarget = this.getTargetAmont(currentMonthTaget, currentDateMonthWorkingDays);
-                        console.log("currentDayTarget   in ", currentDayTarget);
                         currentTarget = !onlyYear
                             ? currentDayTarget * dates.workingDays
                             : currentDayTarget * currentDateMonthWorkingDays;
-                        console.log("currentTarget   in ", currentTarget);
                         if (!(!onlyYear && dates.fromMonth != dates.toMonth)) return [3 /*break*/, 3];
                         return [4 /*yield*/, this.getCurrentMonthTargetAmount(data.inventlocationid, dates.toYear, !onlyYear ? dates.toMonth : null)];
                     case 2:
@@ -503,9 +460,7 @@ var SalestargetService = /** @class */ (function () {
                         currentSegmentedTarget = currentDayTargetSegmented * dates.workingDaysSeg;
                         currentTarget += currentSegmentedTarget;
                         _a.label = 3;
-                    case 3:
-                        console.log("currentTarget between dates ===== ", currentTarget);
-                        return [2 /*return*/, currentTarget];
+                    case 3: return [2 /*return*/, currentTarget];
                 }
             });
         });
@@ -555,7 +510,6 @@ var SalestargetService = /** @class */ (function () {
                         else if (targetItem && targetItem.hasOwnProperty("yearTarget") && targetItem["yearTarget"]) {
                             target = targetItem.yearTarget;
                         }
-                        console.log("=======================", target);
                         return [2 /*return*/, target];
                 }
             });
@@ -571,7 +525,7 @@ var SalestargetService = /** @class */ (function () {
                             .select("SUM(salestable.netamount :: float)", "sum")
                             // .andWhere("salestable.transkind IN (:...transkind)", { transkind: ["SALESORDER"] })
                             .andWhere("salestable.transkind IN (:...transkind)", { transkind: ["SALESORDER", "DESIGNERSERVICE"] })
-                            .andWhere("salestable.status IN (:...status)", { status: ["PAID", "POSTED", 'PRINTED'] })
+                            .andWhere("salestable.status IN (:...status)", { status: ["PAID", "POSTED", "PRINTED"] })
                             .andWhere("salestable.lastmodifieddate ::date = :lastmodifieddate", date)
                             .andWhere("salestable.inventlocationid = :inventlocationid", data)
                             .getRawOne()];

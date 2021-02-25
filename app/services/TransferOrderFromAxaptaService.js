@@ -83,7 +83,6 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                         return [4 /*yield*/, this.getTransferOrder(transferID)];
                     case 1:
                         axaptaData = _a.sent();
-                        console.log("data-----------------", axaptaData);
                         return [4 /*yield*/, this.checkTransferOrder(axaptaData)];
                     case 2:
                         if (!_a.sent()) return [3 /*break*/, 6];
@@ -113,7 +112,6 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                         return [4 /*yield*/, this.salesTableDAO.findOne({ salesId: data.transfer_id })];
                     case 1:
                         salesData = _b.sent();
-                        console.log(data.invent_location_id_to, this.sessionInfo.inventlocationid);
                         if (!(data.invent_location_id_to == this.sessionInfo.inventlocationid)) return [3 /*break*/, 3];
                         salesData = new SalesTable_1.SalesTable();
                         salesData.salesId = data.transfer_id;
@@ -127,9 +125,6 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                         salesData.lastModifiedDate = new Date(App_1.App.DateNow());
                         salesData.createddatetime = new Date(App_1.App.DateNow());
                         salesData.salesType = 4;
-                        // await this.salesTableDAO.save(salesData);
-                        // let salesLines = await this.salesLineDAO.findAll({ salesId: salesData.salesId });
-                        // await this.salesLineDAO.delete(salesLines);
                         salesData.salesLines = [];
                         i = 1;
                         for (_i = 0, _a = data.orderLines; _i < _a.length; _i++) {
@@ -146,8 +141,6 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                             salesLine.inventLocationId = data.invent_location_id_to;
                             salesLine.batchNo = v.batch_no;
                             salesLine.custAccount = data.invent_location_id_from;
-                            // salesLine.colors = await this.colorsDAO.findOne({ code: v.config_id });
-                            // salesLine.baseSizes = await this.baseSizeDAO.findOneforaxaptadata({ base: { code: v.item_id }, sizes: { code: v.invent_size_id } });
                             salesLine.lastModifiedDate = new Date(App_1.App.DateNow());
                             salesLine.createddatetime = new Date(App_1.App.DateNow());
                             batches = {};
@@ -164,7 +157,6 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                             batches.transactionClosed = false;
                             batches.dateinvent = new Date(App_1.App.DateNow());
                             salesLine.batches = batches;
-                            // await this.updateInventoryService.updateInventtransTable(batches);
                             salesData.salesLines.push(salesLine);
                             i += 1;
                             // }
@@ -173,9 +165,8 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                     case 2:
                         _b.sent();
                         salesData.status = 1;
-                        // return { message: Props.SAVED_SUCCESSFULLY };
                         return [2 /*return*/, salesData];
-                    case 3: throw { status: 1, message: "INVOICE_ID_NOT_RELATED_TO_THIS_STORE" };
+                    case 3: throw { status: 0, message: "INVOICE_ID_NOT_RELATED_TO_THIS_STORE" };
                     case 4: return [3 /*break*/, 6];
                     case 5:
                         error_2 = _b.sent();
@@ -202,7 +193,6 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                         _a.label = 3;
                     case 3:
                         _a.trys.push([3, 21, 25, 27]);
-                        console.log(data);
                         if (!(data.inventLocationId == this.sessionInfo.inventlocationid)) return [3 /*break*/, 19];
                         salesData = void 0;
                         return [4 /*yield*/, this.salesTableDAO.findOne({ interCompanyOriginalSalesId: data.salesId })];
@@ -231,7 +221,6 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                     case 9:
                         oldItem = _a.sent();
                         if (oldItem) {
-                            console.log(oldItem.salesId);
                         }
                         else {
                             salesData.salesId = uid;
@@ -244,7 +233,6 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                         data.nextrec = salesData.nextrec;
                         salesLines = data.salesLines;
                         delete salesData.salesLines;
-                        // await this.salesTableDAO.save(salesData);
                         salesData.linesCount = salesLines.length;
                         return [4 /*yield*/, queryRunner.manager.getRepository(SalesTable_1.SalesTable).save(salesData)];
                     case 11:
@@ -263,14 +251,11 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                             },
                         ];
                         batches = item.batches;
-                        console.log("==========================================================", batches);
                         batches.invoiceid = salesData.salesId;
                         batches.salesLineId = item.id;
                         batches.transactionClosed = false;
-                        // await this.salesLineDAO.save(item);
                         return [4 /*yield*/, queryRunner.manager.getRepository(SalesLine_1.SalesLine).save(item)];
                     case 13:
-                        // await this.salesLineDAO.save(item);
                         _a.sent();
                         return [4 /*yield*/, this.updateInventoryService.updateInventtransTable(batches, false, false, queryRunner)];
                     case 14:
@@ -384,13 +369,11 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                     case 26:
                         data = _b.sent();
                         return [3 /*break*/, 28];
-                    case 27: throw { message: "TRANSKIND_REQUIRED" };
+                    case 27: throw { status: 0, message: "TRANSKIND_REQUIRED" };
                     case 28:
                         if (!(data && data.format)) return [3 /*break*/, 30];
                         hashString = data.format.slice(data.format.indexOf("#"), data.format.lastIndexOf("#") + 1);
                         date = new Date(data.lastmodifieddate).toLocaleString();
-                        console.log(date);
-                        console.log(data);
                         prevYear = new Date(data.lastmodifieddate).getFullYear().toString().substr(2, 2);
                         year = new Date(App_1.App.DateNow()).getFullYear().toString().substr(2, 2);
                         data.nextrec = prevYear == year ? data.nextrec : "000001";
@@ -398,7 +381,6 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                             data.nextrec = "000001";
                         }
                         salesId = data.format.replace(hashString, year) + "-" + data.nextrec;
-                        //console.log(salesId);
                         item.numberSequenceGroup = data.numbersequence;
                         item.isInsert = true;
                         return [4 /*yield*/, this.rawQuery.updateNumberSequence(data.numbersequence, data.nextrec)];
@@ -426,9 +408,7 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         url = Props_1.Props._URL + "transferorder";
-                        console.log("axpta url :  ", url);
                         this.axios.defaults.headers["Authorization"] = Props_1.Props._TOKEN;
-                        console.log(this.axios.defaults.headers);
                         reqData = {
                             data: {
                                 transferID: transferID,
@@ -437,7 +417,6 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                         return [4 /*yield*/, this.axios.post(url, reqData)];
                     case 1:
                         data = _a.sent();
-                        console.log(Object.keys(data));
                         data = data.data;
                         if (data.error) {
                             throw data.error.message;
@@ -449,8 +428,6 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                     case 2:
                         error_5 = _a.sent();
                         Log_1.log.error(error_5);
-                        // console.log(Object.keys(error));
-                        // console.log(error.response.data.Message);
                         throw { status: 0, message: error_5 };
                     case 3: return [2 /*return*/];
                 }
@@ -500,7 +477,6 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                             })];
                     case 2:
                         salesOrderWithId = _c.sent();
-                        console.log("Sales==============>", salesOrderWithId);
                         salestable.lastModifiedDate = salesOrderWithId ? salesOrderWithId.lastModifiedDate : new Date(App_1.App.DateNow());
                         _c.label = 3;
                     case 3:
@@ -509,7 +485,7 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                             salesId = salestable.salesId;
                         }
                         else if (salesId != salestable.salesId) {
-                            throw { message: "PLEASE_SCAN_ALL_PAGES_WITH_SAME_ORDER_ID" };
+                            throw { status: 0, message: "PLEASE_SCAN_ALL_PAGES_WITH_SAME_ORDER_ID" };
                         }
                         salesLines = [];
                         for (_a = 0, _b = list[1].split("*"); _a < _b.length; _a++) {
@@ -571,9 +547,6 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                                 return 0;
                             });
                             salesData = __assign({}, dataList[0]);
-                            console.log("====================Get Qr code console=======================");
-                            console.log(salesData);
-                            console.log("----------------------------------------------------------");
                             delete salesData.salesLine;
                             salesLine_1 = [];
                             dataList.map(function (v) {
@@ -593,11 +566,9 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                             salesData.dataareaid = this.sessionInfo.dataareaid;
                             salesData.salesType = 4;
                             salesData.salesLines = salesLine_1;
-                            console.log(scannedPages_1);
                             return [2 /*return*/, salesData];
                         }
                         else {
-                            console.log(scannedPages_1);
                             totalPages = [];
                             missingPages_1 = [];
                             for (i = 1; i <= pageCount; i++) {
@@ -608,14 +579,13 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                                     missingPages_1.push(v);
                                 }
                             });
-                            console.log(totalPages, scannedPages_1);
-                            throw { message: "PLEASE_SCAN_ALL_PAGES", missingPages: missingPages_1 };
+                            throw { status: 0, message: "PLEASE_SCAN_ALL_PAGES", missingPages: missingPages_1 };
                         }
                         return [3 /*break*/, 8];
                     case 7:
                         err_1 = _c.sent();
                         Log_1.log.error(err_1);
-                        throw { message: err_1 };
+                        throw err_1;
                     case 8: return [2 /*return*/];
                 }
             });
@@ -630,7 +600,6 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                         _a.trys.push([0, 2, , 3]);
                         token = void 0;
                         url = Props_1.Props.REDEEM_URL + "?clientId=" + Props_1.Props.REDEEM_CLIENT_ID + "&clientSecret=" + Props_1.Props.REDEEM_CLIENT_SECRET;
-                        console.log(url);
                         return [4 /*yield*/, this.axios.post(url)];
                     case 1:
                         data = _a.sent();
@@ -639,7 +608,7 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                     case 2:
                         error_6 = _a.sent();
                         Log_1.log.error(error_6);
-                        throw { status: 0, message: error_6 };
+                        throw error_6;
                     case 3: return [2 /*return*/];
                 }
             });
@@ -649,8 +618,6 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 if (process.env.ENV_STORE_ID && process.env.ENV_STORE_ID != "") {
-                    console.log(Props_1.Props.testStoreIds);
-                    console.log(Props_1.Props.testStoreIds.includes(data.invent_location_id_from));
                     if (Props_1.Props.testStoreIds.includes(data.invent_location_id_from)) {
                         return [2 /*return*/, false];
                     }

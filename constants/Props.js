@@ -3,18 +3,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Props = /** @class */ (function () {
     function Props() {
     }
-    Props.APP_NAME = "JAZEERA TECH";
-    Props.SALT_KEY = "SALT256DL";
+    Props.APP_NAME = "XXXX";
+    Props.SALT_KEY = "XXXX";
     Props.ACCESS_READ = "READ";
     Props.ACCESS_WRITE = "WRITE";
-    Props.REDEEM_CLIENT_ID = "MPOS";
-    Props.REDEEM_CLIENT_SECRET = "N7ef3rqHvY6rvJM";
-    Props.REDEEM_URL = "http://pos.al-jazeerapaints.com:200/api/Authenticate";
-    Props.AXAPTA_URL = "http://pos.al-jazeerapaints.com:200/api/";
-    Props.ECOMMERCE_PAYMENT_URL = "https://qa.jazeerapaints.com/jpos_orders/";
-    //public static ECOMMERCE_PAYMENT_URL = "https://pre-prod.jazeerapaints.com/jpos_orders/";
-    Props._URL = "https://qa-api-mpos-sync.jazeerapaints.com/api/axaptaorders/";
-    Props._TOKEN = "UmVzdEFkbWluOkFkbTFuMHdu";
+    Props.REDEEM_CLIENT_ID = "XXXX";
+    Props.REDEEM_CLIENT_SECRET = "XXXX";
+    Props.REDEEM_URL = "XXXX";
+    Props.AXAPTA_URL = "XXXX";
+    Props.ECOMMERCE_PAYMENT_URL = "XXXX";
+    Props._URL = "XXXXX";
+    Props._TOKEN = "XXXX";
+    Props.EXPIRE_TIME = "XXXX";
+    Props.SMS_USER = "XXXX";
+    Props.SMS_PASS = "XXXX";
     Props.DAY = "day";
     Props.WEEK = "week";
     Props.MONTH = "month";
@@ -133,6 +135,14 @@ var Props = /** @class */ (function () {
         9: [9, "DESIGNERSERVICERETURN", "designer Service Return Order"],
         10: [10, "DESIGNERSERVICE", "designer Service"],
     };
+    Props.WorkFlowNumsForOld = {
+        3: { type: "SALESORDER", en: "Sales Order", ar: "طلب المبيعات" },
+        4: { type: "RETURNORDER", en: "Return Order", ar: "أمر الإرجاع" },
+        5: { type: "TRANSFERORDER", en: "Transfer Order", ar: "طلب النقل" },
+        6: { type: "ORDERSHIPMENT", en: "Order Shipment", ar: "" },
+        7: { type: "ORDERRECEIVE", en: "Order Receive", ar: "طلب تلقي" },
+        10: { type: "INVENTORYMOVEMENT", en: "Movement", ar: "حركة" },
+    };
     Props.CUSTTYPE = {
         0: ["CHARITY", 0, "Charity", "Charity"],
         1: ["AGENT", 1, "Agent", "Agent"],
@@ -166,6 +176,16 @@ var Props = /** @class */ (function () {
         RO_POSTED: ["POSTED", "Posted", "تم التأكيد"],
         PENDINGINGFORDESIGNERAPPROVAL: ["PENDINGINGFORDESIGNERAPPROVAL", "Pending For Designer Approval", "تم التأكيد"],
         APPROVEDBYDESIGNER: ["APPROVEDBYDESIGNER", "Approved By Designer", "تم التأكيد"],
+        PENDINGCOORDINATORAPPROVAL: [
+            "PENDINGCOORDINATORAPPROVAL",
+            "Pending for sales coordinator approval",
+            "بانتظار موافقة مدير التنسيق والمتابعه",
+        ],
+        APPROVEDBYCOORDINATORAPPROVAL: [
+            "APPROVEDBYCOORDINATORAPPROVAL",
+            "Approved by sales coordinator",
+            "تمت موافقة مدير التنسيق والمتابعه",
+        ],
     };
     Props.DIMENSION_CODE = {
         REGION: 0,
@@ -209,25 +229,9 @@ var Props = /** @class */ (function () {
     // public static COSTCENTER_NAME = "COSTCENTER";
     // public static BRAND_NAME = "BRAND";
     // public static EMPLOYEE_NAME = "EMPLOYEE";
-    Props.testStoreIds = [
-        "HYD-002",
-        "STAW-0055",
-        "STAW-0056",
-        "SSHW-0050",
-        "SMAW-0045",
-        "SMYW-0063",
-        "SAEW-0070",
-        "SMOHW-24",
-        "SMOHW-24",
-        "SBESH-0025",
-        "TBKMRJ-13",
-        "TBKDKL-04",
-        "TTAW-0039",
-        "TTAW-0040",
-        "TMAW-0038",
-        "DMVSB-0075",
-        "DMVSA-0076",
-    ];
+    Props.testStoreIds = {
+        data: [],
+    };
     return Props;
 }());
 exports.Props = Props;

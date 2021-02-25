@@ -103,7 +103,7 @@
     }
 
     table.dash {
-      border: 1px dashed #cccccc;
+      /* border: 1px dashed #cccccc; */
       border-collapse: collapse;
     }
     table.dash td {
@@ -114,9 +114,9 @@
     <div id="bg__watermark">
       <p id="bg__text__watermark">فقط للاختبار</p>
     </div>
-    <div class="mainheading">
-      المبيعات بواسطة البائع - عرض أمر المبيعات
-    </div>
+    <!-- <div class="mainheading">
+     {{title.ar}}
+    </div> -->
     <table id="headertbl">
       <tr>
         <td class="tdleft">{{headers.printdate}}</td>
@@ -154,6 +154,9 @@
 
     <table width="100%" class="dash" cellpadding="1" cellspacing="0">
       <thead>
+        <tr>
+          <th class="mainheading"  colspan="12" style="border: 0px dashed #cccccc;">{{title.en}}</th>
+        </tr>
         <tr class="heading">
           <th>كمية الشبكة</th>
           <th>ضريبة القيمة المضافة</th>

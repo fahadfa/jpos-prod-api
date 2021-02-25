@@ -14,7 +14,7 @@ var NumberSequenceTable = /** @class */ (function () {
     function NumberSequenceTable() {
     }
     __decorate([
-        typeorm_1.PrimaryColumn({ name: "id" }),
+        typeorm_1.PrimaryGeneratedColumn({ name: "id" }),
         __metadata("design:type", String)
     ], NumberSequenceTable.prototype, "id", void 0);
     __decorate([
@@ -113,6 +113,14 @@ var NumberSequenceTable = /** @class */ (function () {
         typeorm_1.Column({ name: "recid" }),
         __metadata("design:type", Number)
     ], NumberSequenceTable.prototype, "recid", void 0);
+    __decorate([
+        typeorm_1.Column({ name: "transkind" }),
+        __metadata("design:type", String)
+    ], NumberSequenceTable.prototype, "transkind", void 0);
+    __decorate([
+        typeorm_1.Column({ name: "inventlocationid" }),
+        __metadata("design:type", String)
+    ], NumberSequenceTable.prototype, "inventlocationid", void 0);
     NumberSequenceTable = __decorate([
         typeorm_1.Entity("numbersequencetable")
     ], NumberSequenceTable);

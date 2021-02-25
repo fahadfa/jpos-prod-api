@@ -35,10 +35,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var Props_1 = require("../constants/Props");
 var sms = require("mobily-sms");
 var Sms = /** @class */ (function () {
     function Sms() {
-        this.mobilySms = sms("AL-JAZEERAPAINTS7", "63314694");
+        this.mobilySms = sms(Props_1.Props.SMS_USER, Props_1.Props.SMS_PASS);
     }
     Sms.prototype.execute = function (message, mobiles) {
         return __awaiter(this, void 0, void 0, function () {

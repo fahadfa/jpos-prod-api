@@ -96,7 +96,6 @@ var InventtransService = /** @class */ (function () {
                         data = _a.sent();
                         _a.label = 4;
                     case 4:
-                        // let data: any = await this.rawQuery.getInventTransFromView(params);
                         data.map(function (v) {
                             v.availabilty = parseInt(v.availabilty);
                             v.reservedQuantity = parseInt(v.reservedQuantity);
@@ -144,13 +143,74 @@ var InventtransService = /** @class */ (function () {
     };
     InventtransService.prototype.getSelectedBatches = function (params) {
         return __awaiter(this, void 0, void 0, function () {
-            var data, new_data, _i, data_1, v, i, _a, t0, data, salesorderlines_1, returnorderlines_1, salesorderlinesresult, returnorderlinesresult, so_list_1, ro_list_1, resData_1, result, new_data_1, error_4;
+            var data, salesorderlines_1, returnorderlines_1, result, error_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 8, , 9]);
+                        if (!(params.type == "DESIGNERSERVICERETURN")) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.getDesignerServiceData(params)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                    case 2:
+                        params.inventlocationid = this.sessionInfo.inventlocationid;
+                        return [4 /*yield*/, this.rawQuery.getSelectedBatches(params)];
+                    case 3:
+                        data = _a.sent();
+                        salesorderlines_1 = [];
+                        returnorderlines_1 = [];
+                        data.map(function (v) {
+                            v.itemid = v.itemid.toUpperCase();
+                            v.configid = v.configid.toUpperCase();
+                            v.inventsizeid = v.inventsizeid.toUpperCase();
+                            if (params.type == "SALESORDER") {
+                                if (parseInt(v.qty) > 0) {
+                                    returnorderlines_1.push(v);
+                                }
+                                else if (parseInt(v.qty) < 0) {
+                                    salesorderlines_1.push(v);
+                                }
+                            }
+                        });
+                        if (!(params.type == "SALESORDER")) return [3 /*break*/, 5];
+                        return [4 /*yield*/, this.getSalesOrderBatches(params, salesorderlines_1, returnorderlines_1)];
+                    case 4: return [2 /*return*/, _a.sent()];
+                    case 5:
+                        result = void 0;
+                        if (params.type == "INVENTORYMOVEMENT") {
+                            result = this.groupBy(data, function (item) {
+                                return [
+                                    item.itemid,
+                                    item.batchno,
+                                    item.configid,
+                                    item.inventsizeid,
+                                    item.isItemFree,
+                                    item.colorantId,
+                                    item.salesLineId,
+                                ];
+                            });
+                        }
+                        else {
+                            result = this.groupBy(data, function (item) {
+                                return [item.itemid, item.batchno, item.configid, item.inventsizeid, item.isItemFree, item.colorantId];
+                            });
+                        }
+                        return [4 /*yield*/, this.groupData(params, result)];
+                    case 6: return [2 /*return*/, _a.sent()];
+                    case 7: return [3 /*break*/, 9];
+                    case 8:
+                        error_4 = _a.sent();
+                        throw error_4;
+                    case 9: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    InventtransService.prototype.getDesignerServiceData = function (params) {
+        return __awaiter(this, void 0, void 0, function () {
+            var data, new_data, _i, data_1, v, i, _a;
             return __generator(this, function (_b) {
                 switch (_b.label) {
-                    case 0:
-                        _b.trys.push([0, 9, , 10]);
-                        if (!(params.type == "DESIGNERSERVICERETURN")) return [3 /*break*/, 6];
-                        return [4 /*yield*/, this.salesLineDAO.search({ salesId: params.salesid })];
+                    case 0: return [4 /*yield*/, this.salesLineDAO.search({ salesId: params.salesid })];
                     case 1:
                         data = _b.sent();
                         new_data = [];
@@ -177,143 +237,104 @@ var InventtransService = /** @class */ (function () {
                     case 4:
                         _i++;
                         return [3 /*break*/, 2];
-                    case 5: return [2 /*return*/, new_data];
-                    case 6:
-                        t0 = new Date().getTime();
-                        params.inventlocationid = this.sessionInfo.inventlocationid;
-                        return [4 /*yield*/, this.rawQuery.getSelectedBatches(params)];
-                    case 7:
-                        data = _b.sent();
-                        console.log(data, "=====================================");
-                        salesorderlines_1 = [];
-                        returnorderlines_1 = [];
-                        data.map(function (v) {
-                            v.itemid = v.itemid.toUpperCase();
-                            v.configid = v.configid.toUpperCase();
-                            v.inventsizeid = v.inventsizeid.toUpperCase();
-                            if (params.type == "SALESORDER") {
-                                if (parseInt(v.qty) > 0) {
-                                    returnorderlines_1.push(v);
-                                }
-                                else if (parseInt(v.qty) < 0) {
-                                    salesorderlines_1.push(v);
-                                }
-                            }
-                        });
-                        if (params.type == "SALESORDER") {
-                            salesorderlinesresult = void 0;
-                            returnorderlinesresult = void 0;
-                            salesorderlinesresult = this.groupBy(salesorderlines_1, function (item) {
-                                return [item.itemid, item.batchno, item.configid, item.inventsizeid, item.isItemFree, item.colorantId];
-                            });
-                            returnorderlinesresult = this.groupBy(returnorderlines_1, function (item) {
-                                return [item.itemid, item.batchno, item.configid, item.inventsizeid, item.isItemFree, item.colorantId];
-                            });
-                            so_list_1 = [];
-                            ro_list_1 = [];
-                            salesorderlinesresult.forEach(function (groupitem) {
-                                var qty = groupitem.reduce(function (res, item) { return res + parseInt(item.qty); }, 0);
-                                groupitem[0].qty = Math.abs(qty);
-                                groupitem[0].returnQuantity = 0;
-                                so_list_1.push(__assign({}, groupitem[0]));
-                            });
-                            returnorderlinesresult.forEach(function (groupitem) {
-                                var qty = groupitem.reduce(function (res, item) { return res + parseInt(item.qty); }, 0);
-                                groupitem[0].qty = Math.abs(qty);
-                                groupitem[0].returnQuantity = 0;
-                                ro_list_1.push(__assign({}, groupitem[0]));
-                            });
-                            if (ro_list_1.length > 0) {
-                                resData_1 = [];
-                                so_list_1.forEach(function (v) {
-                                    var ro_data = ro_list_1.find(function (i) {
-                                        return v.itemid == i.itemid &&
-                                            v.configid == i.configid &&
-                                            v.inventsizeid == i.inventsizeid &&
-                                            v.batchno == i.batchno &&
-                                            v.isItemFree == i.isItemFree &&
-                                            v.colorantId == i.colorantId;
-                                    });
-                                    console.log("=============1", ro_data, v.qty);
-                                    if (ro_data) {
-                                        if (v.qty > ro_data.qty) {
-                                            v.qty = v.qty - ro_data.qty;
-                                        }
-                                        else {
-                                            v.qty = 0;
-                                        }
-                                    }
-                                    console.log("==========3", v);
-                                    resData_1.push(v);
-                                });
-                                return [2 /*return*/, resData_1];
-                            }
-                            else {
-                                return [2 /*return*/, so_list_1];
-                            }
-                        }
-                        else {
-                            result = void 0;
-                            if (params.type == "INVENTORYMOVEMENT") {
-                                result = this.groupBy(data, function (item) {
-                                    return [
-                                        item.itemid,
-                                        item.batchno,
-                                        item.configid,
-                                        item.inventsizeid,
-                                        item.isItemFree,
-                                        item.colorantId,
-                                        item.salesLineId,
-                                    ];
-                                });
-                            }
-                            else {
-                                result = this.groupBy(data, function (item) {
-                                    return [item.itemid, item.batchno, item.configid, item.inventsizeid, item.isItemFree, item.colorantId];
-                                });
-                            }
-                            new_data_1 = [];
-                            result.forEach(function (groupitem) {
-                                var qty = groupitem.reduce(function (res, item) { return res + parseInt(item.qty); }, 0);
-                                if (params.type == "SALESORDER" || params.type == "PURCHASERETURN" || params.type == "INVENTORYMOVEMENT") {
-                                    if (qty <= 0 && params.type != "INVENTORYMOVEMENT") {
-                                        groupitem[0].qty = Math.abs(qty);
-                                        groupitem[0].returnQuantity = 0;
-                                        new_data_1.push(__assign({}, groupitem[0]));
-                                    }
-                                    else if (qty > 0 && params.type == "SALESORDER") {
-                                        groupitem[0].qty = Math.abs(qty);
-                                        groupitem[0].returnQuantity = 0;
-                                        new_data_1.push(__assign({}, groupitem[0]));
-                                    }
-                                    else if (params.type == "INVENTORYMOVEMENT") {
-                                        groupitem[0].qty = parseInt(qty);
-                                        groupitem[0].returnQuantity = 0;
-                                        new_data_1.push(__assign({}, groupitem[0]));
-                                    }
-                                }
-                                else {
-                                    if (qty > 0) {
-                                        groupitem[0].qty = Math.abs(qty);
-                                        groupitem[0].returnQuantity = 0;
-                                        new_data_1.push(__assign({}, groupitem[0]));
-                                    }
-                                    else if (qty <= 0) {
-                                        groupitem[0].qty = Math.abs(qty);
-                                        groupitem[0].returnQuantity = 0;
-                                        new_data_1.push(__assign({}, groupitem[0]));
-                                    }
-                                }
-                            });
-                            return [2 /*return*/, new_data_1];
-                        }
-                        _b.label = 8;
-                    case 8: return [3 /*break*/, 10];
-                    case 9:
-                        error_4 = _b.sent();
-                        throw error_4;
-                    case 10: return [2 /*return*/];
+                    case 5: return [4 /*yield*/, new_data];
+                    case 6: return [2 /*return*/, _b.sent()];
                 }
+            });
+        });
+    };
+    InventtransService.prototype.getSalesOrderBatches = function (params, salesorderlines, returnorderlines) {
+        return __awaiter(this, void 0, void 0, function () {
+            var salesorderlinesresult, returnorderlinesresult, so_list, ro_list, resData_1;
+            return __generator(this, function (_a) {
+                salesorderlinesresult = this.groupBy(salesorderlines, function (item) {
+                    return [item.itemid, item.batchno, item.configid, item.inventsizeid, item.isItemFree, item.colorantId];
+                });
+                returnorderlinesresult = this.groupBy(returnorderlines, function (item) {
+                    return [item.itemid, item.batchno, item.configid, item.inventsizeid, item.isItemFree, item.colorantId];
+                });
+                so_list = [];
+                ro_list = [];
+                salesorderlinesresult.forEach(function (groupitem) {
+                    var qty = groupitem.reduce(function (res, item) { return res + parseInt(item.qty); }, 0);
+                    groupitem[0].qty = Math.abs(qty);
+                    groupitem[0].returnQuantity = 0;
+                    so_list.push(__assign({}, groupitem[0]));
+                });
+                returnorderlinesresult.forEach(function (groupitem) {
+                    var qty = groupitem.reduce(function (res, item) { return res + parseInt(item.qty); }, 0);
+                    groupitem[0].qty = Math.abs(qty);
+                    groupitem[0].returnQuantity = 0;
+                    ro_list.push(__assign({}, groupitem[0]));
+                });
+                if (ro_list.length > 0) {
+                    resData_1 = [];
+                    so_list.forEach(function (v) {
+                        var ro_data = ro_list.find(function (i) {
+                            return v.itemid == i.itemid &&
+                                v.configid == i.configid &&
+                                v.inventsizeid == i.inventsizeid &&
+                                v.batchno == i.batchno &&
+                                v.isItemFree == i.isItemFree &&
+                                v.colorantId == i.colorantId;
+                        });
+                        if (ro_data) {
+                            if (v.qty > ro_data.qty) {
+                                v.qty = v.qty - ro_data.qty;
+                            }
+                            else {
+                                v.qty = 0;
+                            }
+                        }
+                        resData_1.push(v);
+                    });
+                    return [2 /*return*/, resData_1];
+                }
+                else {
+                    return [2 /*return*/, so_list];
+                }
+                return [2 /*return*/];
+            });
+        });
+    };
+    InventtransService.prototype.groupData = function (params, result) {
+        return __awaiter(this, void 0, void 0, function () {
+            var new_data;
+            return __generator(this, function (_a) {
+                new_data = [];
+                result.forEach(function (groupitem) {
+                    var qty = groupitem.reduce(function (res, item) { return res + parseInt(item.qty); }, 0);
+                    if (params.type == "SALESORDER" || params.type == "PURCHASERETURN" || params.type == "INVENTORYMOVEMENT") {
+                        if (qty <= 0 && params.type != "INVENTORYMOVEMENT") {
+                            groupitem[0].qty = Math.abs(qty);
+                            groupitem[0].returnQuantity = 0;
+                            new_data.push(__assign({}, groupitem[0]));
+                        }
+                        else if (qty > 0 && params.type == "SALESORDER") {
+                            groupitem[0].qty = Math.abs(qty);
+                            groupitem[0].returnQuantity = 0;
+                            new_data.push(__assign({}, groupitem[0]));
+                        }
+                        else if (params.type == "INVENTORYMOVEMENT") {
+                            groupitem[0].qty = parseInt(qty);
+                            groupitem[0].returnQuantity = 0;
+                            new_data.push(__assign({}, groupitem[0]));
+                        }
+                    }
+                    else {
+                        if (qty > 0) {
+                            groupitem[0].qty = Math.abs(qty);
+                            groupitem[0].returnQuantity = 0;
+                            new_data.push(__assign({}, groupitem[0]));
+                        }
+                        else if (qty <= 0) {
+                            groupitem[0].qty = Math.abs(qty);
+                            groupitem[0].returnQuantity = 0;
+                            new_data.push(__assign({}, groupitem[0]));
+                        }
+                    }
+                });
+                return [2 /*return*/, new_data];
             });
         });
     };
@@ -324,11 +345,9 @@ var InventtransService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        console.log(this.sessionInfo);
                         return [4 /*yield*/, this.inventtransDAO.save(reqData)];
                     case 1:
                         data = _a.sent();
-                        console.log(data);
                         return [2 /*return*/, data.id];
                     case 2:
                         error_5 = _a.sent();
@@ -396,7 +415,6 @@ var InventtransService = /** @class */ (function () {
                             newSalesline_1.push(__assign({}, groupitem[0]));
                         });
                         newSalesline_1.map(function (v) {
-                            // console.log(v);
                             if (v.itemid && v.configId && v.inventsizeid) {
                                 items_1.push(v.itemid), colors_1.push(v.configId), sizes_1.push(v.inventsizeid);
                             }
@@ -427,6 +445,7 @@ var InventtransService = /** @class */ (function () {
                                         selectedQuantity: v.salesQty,
                                         availabilty: parseInt(itemsInStock_1[index].qty),
                                         product: v.product,
+                                        name: v.name,
                                     });
                                 }
                             }

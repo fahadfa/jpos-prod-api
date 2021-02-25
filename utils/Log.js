@@ -60,15 +60,15 @@ log4js_1.configure({
             base: __dirname + "/../../logs/jpos/",
             property: "type",
             extension: ".log",
-            maxLogSize: 10485760,
+            maxLogSize: 1000000,
             backups: 1,
         },
         out: { type: "stdout", layout: { type: "dummy" } },
         emergencies: {
             type: "file",
             filename: __dirname + "/../../logs/jpos/error.log",
-            maxLogSize: 10485760,
-            backups: 1,
+            maxLogSize: 10000000,
+            backups: 10,
         },
         error: {
             type: "logLevelFilter",
@@ -96,6 +96,10 @@ exports.sflog = log4js_1.getLogger("sync");
 exports.sflog.addContext("type", "syncf");
 exports.ulog = log4js_1.getLogger("update");
 exports.ulog.addContext("type", "update");
+exports.hlog = log4js_1.getLogger("health");
+exports.hlog.addContext("type", "health");
+exports.saleslog = log4js_1.getLogger("sales");
+exports.saleslog.addContext("type", "sales");
 // export const log = getLogger();
 // export const slog = getLogger();
 // export const ulog = getLogger();

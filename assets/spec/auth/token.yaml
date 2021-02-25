@@ -1,0 +1,22 @@
+/auth/token:
+  post:
+    summary: Refresh Token
+    tags:
+      - Access
+    parameters:
+      - name: body
+        in: body
+        required: false
+        schema:
+          type: object
+          properties:
+            data:
+              type: object
+              properties:
+                token:
+                  type: string
+                  example: "1234"
+                  required: true
+    responses:
+      200:
+        description: "status:1 is success; status: 0 is failure;"

@@ -136,7 +136,6 @@ var FixedAssetTableService = /** @class */ (function () {
                         return [4 /*yield*/, this.validate(item)];
                     case 1:
                         cond = _a.sent();
-                        console.log(cond);
                         if (!(cond == true || cond == "updated")) return [3 /*break*/, 3];
                         item.dataareaid = this.sessionInfo.dataareaid;
                         return [4 /*yield*/, this.fixedassettableRepository.save(item)];
@@ -146,10 +145,10 @@ var FixedAssetTableService = /** @class */ (function () {
                         return [2 /*return*/, returnData];
                     case 3:
                         if (cond == "assetId") {
-                            throw { message: "RECORD_ALREADY_EXISTS" };
+                            throw { status: 0, message: "RECORD_ALREADY_EXISTS" };
                         }
                         else {
-                            throw { message: "INVALID_DATA" };
+                            throw { status: 0, message: "INVALID_DATA" };
                         }
                         _a.label = 4;
                     case 4: return [3 /*break*/, 6];
@@ -169,11 +168,9 @@ var FixedAssetTableService = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 7, , 8]);
                         if (!id) return [3 /*break*/, 5];
-                        console.log(id);
                         return [4 /*yield*/, this.fixedassettableRepository.entity(id)];
                     case 1:
                         entity = _a.sent();
-                        console.log(entity);
                         if (!entity) return [3 /*break*/, 3];
                         entity.deleted = true;
                         entity.deletedby = this.sessionInfo.userName;
@@ -181,9 +178,9 @@ var FixedAssetTableService = /** @class */ (function () {
                     case 2:
                         _a.sent();
                         return [2 /*return*/, { id: entity.assetId, message: "REMOVED" }];
-                    case 3: throw { message: "RECORD_NOT_FOUND" };
+                    case 3: throw { status: 0, message: "RECORD_NOT_FOUND" };
                     case 4: return [3 /*break*/, 6];
-                    case 5: throw { message: "INVALID_DATA" };
+                    case 5: throw { status: 0, message: "INVALID_DATA" };
                     case 6: return [3 /*break*/, 8];
                     case 7:
                         error_4 = _a.sent();
@@ -277,18 +274,17 @@ var FixedAssetTableService = /** @class */ (function () {
                         data.nextrec = prevYear == year ? data.nextrec : 1;
                         hashString = data.format.slice(data.format.indexOf("#"), data.format.lastIndexOf("#") + 1);
                         salesId = data.format.replace(hashString, year) + "-" + data.nextrec;
-                        console.log(salesId);
                         return [4 /*yield*/, this.rawQuery.updateNumberSequence(data.numbersequence, data.nextrec)];
                     case 4:
                         _a.sent();
                         return [4 /*yield*/, salesId];
                     case 5: return [2 /*return*/, _a.sent()];
-                    case 6: throw { message: "CANNOT_FIND_SEQUENCE_FORMAT_FROM_NUMBER_SEQUENCE_TABLE" };
+                    case 6: throw { status: 0, message: "CANNOT_FIND_SEQUENCE_FORMAT_FROM_NUMBER_SEQUENCE_TABLE" };
                     case 7: return [3 /*break*/, 9];
                     case 8:
                         error_5 = _a.sent();
                         if (error_5 == {}) {
-                            error_5 = { message: "TECHNICAL_ISSUE_PLEASE_CONTACT_YOUR_TECHNICAL_TEAM" };
+                            error_5 = { status: 0, message: "TECHNICAL_ISSUE_PLEASE_CONTACT_YOUR_TECHNICAL_TEAM" };
                         }
                         throw error_5;
                     case 9: return [2 /*return*/];

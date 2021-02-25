@@ -37,9 +37,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
 var App_1 = require("../../utils/App");
+var RawQuery_1 = require("../common/RawQuery");
 var TransOrderReport = /** @class */ (function () {
     function TransOrderReport() {
         this.db = typeorm_1.getManager();
+        this.rawQuery = new RawQuery_1.RawQuery();
     }
     TransOrderReport.prototype.execute = function (params) {
         return __awaiter(this, void 0, void 0, function () {
@@ -84,7 +86,7 @@ var TransOrderReport = /** @class */ (function () {
     };
     TransOrderReport.prototype.report = function (result, params) {
         return __awaiter(this, void 0, void 0, function () {
-            var query, data, renderData, file;
+            var query, data, renderData, title, file;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -116,6 +118,14 @@ var TransOrderReport = /** @class */ (function () {
                             v.quantity = v.quantity ? parseInt(v.quantity) : 0;
                             renderData.total += parseInt(v.quantity);
                         });
+                        return [4 /*yield*/, this.rawQuery.getAppLangName(params.transkind == "ORDERSHIPMENT" ? "ORDER_SHIPMENT" :
+                                (params.transkind == "ORDERRECEIVE" ? "ORDER_RECEIVE" : "TRANSFER_ORDERS"))];
+                    case 3:
+                        title = _a.sent();
+                        if (title) {
+                            renderData.title = title;
+                            console.table(title);
+                        }
                         if (params.type == "excel") {
                             if (params.transkind == "ORDERSHIPMENT") {
                                 file = params.lang == "en" ? "odorder-excel" : "osorder-excel-ar";

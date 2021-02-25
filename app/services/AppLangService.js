@@ -99,9 +99,9 @@ var AppLangService = /** @class */ (function () {
                         return [4 /*yield*/, this.appLangRepository.save(item)];
                     case 2:
                         appLangData = _a.sent();
-                        returnData = { id: item.id, message: 'SAVED_SUCCESSFULLY' };
+                        returnData = { id: item.id, message: "SAVED_SUCCESSFULLY" };
                         return [2 /*return*/, returnData];
-                    case 3: throw { message: 'INVALID_DATA' };
+                    case 3: throw { status: 0, message: "INVALID_DATA" };
                     case 4: return [3 /*break*/, 6];
                     case 5:
                         error_3 = _a.sent();
@@ -126,7 +126,7 @@ var AppLangService = /** @class */ (function () {
                         return [4 /*yield*/, this.appLangRepository.delete(data)];
                     case 2:
                         result = _a.sent();
-                        returnData = { id: id, message: 'REMOVED' };
+                        returnData = { id: id, message: "REMOVED" };
                         return [2 /*return*/, returnData];
                     case 3:
                         error_4 = _a.sent();
@@ -142,7 +142,7 @@ var AppLangService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 previousItem = null;
                 if (!item.id || item.id == "" || item.id == "0") {
-                    throw "invalid";
+                    return [2 /*return*/, "invalid"];
                 }
                 item.id = item.id.toUpperCase().replace(/\s/g, "_");
                 item.updatedBy = this.sessionInfo.id;

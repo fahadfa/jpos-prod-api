@@ -52,8 +52,8 @@ var HolidaysListService = /** @class */ (function () {
                                 relations: [],
                                 join: {
                                     alias: "holidaysList",
-                                    innerJoinAndSelect: {}
-                                }
+                                    innerJoinAndSelect: {},
+                                },
                             })];
                     case 1:
                         data = _a.sent();
@@ -76,7 +76,7 @@ var HolidaysListService = /** @class */ (function () {
                         query_1 = item;
                         return [4 /*yield*/, this.holidaysListRepository.find({
                                 relations: [],
-                                where: query_1
+                                where: query_1,
                             })];
                     case 1:
                         data = _a.sent();
@@ -108,10 +108,10 @@ var HolidaysListService = /** @class */ (function () {
                         return [2 /*return*/, returnData];
                     case 3:
                         if (cond == "updated") {
-                            throw { message: Props_1.Props.MISS_MATCH_MESSAGE };
+                            throw { status: 0, message: Props_1.Props.MISS_MATCH_MESSAGE };
                         }
                         else {
-                            throw { message: Props_1.Props.INVALID_DATA };
+                            throw { status: 0, message: Props_1.Props.INVALID_DATA };
                         }
                         _a.label = 4;
                     case 4: return [3 /*break*/, 6];
@@ -133,8 +133,9 @@ var HolidaysListService = /** @class */ (function () {
                         return [4 /*yield*/, this.holidaysListRepository.findOne(id)];
                     case 1:
                         data = _a.sent();
-                        if (!data)
-                            throw { message: Props_1.Props.RECORD_NOT_EXISTS };
+                        if (!data) {
+                            throw { status: 0, message: Props_1.Props.RECORD_NOT_EXISTS };
+                        }
                         //data.active = !data.active;
                         data.updatedBy = this.sessionInfo.id;
                         data.updatedOn = new Date(App_1.App.DateNow());

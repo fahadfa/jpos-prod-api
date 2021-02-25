@@ -37,9 +37,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
 var App_1 = require("../../utils/App");
+var RawQuery_1 = require("../common/RawQuery");
 var ColorantReport = /** @class */ (function () {
     function ColorantReport() {
         this.db = typeorm_1.getManager();
+        this.rawQuery = new RawQuery_1.RawQuery();
     }
     ColorantReport.prototype.execute = function (params) {
         return __awaiter(this, void 0, void 0, function () {
@@ -103,7 +105,7 @@ var ColorantReport = /** @class */ (function () {
     };
     ColorantReport.prototype.report = function (result, params) {
         return __awaiter(this, void 0, void 0, function () {
-            var warehouse, file;
+            var warehouse, title, file;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.warehouseName(params.inventlocationid)];
@@ -112,6 +114,13 @@ var ColorantReport = /** @class */ (function () {
                         result.warehouseNameEn = warehouse.namealias;
                         result.warehouseNameAr = warehouse.name;
                         result.printDate = new Date(params.printDate).toISOString().replace(/T/, " ").replace(/\..+/, "");
+                        return [4 /*yield*/, this.rawQuery.getAppLangName("COLORANT_REPORT")];
+                    case 2:
+                        title = _a.sent();
+                        if (title) {
+                            result.title = title;
+                            console.table(title);
+                        }
                         if (params.type == "excel") {
                             file = params.lang == "en" ? "colorant-excel" : "colorant-excel-ar";
                         }

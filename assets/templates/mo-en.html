@@ -93,35 +93,36 @@
     <div id="bg__watermark">
       <p id="bg__text__watermark">Only for testing</p>
     </div>
-    <table width="98%" style="margin-top: 100px;" cellpadding="0" cellspacing="0">
+    <table width="98%" style="margin-top: 100px" cellpadding="0" cellspacing="0">
       <tr>
         <td width="40%">
-          <table style="text-align: left;">
+          <table style="text-align: left">
             <tr class="billing">
               <td valign="top">From</td>
               <td valign="top">:</td>
-              <td>
-                {{wnamealias}}
-              </td>
+              <td>{{wnamealias}}</td>
             </tr>
             <tr class="billing">
               <td valign="top">Fax</td>
               <td valign="top">:</td>
-              <td>
-                {{fax}}
-              </td>
+              <td>{{fax}}</td>
             </tr>
             <tr class="billing">
               <td valign="top">Movement Name</td>
               <td valign="top">:</td>
-              <td>
-                {{salesName}}
-              </td>
+              <td>{{salesName}}</td>
             </tr>
+            {{#if custAccount}}
+            <tr class="billing">
+              <td valign="top">Customer Id</td>
+              <td valign="top">:</td>
+              <td>{{custAccount}}</td>
+            </tr>
+            {{/if}}
           </table>
         </td>
-        <td width="20%" style="text-align: center;">
-          <table style="text-align: center;">
+        <td width="20%" style="text-align: center">
+          <table style="text-align: center">
             {{#if originalPrinted}}
             <tr>
               <td class="copy-text">COPY</td>
@@ -132,35 +133,36 @@
             </tr>
             <br />
             <tr>
-              <span style="font-weight: 600;">
-                <td><span style="font-size: 9.75px !important;"> {{salesId}} </span></td>
+              <span style="font-weight: 600">
+                <td><span style="font-size: 9.75px !important"> {{salesId}} </span></td>
               </span>
             </tr>
           </table>
         </td>
-        <td style="text-align: left;" width="40%">
+        <td style="text-align: left" width="40%">
           <table align="right">
             <tr class="billing">
               <td>User</td>
               <td>:</td>
-              <td>
-                {{createdby}}
-              </td>
+              <td>{{createdby}}</td>
             </tr>
             <tr class="billing">
               <td class="quotation-date">Date</td>
               <td>:</td>
-              <td class="quotation-date">
-                {{createddatetime}}
-              </td>
+              <td class="quotation-date">{{createddatetime}}</td>
             </tr>
             <tr class="billing">
               <td class="quotation-date">Movement Type</td>
               <td>:</td>
-              <td class="quotation-date">
-                {{movementType}}
-              </td>
+              <td class="quotation-date">{{movementType}}</td>
             </tr>
+            {{#if invoiceAccount}}
+            <tr class="billing">
+              <td class="quotation-date">customer Name</td>
+              <td>:</td>
+              <td class="quotation-date">{{invoiceAccount}}</td>
+            </tr>
+            {{/if}}
           </table>
         </td>
       </tr>
@@ -169,7 +171,7 @@
         <td colspan="3">
           <table
             id="invoiceDetails"
-            style="margin-top: 40px;"
+            style="margin-top: 40px"
             width="100%"
             class="item-table"
             cellpadding="0"
@@ -188,45 +190,31 @@
             <tr class="tab-data">
               <td class="td">{{this.sNo}}</td>
               <td class="td">
-                <div style="font-size: 13px;">
-                  {{this.itemid}}
-                </div>
+                <div style="font-size: 13px">{{this.itemid}}</div>
               </td>
               <td class="td description-data">
-                <span style="font-size: 13px;">
+                <span style="font-size: 13px">
                   {{this.prodNameEn}}, {{this.configid}}, {{this.colorant}}, {{this.inventsizeid}}
                 </span>
               </td>
-              <td class="td">
-                {{this.batchno}}
-              </td>
-              <td class="td">
-                {{this.salesQty}}
-              </td>
+              <td class="td">{{this.batchno}}</td>
+              <td class="td">{{this.salesQty}}</td>
             </tr>
             {{/each}}
           </table>
-          <table width="100%" style="text-align: right; border-bottom: 1px dotted #8a8989; margin-top: 8px;">
+          <table width="100%" style="text-align: right; border-bottom: 1px dotted #8a8989; margin-top: 8px">
             <tr>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
-              <td>
-                Total Quantity:{{ quantity }}
-              </td>
+              <td>Total Quantity:{{ quantity }}</td>
             </tr>
           </table>
-          <table width="100%" style="background: #fff;">
+          <table width="100%" style="background: #fff">
             <tr>
-              <td style="width: 33%; font-size: 15px; text-align: left;">
-                Recipient
-              </td>
-              <td style="width: 33%; font-size: 15px; text-align: center;">
-                Seller
-              </td>
-              <td style="width: 33%; font-size: 15px; text-align: right;">
-                Company
-              </td>
+              <td style="width: 33%; font-size: 15px; text-align: left">Recipient</td>
+              <td style="width: 33%; font-size: 15px; text-align: center">Seller</td>
+              <td style="width: 33%; font-size: 15px; text-align: right">Company</td>
             </tr>
           </table>
         </td>

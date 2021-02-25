@@ -79,18 +79,28 @@ var DesignerServiceBalancesReport = /** @class */ (function () {
     };
     DesignerServiceBalancesReport.prototype.report = function (result, params) {
         return __awaiter(this, void 0, void 0, function () {
-            var renderData, file;
+            var renderData, title, file;
             return __generator(this, function (_a) {
-                renderData = params;
-                renderData.data = result;
-                file = params.lang == "en" ? "designer-service-balances-en" : "designer-service-balances-ar";
-                try {
-                    return [2 /*return*/, App_1.App.HtmlRender(file, renderData)];
+                switch (_a.label) {
+                    case 0:
+                        renderData = params;
+                        renderData.data = result;
+                        return [4 /*yield*/, this.rawQuery.getAppLangName("DESIGNER_SERVICE_REPORT")];
+                    case 1:
+                        title = _a.sent();
+                        if (title) {
+                            renderData.title = title;
+                            console.table(title);
+                        }
+                        file = params.lang == "en" ? "designer-service-balances-en" : "designer-service-balances-ar";
+                        try {
+                            return [2 /*return*/, App_1.App.HtmlRender(file, renderData)];
+                        }
+                        catch (error) {
+                            throw error;
+                        }
+                        return [2 /*return*/];
                 }
-                catch (error) {
-                    throw error;
-                }
-                return [2 /*return*/];
             });
         });
     };
@@ -106,7 +116,7 @@ var DesignerServiceBalancesReport = /** @class */ (function () {
                         tDate.setHours(0, 0, 0);
                         fromDate = App_1.App.convertUTCDateToLocalDate(fDate, params.timeZoneOffSet ? params.timeZoneOffSet : 0);
                         toDate = App_1.App.convertUTCDateToLocalDate(tDate, params.timeZoneOffSet ? params.timeZoneOffSet : 0);
-                        query = "          \nselect distinct d.invoiceid, d.customerid, d.custphone,\ncast(coalesce(d.balanceamount, 0) as Decimal(10,2)) as \"balanceAmount\",\ncast((coalesce(d.designerserviceamount, 0) - coalesce(d.balanceamount, 0)) as Decimal(10,2)) as \"usedAmount\",\ncast(coalesce(d.designerserviceamount, 0) as Decimal(10,2)) \nas \"designerserviceAmount\",st.lastmodifieddate,st.status from\n(\nselect\na.invoiceid,\na.customerid,\na.custphone,\n(select ABS(sum(b.amount)) from designerservice b where b.invoiceid=a.invoiceid \nand b.customerid = a.customerid and b.custphone= a.custphone \ngroup by b.invoiceid, b.customerid, b.custphone )\nas balanceamount,\n(select ABS(sum(e.amount)) from \ndesignerservice e where e.amount > 0 \nand  e.recordtype = 1 and e.invoiceid=a.invoiceid and e.customerid = a.customerid and e.custphone = a.custphone group by e.invoiceid, e.customerid, e.custphone)\nas designerserviceamount\nfrom designerservice a \n--                where a.customerid = '0554076508'\n)  \nas d \ninner join salestable as st on d.invoiceid=st.salesid \nwhere d.balanceamount > 0\nand st.inventlocationid ='" + params.inventlocationid + "'\nand st.lastmodifieddate ::Date>='" + fromDate + "' ::timestamp\nand st.lastmodifieddate ::Date<='" + toDate + "' ::timestamp";
+                        query = "          \nselect distinct d.invoiceid, d.customerid, d.custphone,\ncast(coalesce(d.balanceamount, 0) as Decimal(10,2)) as \"balanceAmount\",\ncast((coalesce(d.designerserviceamount, 0) - coalesce(d.balanceamount, 0)) as Decimal(10,2)) as \"usedAmount\",\ncast(coalesce(d.designerserviceamount, 0) as Decimal(10,2)) \nas \"designerserviceAmount\",st.lastmodifieddate,st.status from\n(\nselect\na.invoiceid,\na.customerid,\na.custphone,\n(select ABS(sum(b.amount)) from designerservice b where b.invoiceid=a.invoiceid \nand b.customerid = a.customerid and b.custphone= a.custphone \ngroup by b.invoiceid, b.customerid, b.custphone )\nas balanceamount,\n(select ABS(sum(e.amount)) from \ndesignerservice e where e.amount > 0 \nand  e.recordtype = 1 and e.invoiceid=a.invoiceid and e.customerid = a.customerid and e.custphone = a.custphone group by e.invoiceid, e.customerid, e.custphone)\nas designerserviceamount\nfrom designerservice a \n)  \nas d \ninner join salestable as st on d.invoiceid=st.salesid \nand st.inventlocationid ='" + params.inventlocationid + "'\nand st.lastmodifieddate ::timestamp between '" + fromDate + "' ::timestamp and ('" + toDate + "' ::timestamp + '1 day'::interval) ";
                         if (params.status != "ALL") {
                             if (params.status == "RESERVED") {
                                 query += " and st.status in ('RESERVED') ";
@@ -130,6 +140,7 @@ var DesignerServiceBalancesReport = /** @class */ (function () {
                         if (params.custaccount) {
                             query += "and d.customerid = '" + params.custaccount + "'";
                         }
+                        console.log(query);
                         return [4 /*yield*/, this.db.query(query)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }

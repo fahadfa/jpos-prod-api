@@ -202,7 +202,7 @@
                         <td>الجوال</td>
                         <td>:</td>
 
-                        <td>{{cphone}}</td>
+                        <td>{{custmobilenumber}}</td>
                       </tr>
                       <tr class="billing">
                         <td>فاكس</td>
@@ -212,7 +212,8 @@
                       <tr class="billing">
                         <td>عميل</td>
                         <td>:</td>
-                        <td>{{cname}}</td>
+                        <td>{{#if this.invoiceAccount}} {{this.invoiceAccount}} {{else}} {{this.custAccount}} {{/if}}
+                          {{cname}}</td>
                       </tr>
                       <tr class="billing">
                         <td>الرقم الضريبي للعميل</td>

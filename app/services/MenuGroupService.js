@@ -188,8 +188,9 @@ var MenuGroupService = /** @class */ (function () {
                         return [4 /*yield*/, this.menuGroupRepository.entity(id)];
                     case 1:
                         data = _a.sent();
-                        if (!data)
-                            throw { message: "RECORD_NOT_FOUND" };
+                        if (!data) {
+                            throw { status: 0, message: "RECORD_NOT_FOUND" };
+                        }
                         data.updatedBy = this.sessionInfo.id;
                         return [4 /*yield*/, this.menuGroupRepository.delete(data)];
                     case 2:
@@ -219,29 +220,11 @@ var MenuGroupService = /** @class */ (function () {
                         previousItem = _a.sent();
                         _a.label = 3;
                     case 3:
-                        // let condData = await this.menuGroupRepository.search({ name: item.name });
                         if (!item.id) {
-                            // if (condData.length > 0) {
-                            //     return "name";
-                            // } else {
-                            //let uid = App.UniqueNumber();
-                            //item.id = uid;
-                            // item.createdBy = this.sessionInfo.id;
-                            // item.createdOn = new Date(App.DateNow());
-                            // }
                         }
                         else {
-                            // if (item.updatedOn && previousItem.updatedOn.toISOString() != new Date(item.updatedOn).toISOString()) {
-                            //     return "updated";
-                            // }
-                            // if(oldItem.name != item.name) {
-                            //    if (condData.length > 0) {
-                            //        return "name";
-                            //    }
-                            // }
                         }
                         item.updatedBy = this.sessionInfo.id;
-                        //item.updatedOn = new Date(App.DateNow());
                         return [2 /*return*/, true];
                 }
             });

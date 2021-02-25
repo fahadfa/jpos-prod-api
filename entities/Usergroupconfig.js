@@ -401,6 +401,14 @@ var Usergroupconfig = /** @class */ (function () {
         typeorm_1.Column({ name: "showroom_district_code" }),
         __metadata("design:type", String)
     ], Usergroupconfig.prototype, "showroomDistrictCode", void 0);
+    __decorate([
+        typeorm_1.Column({ name: "sales_coordinator_signing_authority" }),
+        __metadata("design:type", String)
+    ], Usergroupconfig.prototype, "salesCoordinatorSigningAuthority", void 0);
+    __decorate([
+        typeorm_1.Column({ name: "return_order_days" }),
+        __metadata("design:type", Number)
+    ], Usergroupconfig.prototype, "returnOrderDays", void 0);
     Usergroupconfig = __decorate([
         typeorm_1.Entity("usergroupconfig")
     ], Usergroupconfig);

@@ -39,10 +39,12 @@ var typeorm_1 = require("typeorm");
 var App_1 = require("../../utils/App");
 var ReceiptsService_1 = require("../services/ReceiptsService");
 var Words_1 = require("../../utils/Words");
+var RawQuery_1 = require("../common/RawQuery");
 var ReceiptReport = /** @class */ (function () {
     function ReceiptReport() {
         this.db = typeorm_1.getManager();
         this.receiptService = new ReceiptsService_1.ReceiptsService();
+        this.rawQuery = new RawQuery_1.RawQuery();
     }
     ReceiptReport.prototype.execute = function (params) {
         return __awaiter(this, void 0, void 0, function () {
@@ -81,19 +83,29 @@ var ReceiptReport = /** @class */ (function () {
     };
     ReceiptReport.prototype.report = function (result, params) {
         return __awaiter(this, void 0, void 0, function () {
-            var renderData, fileName;
+            var renderData, fileName, title;
             return __generator(this, function (_a) {
-                renderData = {};
-                fileName = params.lang == "en" ? "receipt-en" : "receipt-ar";
-                console.log("ReceiptReport File Name: ", fileName);
-                renderData = result;
-                try {
-                    return [2 /*return*/, App_1.App.HtmlRender(fileName, renderData)];
+                switch (_a.label) {
+                    case 0:
+                        renderData = {};
+                        fileName = params.lang == "en" ? "receipt-en" : "receipt-ar";
+                        console.log("ReceiptReport File Name: ", fileName);
+                        renderData = result;
+                        return [4 /*yield*/, this.rawQuery.getAppLangName("RECEIPT_HEADER")];
+                    case 1:
+                        title = _a.sent();
+                        if (title) {
+                            result.title = title;
+                            console.table(title);
+                        }
+                        try {
+                            return [2 /*return*/, App_1.App.HtmlRender(fileName, renderData)];
+                        }
+                        catch (error) {
+                            throw error;
+                        }
+                        return [2 /*return*/];
                 }
-                catch (error) {
-                    throw error;
-                }
-                return [2 /*return*/];
             });
         });
     };

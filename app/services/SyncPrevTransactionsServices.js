@@ -218,7 +218,7 @@ var SyncPrevTransactionsService = /** @class */ (function () {
                             Log_1.log.info(query);
                             queryData.push(query);
                         }
-                        return [4 /*yield*/, SyncServiceHelper_1.SyncServiceHelper.BatchQuery(this.localDbConfig, queryData)];
+                        return [4 /*yield*/, SyncServiceHelper_1.SyncServiceHelper.BatchQuery(this.localDbConfig, queryData, Log_1.log)];
                     case 1:
                         _a.sent();
                         return [3 /*break*/, 3];
@@ -244,10 +244,8 @@ var SyncPrevTransactionsService = /** @class */ (function () {
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
                                     case 0:
-                                        console.log(line);
                                         if (line.INVENTTRANSID && line.INVENTTRANSID != "") {
                                             colorantdata = salesLineData.find(function (v) { return v.ITEMID == "HSN-00001" && v.CONFIGID == line.INVENTTRANSID && v.SALESQTY == line.SALESQTY; });
-                                            console.log(colorantdata);
                                             if (colorantdata) {
                                                 line.COLORANTPRICE = colorantdata.SALESPRICE;
                                                 line.LineSalesTax += colorantdata.LineSalesTax;
@@ -258,8 +256,8 @@ var SyncPrevTransactionsService = /** @class */ (function () {
                                         }
                                         else {
                                             line.COLORANTPRICE = 0;
+                                            line.INVENTTRANSID = "";
                                         }
-                                        line.INVENTTRANSID = line.INVENTTRANSID ? line.INVENTTRANSID : "";
                                         line.link_id = line.RECID;
                                         line.applied_discounts = [];
                                         line.is_parent = false;
@@ -274,7 +272,7 @@ var SyncPrevTransactionsService = /** @class */ (function () {
                                             line.applied_discounts.push({
                                                 discountType: "VOUCHER_DISCOUNT",
                                                 percentage: (parseFloat(line.VoucherDisc) * 100) / parseFloat(line.LINEAMOUNT),
-                                                discountAmount: parseFloat(line.InteriorExteriorAmount),
+                                                discountAmount: parseFloat(line.VoucherDisc),
                                             });
                                         }
                                         if (line.CUSTOMDISCAMT && line.CUSTOMDISCAMT > 0) {
@@ -295,7 +293,7 @@ var SyncPrevTransactionsService = /** @class */ (function () {
                                         }
                                         if (!(line.MultiLnDisc && line.MultiLnDisc > 0)) return [3 /*break*/, 2];
                                         MultiLineDiscRangesQuery = "SELECT itemrelation, ACCOUNTRELATION,QUANTITYAMOUNT,\n                                          CURRENCY,PERCENT1 FROM \n                                          PRICEDISCTABLE WHERE MODULE = 1 AND \n                                          ITEMCODE = 1 AND ACCOUNTCODE = 1 AND \n                                          ACCOUNTRELATION = '" + line.CUSTACCOUNT + "' AND LOWER(DATAAREAID) = LOWER('" + line.DATAAREAID + "') AND CURRENCY='" + line.CURRENCYCODE + "'";
-                                        return [4 /*yield*/, SyncServiceHelper_1.SyncServiceHelper.ExecuteQuery(this_1.localDbConfig, MultiLineDiscRangesQuery)];
+                                        return [4 /*yield*/, SyncServiceHelper_1.SyncServiceHelper.ExecuteQuery(this_1.localDbConfig, MultiLineDiscRangesQuery, Log_1.log)];
                                     case 1:
                                         MultiLineDiscRanges = _a.sent();
                                         line.applied_discounts.push({
@@ -308,7 +306,7 @@ var SyncPrevTransactionsService = /** @class */ (function () {
                                     case 2:
                                         if (!(line.InstantDisc && line.InstantDisc > 0)) return [3 /*break*/, 4];
                                         InstantDiscRangesQuery = "select \n          * from custtotaldiscount where dataareaid ='ajp' and custaccount = '" + line.CUSTACCOUNT + "' order by minamount";
-                                        return [4 /*yield*/, SyncServiceHelper_1.SyncServiceHelper.ExecuteQuery(this_1.localDbConfig, InstantDiscRangesQuery)];
+                                        return [4 /*yield*/, SyncServiceHelper_1.SyncServiceHelper.ExecuteQuery(this_1.localDbConfig, InstantDiscRangesQuery, Log_1.log)];
                                     case 3:
                                         InstantDiscRanges = _a.sent();
                                         line.applied_discounts.push({
@@ -386,7 +384,7 @@ var SyncPrevTransactionsService = /** @class */ (function () {
                             Log_1.log.info(query);
                             queryData.push(query);
                         }
-                        return [4 /*yield*/, SyncServiceHelper_1.SyncServiceHelper.BatchQuery(this.localDbConfig, queryData)];
+                        return [4 /*yield*/, SyncServiceHelper_1.SyncServiceHelper.BatchQuery(this.localDbConfig, queryData, Log_1.log)];
                     case 5:
                         _b.sent();
                         return [3 /*break*/, 7];
@@ -416,14 +414,14 @@ var SyncPrevTransactionsService = /** @class */ (function () {
                         trans = inventTransData_1[_i];
                         if (!(trans.TRANSTYPE == 4)) return [3 /*break*/, 3];
                         text = "select salesid from salestable where intercompanyoriginalsalesid = '" + trans.TRANSREFID + "' limit 1";
-                        return [4 /*yield*/, SyncServiceHelper_1.SyncServiceHelper.ExecuteQuery(this.localDbConfig, text)];
+                        return [4 /*yield*/, SyncServiceHelper_1.SyncServiceHelper.ExecuteQuery(this.localDbConfig, text, Log_1.log)];
                     case 2:
                         salesOrderData = _a.sent();
                         trans.INVOICEID = salesOrderData.rows[0] ? salesOrderData.rows[0].salesid : trans.TRANSREFID;
                         return [3 /*break*/, 5];
                     case 3:
                         text = "select intercompanyoriginalsalesid from salestable where salesid = '" + trans.TRANSREFID + "' limit 1";
-                        return [4 /*yield*/, SyncServiceHelper_1.SyncServiceHelper.ExecuteQuery(this.localDbConfig, text)];
+                        return [4 /*yield*/, SyncServiceHelper_1.SyncServiceHelper.ExecuteQuery(this.localDbConfig, text, Log_1.log)];
                     case 4:
                         salesOrderData = _a.sent();
                         trans.INVOICEID = trans.TRANSREFID;
@@ -434,7 +432,7 @@ var SyncPrevTransactionsService = /** @class */ (function () {
                         _a.label = 5;
                     case 5:
                         saleslinequery = "select id, colorantid   from salesline where salesid = '" + trans.INVOICEID + "' AND itemid = '" + trans.ITEMID + "' AND configid = '" + trans.ConfigId + "' AND inventsizeid = '" + trans.InventSizeId + "' AND batchno = '" + trans.BATCHNO + "' AND salesqty = ABS(" + trans.QTY + ") limit 1";
-                        return [4 /*yield*/, SyncServiceHelper_1.SyncServiceHelper.ExecuteQuery(this.localDbConfig, saleslinequery)];
+                        return [4 /*yield*/, SyncServiceHelper_1.SyncServiceHelper.ExecuteQuery(this.localDbConfig, saleslinequery, Log_1.log)];
                     case 6:
                         salesLineData = _a.sent();
                         // log.info(salesLineData);
@@ -478,7 +476,7 @@ var SyncPrevTransactionsService = /** @class */ (function () {
                         return [3 /*break*/, 1];
                     case 8:
                         Log_1.log.info(inventoryOnHandQuery);
-                        return [4 /*yield*/, SyncServiceHelper_1.SyncServiceHelper.BatchQuery(this.localDbConfig, queryData)];
+                        return [4 /*yield*/, SyncServiceHelper_1.SyncServiceHelper.BatchQuery(this.localDbConfig, queryData, Log_1.log)];
                     case 9:
                         _a.sent();
                         return [3 /*break*/, 11];

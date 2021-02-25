@@ -66,9 +66,7 @@ var ColorsService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, this.validate(reqData)
-                            // console.log(data)
-                        ];
+                        return [4 /*yield*/, this.validate(reqData)];
                     case 1:
                         data = _a.sent();
                         return [4 /*yield*/, this.colorsDAO.save(reqData)];
@@ -97,7 +95,7 @@ var ColorsService = /** @class */ (function () {
                             var color;
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
-                                    case 0: return [4 /*yield*/, colors.filter(function (v) { return (v.code == d.code); })];
+                                    case 0: return [4 /*yield*/, colors.filter(function (v) { return v.code == d.code; })];
                                     case 1:
                                         color = _a.sent();
                                         if (color.length > 0) {

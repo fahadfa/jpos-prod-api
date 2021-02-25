@@ -93,7 +93,7 @@
     }
 
     table.dash {
-      border: 1px dashed #cccccc;
+      /* border: 1px dashed #cccccc; */
       border-collapse: collapse;
     }
 
@@ -183,7 +183,7 @@
         <p id="bg__text__watermark">فقط للاختبار</p>
       </div>
 
-
+      {{#each salesLine}} 
       <table id="headertbl">
         <tr>
           <td colspan="3" valign="top" style="width: 33%;">
@@ -359,7 +359,7 @@
           </tr>
         </thead>
         <tbody>
-          {{#each salesLine}}
+          {{#each lines}}
           <tr class="tab-data">
             <td class="tdcenter">{{this.sNo}}</td>
             <td class="tdleft">
@@ -497,6 +497,7 @@
           </td>
         </tr>
       </table>
+      {{/each}} 
     </section>
 
 

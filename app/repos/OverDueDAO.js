@@ -61,17 +61,16 @@ var OverDueDAO = /** @class */ (function () {
             });
         });
     };
-    OverDueDAO.prototype.getCreditUsed = function (custAccNum) {
+    OverDueDAO.prototype.getCreditUsed = function (custAccNum, salesIds) {
         return __awaiter(this, void 0, void 0, function () {
+            var ids;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.dao
-                            .createQueryBuilder("overdue")
-                            .where("overdue.accountnum = '" + custAccNum + "' and overdue.payment=0")
-                            // .select(["overdue.invoiceamount"])
-                            .getMany()];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
+                ids = salesIds.map(function (d) { return "'" + d + "'"; }).join(",");
+                console.log("ids=============>", ids);
+                return [2 /*return*/, this.dao
+                        .createQueryBuilder("overdue")
+                        .where("overdue.accountnum = '" + custAccNum + "' and overdue.payment=0\n            and salesId not in(" + ids + ")")
+                        .getMany()];
             });
         });
     };
@@ -94,6 +93,19 @@ var OverDueDAO = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.dao.save(overdue)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    OverDueDAO.prototype.getCreditBalancesUsed = function (account) {
+        return __awaiter(this, void 0, void 0, function () {
+            var query;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        query = "select c.creditmax,c.accountnum,(select sum(custtrans.invoiceamount) from (select ctm.accountnum,ctm.invoiceid,ctm.invoiceamount\n            from cust_trans_master ctm \n            where ctm.accountnum =c.accountnum ) as custtrans) as amountcusttrans,\n            (select coalesce(sum(coalesce (finaltable.amt,0)),0) as amount from (select o1.salesid ,o1.invoiceamount ,sum(coalesce (o1.invoiceamount,0) ) over (order by o1.lastmodifieddate asc ) as amt from overdue o1 \n            where o1.invoiceid in(select o.invoiceid from cust_trans_master ctm \n            inner join overdue o \n            on ctm.accountnum =o.accountnum \n            where \n            ctm.accountnum =c.accountnum and\n            ctm.invoiceid!=o.invoiceid \n            and o.duedate::timestamp <=current_date \n            and o.payment =0\n            )) as finaltable) as overdueamount\n            from custtable c \n            where c.accountnum ='" + account + "';";
+                        return [4 /*yield*/, this.dao.query(query)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });

@@ -71,10 +71,6 @@ var SalesLineService = /** @class */ (function () {
                         return [4 /*yield*/, this.salesLineDAO.mobilesearch(item)];
                     case 1:
                         data = _a.sent();
-                        // for (let item of data) {
-                        // let product: any = await this.basesDAO.findOne({ code: item.itemid });
-                        // item.product = product;
-                        // }
                         return [2 /*return*/, data];
                     case 2:
                         error_2 = _a.sent();

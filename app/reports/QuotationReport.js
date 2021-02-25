@@ -61,6 +61,12 @@ var QuotationReport = /** @class */ (function () {
                     case 1:
                         data_1 = _a.sent();
                         data_1 = data_1.length >= 1 ? data_1[0] : {};
+                        console.log("==========transkind==========", data_1.transkind);
+                        data_1.isSalesOrder = data_1.transkind == "SALESORDER";
+                        data_1.isSalesQuotation = data_1.transkind == "SALESQUOTATION";
+                        data_1.isPurchOrder = data_1.transkind == "PURCHASEORDER";
+                        data_1.isPurchQuotation = data_1.transkind == "PURCHASEREQUEST";
+                        data_1.vat = parseInt(data_1.vat);
                         data_1.originalPrinted = data_1.originalPrinted ? data_1.originalPrinted : false;
                         if (!(data_1.originalPrinted && data_1.status == "CONVERTED")) return [3 /*break*/, 3];
                         status_1 = "CONVERTED";
@@ -104,7 +110,7 @@ var QuotationReport = /** @class */ (function () {
                     case 11: return [4 /*yield*/, this.salesline_query_to_data(id)];
                     case 12:
                         salesLine = _a.sent();
-                        data_1.vat = salesLine.length > 0 ? salesLine[0].vat : "-";
+                        data_1.vat = salesLine && salesLine.length > 0 ? parseInt(salesLine[0].vat) : "-";
                         data_1.salesLine = salesLine;
                         data_1.quantity = 0;
                         i_1 = 1;
@@ -112,6 +118,7 @@ var QuotationReport = /** @class */ (function () {
                             v.sNo = i_1;
                             i_1 += 1;
                             v.salesQty = parseInt(v.salesQty);
+                            v.vat = parseInt(v.vat);
                             data_1.quantity += parseInt(v.salesQty);
                         });
                         return [2 /*return*/, data_1];
@@ -131,6 +138,8 @@ var QuotationReport = /** @class */ (function () {
                 renderData = result;
                 console.log(params.lang);
                 file = params.lang == "en" ? "sq-en" : "sq-ar";
+                console.log(result);
+                renderData.user = params && params.user ? params.user : "";
                 try {
                     return [2 /*return*/, App_1.App.HtmlRender(file, renderData)];
                 }
@@ -147,7 +156,7 @@ var QuotationReport = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = "\n            select \n            st.salesid as \"salesId\",\n            st.custaccount as \"custAccount\",\n            st.status as status,\n            st.transkind as transkind,\n            st.salesname as customername,\n            st.mobileno as custmobilenumber,\n            to_char(st.vatamount, 'FM999999999990.00')  as vatamount,\n            to_char(st.netamount, 'FM999999999990.00')  as \"netAmount\",\n            to_char(st.disc, 'FM999999999990.00')  as disc,\n            to_char(st.amount , 'FM999999999990.00') as amount,\n            st.createdby as \"createdBy\",\n            c.name as cname,\n            c.namealias as \"cnamealias\",\n            c.phone as \"cphone\",\n            to_char(st.createddatetime, 'DD-MM-YYYY') as createddatetime,\n            st.originalprinted as \"originalPrinted\",\n            st.inventlocationid as \"inventLocationId\",\n            w.namealias as wnamealias,\n            w.name as wname,\n            concat(d.num,' - ', d.description) as salesman\n            from salestable st \n            left join dimensions d on st.dimension6_ = d.num\n            left join inventlocation w on w.inventlocationid = st.inventlocationid\n            left join custtable c on c.accountnum = st.custaccount\n            where salesid='" + id + "'\n            ";
+                        query = "\n            select \n            st.salesid as \"salesId\",\n            st.custaccount as \"custAccount\",\n            st.status as status,\n            st.transkind as transkind,\n            st.salesname as customername,\n            st.mobileno as custmobilenumber,\n            to_char(st.vatamount, 'FM999999999990.00')  as vatamount,\n            to_char(st.netamount, 'FM999999999990.00')  as \"netAmount\",\n            to_char(st.disc, 'FM999999999990.00')  as disc,\n            to_char(st.amount , 'FM999999999990.00') as amount,\n            st.createdby as \"createdBy\",\n            c.name as cname,\n            c.namealias as \"cnamealias\",\n            c.phone as \"cphone\",\n            to_char(st.createddatetime, 'DD-MM-YYYY') as createddatetime,\n            st.originalprinted as \"originalPrinted\",\n            st.inventlocationid as \"inventLocationId\",\n            st.sumtax as vat,\n            st.description as notes,\n            w.namealias as wnamealias,\n            w.name as wname,\n            concat(d.num,' - ', d.description) as salesman\n            from salestable st \n            left join dimensions d on st.dimension6_ = d.num\n            left join inventlocation w on w.inventlocationid = st.inventlocationid\n            left join custtable c on c.accountnum = st.custaccount\n            where salesid='" + id + "'\n            ";
                         return [4 /*yield*/, this.db.query(query)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -160,7 +169,7 @@ var QuotationReport = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        salesQuery = "\n            select\n            ROW_NUMBER()  OVER (ORDER BY  ln.salesid) As \"sNo\",\n            ln.itemid as itemid,\n            ln.inventsizeid as inventsizeid,\n            ln.configid as configid,\n            ln.salesqty as \"salesQty\",\n            to_char(ln.salesprice, 'FM999999999990.00') as salesprice,\n            ln.vat as vat,\n            to_char(ln.vatamount, 'FM999999999990.00') as \"vatAmount\",\n            to_char(ln.linetotaldisc, 'FM999999999990.00') as \"lineTotalDisc\",\n            to_char(ln.colorantprice, 'FM999999999990.00') as colorantprice,\n            to_char((ln.salesprice * ln.salesqty) + (ln.colorantprice  * ln.salesqty) + ln.vatamount - ln.linetotaldisc, 'FM999999999990.00') as \"lineAmount\",\n            b.itemname as \"prodNameAr\",\n            b.namealias as \"prodNameEn\",\n            c.\"name\" as \"colNameAr\",\n            c.\"name\" as \"colNameEn\",\n            s.description as \"sizeNameEn\",\n            s.\"name\" as \"sizeNameAr\",\n            to_char(coalesce(ln.lineamount,0) - coalesce(ln.linetotaldisc,0)+  coalesce(ln.colorantprice * ln.salesqty,0), 'FM999999999990.00') as \"lineAmountBeforeVat\",\n            ln.vat as vat,\n            ln.colorantid as colorant,\n            ln.linenum as linenum\n            from salesline ln\n            inner join inventtable b on b.itemid = ln.itemid\n            inner join configtable c on c.configid = ln.configid and c.itemid = ln.itemid\n            inner join inventsize s on s.inventsizeid=ln.inventsizeid and s.itemid = ln.itemid \n            where ln.salesid = '" + id + "'\n            ";
+                        salesQuery = "\n            select\n            ROW_NUMBER()  OVER (ORDER BY  ln.salesid) As \"sNo\",\n            ln.itemid as itemid,\n            ln.inventsizeid as inventsizeid,\n            ln.configid as configid,\n            ln.salesqty as \"salesQty\",\n            to_char(ln.salesprice, 'FM999999999990.00') as salesprice,\n            coalesce(ln.vat,0) as vat,\n            to_char(ln.vatamount, 'FM999999999990.00') as \"vatAmount\",\n            to_char(ln.linetotaldisc, 'FM999999999990.00') as \"lineTotalDisc\",\n            to_char(ln.colorantprice, 'FM999999999990.00') as colorantprice,\n            to_char((ln.salesprice * ln.salesqty) + (ln.colorantprice  * ln.salesqty) + ln.vatamount - ln.linetotaldisc, 'FM999999999990.00') as \"lineAmount\",\n            b.itemname as \"prodNameAr\",\n            b.namealias as \"prodNameEn\",\n            c.\"name\" as \"colNameAr\",\n            c.\"name\" as \"colNameEn\",\n            s.description as \"sizeNameEn\",\n            s.\"name\" as \"sizeNameAr\",\n            to_char(coalesce(ln.lineamount,0) - coalesce(ln.linetotaldisc,0)+  coalesce(ln.colorantprice * ln.salesqty,0), 'FM999999999990.00') as \"lineAmountBeforeVat\",\n            ln.vat as vat,\n            ln.colorantid as colorant,\n            st.sumtax as vat,\n            ln.linenum as linenum\n            from salesline ln\n            inner join salestable st on st.salesid = ln.salesid\n            inner join inventtable b on b.itemid = ln.itemid\n            inner join configtable c on c.configid = ln.configid and c.itemid = ln.itemid\n            inner join inventsize s on s.inventsizeid=ln.inventsizeid and s.itemid = ln.itemid \n            where ln.salesid = '" + id + "'\n            ";
                         return [4 /*yield*/, this.db.query(salesQuery)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }

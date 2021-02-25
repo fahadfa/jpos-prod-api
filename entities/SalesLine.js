@@ -20,7 +20,7 @@ var SalesLine = /** @class */ (function () {
     }
     __decorate([
         typeorm_1.PrimaryColumn({ name: "id" }),
-        __metadata("design:type", Number)
+        __metadata("design:type", String)
     ], SalesLine.prototype, "id", void 0);
     __decorate([
         typeorm_1.Column({ name: "salesid" }),
@@ -132,7 +132,7 @@ var SalesLine = /** @class */ (function () {
     ], SalesLine.prototype, "inventLocationId", void 0);
     __decorate([
         typeorm_1.Column({ name: "inventtransid" }),
-        __metadata("design:type", Date)
+        __metadata("design:type", String)
     ], SalesLine.prototype, "inventTransid", void 0);
     __decorate([
         typeorm_1.Column({ name: "salesdelivernow" }),
@@ -285,7 +285,7 @@ var SalesLine = /** @class */ (function () {
     __decorate([
         typeorm_1.Column({ name: "lastmodifiedby" }),
         __metadata("design:type", String)
-    ], SalesLine.prototype, "lastModifieBby", void 0);
+    ], SalesLine.prototype, "lastModifiedBy", void 0);
     __decorate([
         typeorm_1.Column({ name: "lastmodifieddate" }),
         __metadata("design:type", Date)

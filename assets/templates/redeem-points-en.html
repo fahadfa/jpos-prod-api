@@ -105,7 +105,7 @@
     }
 
     table.dash {
-      border: 1px dashed #cccccc;
+      /* border: 1px dashed #cccccc; */
       border-collapse: collapse;
     }
 
@@ -120,7 +120,7 @@
       <p id="bg__text__watermark">Only for testing</p>
     </div>
 
-    <div class="mainheading">Redeem Points Report</div>
+    <!-- <div class="mainheading">{{title.en}}</div> -->
 
     <table id="headertbl" width="98%">
       <tr>
@@ -171,6 +171,9 @@
 
     <table class="dash" width="100%" cellpadding="0" cellspacing="0">
       <thead>
+        <tr>
+          <th class="mainheading"  colspan="12" style="border: 0px dashed #cccccc;">{{title.en}}</th>
+        </tr>
         <tr>
           <th>Earned Points</th>
           <th>Redeem Points</th>

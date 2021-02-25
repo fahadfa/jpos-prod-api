@@ -99,14 +99,10 @@ var InventtableService = /** @class */ (function () {
                         return [4 /*yield*/, this.rawQuery.getItemsInStock(this.sessionInfo.inventlocationid)];
                     case 1:
                         Items = _a.sent();
-                        // console.log(Items);
                         Items.push("HSN-00001");
                         return [4 /*yield*/, this.inventtableDAO.search(params.dataareaid, Items)];
                     case 2:
                         data = _a.sent();
-                        // console.log(data.length);
-                        // var t1 = new Date().getTime();
-                        // console.log("took " + (t1 - t0) / 1000 + " milliseconds.");
                         return [2 /*return*/, data];
                     case 3:
                         error_3 = _a.sent();

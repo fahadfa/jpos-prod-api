@@ -66,7 +66,7 @@ var AccountsTableService = /** @class */ (function () {
                             return [2 /*return*/, data];
                         }
                         else {
-                            throw { message: "DATA_NOT_FOUND" };
+                            throw { status: 0, message: "DATA_NOT_FOUND" };
                         }
                         return [3 /*break*/, 3];
                     case 2:
@@ -119,20 +119,19 @@ var AccountsTableService = /** @class */ (function () {
                     case 1:
                         cond = _a.sent();
                         if (!(cond == true)) return [3 /*break*/, 3];
-                        console.log(this.sessionInfo);
                         return [4 /*yield*/, this.accountsTableDAO.save(reqData)];
                     case 2:
                         account = _a.sent();
                         return [2 /*return*/, { id: account.accountNum, message: "SAVED_SUCCESSFULLY" }];
                     case 3:
                         if (cond == "required") {
-                            throw { message: "ACCOUNT_NUM_REQUIREMENT" };
+                            throw { status: 0, message: "ACCOUNT_NUM_REQUIREMENT" };
                         }
                         else if (cond == "accountNum") {
-                            throw { message: "RECORD_ALREADY_EXISTS" };
+                            throw { status: 0, message: "RECORD_ALREADY_EXISTS" };
                         }
                         else {
-                            throw { message: "INVALID_DATA" };
+                            throw { status: 0, message: "INVALID_DATA" };
                         }
                         _a.label = 4;
                     case 4: return [3 /*break*/, 6];
@@ -167,17 +166,16 @@ var AccountsTableService = /** @class */ (function () {
                         data.nextrec = prevYear == year ? data.nextrec : 1;
                         hashString = data.format.slice(data.format.indexOf("#"), data.format.lastIndexOf("#") + 1);
                         salesId = data.format.replace(hashString, data.nextrec) + "-" + year;
-                        console.log(salesId);
                         return [4 /*yield*/, this.rawQuery.updateNumberSequence(data.numbersequence, data.nextrec)];
                     case 3:
                         _a.sent();
                         return [2 /*return*/, salesId];
-                    case 4: throw { message: "CANNOT_FIND_SEQUENCE_FORMAT_FROM_NUMBER_SEQUENCE_TABLE" };
+                    case 4: throw { status: 0, message: "CANNOT_FIND_SEQUENCE_FORMAT_FROM_NUMBER_SEQUENCE_TABLE" };
                     case 5: return [3 /*break*/, 7];
                     case 6:
                         error_4 = _a.sent();
                         if (error_4 == {}) {
-                            error_4 = "SERVER_SIDE_ERROR";
+                            error_4 = { status: 0, message: "SERVER_SIDE_ERROR" };
                         }
                         throw error_4;
                     case 7: return [2 /*return*/];
@@ -211,7 +209,6 @@ var AccountsTableService = /** @class */ (function () {
                             item.createdDatetime = new Date(App_1.App.DateNow());
                         }
                         else {
-                            console.log(item.accountNum);
                             if (item.accountNum != previousData.accountNum) {
                                 if (mdata.length > 0) {
                                     return [2 /*return*/, "accountNum"];
@@ -240,7 +237,7 @@ var AccountsTableService = /** @class */ (function () {
                             accountsTable.deleted = true;
                         }
                         else {
-                            throw { message: Props_1.Props.RECORD_NOT_FOUND };
+                            throw { status: 0, message: Props_1.Props.RECORD_NOT_FOUND };
                         }
                         accountsTable.deletedby = this.sessionInfo.userName;
                         return [4 /*yield*/, this.accountsTableDAO.save(accountsTable)];

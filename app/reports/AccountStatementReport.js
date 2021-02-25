@@ -37,9 +37,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
 var App_1 = require("../../utils/App");
+var RawQuery_1 = require("../common/RawQuery");
 var AccountStatementReport = /** @class */ (function () {
     function AccountStatementReport() {
         this.db = typeorm_1.getManager();
+        this.rawQuery = new RawQuery_1.RawQuery();
     }
     AccountStatementReport.prototype.execute = function (params) {
         return __awaiter(this, void 0, void 0, function () {
@@ -77,30 +79,40 @@ var AccountStatementReport = /** @class */ (function () {
     };
     AccountStatementReport.prototype.report = function (result, params) {
         return __awaiter(this, void 0, void 0, function () {
-            var renderData, file;
+            var renderData, title, file;
             return __generator(this, function (_a) {
-                renderData = {
-                    printDate: new Date(params.printDate).toISOString().replace(/T/, " ").replace(/\..+/, ""),
-                    ledgerAccount: params.ledgerAccount,
-                    fromDate: params.fromDate,
-                    toDate: params.toDate,
-                    user: params.user,
-                };
-                renderData.data = result;
-                console.log(renderData);
-                if (params.type == "excel") {
-                    file = params.lang == "en" ? "accountstatement-excel" : "accountstatement-excel-ar";
+                switch (_a.label) {
+                    case 0:
+                        renderData = {
+                            printDate: new Date(params.printDate).toISOString().replace(/T/, " ").replace(/\..+/, ""),
+                            ledgerAccount: params.ledgerAccount,
+                            fromDate: params.fromDate,
+                            toDate: params.toDate,
+                            user: params.user,
+                        };
+                        renderData.data = result;
+                        console.log(renderData);
+                        return [4 /*yield*/, this.rawQuery.getAppLangName("ACCOUNT_STATEMENT")];
+                    case 1:
+                        title = _a.sent();
+                        if (title) {
+                            renderData.title = title;
+                            console.table(title);
+                        }
+                        if (params.type == "excel") {
+                            file = params.lang == "en" ? "accountstatement-excel" : "accountstatement-excel-ar";
+                        }
+                        else {
+                            file = params.lang == "en" ? "accountstatement-report" : "accountstatement-report-ar";
+                        }
+                        try {
+                            return [2 /*return*/, App_1.App.HtmlRender(file, renderData)];
+                        }
+                        catch (error) {
+                            throw error;
+                        }
+                        return [2 /*return*/];
                 }
-                else {
-                    file = params.lang == "en" ? "accountstatement-report" : "accountstatement-report-ar";
-                }
-                try {
-                    return [2 /*return*/, App_1.App.HtmlRender(file, renderData)];
-                }
-                catch (error) {
-                    throw error;
-                }
-                return [2 /*return*/];
             });
         });
     };

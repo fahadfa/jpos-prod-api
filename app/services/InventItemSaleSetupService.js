@@ -50,7 +50,6 @@ var InventItemSaleSetupService = /** @class */ (function () {
                         return [4 /*yield*/, this.inventItemSalesSetupRepository.find(reqData)];
                     case 1:
                         result = _a.sent();
-                        // console.log(result);
                         return [2 /*return*/, result];
                     case 2:
                         error_1 = _a.sent();

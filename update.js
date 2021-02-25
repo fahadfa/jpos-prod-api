@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var Log_1 = require("./utils/Log");
 var Store_1 = require("./utils/Store");
-var SyncServiceHelper_1 = require("./sync/SyncServiceHelper");
-var sysService_1 = require("./sysService");
+var SysService_1 = require("./SysService");
 var cron = require("node-cron");
+var healthCount = 0;
 var UpdateSyncService = function () {
     try {
         var AutoUpdater = require("auto-updater");
@@ -63,7 +63,7 @@ var UpdateSyncService = function () {
         autoupdater.on("download.error", function (err) {
             Log_1.ulog.error("Error when downloading: " + err);
             setTimeout(function () {
-                sysService_1.SysService.ResetService();
+                SysService_1.SysService.ResetService(Log_1.ulog);
             }, 60000);
         });
         autoupdater.on("end", function () {
@@ -77,7 +77,7 @@ var UpdateSyncService = function () {
         Log_1.ulog.error(" autoupdater error: ");
         Log_1.ulog.error(err);
     }
-    cron.schedule("*/3 * * * *", function () {
+    cron.schedule("* * * * *", function () {
         try {
             Store_1.setItem("syncdate", new Date().toISOString(), "sync -> cron");
             autoupdater.fire("check");
@@ -100,7 +100,7 @@ var extratFolder = function () {
     var zip = new AdmZip(__dirname + "/" + fileName);
     zip.extractAllTo("../", true);
     fs.unlinkSync(__dirname + "/" + fileName);
-    sysService_1.SysService.ResetService();
+    SysService_1.SysService.ResetService(Log_1.ulog);
 };
 // export var UpdateService = () => {
 //   cmd.get("sc query  jpos-offline", (err: any, data: any) => {
@@ -128,20 +128,12 @@ var main = function () {
     // cmd.get("npm run env | grep npm_package_version | cut -d '=' -f 2", (err: any, data: any) => {
     //   log.info("Version: " + data);
     //   if (!err) {
-    //     SyncServiceHelper.UpdateCall("VERSION", data);
+    //     SyncServiceHelper.UpdateCall("VERSION", log,  data);
     //   } else {
     //     log.error(err);
     //   }
     // });
-    try {
-        var data = fs.readFileSync("./package.json", "utf8");
-        data = JSON.parse(data);
-        Log_1.ulog.info("Version: " + data.version);
-        SyncServiceHelper_1.SyncServiceHelper.UpdateCall("VERSION", data.version);
-    }
-    catch (err) {
-        Log_1.ulog.error(err);
-    }
+    SysService_1.SysService.UpdateVersion(Log_1.ulog);
     Store_1.setItem("syncdate", new Date().toISOString(), "sync -> main");
     try {
         UpdateSyncService();

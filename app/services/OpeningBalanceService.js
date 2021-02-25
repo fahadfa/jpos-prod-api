@@ -46,6 +46,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var App_1 = require("../../utils/App");
 var InventTrans_1 = require("../../entities/InventTrans");
 var InventTransDAO_1 = require("../repos/InventTransDAO");
+var NumberSequenceTableDAO_1 = require("../repos/NumberSequenceTableDAO");
 var InventoryOnhandDAO_1 = require("../repos/InventoryOnhandDAO");
 var RawQuery_1 = require("../common/RawQuery");
 var uuid = require("uuid");
@@ -72,6 +73,7 @@ var OpeningBalanceService = /** @class */ (function () {
         }); };
         // this.run();
         this.inventtransDAO = new InventTransDAO_1.InventorytransDAO();
+        this.numberSequenceTableDAO = new NumberSequenceTableDAO_1.NumberSequenceTableDAO();
         this.rawQuery = new RawQuery_1.RawQuery();
         this.inventoryTrans = new InventTrans_1.Inventorytrans();
         this.inventoryOnhandDAO = new InventoryOnhandDAO_1.InventoryOnhandDAO();
@@ -125,15 +127,16 @@ var OpeningBalanceService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 10, , 11]);
-                        return [4 /*yield*/, this.validate(reqData, fromCsv)];
+                        _a.trys.push([0, 12, , 13]);
+                        reqData.data = reqData.data.filter(function (v) { return v.itemid && v.configid && v.inventsizeid && v.batchno && v.qty && v.inventlocationid; });
+                        return [4 /*yield*/, this.validate(reqData.data, fromCsv)];
                     case 1:
                         cond = _a.sent();
-                        if (!(cond == true)) return [3 /*break*/, 8];
+                        if (!(cond == true)) return [3 /*break*/, 10];
                         return [4 /*yield*/, this.rawQuery.deleteBalances(this.sessionInfo.inventlocationid, fromCsv)];
                     case 2:
                         _a.sent();
-                        return [4 /*yield*/, this.chunkArray(reqData, 100)];
+                        return [4 /*yield*/, this.chunkArray(reqData.data, 100)];
                     case 3:
                         chunkData = _a.sent();
                         _i = 0, chunkData_1 = chunkData;
@@ -159,6 +162,12 @@ var OpeningBalanceService = /** @class */ (function () {
                         _i++;
                         return [3 /*break*/, 4];
                     case 7:
+                        if (!(reqData.numberSequences.length > 0)) return [3 /*break*/, 9];
+                        return [4 /*yield*/, this.numberSequenceTableDAO.save(reqData.numberSequences)];
+                    case 8:
+                        _a.sent();
+                        _a.label = 9;
+                    case 9:
                         if (fromCsv == false) {
                             child_process = require("child_process");
                             syncFile = __dirname + "/SyncPrevTransactionsServices.ts";
@@ -171,9 +180,9 @@ var OpeningBalanceService = /** @class */ (function () {
                             fs_2 = require("fs");
                             fs_2.unlinkSync(__dirname + "/data.json");
                         }
-                        returnData = { status: 1, message: "SAVED_SUCCESSFULLY" };
+                        returnData = { status: 1, message: "SAVED_SUCCESSFULLY", note: "USER_CAN_START_WORKING" };
                         return [2 /*return*/, returnData];
-                    case 8:
+                    case 10:
                         if (cond == "INVENTORY_NOT_RELATED_TO_THIS_STORE") {
                             throw { status: 0, message: "INVENTORY NOT REATED TO THIS STORE" };
                         }
@@ -184,15 +193,15 @@ var OpeningBalanceService = /** @class */ (function () {
                             };
                         }
                         else {
-                            throw { message: "invalid data" };
+                            throw { status: 0, message: "invalid data" };
                         }
-                        _a.label = 9;
-                    case 9: return [3 /*break*/, 11];
-                    case 10:
+                        _a.label = 11;
+                    case 11: return [3 /*break*/, 13];
+                    case 12:
                         err_2 = _a.sent();
                         Log_1.log.error(err_2);
                         throw err_2;
-                    case 11: return [2 /*return*/];
+                    case 13: return [2 /*return*/];
                 }
             });
         });
@@ -205,7 +214,7 @@ var OpeningBalanceService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         if (fromCsv == true) {
-                            data[0];
+                            console.log(data);
                             filteredData = data.filter(function (v) { return v.inventlocationid.trim() != process.env.ENV_STORE_ID; });
                             if (filteredData.length > 0) {
                                 return [2 /*return*/, "INVENTORY_NOT_RELATED_TO_THIS_STORE"];
@@ -251,12 +260,12 @@ var OpeningBalanceService = /** @class */ (function () {
     };
     OpeningBalanceService.prototype.get_open_bal_data_for_onhand = function (reqData) {
         return __awaiter(this, void 0, void 0, function () {
-            var mssqlClient, mssqlString, connectionString, query, rows, result, err_3;
+            var mssqlClient, mssqlString, connectionString, query, rows, numberSequences, result, _i, numberSequences_1, item, query_1, rows_1, query_2, rows_2, query_3, rows_3, query_4, rows_4, query_5, rows_5, query_6, rows_6, query_7, rows_7, query_8, rows_8, err_3;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 4, , 5]);
+                        _a.trys.push([0, 25, , 26]);
                         mssqlClient = require("mssql");
                         mssqlString = "mssql://" + reqData.username + ":" + reqData.password + "@" + reqData.host + "/" + reqData.database;
                         connectionString = mssqlString;
@@ -271,9 +280,11 @@ var OpeningBalanceService = /** @class */ (function () {
                         return [4 /*yield*/, this.pool.request().query(query)];
                     case 2:
                         rows = _a.sent();
-                        return [4 /*yield*/, this.pool.close()];
+                        return [4 /*yield*/, this.numberSequenceTableDAO.search({
+                                inventlocationid: this.sessionInfo.inventlocationid,
+                            })];
                     case 3:
-                        _a.sent();
+                        numberSequences = _a.sent();
                         result = rows.recordset;
                         result.map(function (v) {
                             v.inventlocationid = _this.sessionInfo.inventlocationid;
@@ -281,12 +292,90 @@ var OpeningBalanceService = /** @class */ (function () {
                                 v.qty = 1;
                             }
                         });
-                        return [2 /*return*/, result];
+                        if (!(numberSequences.length > 0)) return [3 /*break*/, 22];
+                        _i = 0, numberSequences_1 = numberSequences;
+                        _a.label = 4;
                     case 4:
+                        if (!(_i < numberSequences_1.length)) return [3 /*break*/, 21];
+                        item = numberSequences_1[_i];
+                        console.log(item);
+                        if (!(item.transkind == "SALESQUOTATION")) return [3 /*break*/, 6];
+                        query_1 = "SELECT right(MAX(LTRIM(RTRIM(SALESID))),5) + 1 as nextrec FROM SALESTABLE WHERE SALESTYPE=8 AND YEAR(DELIVERYDATE)=YEAR(getdate())";
+                        return [4 /*yield*/, this.pool.request().query(query_1)];
+                    case 5:
+                        rows_1 = _a.sent();
+                        item.nextrec = rows_1.recordset.length > 0 ? (rows_1.recordset[0].nextrec ? rows_1.recordset[0].nextrec : 1) : 1;
+                        return [3 /*break*/, 20];
+                    case 6:
+                        if (!(item.transkind == "SALESORDER")) return [3 /*break*/, 8];
+                        query_2 = "SELECT right(MAX(LTRIM(RTRIM(SALESID))),5) + 1 nextrec FROM SALESTABLE WHERE SALESTYPE=3 AND YEAR(DELIVERYDATE)=YEAR(getdate()) ";
+                        return [4 /*yield*/, this.pool.request().query(query_2)];
+                    case 7:
+                        rows_2 = _a.sent();
+                        item.nextrec = rows_2.recordset.length > 0 ? (rows_2.recordset[0].nextrec ? rows_2.recordset[0].nextrec : 1) : 1;
+                        return [3 /*break*/, 20];
+                    case 8:
+                        if (!(item.transkind == "TRANSFERORDER")) return [3 /*break*/, 10];
+                        query_3 = "SELECT right(MAX(LTRIM(RTRIM(SALESID))),5) + 1 nextrec FROM SALESTABLE WHERE SALESTYPE=5 AND YEAR(DELIVERYDATE)=YEAR(getdate())";
+                        return [4 /*yield*/, this.pool.request().query(query_3)];
+                    case 9:
+                        rows_3 = _a.sent();
+                        item.nextrec = rows_3.recordset.length > 0 ? (rows_3.recordset[0].nextrec ? rows_3.recordset[0].nextrec : 1) : 1;
+                        return [3 /*break*/, 20];
+                    case 10:
+                        if (!(item.transkind == "ORDERSHIPMENT")) return [3 /*break*/, 12];
+                        query_4 = "SELECT right(MAX(LTRIM(RTRIM(SALESID))),5) + 1 nextrec FROM SALESTABLE WHERE SALESTYPE=6 AND YEAR(DELIVERYDATE)=YEAR(getdate())";
+                        return [4 /*yield*/, this.pool.request().query(query_4)];
+                    case 11:
+                        rows_4 = _a.sent();
+                        item.nextrec = rows_4.recordset.length > 0 ? (rows_4.recordset[0].nextrec ? rows_4.recordset[0].nextrec : 1) : 1;
+                        return [3 /*break*/, 20];
+                    case 12:
+                        if (!(item.transkind == "ORDERRECEIVE")) return [3 /*break*/, 14];
+                        query_5 = "SELECT right(MAX(LTRIM(RTRIM(SALESID))),5) + 1 nextrec FROM SALESTABLE WHERE SALESTYPE=7 AND YEAR(DELIVERYDATE)=YEAR(getdate())";
+                        return [4 /*yield*/, this.pool.request().query(query_5)];
+                    case 13:
+                        rows_5 = _a.sent();
+                        item.nextrec = rows_5.recordset.length > 0 ? (rows_5.recordset[0].nextrec ? rows_5.recordset[0].nextrec : 1) : 1;
+                        return [3 /*break*/, 20];
+                    case 14:
+                        if (!(item.transkind == "LEDGERJOURNAL")) return [3 /*break*/, 16];
+                        query_6 = "SELECT right(MAX(LTRIM(RTRIM(JOURNALNUM))),5)+1 nextrec FROM LEDGERJOURNALTABLE WHERE YEAR(POSTEDDATETIME)=YEAR(getdate());";
+                        return [4 /*yield*/, this.pool.request().query(query_6)];
+                    case 15:
+                        rows_6 = _a.sent();
+                        item.nextrec = rows_6.recordset.length > 0 ? (rows_6.recordset[0].nextrec ? rows_6.recordset[0].nextrec : 1) : 1;
+                        return [3 /*break*/, 20];
+                    case 16:
+                        if (!(item.transkind == "INVENTORYMOVEMENT")) return [3 /*break*/, 18];
+                        query_7 = "SELECT right(MAX(LTRIM(RTRIM(SALESID))),5) + 1 as nextrec FROM SALESTABLE WHERE SALESTYPE=10 AND YEAR(DELIVERYDATE)=YEAR(getdate())";
+                        return [4 /*yield*/, this.pool.request().query(query_7)];
+                    case 17:
+                        rows_7 = _a.sent();
+                        item.nextrec = rows_7.recordset.length > 0 ? (rows_7.recordset[0].nextrec ? rows_7.recordset[0].nextrec : 1) : 1;
+                        return [3 /*break*/, 20];
+                    case 18:
+                        if (!(item.transkind == "RETURNORDER")) return [3 /*break*/, 20];
+                        query_8 = "SELECT right(MAX(LTRIM(RTRIM(SALESID))),5) + 1 as  nextrec FROM SALESTABLE WHERE SALESTYPE=4 AND YEAR(DELIVERYDATE)=YEAR(getdate())";
+                        return [4 /*yield*/, this.pool.request().query(query_8)];
+                    case 19:
+                        rows_8 = _a.sent();
+                        item.nextrec = rows_8.recordset.length > 0 ? (rows_8.recordset[0].nextrec ? rows_8.recordset[0].nextrec : 1) : 1;
+                        return [3 /*break*/, 20];
+                    case 20:
+                        _i++;
+                        return [3 /*break*/, 4];
+                    case 21: return [3 /*break*/, 23];
+                    case 22: throw { status: 0, message: "SOMETHING WRONG PLEASE CONTACT IT TEAM" };
+                    case 23: return [4 /*yield*/, this.pool.close()];
+                    case 24:
+                        _a.sent();
+                        return [2 /*return*/, { status: 1, data: result, numberSequences: numberSequences }];
+                    case 25:
                         err_3 = _a.sent();
                         Log_1.log.error(err_3);
                         throw { status: 0, message: "INVALID_CREDENTIALS" };
-                    case 5: return [2 /*return*/];
+                    case 26: return [2 /*return*/];
                 }
             });
         });

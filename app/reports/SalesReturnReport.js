@@ -37,9 +37,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
 var App_1 = require("../../utils/App");
+var RawQuery_1 = require("../common/RawQuery");
 var SalesReturnReport = /** @class */ (function () {
     function SalesReturnReport() {
         this.db = typeorm_1.getManager();
+        this.rawQuery = new RawQuery_1.RawQuery();
     }
     SalesReturnReport.prototype.execute = function (params) {
         return __awaiter(this, void 0, void 0, function () {
@@ -81,7 +83,7 @@ var SalesReturnReport = /** @class */ (function () {
     };
     SalesReturnReport.prototype.report = function (result, params) {
         return __awaiter(this, void 0, void 0, function () {
-            var renderData, warehouse, file;
+            var renderData, warehouse, title, file;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -115,6 +117,13 @@ var SalesReturnReport = /** @class */ (function () {
                         renderData.netAmount = renderData.netAmount.toFixed(2);
                         // console.log(result.salesLine[0].product.nameEnglish);
                         renderData.data = result;
+                        return [4 /*yield*/, this.rawQuery.getAppLangName("SALES_RETURN")];
+                    case 2:
+                        title = _a.sent();
+                        if (title) {
+                            renderData.title = title;
+                            console.table(title);
+                        }
                         if (params.type == "excel") {
                             file = params.lang == "en" ? "salesreturn-excel" : "salesreturn-excel-ar";
                         }
@@ -144,7 +153,7 @@ var SalesReturnReport = /** @class */ (function () {
                         tDate.setHours(0, 0, 0);
                         fromDate = App_1.App.convertUTCDateToLocalDate(fDate, params.timeZoneOffSet);
                         toDate = App_1.App.convertUTCDateToLocalDate(tDate, params.timeZoneOffSet);
-                        query = "\n            select \n                distinct\n                s.salesid as \"salesId\",\n                s.inventlocationid as \"fromWareHouse\",\n                s.custaccount as \"custaccount\",\n                s.createddatetime as createdDateTime,\n                s.lastmodifieddate as lastModifiedDate,\n                to_char(coalesce(s.disc, 0) , 'FM999999999990.00') as \"discount\",\n                to_char(s.amount , 'FM999999999990.00') as \"netAmount\",\n                to_char(s.netamount , 'FM999999999990.00') as \"grossAmount\",\n                to_char(s.vatamount , 'FM999999999990.00') as \"vatAmount\",\n                s.status as status,\n                als.en as \"statusEn\",\n                als.ar as \"statusAr\",\n                s.salesname as name,\n                s.salesname as \"nameAlias\",\n                to_char(s.amount, 'FM999999999990.00') as \"netAmount\",\n                to_char(s.netamount,'FM999999999990.00')  as \"grossAmount\",\n                s.transkind as type,\n                alt.en as \"transkindEn\",\n\t              alt.ar as \"transkindAr\",\n                w.name as \"wareHouseNameAr\",\n                w.namealias as \"wareHouseNameEn\",\n                c.paymtermid as \"paymentMode\",\n                alp.en as \"paymentModeEn\",\n                alp.ar as \"paymentModeAr\",\n                c.walkincustomer as \"walkincustomer\",\n                c.phone as phone\n            from salestable s\n              left join inventlocation w on w.inventlocationid=s.inventlocationid\n              left join custtable c on c.accountnum=s.custaccount\n              left join app_lang als on als.id = s.status\n              left join app_lang alt on alt.id = s.transkind\n              left join app_lang alp on alp.id = s.payment\n            where s.transkind in ('RETURNORDER', 'DESIGNERSERVICERETURN') \n            and s.createddatetime >= '" + fromDate + "' ::timestamp\n            AND  s.createddatetime < ('" + toDate + "' ::timestamp + '1 day'::interval) \n            ";
+                        query = "\n            select \n                distinct\n                s.salesid as \"salesId\",\n                s.inventlocationid as \"fromWareHouse\",\n                s.custaccount as \"custaccount\",\n                s.createddatetime as createdDateTime,\n                s.lastmodifieddate as lastModifiedDate,\n                to_char(coalesce(s.disc, 0) , 'FM999999999990.00') as \"discount\",\n                to_char(s.amount , 'FM999999999990.00') as \"netAmount\",\n                to_char(s.netamount , 'FM999999999990.00') as \"grossAmount\",\n                to_char(s.vatamount , 'FM999999999990.00') as \"vatAmount\",\n                (\n                  CASE\n                  WHEN s.status in ('POSTED', 'PRINTED', 'PAID') THEN s.status\n                  WHEN wf.statusid IS NOT NULL THEN wf.statusid\n                  ELSE s.status\n                  END\n  \n                ) as status,\n                (\n                  CASE\n                  WHEN s.status in ('POSTED', 'PRINTED', 'PAID') THEN als.en\n                  WHEN wf.statusid IS NOT NULL THEN alwf.en\n                  ELSE als.en\n                  END\n  \n                ) as \"statusEn\",  \n                (\n                  CASE\n                  WHEN s.status in ('POSTED', 'PRINTED', 'PAID') THEN als.ar\n                  WHEN wf.statusid IS NOT NULL THEN alwf.ar\n                  ELSE als.ar\n                  END\n  \n                ) as \"statusAr\",  \n                s.salesname as name,\n                s.salesname as \"nameAlias\",\n                to_char(s.amount, 'FM999999999990.00') as \"netAmount\",\n                to_char(s.netamount,'FM999999999990.00')  as \"grossAmount\",\n                s.transkind as type,\n                alt.en as \"transkindEn\",\n\t              alt.ar as \"transkindAr\",\n                w.name as \"wareHouseNameAr\",\n                w.namealias as \"wareHouseNameEn\",\n                c.paymtermid as \"paymentMode\",\n                alp.en as \"paymentModeEn\",\n                alp.ar as \"paymentModeAr\",\n                c.walkincustomer as \"walkincustomer\",\n                wf.statusid as \"statusid\",\n                c.phone as phone\n            from salestable s\n              left join inventlocation w on w.inventlocationid=s.inventlocationid\n              left join custtable c on c.accountnum=s.custaccount\n              left join app_lang als on als.id = s.status\n              left join app_lang alt on alt.id = s.transkind\n              left join app_lang alp on alp.id = s.payment\n              left join workflow wf on wf.orderid = s.salesid\n              left join app_lang alwf on alwf.id = wf.statusid\n            where s.transkind in ('RETURNORDER', 'DESIGNERSERVICERETURN') \n            and s.createddatetime >= '" + fromDate + "' ::timestamp\n            AND  s.createddatetime < ('" + toDate + "' ::timestamp + '1 day'::interval) \n            ";
                         if (params.status != "ALL") {
                             if (params.status == "RESERVED") {
                                 query += " and s.status in ('RESERVED') ";
@@ -163,6 +172,9 @@ var SalesReturnReport = /** @class */ (function () {
                             }
                             else if (params.status == "PAID") {
                                 query += " and s.status in ('PAID','POSTED', 'PRINTED') ";
+                            }
+                            else if (params.status == "REJECTED") {
+                                query += " and (s.status in ('REJECTED', 'REJECTEDBYRM', 'REJECTEDBYRA', 'REJECTEDBYDESIGNER') or wf.statusid in ('REJECTED', 'REJECTEDBYRM', 'REJECTEDBYRA', 'REJECTEDBYDESIGNER')) ";
                             }
                         }
                         if (!(params.inventlocationid == "ALL")) return [3 /*break*/, 2];
@@ -185,8 +197,9 @@ var SalesReturnReport = /** @class */ (function () {
                         //   query += ` and  s.status = '${params.status}' `;
                         // }
                         if (params.accountnum) {
-                            query += " and s.custaccount = '" + params.accountnum + "'";
+                            query += " and (s.custaccount = '" + params.accountnum + "' or s.mobileno ='" + params.accountnum + "' or s.invoiceaccount='" + params.accountnum + "') ";
                         }
+                        console.log(query);
                         return [4 /*yield*/, this.db.query(query)];
                     case 4: return [2 /*return*/, _a.sent()];
                 }

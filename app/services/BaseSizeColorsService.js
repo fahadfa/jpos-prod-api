@@ -74,7 +74,7 @@ var BaseSizeColorsService = /** @class */ (function () {
                         Items_1 = [];
                         reqData = {
                             inventlocationid: this.sessionInfo.inventlocationid,
-                            baseId: params.baseId
+                            baseId: params.baseId,
                         };
                         if (!(params.type == "salesorder")) return [3 /*break*/, 2];
                         return [4 /*yield*/, this.rawQuery.checkInventoryForColors(reqData)];
@@ -91,9 +91,6 @@ var BaseSizeColorsService = /** @class */ (function () {
                             return [item.colors.id];
                         });
                         new_data_1 = [];
-                        // result.map((v: any) => {
-                        //     new_data.push(v[0]);
-                        // });
                         result.forEach(function (groupitem) {
                             var new_baseSizes = [];
                             groupitem.forEach(function (item) {
@@ -142,7 +139,6 @@ var BaseSizeColorsService = /** @class */ (function () {
                         return [4 /*yield*/, this.baseSizeColorsDAO.pagination(item)];
                     case 1:
                         data = _a.sent();
-                        // console.log(data)
                         return [2 /*return*/, { totalCount: data.count, data: data.data }];
                     case 2:
                         error_4 = _a.sent();
@@ -195,10 +191,13 @@ var BaseSizeColorsService = /** @class */ (function () {
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
                                     case 0:
-                                        console.log("=============", d);
                                         color = void 0;
                                         if (!(reqData.length > 100)) return [3 /*break*/, 2];
-                                        return [4 /*yield*/, colors.filter(function (v) { return v.colors.code == d.colorCode && v.baseSizes.sizes.code == d.sizeCode && v.baseSizes.base.code == d.baseCode; })];
+                                        return [4 /*yield*/, colors.filter(function (v) {
+                                                return v.colors.code == d.colorCode &&
+                                                    v.baseSizes.sizes.code == d.sizeCode &&
+                                                    v.baseSizes.base.code == d.baseCode;
+                                            })];
                                     case 1:
                                         color = _a.sent();
                                         color = color.length > 0 ? color[0] : null;
@@ -232,17 +231,16 @@ var BaseSizeColorsService = /** @class */ (function () {
                                         return [4 /*yield*/, this_1.rawQuery.getbasesizeid({ baseId: base.id, sizeId: size.id })];
                                     case 9:
                                         basesize = _a.sent();
-                                        console.log(basesize);
                                         if (!!basesize) return [3 /*break*/, 11];
                                         basesizeData = {
                                             base: {
-                                                id: base.id
+                                                id: base.id,
                                             },
                                             sizes: {
-                                                id: size.id
+                                                id: size.id,
                                             },
                                             insertedAt: new Date(),
-                                            updatedAt: new Date()
+                                            updatedAt: new Date(),
                                         };
                                         return [4 /*yield*/, this_1.baseSizesDAO.save(basesizeData)];
                                     case 10:

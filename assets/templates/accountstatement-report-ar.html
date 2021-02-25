@@ -107,7 +107,7 @@
     }
 
     table.dash {
-        border: 1px dashed #cccccc;
+      /* border: 1px dashed #cccccc; */
         border-collapse: collapse;
     }
 
@@ -133,7 +133,7 @@
         </tr>
         <tr>
             <td width="20%">&nbsp;</td>
-            <td width="40%" class="tdcenter"><h4>كشف حساب</h4></td>
+            <td width="40%" class="tdcenter"><h4>{{title.ar}}</h4></td>
             <td width="30%" class="tdright">
                 {{#if printDate}}
                 تاريخ الطباعة: {{printDate}}
@@ -211,6 +211,9 @@
     </table>
     <table class="dash" width="100%" cellpadding="0" cellspacing="0">
         <thead>
+            <tr>
+                <th class="mainheading" colspan="12" style="border: 0px dashed #cccccc">{{title.ar}}</th>
+              </tr>
             <tr>
                 <th>تاريخ المجلة</th>
                 <th>رقم المجلة</th>

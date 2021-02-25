@@ -94,17 +94,17 @@ var SyncTableService = /** @class */ (function () {
                         return [4 /*yield*/, this.syncTableRepository.save(item)];
                     case 2:
                         syncTableData = _a.sent();
-                        returnData = { id: item.id, message: 'SAVED_SUCCESSFULLY' };
+                        returnData = { id: item.id, message: "SAVED_SUCCESSFULLY" };
                         return [2 /*return*/, returnData];
                     case 3:
                         if (cond == "updated") {
-                            throw { message: Props_1.Props.MISS_MATCH_MESSAGE };
+                            throw { status: 0, message: Props_1.Props.MISS_MATCH_MESSAGE };
                         }
                         else if (cond == "name") {
-                            throw { message: 'RECORD_ALREADY_EXISTS' };
+                            throw { status: 0, message: "RECORD_ALREADY_EXISTS" };
                         }
                         else {
-                            throw { message: 'INVALID_DATA' };
+                            throw { status: 0, message: "INVALID_DATA" };
                         }
                         _a.label = 4;
                     case 4: return [3 /*break*/, 6];
@@ -126,13 +126,14 @@ var SyncTableService = /** @class */ (function () {
                         return [4 /*yield*/, this.syncTableRepository.entity(id)];
                     case 1:
                         data = _a.sent();
-                        if (!data)
-                            throw { message: 'RECORD_NOT_FOUND' };
+                        if (!data) {
+                            throw { message: "RECORD_NOT_FOUND" };
+                        }
                         data.updatedBy = this.sessionInfo.id;
                         return [4 /*yield*/, this.syncTableRepository.delete(data)];
                     case 2:
                         result = _a.sent();
-                        returnData = { id: id, message: 'REMOVED' };
+                        returnData = { id: id, message: "REMOVED" };
                         return [2 /*return*/, returnData];
                     case 3:
                         error_4 = _a.sent();
@@ -157,23 +158,14 @@ var SyncTableService = /** @class */ (function () {
                         previousItem = _a.sent();
                         _a.label = 3;
                     case 3:
-                        // let condData = await this.syncTableRepository.search({ name: item.name });
                         if (!item.id) {
                             uid = App_1.App.UniqueNumber();
                             item.id = uid;
-                            // item.createdBy = this.sessionInfo.id;
-                            // item.createdOn = new Date(App.DateNow());
-                            // }
                         }
                         else {
                             if (item.updatedOn && previousItem.updatedOn.toISOString() != new Date(item.updatedOn).toISOString()) {
                                 return [2 /*return*/, "updated"];
                             }
-                            // if(oldItem.name != item.name) {
-                            //    if (condData.length > 0) {
-                            //        return "name";
-                            //    }
-                            // }
                         }
                         item.updatedBy = this.sessionInfo.id;
                         item.updatedOn = new Date(App_1.App.DateNow());

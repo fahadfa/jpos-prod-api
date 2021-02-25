@@ -37,9 +37,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
 var App_1 = require("../../utils/App");
+var RawQuery_1 = require("../common/RawQuery");
 var CashBankReceiptsReport = /** @class */ (function () {
     function CashBankReceiptsReport() {
         this.db = typeorm_1.getManager();
+        this.rawQuery = new RawQuery_1.RawQuery();
     }
     CashBankReceiptsReport.prototype.execute = function (params) {
         return __awaiter(this, void 0, void 0, function () {
@@ -98,32 +100,42 @@ var CashBankReceiptsReport = /** @class */ (function () {
     };
     CashBankReceiptsReport.prototype.report = function (result, params) {
         return __awaiter(this, void 0, void 0, function () {
-            var file;
+            var title, file;
             return __generator(this, function (_a) {
-                result.printDate = new Date().toLocaleString();
-                result.fromDate = params.fromDate;
-                result.toDate = params.toDate;
-                result.user = params.user;
-                // renderData.total = 0;
-                (result.printDate = new Date(params.printDate)
-                    .toISOString()
-                    .replace(/T/, " ") // replace T with a space
-                    .replace(/\..+/, "")),
-                    console.log(params.lang);
-                console.log(result);
-                if (params.type == "excel") {
-                    file = params.lang == "en" ? "cash-bank-excel" : "cash-bank-excel-ar";
+                switch (_a.label) {
+                    case 0:
+                        result.printDate = new Date().toLocaleString();
+                        result.fromDate = params.fromDate;
+                        result.toDate = params.toDate;
+                        result.user = params.user;
+                        // renderData.total = 0;
+                        (result.printDate = new Date(params.printDate)
+                            .toISOString()
+                            .replace(/T/, " ") // replace T with a space
+                            .replace(/\..+/, "")),
+                            console.log(params.lang);
+                        console.log(result);
+                        return [4 /*yield*/, this.rawQuery.getAppLangName("CASH_RECEIPT")];
+                    case 1:
+                        title = _a.sent();
+                        if (title) {
+                            result.title = title;
+                            console.table(title);
+                        }
+                        if (params.type == "excel") {
+                            file = params.lang == "en" ? "cash-bank-excel" : "cash-bank-excel-ar";
+                        }
+                        else {
+                            file = params.lang == "en" ? "cash-bank-report" : "cash-bank-report-ar";
+                        }
+                        try {
+                            return [2 /*return*/, App_1.App.HtmlRender(file, result)];
+                        }
+                        catch (error) {
+                            throw error;
+                        }
+                        return [2 /*return*/];
                 }
-                else {
-                    file = params.lang == "en" ? "cash-bank-report" : "cash-bank-report-ar";
-                }
-                try {
-                    return [2 /*return*/, App_1.App.HtmlRender(file, result)];
-                }
-                catch (error) {
-                    throw error;
-                }
-                return [2 /*return*/];
             });
         });
     };

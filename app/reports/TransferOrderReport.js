@@ -55,7 +55,7 @@ var TransferOrderReport = /** @class */ (function () {
     }
     TransferOrderReport.prototype.execute = function (params) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, status_1, data_1, shipOrderData, salesLine, error_1;
+            var id, status_1, data_1, shipOrderData, salesLine, sNo_1, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -81,9 +81,12 @@ var TransferOrderReport = /** @class */ (function () {
                         // salesLine = salesLine.length > 0 ? salesLine : [];
                         data_1.salesLine = salesLine;
                         data_1.quantity = 0;
+                        sNo_1 = 1;
                         data_1.salesLine.map(function (v) {
+                            v.sNo = sNo_1;
                             v.salesQty = parseInt(v.salesQty);
                             data_1.quantity += parseInt(v.salesQty);
+                            sNo_1 += 1;
                         });
                         // data.qr =  await QRCode.toDataURL(JSON.stringify(data));
                         return [2 /*return*/, data_1];
@@ -147,7 +150,7 @@ var TransferOrderReport = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        salesQuery = "\n            select\n            distinct on (ln.id)\n            ROW_NUMBER()  OVER (ORDER BY  ln.salesid) As \"sNo\",\n            ln.itemid as itemid,\n            ln.inventsizeid as inventsizeid,\n            ln.configid as configid,\n            ln.colorantid,\n            ln.salesqty as \"salesQty\",\n            b.itemname as \"prodNameAr\",\n            b.namealias as \"prodNameEn\",\n            c.name as \"colNameAr\",\n            c.name as \"colNameEn\",\n            s.description as \"sizeNameEn\",\n            s.name as \"sizeNameAr\"\n            from salesline ln\n            inner join inventtable b on b.itemid = ln.itemid\n            inner join configtable c on c.configid = ln.configid and c.itemid = ln.itemid\n            inner join inventsize s on s.inventsizeid=ln.inventsizeid and s.itemid = ln.itemid\n            where ln.salesid = '" + id + "'\n            ";
+                        salesQuery = "\n            select\n            distinct on (ln.id)\n            ln.itemid as itemid,\n            ln.inventsizeid as inventsizeid,\n            ln.configid as configid,\n            ln.colorantid,\n            ln.salesqty as \"salesQty\",\n            b.itemname as \"prodNameAr\",\n            b.namealias as \"prodNameEn\",\n            c.name as \"colNameAr\",\n            c.name as \"colNameEn\",\n            s.description as \"sizeNameEn\",\n            s.name as \"sizeNameAr\"\n            from salesline ln\n            inner join inventtable b on b.itemid = ln.itemid\n            inner join configtable c on c.configid = ln.configid and c.itemid = ln.itemid\n            inner join inventsize s on s.inventsizeid=ln.inventsizeid and s.itemid = ln.itemid\n            where ln.salesid = '" + id + "'\n            ";
                         return [4 /*yield*/, this.db.query(salesQuery)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }

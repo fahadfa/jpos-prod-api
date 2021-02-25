@@ -34,6 +34,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
 var App_1 = require("../../utils/App");
@@ -43,6 +46,8 @@ var InventTransDAO_1 = require("../repos/InventTransDAO");
 var UpdateInventoryService_1 = require("../services/UpdateInventoryService");
 var Designerservice_1 = require("../../entities/Designerservice");
 var DesignerserviceRepository_1 = require("../repos/DesignerserviceRepository");
+var UnSyncedTransactions_1 = require("../../entities/UnSyncedTransactions");
+var uuid_1 = __importDefault(require("uuid"));
 var DesignerServiceReport = /** @class */ (function () {
     function DesignerServiceReport() {
         this.db = typeorm_1.getManager();
@@ -54,7 +59,7 @@ var DesignerServiceReport = /** @class */ (function () {
     }
     DesignerServiceReport.prototype.execute = function (params) {
         return __awaiter(this, void 0, void 0, function () {
-            var queryRunner, id, status_1, data_1, date, status_2, statusQuery, desinerService, amount, designerServiceData, salesLine, error_1;
+            var queryRunner, id, unSyncedData_1, status_1, data_1, date, linesCount, status_2, statusQuery, saleslineStatusQuery, lineids, inventtransids, desinerService, amount, designerServiceData, salesLine, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -67,33 +72,70 @@ var DesignerServiceReport = /** @class */ (function () {
                         _a.sent();
                         _a.label = 3;
                     case 3:
-                        _a.trys.push([3, 11, 13, 15]);
+                        _a.trys.push([3, 15, 17, 19]);
                         id = params.salesId;
+                        unSyncedData_1 = [];
                         return [4 /*yield*/, this.salestable_query_to_data(id)];
                     case 4:
                         data_1 = _a.sent();
                         data_1 = data_1.length >= 1 ? data_1[0] : {};
                         data_1.originalPrinted = data_1.originalPrinted ? data_1.originalPrinted : false;
-                        if (!(data_1.originalPrinted == false && (data_1.status != "PAID" || data_1.status != "POSTED"))) return [3 /*break*/, 8];
+                        if (!(data_1.originalPrinted == false && (data_1.status != "PAID" || data_1.status != "POSTED"))) return [3 /*break*/, 12];
                         date = new Date().toISOString();
+                        return [4 /*yield*/, this.db.query(" select count(1) as apptype from salesline where salesid in ('" + params.salesId + "')")];
+                    case 5:
+                        linesCount = _a.sent();
+                        linesCount = linesCount.length > 0 ? linesCount[0].apptype : 0;
                         status_2 = data_1.transkind == "DESIGNERSERSERVICE" ? "PAID" : "POSTED";
-                        statusQuery = "UPDATE salestable SET \n                          originalprinted = 'true',\n                          status = '" + status_2 + "',\n                          lastmodifieddate = '" + date + "' \n                          WHERE salesid = '" + params.salesId + "' ";
-                        // await this.rawQuery.updateSalesTable(params.salesId.toUpperCase(), "PAID", new Date().toISOString());
+                        statusQuery = "UPDATE salestable SET \n                          originalprinted = 'true',\n                          apptype = " + linesCount + ",\n                          status = '" + status_2 + "',\n                          lastmodifieddate = '" + date + "' \n                          WHERE salesid = '" + params.salesId + "' ";
+                        saleslineStatusQuery = "UPDATE salesline SET\n                          status = '" + status_2 + "',\n                          lastmodifieddate = '" + date + "' \n                          WHERE salesid = '" + params.salesId + "' ";
+                        unSyncedData_1.push({
+                            id: uuid_1.default(),
+                            transactionId: params.salesId,
+                            transactionTable: "salestable",
+                            updatedOn: new Date(),
+                        });
+                        return [4 /*yield*/, this.db.query("select id from salesline where salesid = '" + params.salesId + "'")];
+                    case 6:
+                        lineids = _a.sent();
+                        return [4 /*yield*/, this.db.query("select id from inventtrans where invoiceid = '" + params.salesId + "'")];
+                    case 7:
+                        inventtransids = _a.sent();
+                        lineids.map(function (v) {
+                            unSyncedData_1.push({
+                                id: uuid_1.default(),
+                                transactionId: v.id,
+                                transactionTable: "salesline",
+                                updatedOn: new Date(),
+                            });
+                        });
+                        inventtransids.map(function (v) {
+                            unSyncedData_1.push({
+                                id: uuid_1.default(),
+                                transactionId: v.id,
+                                transactionTable: "inventtrans",
+                                updatedOn: new Date(),
+                            });
+                        });
+                        return [4 /*yield*/, queryRunner.manager.getRepository(UnSyncedTransactions_1.UnSyncedTransactions).save(unSyncedData_1)];
+                    case 8:
+                        _a.sent();
                         queryRunner.query(statusQuery);
-                        if (!(data_1.transkind == "DESIGNERSERVICERETURN")) return [3 /*break*/, 8];
+                        queryRunner.query(saleslineStatusQuery);
+                        if (!(data_1.transkind == "DESIGNERSERVICERETURN")) return [3 /*break*/, 12];
                         return [4 /*yield*/, this.designerServiceDAO.search({
                                 invoiceid: data_1.interCompanyOriginalSalesId,
                             })];
-                    case 5:
+                    case 9:
                         desinerService = _a.sent();
                         console.log(desinerService, data_1.interCompanyOriginalSalesId);
                         amount = desinerService.reduce(function (res, item) { return res + parseFloat(item.amount); }, 0);
                         console.log("=========================amount===================", amount, data_1.netAmount);
-                        if (!(amount >= data_1.netAmount)) return [3 /*break*/, 7];
+                        if (!(amount >= data_1.netAmount)) return [3 /*break*/, 11];
                         return [4 /*yield*/, this.designerServiceDAO.findOne({
                                 invoiceid: data_1.interCompanyOriginalSalesId,
                             })];
-                    case 6:
+                    case 10:
                         designerServiceData = _a.sent();
                         delete designerServiceData.serviceid;
                         designerServiceData.recordtype = 0;
@@ -105,10 +147,10 @@ var DesignerServiceReport = /** @class */ (function () {
                         designerServiceData.lastmodifiedby = data_1.lastModifiedBy;
                         // await this.designerServiceDAO.save(designerServiceData);
                         queryRunner.manager.getRepository(Designerservice_1.Designerservice).save(designerServiceData);
-                        return [3 /*break*/, 8];
-                    case 7: throw { message: "CANNOT_PRINT_ORDER" };
-                    case 8: return [4 /*yield*/, this.salesline_query_to_data(id)];
-                    case 9:
+                        return [3 /*break*/, 12];
+                    case 11: throw { message: "CANNOT_PRINT_ORDER" };
+                    case 12: return [4 /*yield*/, this.salesline_query_to_data(id)];
+                    case 13:
                         salesLine = _a.sent();
                         // salesLine = salesLine.length > 0 ? salesLine : [];
                         data_1.salesLine = salesLine;
@@ -119,38 +161,48 @@ var DesignerServiceReport = /** @class */ (function () {
                         data_1.vat = data_1.salesLine.length > 0 ? parseInt(data_1.salesLine[0].vat) : "-";
                         console.log(data_1);
                         return [4 /*yield*/, queryRunner.commitTransaction()];
-                    case 10:
-                        _a.sent();
-                        return [2 /*return*/, data_1];
-                    case 11:
-                        error_1 = _a.sent();
-                        return [4 /*yield*/, queryRunner.rollbackTransaction()];
-                    case 12:
-                        _a.sent();
-                        throw error_1;
-                    case 13: return [4 /*yield*/, queryRunner.release()];
                     case 14:
                         _a.sent();
+                        return [2 /*return*/, data_1];
+                    case 15:
+                        error_1 = _a.sent();
+                        return [4 /*yield*/, queryRunner.rollbackTransaction()];
+                    case 16:
+                        _a.sent();
+                        throw error_1;
+                    case 17: return [4 /*yield*/, queryRunner.release()];
+                    case 18:
+                        _a.sent();
                         return [7 /*endfinally*/];
-                    case 15: return [2 /*return*/];
+                    case 19: return [2 /*return*/];
                 }
             });
         });
     };
     DesignerServiceReport.prototype.report = function (result, params) {
         return __awaiter(this, void 0, void 0, function () {
-            var renderData, file;
+            var renderData, title, file;
             return __generator(this, function (_a) {
-                renderData = result;
-                file = params.lang == "en" ? "designer-service-en" : "designer-service-ar";
-                renderData.user = params.user ? params.user : "";
-                try {
-                    return [2 /*return*/, App_1.App.HtmlRender(file, renderData)];
+                switch (_a.label) {
+                    case 0:
+                        renderData = result;
+                        return [4 /*yield*/, this.rawQuery.getAppLangName("DESIGNER_SERVICE_REPORT")];
+                    case 1:
+                        title = _a.sent();
+                        if (title) {
+                            renderData.title = title;
+                            console.table(title);
+                        }
+                        file = params.lang == "en" ? "designer-service-en" : "designer-service-ar";
+                        renderData.user = params.user ? params.user : "";
+                        try {
+                            return [2 /*return*/, App_1.App.HtmlRender(file, renderData)];
+                        }
+                        catch (error) {
+                            throw error;
+                        }
+                        return [2 /*return*/];
                 }
-                catch (error) {
-                    throw error;
-                }
-                return [2 /*return*/];
             });
         });
     };
@@ -160,7 +212,7 @@ var DesignerServiceReport = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = "\n    select \n    st.salesid as \"salesId\",\n    st.custaccount as \"custAccount\",\n    st.intercompanyoriginalsalesid as \"interCompanyOriginalSalesId\",\n    st.status as status,\n    als.en as \"statusEn\",\n    als.ar as \"statusAr\",\n    alt.en as \"transkindEn\",\n    alt.ar as \"transkindAr\",\n    st.transkind as transkind,\n    to_char(st.vatamount, 'FM999999999990.00')  as vatamount,\n    to_char(st.netamount, 'FM999999999990.00')  as \"netAmount\",\n    to_char(coalesce(st.disc, 0), 'FM999999999990.00')  as disc,\n    to_char(st.amount , 'FM999999999990.00') as amount,\n    c.name as cname,\n    c.namealias as \"cnamealias\",\n    c.phone as \"cphone\",\n    to_char(st.createddatetime, 'DD-MM-YYYY') as createddatetime,\n    st.originalprinted as \"originalPrinted\",\n    st.inventlocationid as \"inventLocationId\",\n    st.lastmodifiedby as \"lastModifiedBy\",\n    w.namealias as wnamealias,\n    w.name as wname,\n    coalesce(st.deliveryaddress, ' ') || (' ') || coalesce(st.citycode, ' ') || (' ') || coalesce(st.districtcode, ' ') || (' ') || coalesce(st.country_code, ' ') as deliveryaddress,\n    d.\"name\" as salesman,\n    to_char(st.deliverydate, 'DD-MM-YYYY') as \"deliveryDate\"\n    from salestable st \n    left join inventlocation w on w.inventlocationid = st.inventlocationid\n    left join custtable c on c.accountnum = st.custaccount\n    left join dimensions d on d.num = st.dimension6_\n    left join app_lang als on als.id = st.status\n    left join app_lang alt on alt.id = st.transkind\n    where salesid='" + id + "'\n    ";
+                        query = "\n    select \n    st.salesid as \"salesId\",\n    st.invoiceaccount as \"custAccount\",\n    st.intercompanyoriginalsalesid as \"interCompanyOriginalSalesId\",\n    st.status as status,\n    als.en as \"statusEn\",\n    als.ar as \"statusAr\",\n    alt.en as \"transkindEn\",\n    alt.ar as \"transkindAr\",\n    st.transkind as transkind,\n    to_char(st.vatamount, 'FM999999999990.00')  as vatamount,\n    to_char(st.netamount, 'FM999999999990.00')  as \"netAmount\",\n    to_char(coalesce(st.disc, 0), 'FM999999999990.00')  as disc,\n    to_char(st.amount , 'FM999999999990.00') as amount,\n    st.salesname as cname,\n    st.salesname as \"cnamealias\",\n    st.mobileno as \"cphone\",\n    to_char(st.createddatetime, 'DD-MM-YYYY') as createddatetime,\n    st.originalprinted as \"originalPrinted\",\n    st.inventlocationid as \"inventLocationId\",\n    st.lastmodifiedby as \"lastModifiedBy\",\n    w.namealias as wnamealias,\n    w.name as wname,\n    coalesce(st.deliveryaddress, ' ') || (' ') || coalesce(st.citycode, ' ') || (' ') || coalesce(st.districtcode, ' ') || (' ') || coalesce(st.country_code, ' ') as deliveryaddress,\n    d.\"name\" as salesman,\n    to_char(st.deliverydate, 'DD-MM-YYYY') as \"deliveryDate\"\n    from salestable st \n    left join inventlocation w on w.inventlocationid = st.inventlocationid\n    left join custtable c on c.accountnum = st.invoiceaccount\n    left join dimensions d on d.num = st.dimension6_\n    left join app_lang als on als.id = st.status\n    left join app_lang alt on alt.id = st.transkind\n    where salesid='" + id + "'\n    ";
                         return [4 /*yield*/, this.db.query(query)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }

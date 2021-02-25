@@ -34,6 +34,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
 var App_1 = require("../../utils/App");
@@ -41,6 +44,8 @@ var SalesTableService_1 = require("../services/SalesTableService");
 var RawQuery_1 = require("../common/RawQuery");
 var InventTransDAO_1 = require("../repos/InventTransDAO");
 var UpdateInventoryService_1 = require("../services/UpdateInventoryService");
+var UnSyncedTransactions_1 = require("../../entities/UnSyncedTransactions");
+var uuid_1 = __importDefault(require("uuid"));
 var SalesOrderReport = /** @class */ (function () {
     function SalesOrderReport() {
         this.db = typeorm_1.getManager();
@@ -51,14 +56,24 @@ var SalesOrderReport = /** @class */ (function () {
     }
     SalesOrderReport.prototype.execute = function (params) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, data_1, date, inventtransQuery, salesLine, list_1, j, chunkArray, newSalesline_1, sNo_1, quantity_1, error_1;
+            var queryRunner, unSyncedData_1, id, data_1, lineids, inventtransids, date, linesCount, inventtransQuery, salesLine, list_1, j, chunkArray, newSalesline_1, sNo_1, quantity_1, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 6, , 7]);
+                        queryRunner = typeorm_1.getConnection().createQueryRunner();
+                        return [4 /*yield*/, queryRunner.connect()];
+                    case 1:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.startTransaction()];
+                    case 2:
+                        _a.sent();
+                        _a.label = 3;
+                    case 3:
+                        _a.trys.push([3, 15, 17, 19]);
+                        unSyncedData_1 = [];
                         id = params.salesId;
                         return [4 /*yield*/, this.query_to_data(id)];
-                    case 1:
+                    case 4:
                         data_1 = _a.sent();
                         data_1 = data_1.length >= 1 ? data_1[0] : {};
                         data_1.paymentMode = data_1.paymentType == "ONLINE" ? "Online" : data_1.paymentMode;
@@ -91,29 +106,69 @@ var SalesOrderReport = /** @class */ (function () {
                             data_1.paymentModeAr = "السيولة النقدية";
                         }
                         data_1.twoCopies = data_1.originalPrinted ? false : true;
-                        if (!(data_1.status != "RESERVED")) return [3 /*break*/, 3];
+                        if (!(data_1.status != "RESERVED")) return [3 /*break*/, 11];
                         data_1.originalPrinted = data_1.originalPrinted ? data_1.originalPrinted : false;
-                        if (!(data_1.originalPrinted == false)) return [3 /*break*/, 3];
+                        if (!(data_1.originalPrinted == false)) return [3 /*break*/, 11];
+                        unSyncedData_1.push({
+                            id: uuid_1.default(),
+                            transactionId: params.salesId,
+                            transactionTable: "salestable",
+                            updatedOn: new Date(),
+                        });
+                        return [4 /*yield*/, this.db.query("select id from salesline where salesid = '" + params.salesId + "'")];
+                    case 5:
+                        lineids = _a.sent();
+                        return [4 /*yield*/, this.db.query("select id from inventtrans where invoiceid = '" + params.salesId + "'")];
+                    case 6:
+                        inventtransids = _a.sent();
+                        lineids.map(function (v) {
+                            unSyncedData_1.push({
+                                id: uuid_1.default(),
+                                transactionId: v.id,
+                                transactionTable: "salesline",
+                                updatedOn: new Date(),
+                            });
+                        });
+                        inventtransids.map(function (v) {
+                            unSyncedData_1.push({
+                                id: uuid_1.default(),
+                                transactionId: v.id,
+                                transactionTable: "inventtrans",
+                                updatedOn: new Date(),
+                            });
+                        });
                         date = new Date().toISOString();
-                        this.rawQuery.updateSalesTable(params.salesId.toUpperCase(), "PRINTED", date);
+                        return [4 /*yield*/, this.db.query(" select count(1) as apptype from salesline where salesid in ('" + params.salesId + "')")];
+                    case 7:
+                        linesCount = _a.sent();
+                        linesCount = linesCount.length > 0 ? linesCount[0].apptype : 0;
+                        return [4 /*yield*/, this.rawQuery.updateSalesTable(params.salesId.toUpperCase(), "PRINTED", date, linesCount)];
+                    case 8:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.manager.getRepository(UnSyncedTransactions_1.UnSyncedTransactions).save(unSyncedData_1)];
+                    case 9:
+                        _a.sent();
                         inventtransQuery = "UPDATE inventtrans set reserve_status = 'PRINTED' ";
                         if (date) {
                             inventtransQuery += ",dateinvent = '" + date + "' ";
                         }
                         inventtransQuery += " WHERE invoiceid = '" + params.salesId.toUpperCase() + "'";
                         return [4 /*yield*/, this.db.query(inventtransQuery)];
-                    case 2:
+                    case 10:
                         _a.sent();
-                        _a.label = 3;
-                    case 3: return [4 /*yield*/, this.salesline_query_to_data(id)];
-                    case 4:
+                        _a.label = 11;
+                    case 11: return [4 /*yield*/, queryRunner.commitTransaction()];
+                    case 12:
+                        _a.sent();
+                        return [4 /*yield*/, this.salesline_query_to_data(id)];
+                    case 13:
                         salesLine = _a.sent();
                         list_1 = [];
                         j = 0;
-                        return [4 /*yield*/, this.chunkArray(salesLine, 12)];
-                    case 5:
+                        return [4 /*yield*/, this.chunkArray(salesLine, 8)];
+                    case 14:
                         chunkArray = _a.sent();
-                        // console.log(chunkArray)
+                        console.log(chunkArray);
                         list_1 = list_1.concat(chunkArray);
                         newSalesline_1 = [];
                         sNo_1 = 1;
@@ -161,11 +216,12 @@ var SalesOrderReport = /** @class */ (function () {
                                     paymentType: data_1.paymentType,
                                     shippedDate: data_1.lastmodifieddate.split(",")[0],
                                     paymentMode: data_1.paymentType == "ONLINE" ? "Online" : data_1.paymentMode,
-                                    paymentModeAr: data_1.paymentType == "ONLINE" ? "عبر الانترنت" : data_1.paymentMode,
+                                    paymentModeAr: data_1.paymentType == "ONLINE" ? "عبر الانترنت" : data_1.paymentModeAr,
                                     cashAmount: data_1.cashAmount,
                                     cardAmount: data_1.cardAmount,
                                     designServiceRedeemAmount: data_1.designServiceRedeemAmount,
                                     redeemAmount: data_1.redeemAmount,
+                                    zipcode: data_1.zipcode,
                                     lines: [],
                                 };
                                 data_1.isbreak = val.length > 5 ? true : false;
@@ -198,11 +254,18 @@ var SalesOrderReport = /** @class */ (function () {
                             });
                             return [2 /*return*/, data_1];
                         }
-                        return [3 /*break*/, 7];
-                    case 6:
+                        return [3 /*break*/, 19];
+                    case 15:
                         error_1 = _a.sent();
+                        return [4 /*yield*/, queryRunner.rollbackTransaction()];
+                    case 16:
+                        _a.sent();
                         throw error_1;
-                    case 7: return [2 /*return*/];
+                    case 17: return [4 /*yield*/, queryRunner.release()];
+                    case 18:
+                        _a.sent();
+                        return [7 /*endfinally*/];
+                    case 19: return [2 /*return*/];
                 }
             });
         });
@@ -212,7 +275,7 @@ var SalesOrderReport = /** @class */ (function () {
             var renderData, file;
             return __generator(this, function (_a) {
                 renderData = result;
-                console.log("data:----------", renderData);
+                console.log("data:----------", renderData.salesLine);
                 file = params.lang == "en" ? "test-so-en" : "test-so-ar";
                 try {
                     return [2 /*return*/, App_1.App.HtmlRender(file, renderData)];
@@ -250,7 +313,7 @@ var SalesOrderReport = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = "\n            select \n            st.salesid as \"salesId\",\n            st.intercompanyoriginalsalesid as \"interCompanyOriginalSalesId\",\n            st.custaccount as \"custAccount\",\n            st.invoiceaccount as \"invoiceAccount\",\n            st.status as status,\n            st.transkind as transkind,\n            st.salesname as customername,\n            st.mobileno as custmobilenumber,\n            to_char(st.vatamount, 'FM999999999990.00')  as vatamount,\n            to_char(st.netamount, 'FM999999999990.00')  as \"netAmount\",\n            to_char(st.disc, 'FM999999999990.00')  as disc,\n            to_char(st.amount , 'FM999999999990.00') as amount,\n            to_char(st.shipping_amount, 'FM999999999990.00') as \"shippingAmount\",\n            st.salesname as cname,\n            st.salesname as \"cnamealias\",\n            st.voucherdiscchecked as \"voucherdiscchecked\",\n            st.vouchernum as \"vouchernum\",\n            st.payment_type as \"paymentType\",\n            c.phone as \"cphone\",\n            to_char(st.createddatetime, 'DD-MM-YYYY') as createddatetime,\n            st.lastmodifieddate as lastmodifieddate,\n            st.originalprinted as \"originalPrinted\",\n            st.inventlocationid as \"inventLocationId\",\n            w.namealias as wnamealias,\n            w.name as wname,\n            st.payment as \"paymentMode\",\n            st.iscash as iscash,\n            st.createdby,\n            st.description as notes,\n            to_char(st.cash_amount, 'FM999999999990.00') as \"cashAmount\",\n            to_char(st.card_amount, 'FM999999999990.00') as \"cardAmount\",\n            st.shipping_amount as \"shippingAmount\",\n            to_char(st.online_amount, 'FM999999999990.00') as \"onlineAmount\",\n            to_char(st.design_service_redeem_amount, 'FM999999999990.00') as \"designServiceRedeemAmount\",\n            to_char(st.redeemptsamt, 'FM999999999990.00') as \"redeemAmount\",\n            coalesce(st.deliveryaddress, ' ') || (' ') || coalesce(st.citycode, ' ') || (' ') || coalesce(st.districtcode, ' ') || (' ') || coalesce(st.country_code, ' ') as deliveryaddress,\n            concat(d.num,' - ', d.description) as salesman,\n            to_char(st.deliverydate, 'DD-MM-YYYY') as \"deliveryDate\"\n            from salestable st \n            left join dimensions d on st.dimension6_ = d.num\n            left join inventlocation w on w.inventlocationid = st.inventlocationid\n            left join custtable c on c.accountnum = st.custaccount\n            left join paymterm p on p.paymtermid = st.payment\n            where salesid='" + id + "'\n            ";
+                        query = "\n            select \n            st.salesid as \"salesId\",\n            st.zipcode as zipcode,\n            st.intercompanyoriginalsalesid as \"interCompanyOriginalSalesId\",\n            st.custaccount as \"custAccount\",\n            st.invoiceaccount as \"invoiceAccount\",\n            st.status as status,\n            st.transkind as transkind,\n            st.salesname as customername,\n            st.mobileno as custmobilenumber,\n            to_char(st.vatamount, 'FM999999999990.00')  as vatamount,\n            to_char(st.netamount, 'FM999999999990.00')  as \"netAmount\",\n            to_char(st.disc, 'FM999999999990.00')  as disc,\n            to_char(st.amount , 'FM999999999990.00') as amount,\n            to_char(st.shipping_amount, 'FM999999999990.00') as \"shippingAmount\",\n            st.salesname as cname,\n            st.salesname as \"cnamealias\",\n            st.voucherdiscchecked as \"voucherdiscchecked\",\n            st.vouchernum as \"vouchernum\",\n            st.payment_type as \"paymentType\",\n            c.phone as \"cphone\",\n            to_char(st.createddatetime, 'DD-MM-YYYY') as createddatetime,\n            st.lastmodifieddate as lastmodifieddate,\n            st.originalprinted as \"originalPrinted\",\n            st.inventlocationid as \"inventLocationId\",\n            w.namealias as wnamealias,\n            w.name as wname,\n            st.payment as \"paymentMode\",\n            st.iscash as iscash,\n            st.createdby,\n            st.description as notes,\n            to_char(st.cash_amount, 'FM999999999990.00') as \"cashAmount\",\n            to_char(st.card_amount, 'FM999999999990.00') as \"cardAmount\",\n            st.shipping_amount as \"shippingAmount\",\n            to_char(st.online_amount, 'FM999999999990.00') as \"onlineAmount\",\n            to_char(st.design_service_redeem_amount, 'FM999999999990.00') as \"designServiceRedeemAmount\",\n            to_char(st.redeemptsamt, 'FM999999999990.00') as \"redeemAmount\",\n            coalesce(st.deliveryaddress, ' ') || (' ') || coalesce(st.citycode, ' ') || (' ') || coalesce(st.districtcode, ' ') || (' ') || coalesce(st.country_code, ' ') as deliveryaddress,\n            concat(d.num,' - ', d.description) as salesman,\n            to_char(st.deliverydate, 'DD-MM-YYYY') as \"deliveryDate\"\n            from salestable st \n            left join dimensions d on st.dimension6_ = d.num\n            left join inventlocation w on w.inventlocationid = st.inventlocationid\n            left join custtable c on c.accountnum = st.custaccount\n            left join paymterm p on p.paymtermid = st.payment\n            where salesid='" + id + "'\n            ";
                         return [4 /*yield*/, this.db.query(query)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }

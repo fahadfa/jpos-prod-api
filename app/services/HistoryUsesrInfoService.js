@@ -65,8 +65,6 @@ var HistoryUsesrInfoService = /** @class */ (function () {
                         data.Custgroup = {};
                         _a.label = 3;
                     case 3:
-                        // let count = this.rawQuery.customers_count();
-                        console.log(data);
                         if (data) {
                             return [2 /*return*/, data];
                         }
@@ -154,9 +152,6 @@ var HistoryUsesrInfoService = /** @class */ (function () {
     HistoryUsesrInfoService.prototype.validate = function (item) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                // item.lastmodifiedby = this.sessionInfo.userName;
-                // let mdata = await this.userinfoDAO.findAll({ userName: item.userName });
-                // console.log(mdata);
                 item.historyId = uuid();
                 return [2 /*return*/, true];
             });
@@ -172,24 +167,8 @@ var HistoryUsesrInfoService = /** @class */ (function () {
                         return [4 /*yield*/, this.userinfoDAO.entity(id)];
                     case 1:
                         user = _a.sent();
-                        // if (user) {
-                        //     user.deleted = true;
-                        // } else {
-                        //     user = await this.userinfoDAO.findOne({ id: id });
-                        //     user.deleted = true;
-                        // }
-                        // user.deletedby = this.sessionInfo.userName;
-                        // user.deleteddatetime = new Date();
                         return [4 /*yield*/, this.userinfoDAO.delete(user)];
                     case 2:
-                        // if (user) {
-                        //     user.deleted = true;
-                        // } else {
-                        //     user = await this.userinfoDAO.findOne({ id: id });
-                        //     user.deleted = true;
-                        // }
-                        // user.deletedby = this.sessionInfo.userName;
-                        // user.deleteddatetime = new Date();
                         _a.sent();
                         return [2 /*return*/, { id: user.id, message: Props_1.Props.REMOVED_SUCCESSFULLY }];
                     case 3:

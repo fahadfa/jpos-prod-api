@@ -67,8 +67,6 @@ var HistoryUsergroupConfigService = /** @class */ (function () {
                         data ? (data.Custgroup = {}) : (data = {});
                         _a.label = 3;
                     case 3:
-                        // let count = this.rawQuery.customers_count();
-                        console.log(data);
                         if (data) {
                             return [2 /*return*/, data];
                         }
@@ -158,14 +156,13 @@ var HistoryUsergroupConfigService = /** @class */ (function () {
                         return [4 /*yield*/, this.validate(reqData)];
                     case 1:
                         cond = _a.sent();
-                        console.log(cond);
                         if (!(cond == true)) return [3 /*break*/, 3];
                         return [4 /*yield*/, this.usergroupconfigDAO.save(reqData)];
                     case 2:
                         data = _a.sent();
                         returnData = { id: reqData.id, message: "SAVED_SUCCESSFULLY" };
                         return [2 /*return*/, returnData];
-                    case 3: throw { message: "INVALID_DATA" };
+                    case 3: throw { status: 0, message: "INVALID_DATA" };
                     case 4: return [3 /*break*/, 6];
                     case 5:
                         error_5 = _a.sent();

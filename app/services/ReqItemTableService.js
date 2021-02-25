@@ -40,7 +40,6 @@ var ReqItemTableDAO_1 = require("../repos/ReqItemTableDAO");
 var App_1 = require("../../utils/App");
 var ReqItemTableService = /** @class */ (function () {
     function ReqItemTableService() {
-        // this.sessionInfo = { id: "SYSTEM", compcode: "OWN" };
         this.reqItemTableRepository = new ReqItemTableDAO_1.ReqItemTableDAO().getRepository();
     }
     ReqItemTableService.prototype.entity = function (id) {
@@ -55,8 +54,8 @@ var ReqItemTableService = /** @class */ (function () {
                                 relations: [],
                                 join: {
                                     alias: "reqItemTable",
-                                    innerJoinAndSelect: {}
-                                }
+                                    innerJoinAndSelect: {},
+                                },
                             })];
                     case 1:
                         data = _a.sent();
@@ -77,19 +76,9 @@ var ReqItemTableService = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         query = { compcode: this.sessionInfo.compcode };
-                        // if(item&&item.hasOwnProperty("inventLocationidReqMain")){
-                        //     query.inventLocationidReqMain=item.inventLocationidReqMain;
-                        // }else{
-                        // }
-                        // if (item.hasOwnProperty("fromDate") && item.hasOwnProperty("toDate")) {
-                        //     query.updatedOn = Between(new Date(item.fromDate).toISOString(), new Date(item.toDate).toISOString());
-                        // } else {
-                        //     throw { message: Props.INVALID_DATA };
-                        // }
-                        console.log(query);
                         return [4 /*yield*/, this.reqItemTableRepository.find({
                                 relations: [],
-                                where: query
+                                where: query,
                             })];
                     case 1:
                         data = _a.sent();
@@ -118,7 +107,7 @@ var ReqItemTableService = /** @class */ (function () {
                         reqItemTableData = _a.sent();
                         returnData = { id: item.recid, message: Props_1.Props.SAVED_SUCCESSFULLY };
                         return [2 /*return*/, returnData];
-                    case 3: throw { message: Props_1.Props.INVALID_DATA };
+                    case 3: throw { status: 0, message: "INVALID_DATA" };
                     case 4: return [3 /*break*/, 6];
                     case 5:
                         error_3 = _a.sent();
@@ -140,13 +129,12 @@ var ReqItemTableService = /** @class */ (function () {
                         data = _a.sent();
                         if (!data)
                             throw { message: Props_1.Props.RECORD_NOT_EXISTS };
-                        //data.active = !data.active;
                         data.updatedBy = this.sessionInfo.id;
                         data.updatedOn = new Date(App_1.App.DateNow());
                         return [4 /*yield*/, this.reqItemTableRepository.save(data)];
                     case 2:
                         result = _a.sent();
-                        returnData = { id: id, message: Props_1.Props.REMOVED_SUCCESSFULLY };
+                        returnData = { id: id, message: "REMOVED_SUCCESSFULLY" };
                         return [2 /*return*/, returnData];
                     case 3:
                         error_4 = _a.sent();
@@ -161,20 +149,6 @@ var ReqItemTableService = /** @class */ (function () {
             var previousItem;
             return __generator(this, function (_a) {
                 previousItem = null;
-                // if (!item.id || item.id.toString() == "" || item.id.toString() == "0") {
-                //     item.id = null;
-                // } else{
-                //     previousItem = await this.reqItemTableRepository.findOne(item.id);
-                // }
-                // // let condData = await this.reqItemTableRepository.find( { where : { id: item.id } });
-                // if (!item.id) {
-                //         let uid = App.UniqueID("ReqItemTable"+"_"+App.UniqueCode(), item.compcode);
-                //         item.id = uid; 
-                // } else {
-                //     if (item.updatedOn && previousItem.updatedOn.toISOString() != new Date(item.updatedOn).toISOString()) {
-                //         return "updated";
-                //     }
-                // }
                 item.updatedBy = this.sessionInfo.id;
                 item.updatedOn = new Date(App_1.App.DateNow());
                 return [2 /*return*/, true];

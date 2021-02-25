@@ -97,7 +97,7 @@ var DesignerserviceService = /** @class */ (function () {
                             v.usedAmount = parseFloat(v.usedAmount);
                         });
                         return [2 /*return*/, data];
-                    case 2: throw { message: "PLEASE_PROVIDE_ID" };
+                    case 2: throw { status: 0, message: "PLEASE_PROVIDE_ID" };
                     case 3: return [3 /*break*/, 5];
                     case 4:
                         error_3 = _a.sent();
@@ -138,7 +138,7 @@ var DesignerserviceService = /** @class */ (function () {
                     case 1:
                         data = _a.sent();
                         if (!data) {
-                            throw { message: "DATA_NOT_FOUND" };
+                            throw { status: 0, message: "DATA_NOT_FOUND" };
                         }
                         return [4 /*yield*/, this.designerserviceRepository.delete(data)];
                     case 2:

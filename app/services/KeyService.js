@@ -15,9 +15,7 @@ var KeyService = /** @class */ (function () {
     }
     KeyService.prototype.key = function (reqData) {
         try {
-            console.log(reqData.key);
             var key = CrpytoData_1.atob(reqData.key);
-            console.log(key);
             var data = CrpytoData_1.encrypt(key);
             fs.writeFile(__dirname + "/../../../id_rsa", JSON.stringify(data), function (err) {
                 if (err) {
@@ -30,7 +28,6 @@ var KeyService = /** @class */ (function () {
             return { message: "Success" };
         }
         catch (error) {
-            console.log(error);
             return { message: "Not Success", error: error };
         }
     };

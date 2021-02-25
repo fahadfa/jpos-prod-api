@@ -252,6 +252,12 @@
     z-index:1;
 } */
 
+.mainheading {
+      text-align: center;
+      font-weight: 600;
+      font-size: 20px;
+      margin: 20px auto;
+    }
         #bg-text {
             color: #000;
             font-size: 20px;
@@ -296,12 +302,12 @@
     </div>
 
     <div>
-        <table align="center" style="width:94%">
+        <!-- <table align="center" style="width:94%">
             <tr>
 
                 <td style="text-align: center;font-weight:600;font-size:20px">Onhand Inventory</td>
             </tr>
-        </table>
+        </table> -->
         <table style="width:100%">
             <tbody>
                 <tr>
@@ -347,6 +353,11 @@
                                 <table class="" style="width:100%;margin:auto;border-collapse: collapse !important;table-layout: fixed;font-size: 10px">
                                    
                                     <thead>
+                                        <tr>
+                                            <th class="mainheading"  colspan="8" style="border: 0px dashed #cccccc;">{{title.en}}</th>
+                                           
+                                          </tr>
+
                                     <tr class="background" style="font-size:10px !important">
                                         <th class="th" style="width: 6%">S.No</th>
                                         <th class="th" style="width: 13%">Warehouse</th>

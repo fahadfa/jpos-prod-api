@@ -64,6 +64,16 @@ var PhoneVerificationDAO = /** @class */ (function () {
             });
         });
     };
+    PhoneVerificationDAO.prototype.saveAll = function (data) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.dao.save(data)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
     PhoneVerificationDAO.prototype.entity = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
@@ -99,6 +109,16 @@ var PhoneVerificationDAO = /** @class */ (function () {
                             .where(data)
                             .orderBy("createdDateTime", "DESC")
                             .getOne()];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    PhoneVerificationDAO.prototype.executeQuery = function (query) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.dao.query(query)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });

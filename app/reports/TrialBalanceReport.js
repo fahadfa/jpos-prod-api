@@ -37,9 +37,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
 var App_1 = require("../../utils/App");
+var RawQuery_1 = require("../common/RawQuery");
 var TrialBalanceReport = /** @class */ (function () {
     function TrialBalanceReport() {
         this.db = typeorm_1.getManager();
+        this.rawQuery = new RawQuery_1.RawQuery();
     }
     TrialBalanceReport.prototype.execute = function (params) {
         return __awaiter(this, void 0, void 0, function () {
@@ -77,31 +79,41 @@ var TrialBalanceReport = /** @class */ (function () {
     };
     TrialBalanceReport.prototype.report = function (result, params) {
         return __awaiter(this, void 0, void 0, function () {
-            var renderData, file;
+            var renderData, title, file;
             return __generator(this, function (_a) {
-                renderData = {
-                    printDate: new Date(params.printDate).toISOString().replace(/T/, " ").replace(/\..+/, ""),
-                    fromDate: params.fromDate,
-                    toDate: params.toDate,
-                    status: params.status,
-                    user: params.user,
-                };
-                // console.log(result.salesLine[0].product.nameEnglish);
-                renderData.data = result;
-                console.log(renderData);
-                if (params.type == "excel") {
-                    file = params.lang == "en" ? "trialbalance-excel" : "trialbalance-excel-ar";
+                switch (_a.label) {
+                    case 0:
+                        renderData = {
+                            printDate: new Date(params.printDate).toISOString().replace(/T/, " ").replace(/\..+/, ""),
+                            fromDate: params.fromDate,
+                            toDate: params.toDate,
+                            status: params.status,
+                            user: params.user,
+                        };
+                        // console.log(result.salesLine[0].product.nameEnglish);
+                        renderData.data = result;
+                        return [4 /*yield*/, this.rawQuery.getAppLangName("TRIAL_BALANCE")];
+                    case 1:
+                        title = _a.sent();
+                        if (title) {
+                            result.title = title;
+                            console.table(title);
+                        }
+                        console.log(renderData);
+                        if (params.type == "excel") {
+                            file = params.lang == "en" ? "trialbalance-excel" : "trialbalance-excel-ar";
+                        }
+                        else {
+                            file = params.lang == "en" ? "trialbalance-report" : "trialbalance-report-ar";
+                        }
+                        try {
+                            return [2 /*return*/, App_1.App.HtmlRender(file, renderData)];
+                        }
+                        catch (error) {
+                            throw error;
+                        }
+                        return [2 /*return*/];
                 }
-                else {
-                    file = params.lang == "en" ? "trialbalance-report" : "trialbalance-report-ar";
-                }
-                try {
-                    return [2 /*return*/, App_1.App.HtmlRender(file, renderData)];
-                }
-                catch (error) {
-                    throw error;
-                }
-                return [2 /*return*/];
             });
         });
     };

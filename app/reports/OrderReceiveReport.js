@@ -34,6 +34,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
 var App_1 = require("../../utils/App");
@@ -42,6 +45,8 @@ var RawQuery_1 = require("../common/RawQuery");
 var InventTransDAO_1 = require("../repos/InventTransDAO");
 var UpdateInventoryService_1 = require("../services/UpdateInventoryService");
 var typeorm_2 = require("typeorm");
+var uuid_1 = __importDefault(require("uuid"));
+var UnSyncedTransactions_1 = require("../../entities/UnSyncedTransactions");
 var OrderReceiveReport = /** @class */ (function () {
     function OrderReceiveReport() {
         this.db = typeorm_1.getManager();
@@ -52,7 +57,7 @@ var OrderReceiveReport = /** @class */ (function () {
     }
     OrderReceiveReport.prototype.execute = function (params) {
         return __awaiter(this, void 0, void 0, function () {
-            var queryRunner, id, status_1, data_1, salesLine, i_1, checkPrevData, date, query, salesLineQuery, inventtransQuery, error_1;
+            var queryRunner, id, unSyncedData_1, status_1, data_1, salesLine, i_1, checkPrevData, linesCount, date, query, salesLineQuery, inventtransQuery, lineids, inventtransids, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -65,8 +70,9 @@ var OrderReceiveReport = /** @class */ (function () {
                         _a.sent();
                         _a.label = 3;
                     case 3:
-                        _a.trys.push([3, 11, 13, 15]);
+                        _a.trys.push([3, 15, 17, 19]);
                         id = params.salesId;
+                        unSyncedData_1 = [];
                         return [4 /*yield*/, this.query_to_data(id)];
                     case 4:
                         data_1 = _a.sent();
@@ -86,7 +92,7 @@ var OrderReceiveReport = /** @class */ (function () {
                             v.salesQty = parseInt(v.salesQty);
                             data_1.quantity += v.salesQty;
                         });
-                        if (!(data_1.status != "POSTED")) return [3 /*break*/, 9];
+                        if (!(data_1.status != "POSTED")) return [3 /*break*/, 13];
                         return [4 /*yield*/, this.db.query("select * from salestable where intercompanyoriginalsalesid  = '" + data_1.interCompanyOriginalSalesId + "' and status='POSTED' ")];
                     case 6:
                         checkPrevData = _a.sent();
@@ -94,14 +100,18 @@ var OrderReceiveReport = /** @class */ (function () {
                         if (checkPrevData && checkPrevData.length > 0) {
                             throw { message: "CANNOT_PRINT_ORDER" };
                         }
+                        return [4 /*yield*/, this.db.query(" select count(1) as apptype from salesline where salesid in ('" + params.salesId + "')")];
+                    case 7:
+                        linesCount = _a.sent();
+                        linesCount = linesCount.length > 0 ? linesCount[0].apptype : 0;
                         date = new Date().toISOString();
-                        query = "UPDATE salestable SET originalprinted = '" + true + "', status = 'POSTED'";
+                        query = "UPDATE salestable SET originalprinted = '" + true + "', status = 'POSTED', apptype= " + linesCount;
                         if (date) {
                             query += ",lastmodifieddate = '" + date + "' ";
                         }
                         query += " WHERE salesid = '" + params.salesId.toUpperCase() + "'";
                         return [4 /*yield*/, queryRunner.query(query)];
-                    case 7:
+                    case 8:
                         _a.sent();
                         salesLineQuery = " UPDATE salesline SET \n        status = 'POSTED',\n        lastmodifieddate = '" + date + "' \n        WHERE salesid = '" + params.salesId + "' ";
                         queryRunner.query(salesLineQuery);
@@ -111,24 +121,55 @@ var OrderReceiveReport = /** @class */ (function () {
                         }
                         inventtransQuery += " WHERE invoiceid = '" + params.salesId.toUpperCase() + "' and itemid !='HSN-00001' ";
                         return [4 /*yield*/, this.db.query(inventtransQuery)];
-                    case 8:
+                    case 9:
                         _a.sent();
-                        _a.label = 9;
-                    case 9: return [4 /*yield*/, queryRunner.commitTransaction()];
+                        unSyncedData_1.push({
+                            id: uuid_1.default(),
+                            transactionId: params.salesId,
+                            transactionTable: "salestable",
+                            updatedOn: new Date(),
+                        });
+                        return [4 /*yield*/, this.db.query("select id from salesline where salesid = '" + params.salesId + "'")];
                     case 10:
-                        _a.sent();
-                        return [2 /*return*/, data_1];
+                        lineids = _a.sent();
+                        return [4 /*yield*/, this.db.query("select id from inventtrans where invoiceid = '" + params.salesId + "'")];
                     case 11:
-                        error_1 = _a.sent();
-                        return [4 /*yield*/, queryRunner.rollbackTransaction()];
+                        inventtransids = _a.sent();
+                        lineids.map(function (v) {
+                            unSyncedData_1.push({
+                                id: uuid_1.default(),
+                                transactionId: v.id,
+                                transactionTable: "salesline",
+                                updatedOn: new Date(),
+                            });
+                        });
+                        inventtransids.map(function (v) {
+                            unSyncedData_1.push({
+                                id: uuid_1.default(),
+                                transactionId: v.id,
+                                transactionTable: "inventtrans",
+                                updatedOn: new Date(),
+                            });
+                        });
+                        return [4 /*yield*/, queryRunner.manager.getRepository(UnSyncedTransactions_1.UnSyncedTransactions).save(unSyncedData_1)];
                     case 12:
                         _a.sent();
-                        throw error_1;
-                    case 13: return [4 /*yield*/, queryRunner.release()];
+                        _a.label = 13;
+                    case 13: return [4 /*yield*/, queryRunner.commitTransaction()];
                     case 14:
                         _a.sent();
+                        return [2 /*return*/, data_1];
+                    case 15:
+                        error_1 = _a.sent();
+                        return [4 /*yield*/, queryRunner.rollbackTransaction()];
+                    case 16:
+                        _a.sent();
+                        throw error_1;
+                    case 17: return [4 /*yield*/, queryRunner.release()];
+                    case 18:
+                        _a.sent();
                         return [7 /*endfinally*/];
-                    case 15: return [2 /*return*/];
+                    case 19: return [2 /*return*/];
                 }
             });
         });
@@ -165,20 +206,30 @@ var OrderReceiveReport = /** @class */ (function () {
     };
     OrderReceiveReport.prototype.report = function (result, params) {
         return __awaiter(this, void 0, void 0, function () {
-            var renderData, file;
+            var renderData, title, file;
             return __generator(this, function (_a) {
-                // console.log(result.salesLine[0].product.nameEnglish);
-                renderData = result;
-                renderData.printDate = renderData.printDate = App_1.App.convertUTCDateToLocalDate(new Date(App_1.App.DateNow()), parseInt(params.timeZoneOffSet));
-                console.log(params.lang);
-                file = params.lang == "en" ? "or-en" : "or-ar";
-                try {
-                    return [2 /*return*/, App_1.App.HtmlRender(file, renderData)];
+                switch (_a.label) {
+                    case 0:
+                        // console.log(result.salesLine[0].product.nameEnglish);
+                        renderData = result;
+                        renderData.printDate = renderData.printDate = App_1.App.convertUTCDateToLocalDate(new Date(App_1.App.DateNow()), parseInt(params.timeZoneOffSet));
+                        console.log(params.lang);
+                        return [4 /*yield*/, this.rawQuery.getAppLangName("SALES_REPORT")];
+                    case 1:
+                        title = _a.sent();
+                        if (title) {
+                            result.title = title;
+                            console.table(title);
+                        }
+                        file = params.lang == "en" ? "or-en" : "or-ar";
+                        try {
+                            return [2 /*return*/, App_1.App.HtmlRender(file, renderData)];
+                        }
+                        catch (error) {
+                            throw error;
+                        }
+                        return [2 /*return*/];
                 }
-                catch (error) {
-                    throw error;
-                }
-                return [2 /*return*/];
             });
         });
     };

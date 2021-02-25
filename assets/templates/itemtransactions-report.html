@@ -106,7 +106,7 @@
   }
 
   table.dash {
-    border: 1px dashed #cccccc;
+      /* border: 1px dashed #cccccc; */
     border-collapse: collapse;
   }
   table.dash td, table.dash th {
@@ -119,7 +119,7 @@
     <p id="bg__text__watermark">Only for testing</p>
   </div>
 
-  <div class="mainheading">Item Transaction Report</div>
+  <!-- <div class="mainheading">{{title.en}}</div> -->
 
 
   <table id="headertbl" width="98%">
@@ -216,6 +216,9 @@
   <table class="dash" width="100%" cellpadding="0" cellspacing="0">
     <thead>
       <tr>
+        <th class="mainheading" colspan="12" style="border: 0px dashed #cccccc">{{title.en}}</th>
+      </tr>
+      <tr>
         <th width="25%">Sales Id</th>
         <th width="15%">Date</th>
         <th width="15%">Color</th>
@@ -242,10 +245,9 @@
         <td class="tdleft">{{ this.date }}</td>
         <td class="tdleft">{{ this.configid }}</td>
         <td class="tdleft">
-          {{#if this.sizeNameEn}}
-            {{ this.sizeNameEn }}
-          {{else}}
-            {{ this.sizeNameAr }}
+          {{#if this.inventsizeid}}
+            {{ this.inventsizeid }}
+        
           {{/if}}
         </td>
         <td class="tdleft">{{ this.batchno }}</td>

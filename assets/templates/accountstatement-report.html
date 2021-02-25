@@ -107,7 +107,7 @@
     }
 
     table.dash {
-        border: 1px dashed #cccccc;
+      /* border: 1px dashed #cccccc; */
         border-collapse: collapse;
     }
 
@@ -133,7 +133,7 @@
         </tr>
         <tr>
             <td width="20%">&nbsp;</td>
-            <td width="50%" class="tdcenter"><h4>Account Statement</h4></td>
+            <td width="50%" class="tdcenter"><h4>{{title.en}}</h4></td>
             <td width="30%" class="tdright">
                 {{#if printDate}}
                     Print Date: {{printDate}}
@@ -209,6 +209,9 @@
     </table>
     <table class="dash" width="100%" cellpadding="0" cellspacing="0">
         <thead>
+            <tr>
+                <th class="mainheading" colspan="12" style="border: 0px dashed #cccccc">{{title.en}}</th>
+              </tr>
             <tr>
                 <th>Journal Date</th>
                 <th>Journal Number</th>

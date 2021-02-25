@@ -35,7 +35,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var Log_1 = require("./utils/Log");
 var SyncServiceHelper_1 = require("./sync/SyncServiceHelper");
 var App_1 = require("./utils/App");
 var syslogstr = "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
@@ -45,7 +44,7 @@ var execSync = require("child_process").execSync;
 var SysService = /** @class */ (function () {
     function SysService() {
     }
-    SysService.ResetService = function () {
+    SysService.ResetService = function (log) {
         return __awaiter(this, void 0, void 0, function () {
             var cmdData, err_1;
             return __generator(this, function (_a) {
@@ -55,27 +54,27 @@ var SysService = /** @class */ (function () {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, SysService.CmdService("sc query  jpos-offline")];
+                        return [4 /*yield*/, SysService.CmdService("sc query  jpos-offline", log)];
                     case 2:
                         cmdData = _a.sent();
                         return [3 /*break*/, 4];
                     case 3:
                         err_1 = _a.sent();
-                        Log_1.ulog.error(err_1);
+                        log.error(err_1);
                         return [3 /*break*/, 4];
                     case 4:
                         if (!(cmdData && cmdData.includes("STOPPED"))) return [3 /*break*/, 7];
-                        return [4 /*yield*/, SysService.CmdService("net start jpos-offline")];
+                        return [4 /*yield*/, SysService.CmdService("net start jpos-offline", log)];
                     case 5:
                         _a.sent();
-                        return [4 /*yield*/, SysService.CmdService("net stop jpos-alt")];
+                        return [4 /*yield*/, SysService.CmdService("net stop jpos-alt", log)];
                     case 6:
                         _a.sent();
                         return [3 /*break*/, 10];
-                    case 7: return [4 /*yield*/, SysService.CmdService("net start jpos-alt")];
+                    case 7: return [4 /*yield*/, SysService.CmdService("net start jpos-alt", log)];
                     case 8:
                         _a.sent();
-                        return [4 /*yield*/, SysService.CmdService("net stop jpos-offline")];
+                        return [4 /*yield*/, SysService.CmdService("net stop jpos-offline", log)];
                     case 9:
                         _a.sent();
                         _a.label = 10;
@@ -84,18 +83,18 @@ var SysService = /** @class */ (function () {
             });
         });
     };
-    SysService.CmdService = function (cmdCall) {
+    SysService.CmdService = function (cmdCall, log) {
         return __awaiter(this, void 0, void 0, function () {
             var retValue, code;
             return __generator(this, function (_a) {
                 retValue = null;
-                Log_1.ulog.warn(syslogstr);
+                log.warn(syslogstr);
                 try {
-                    Log_1.ulog.warn(cmdCall);
+                    log.warn(cmdCall);
                     code = execSync(cmdCall);
                     if (code) {
                         retValue = code.toString();
-                        Log_1.ulog.warn(retValue);
+                        log.warn(retValue);
                         console.log(retValue);
                     }
                     else {
@@ -104,27 +103,27 @@ var SysService = /** @class */ (function () {
                 }
                 catch (err) {
                     retValue = null;
-                    Log_1.ulog.warn(err);
+                    log.warn(err);
                     throw err;
                 }
                 finally {
-                    Log_1.ulog.warn(syslogstr);
+                    log.warn(syslogstr);
                 }
                 return [2 /*return*/, Promise.resolve(retValue)];
             });
         });
     };
-    SysService.SelectedMacAddress = function (storeid) {
+    SysService.SelectedMacAddress = function (storeid, log) {
         return __awaiter(this, void 0, void 0, function () {
             var data, _a, err_2;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        Log_1.ulog.info(syslogstr);
+                        log.info(syslogstr);
                         _b.label = 1;
                     case 1:
                         _b.trys.push([1, 8, 9, 10]);
-                        return [4 /*yield*/, SyncServiceHelper_1.SyncServiceHelper.StoreSource(storeid)];
+                        return [4 /*yield*/, SyncServiceHelper_1.SyncServiceHelper.StoreSource(storeid, log)];
                     case 2:
                         data = _b.sent();
                         if (!data) return [3 /*break*/, 6];
@@ -133,7 +132,7 @@ var SysService = /** @class */ (function () {
                         return [4 /*yield*/, App_1.App.getMacAddress()];
                     case 3:
                         _a.mac_address = _b.sent();
-                        return [4 /*yield*/, SyncServiceHelper_1.SyncServiceHelper.UpdateCall("MAC", data.mac_address)];
+                        return [4 /*yield*/, SyncServiceHelper_1.SyncServiceHelper.UpdateCall("MAC", log, data.mac_address)];
                     case 4:
                         _b.sent();
                         _b.label = 5;
@@ -142,12 +141,37 @@ var SysService = /** @class */ (function () {
                     case 7: return [3 /*break*/, 10];
                     case 8:
                         err_2 = _b.sent();
-                        Log_1.ulog.warn(err_2);
+                        log.warn(err_2);
                         return [2 /*return*/, Promise.resolve(null)];
                     case 9:
-                        Log_1.ulog.info(syslogstr);
+                        log.info(syslogstr);
                         return [7 /*endfinally*/];
                     case 10: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    SysService.UpdateVersion = function (log) {
+        return __awaiter(this, void 0, void 0, function () {
+            var fs, data, err_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        fs = require("fs");
+                        data = fs.readFileSync("./package.json", "utf8");
+                        data = JSON.parse(data);
+                        log.info("Version: " + data.version);
+                        return [4 /*yield*/, SyncServiceHelper_1.SyncServiceHelper.UpdateCall("VERSION", log, data.version)];
+                    case 1:
+                        _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        err_3 = _a.sent();
+                        log.error("Error on updating version");
+                        log.error(err_3);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
                 }
             });
         });

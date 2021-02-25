@@ -70,7 +70,6 @@ var DesignerProductsService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 3, , 4]);
-                        console.log(params);
                         params.dataareaid = this.sessionInfo.dataareaid;
                         return [4 /*yield*/, this.rawQuery.getDesignerProducts()];
                     case 1:

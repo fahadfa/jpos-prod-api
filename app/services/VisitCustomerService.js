@@ -101,7 +101,6 @@ var VisitCustomerService = /** @class */ (function () {
                         return [4 /*yield*/, this.salesTableDAO.searchVisitors(item)];
                     case 1:
                         data_1 = _a.sent();
-                        console.log("========================", data_1);
                         citycodes_1 = [];
                         data_1.forEach(function (item) {
                             if (item.citycode != null && item.citycode && item.citycode.toString().trim().length > 0) {
@@ -154,7 +153,6 @@ var VisitCustomerService = /** @class */ (function () {
                     case 2:
                         cond = _a.sent();
                         if (!(cond == true)) return [3 /*break*/, 7];
-                        // console.log(this.sessionInfo);
                         reqData.userGroupId = this.sessionInfo.groupid;
                         if (!queryRunner) return [3 /*break*/, 4];
                         return [4 /*yield*/, queryRunner.manager.getRepository(VisitCustomer_1.VisitCustomer).save(reqData)];
@@ -168,7 +166,7 @@ var VisitCustomerService = /** @class */ (function () {
                     case 6: return [2 /*return*/, { id: reqData.visitorSequenceNumber, message: Props_1.Props.SAVED_SUCCESSFULLY }];
                     case 7:
                         if (cond == "VisitSeqNumber") {
-                            throw { message: "RECORD_ALREADY_EXISTS" };
+                            throw { status: 0, message: "RECORD_ALREADY_EXISTS" };
                         }
                         return [3 /*break*/, 9];
                     case 8:
@@ -197,8 +195,6 @@ var VisitCustomerService = /** @class */ (function () {
                         year = new Date().getFullYear().toString().substr(2, 2);
                         data.nextrec = prevYear == year ? data.nextrec : 1;
                         visitCustNum = data.format.replace(hashString, item.regionNumber + "-" + this.visitCustomer.showroomId + "-" + year + "-" + data.nextrec);
-                        // let visitCustNum: string = data.format.substr(0, 3) + item.regionNumber + "-" + this.visitCustomer.showroomId + "-" + year + "-" + data.nextrec;
-                        console.log(visitCustNum);
                         return [4 /*yield*/, this.rawQuery.updateNumberSequence("VST_NUMBER", data.nextrec)];
                     case 3:
                         _a.sent();
@@ -236,7 +232,6 @@ var VisitCustomerService = /** @class */ (function () {
                         item.dateOfVisit = new Date(App_1.App.DateNow());
                         return [3 /*break*/, 7];
                     case 6:
-                        console.log(item.visitorSequenceNumber);
                         if (item.visitorSequenceNumber != previousData.visitorSequenceNumber) {
                             if (mdata.length > 0) {
                                 return [2 /*return*/, "VisitSeqNumber"];
@@ -245,9 +240,6 @@ var VisitCustomerService = /** @class */ (function () {
                         _b.label = 7;
                     case 7:
                         item.lastModifiedDate = new Date(App_1.App.DateNow());
-                        // console.log("iso", App.dateNow());
-                        // console.log("normal", new Date());
-                        // console.log("iso converted", new Date(App.DateNow()));
                         return [2 /*return*/, true];
                 }
             });

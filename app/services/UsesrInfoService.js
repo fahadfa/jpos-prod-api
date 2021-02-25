@@ -68,8 +68,6 @@ var UsesrInfoService = /** @class */ (function () {
                         data.Custgroup = {};
                         _a.label = 3;
                     case 3:
-                        // let count = this.rawQuery.customers_count();
-                        console.log(data);
                         if (data) {
                             return [2 /*return*/, data];
                         }
@@ -141,7 +139,6 @@ var UsesrInfoService = /** @class */ (function () {
                         return [4 /*yield*/, this.validate(reqData)];
                     case 1:
                         cond = _a.sent();
-                        console.log(cond);
                         if (!(cond == true)) return [3 /*break*/, 4];
                         reqData.lastmodifieddate = new Date(App_1.App.DateNow());
                         reqData.lastmodifiedby = this.sessionInfo.userName;
@@ -157,10 +154,10 @@ var UsesrInfoService = /** @class */ (function () {
                         return [2 /*return*/, returnData];
                     case 4:
                         if (cond == "userName") {
-                            throw { message: "RECORD_ALREADY_EXISTS" };
+                            throw { status: 0, message: "RECORD_ALREADY_EXISTS" };
                         }
                         else {
-                            throw { message: "INVALID_DATA" };
+                            throw { status: 0, message: "INVALID_DATA" };
                         }
                         return [3 /*break*/, 6];
                     case 5:
@@ -177,16 +174,12 @@ var UsesrInfoService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log(item.accountnum);
                         if (!(!item.id || item.id == "" || item.id == "0")) return [3 /*break*/, 1];
                         item.id = null;
                         return [3 /*break*/, 3];
-                    case 1:
-                        console.log(item.id);
-                        return [4 /*yield*/, this.userinfoDAO.entity(item.id)];
+                    case 1: return [4 /*yield*/, this.userinfoDAO.entity(item.id)];
                     case 2:
                         previousData = _a.sent();
-                        console.log(previousData);
                         _a.label = 3;
                     case 3:
                         item.lastmodifiedby = this.sessionInfo.userName;
@@ -199,7 +192,6 @@ var UsesrInfoService = /** @class */ (function () {
                     case 5:
                         item.id = uuid();
                         item.deleted = false;
-                        console.log(item.id);
                         item.normalPassword = Math.random().toString(36).substring(7);
                         item.password = App_1.App.HashSync(item.normalPassword);
                         item.createddatetime = new Date(App_1.App.DateNow());
@@ -247,7 +239,7 @@ var UsesrInfoService = /** @class */ (function () {
                     case 2:
                         _a.sent();
                         return [3 /*break*/, 4];
-                    case 3: throw { message: "INVALID_PASSWORD" };
+                    case 3: throw { status: 0, message: "INVALID_PASSWORD" };
                     case 4: return [2 /*return*/, { id: user.id, message: "PASSWORD_UPDATED", status: 1 }];
                     case 5:
                         error_4 = _a.sent();
@@ -267,24 +259,8 @@ var UsesrInfoService = /** @class */ (function () {
                         return [4 /*yield*/, this.userinfoDAO.entity(id)];
                     case 1:
                         user = _a.sent();
-                        // if (user) {
-                        //     user.deleted = true;
-                        // } else {
-                        //     user = await this.userinfoDAO.findOne({ id: id });
-                        //     user.deleted = true;
-                        // }
-                        // user.deletedby = this.sessionInfo.userName;
-                        // user.deleteddatetime = new Date();
                         return [4 /*yield*/, this.userinfoDAO.delete(user)];
                     case 2:
-                        // if (user) {
-                        //     user.deleted = true;
-                        // } else {
-                        //     user = await this.userinfoDAO.findOne({ id: id });
-                        //     user.deleted = true;
-                        // }
-                        // user.deletedby = this.sessionInfo.userName;
-                        // user.deleteddatetime = new Date();
                         _a.sent();
                         return [2 /*return*/, { id: user.id, message: Props_1.Props.REMOVED_SUCCESSFULLY }];
                     case 3:

@@ -50,11 +50,8 @@ var WorkflowDAO = /** @class */ (function () {
                         return [4 /*yield*/, this.dao
                                 .createQueryBuilder("Workflow")
                                 .leftJoin("Workflow.Inventlocation", "Inventlocation")
-                                .innerJoin("Workflow.SalesTable", "SalesTable")
-                                .addSelect("SalesTable.salesId")
                                 .innerJoin("Workflow.selectedLines", "selectedLines")
                                 .addSelect("selectedLines.lines")
-                                .leftJoinAndSelect("SalesTable.movementType", "MovementType")
                                 .addSelect("Inventlocation.name")
                                 .addSelect("Inventlocation.nameAlias")
                                 .where({})

@@ -62,6 +62,7 @@ var Config = __importStar(require("./Config"));
 var Log_1 = require("./Log");
 var bcryptjs_1 = require("bcryptjs");
 var RawQuery_1 = require("../app/common/RawQuery");
+var Props_1 = require("../constants/Props");
 var dns = require("dns").promises;
 var App = /** @class */ (function () {
     function App() {
@@ -207,13 +208,25 @@ var App = /** @class */ (function () {
     //     });
     // }
     App.EncodeJWT = function (data) {
-        return jwt.sign(data, "SwanInfo");
+        return __awaiter(this, void 0, void 0, function () {
+            var token;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, RawQuery_1.RawQuery.ConstData("TOKEN")];
+                    case 1:
+                        token = _a.sent();
+                        Props_1.Props._TOKEN = token.token;
+                        Props_1.Props.EXPIRE_TIME = token.expiresAt;
+                        return [2 /*return*/, jwt.sign(data, Props_1.Props._TOKEN, { expiresIn: Props_1.Props.EXPIRE_TIME })];
+                }
+            });
+        });
     };
     App.DecodeJWT = function (token) {
         if (token && token != null && token != "null") {
             try {
                 token = token.includes(" ") ? token.replace("jwt ", "").replace("JWT ", "") : token;
-                var userInfo_1 = jwt.verify(token, "SwanInfo");
+                var userInfo_1 = jwt.verify(token, Props_1.Props._TOKEN);
                 return userInfo_1;
             }
             catch (err) {
@@ -251,37 +264,48 @@ var App = /** @class */ (function () {
     };
     App.ValildateUserAccess = function (data, component, access) {
         return __awaiter(this, void 0, void 0, function () {
-            var isValid, error_1;
+            var isValid, error_1, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         Log_1.log.info(data);
-                        if (!data) return [3 /*break*/, 7];
-                        if (!(data.name && data.message && data.name.lowercase().indexOf("error") > -1)) return [3 /*break*/, 1];
-                        return [2 /*return*/, false];
+                        _a.label = 1;
                     case 1:
-                        isValid = false;
-                        _a.label = 2;
+                        _a.trys.push([1, 10, , 11]);
+                        if (!data) return [3 /*break*/, 8];
+                        if (!(data.name && data.message && data.name.lowercase().indexOf("error") > -1)) return [3 /*break*/, 2];
+                        return [2 /*return*/, false];
                     case 2:
-                        _a.trys.push([2, 4, , 5]);
-                        return [4 /*yield*/, RawQuery_1.RawQuery.CheckUserInfo(data)];
+                        isValid = false;
+                        _a.label = 3;
                     case 3:
-                        isValid = _a.sent();
-                        return [3 /*break*/, 5];
+                        _a.trys.push([3, 5, , 6]);
+                        return [4 /*yield*/, RawQuery_1.RawQuery.CheckUserInfo(data)];
                     case 4:
+                        isValid = _a.sent();
+                        return [3 /*break*/, 6];
+                    case 5:
                         error_1 = _a.sent();
                         throw error_1;
-                    case 5:
+                    case 6:
                         if (isValid == true) {
                             return [2 /*return*/, true];
                         }
-                        else {
-                            throw { message: "User not releated to this store." };
+                        else if (isValid == "INACTIVE") {
+                            throw { message: "ACCOUNT_DEACTIVATED_PLEASE_CONTACT_ADMIN" };
                         }
-                        _a.label = 6;
-                    case 6: return [3 /*break*/, 8];
-                    case 7: return [2 /*return*/, false];
-                    case 8: return [2 /*return*/];
+                        else {
+                            throw { message: "USER_NOT_RELATED_TO_THIS_STORE" };
+                        }
+                        _a.label = 7;
+                    case 7: return [3 /*break*/, 9];
+                    case 8: return [2 /*return*/, false];
+                    case 9: return [3 /*break*/, 11];
+                    case 10:
+                        e_1 = _a.sent();
+                        Log_1.log.info(e_1);
+                        throw e_1;
+                    case 11: return [2 /*return*/];
                 }
             });
         });
@@ -302,6 +326,13 @@ var App = /** @class */ (function () {
         var t2 = d2.getTime();
         var t1 = d1.getTime();
         var diff = (t2 - t1) / (24 * 3600 * 1000);
+        return parseInt(diff);
+    };
+    App.SyncMinDiff = function (d1, d2) {
+        var t2 = d2.getTime();
+        var t1 = d1.getTime();
+        var diff = (t2 - t1) / (3600 * 1000);
+        console.log(diff);
         return parseInt(diff);
     };
     App.PrintLog = function (routerName, routerType, sessionInfo) {

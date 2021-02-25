@@ -38,6 +38,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var RawQuery_1 = require("../common/RawQuery");
 var typeorm_1 = require("typeorm");
 var App_1 = require("../../utils/App");
+var Props_1 = require("../../constants/Props");
+var axios = require("axios");
 var HistoricalCustomerReport = /** @class */ (function () {
     function HistoricalCustomerReport() {
         this.db = typeorm_1.getManager();
@@ -45,16 +47,18 @@ var HistoricalCustomerReport = /** @class */ (function () {
     }
     HistoricalCustomerReport.prototype.execute = function (params) {
         return __awaiter(this, void 0, void 0, function () {
-            var custaccount, data, error_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var custaccount, data, olddata, salesTable, salesLines, newLines_1, inventLocationIds_1, lines_1, wquery, invlocations_1, _a, error_1;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _a.trys.push([0, 4, , 5]);
+                        _b.trys.push([0, 10, , 11]);
                         custaccount = params.custaccount;
-                        if (!custaccount) return [3 /*break*/, 2];
+                        if (!custaccount) return [3 /*break*/, 8];
                         return [4 /*yield*/, this.getHistoricalData(params)];
                     case 1:
-                        data = _a.sent();
+                        data = _b.sent();
+                        console.log(data);
+                        if (!(data && data.length > 0)) return [3 /*break*/, 2];
                         data = data.map(function (item) {
                             item.lastmodifieddate = App_1.App.convertUTCDateToLocalDate(new Date(item.lastmodifieddate), params.timeZoneOffSet);
                             item.salesline = item.salesline.map(function (lines) {
@@ -63,41 +67,121 @@ var HistoricalCustomerReport = /** @class */ (function () {
                             });
                             return item;
                         });
-                        console.log("=================final review=======================", data);
-                        return [2 /*return*/, data];
-                    case 2: throw { message: "Select custaccount ID" };
-                    case 3: return [3 /*break*/, 5];
+                        return [3 /*break*/, 7];
+                    case 2: return [4 /*yield*/, this.oldDataUrl(params)];
+                    case 3:
+                        olddata = _b.sent();
+                        salesTable = olddata && olddata.SalesTable.length > 0 ? olddata.SalesTable : [];
+                        salesLines = olddata && olddata.SalesLine.length > 0 ? olddata.SalesLine : [];
+                        newLines_1 = {};
+                        salesLines.forEach(function (line) {
+                            var newLine = {};
+                            newLine.itemid = line.ITEMID;
+                            newLine.salesId = line.SALESID;
+                            newLine.vatAmount = line.LineSalesTax;
+                            newLine.netAmount = line.LINEAMOUNT;
+                            newLine.salesQty = line.SALESQTY;
+                            newLine.salesprice = line.SALESPRICE;
+                            newLine.lineTotalDisc = line.LINEDISCAMT;
+                            newLine.configid = line.CONFIGID;
+                            newLine.inventsizeid = line.INVENTSIZEID;
+                            newLine.salesQty = line.SALESQTY;
+                            newLine.colorant = "-";
+                            newLine.colorantprice = "0";
+                            newLine.linenum = line.LINENUM;
+                            newLine.inventLocationId = line.INVENTLOCATIONID;
+                            !newLines_1[newLine.salesId] ? newLines_1[newLine.salesId] = [] : null;
+                            newLines_1[newLine.salesId].push(newLine);
+                        });
+                        inventLocationIds_1 = "";
+                        lines_1 = Object.values(newLines_1);
+                        lines_1.forEach(function (d, index) {
+                            if (d.length > 0 && d[0].inventLocationId) {
+                                inventLocationIds_1 += "'" + d[0].inventLocationId + "'";
+                                if (index < lines_1.length - 1) {
+                                    inventLocationIds_1 += ",";
+                                }
+                            }
+                        });
+                        wquery = "select i.inventlocationid,i.namealias as wnamealias,i.\"name\" as wname from inventlocation i where i.inventlocationid in(" + inventLocationIds_1 + ");";
+                        console.log(wquery);
+                        if (!inventLocationIds_1) return [3 /*break*/, 5];
+                        return [4 /*yield*/, this.db.query(wquery)];
                     case 4:
-                        error_1 = _a.sent();
+                        _a = _b.sent();
+                        return [3 /*break*/, 6];
+                    case 5:
+                        _a = [];
+                        _b.label = 6;
+                    case 6:
+                        invlocations_1 = _a;
+                        data = salesTable.map(function (item) {
+                            var object = {};
+                            object.salesId = item.SALESID;
+                            object.createddatetime = new Date(item.CREATEDDATETIME);
+                            object.netAmount = item.NETAMOUNT;
+                            object.disc = item.DISC;
+                            object.amount = item.AMOUNT;
+                            object.vatamount = item.SumTax;
+                            object.salesline = newLines_1[object.salesId] ? newLines_1[object.salesId] : [];
+                            object.salesline.sort(function (a, b) {
+                                return a.linenum - b.linenum;
+                            });
+                            object.inventLocationId = object.salesline.length > 0 ? object.salesline[0].inventLocationId : '';
+                            var wh = invlocations_1.find(function (loc) { return object.inventLocationId == loc.inventlocationid; });
+                            object.wname = wh ? wh.wname : "";
+                            object.wnamealias = wh ? wh.wnamealias : "";
+                            // console.log(object);
+                            return object;
+                        });
+                        _b.label = 7;
+                    case 7:
+                        // let olddata = await this.oldDataUrl(params);
+                        console.log(data);
+                        return [2 /*return*/, data];
+                    case 8: throw { message: "Select custaccount ID" };
+                    case 9: return [3 /*break*/, 11];
+                    case 10:
+                        error_1 = _b.sent();
                         throw error_1;
-                    case 5: return [2 /*return*/];
+                    case 11: return [2 /*return*/];
                 }
             });
         });
     };
     HistoricalCustomerReport.prototype.report = function (result, params) {
         return __awaiter(this, void 0, void 0, function () {
-            var renderData, file, completeData;
+            var renderData, title, file, completeData;
             return __generator(this, function (_a) {
-                renderData = result;
-                console.log("data:----------", renderData);
-                file = params.lang == "en" ? "historical-customer-en" : "historical-customer-ar";
-                try {
-                    completeData = { data: renderData };
-                    completeData.fromDate = params.fromDate; //App.convertUTCDateToLocalDate(new Date(params.fromDate),params.timeZoneOffset);
-                    completeData.toDate = params.toDate; //App.convertUTCDateToLocalDate(new Date(params.toDate),params.timeZoneOffset);
-                    completeData.printDate = params.printDate; //App.convertUTCDateToLocalDate(new Date(params.printDate),params.timeZoneOffset)
-                    completeData.user = params.user ? params.user : "";
-                    completeData.customername = result.length > 0 ? result[0].customername : "";
-                    completeData.walkincustomer = result.length > 0 ? result[0].walkincustomer : "";
-                    completeData.phone = result.length > 0 && completeData.walkincustomer ? result[0].phone : "";
-                    completeData.custAccount = result.length > 0 ? result[0].custAccount : "";
-                    return [2 /*return*/, App_1.App.HtmlRender(file, completeData)];
+                switch (_a.label) {
+                    case 0:
+                        renderData = result;
+                        return [4 /*yield*/, this.rawQuery.getAppLangName("HISTORICAL_CUSTOMER_REPORT")];
+                    case 1:
+                        title = _a.sent();
+                        if (title) {
+                            result.title = title;
+                            console.table(title);
+                        }
+                        console.log("data:----------", renderData);
+                        file = params.lang == "en" ? "historical-customer-en" : "historical-customer-ar";
+                        try {
+                            completeData = { data: renderData };
+                            completeData.fromDate = params.fromDate; //App.convertUTCDateToLocalDate(new Date(params.fromDate),params.timeZoneOffset);
+                            completeData.toDate = params.toDate; //App.convertUTCDateToLocalDate(new Date(params.toDate),params.timeZoneOffset);
+                            completeData.printDate = params.printDate; //App.convertUTCDateToLocalDate(new Date(params.printDate),params.timeZoneOffset)
+                            completeData.user = params.user ? params.user : "";
+                            completeData.customername = result.length > 0 ? result[0].customername : "";
+                            completeData.walkincustomer = result.length > 0 ? result[0].walkincustomer : "";
+                            completeData.phone = result.length > 0 && completeData.walkincustomer ? result[0].phone : "";
+                            completeData.custAccount = result.length > 0 ? result[0].custAccount : "";
+                            return [2 /*return*/, App_1.App.HtmlRender(file, completeData)];
+                        }
+                        catch (error) {
+                            throw error;
+                        }
+                        return [2 /*return*/];
                 }
-                catch (error) {
-                    throw error;
-                }
-                return [2 /*return*/];
             });
         });
     };
@@ -113,7 +197,7 @@ var HistoricalCustomerReport = /** @class */ (function () {
                         tDate.setHours(0, 0, 0);
                         fromDate = App_1.App.convertUTCDateToLocalDate(fDate, params.timeZoneOffSet ? params.timeZoneOffSet : 0);
                         toDate = App_1.App.convertUTCDateToLocalDate(tDate, params.timeZoneOffSet ? params.timeZoneOffSet : 0);
-                        query = "SELECT \n        st.salesid as \"salesId\",salesline.lines as salesLine,\n                       st.intercompanyoriginalsalesid as \"interCompanyOriginalSalesId\",\n                       st.custaccount as \"custAccount\",\n                       st.invoiceaccount as \"invoiceAccount\",\n                       st.status as status,\n                       st.transkind as transkind,\n                       als.en as \"statusEn\",\n                       als.ar as \"statusAr\",\n                       alt.en as \"transkindEn\",\n                       alt.ar as \"transkindAr\",\n                       st.salesname as customername,\n                       st.mobileno as custmobilenumber,\n                       to_char(st.vatamount, 'FM999999999990.00')  as vatamount,\n                       to_char(st.netamount, 'FM999999999990.00')  as \"netAmount\",\n                       to_char(st.disc, 'FM999999999990.00')  as disc,\n                       to_char(st.amount , 'FM999999999990.00') as amount,\n                       to_char(st.shipping_amount, 'FM999999999990.00') as \"shippingAmount\",\n                       st.salesname as cname,\n                       st.salesname as \"cnamealias\",\n                       st.voucherdiscchecked as \"voucherdiscchecked\",\n                       st.vouchernum as \"vouchernum\",\n                       st.payment_type as \"paymentType\",\n                       c.phone as \"cphone\",\n                       to_char(st.createddatetime, 'DD-MM-YYYY') as createddatetime,\n                       st.lastmodifieddate as lastmodifieddate,\n                       st.originalprinted as \"originalPrinted\",\n                       st.inventlocationid as \"inventLocationId\",\n                       w.namealias as wnamealias,\n                       w.name as wname,\n                       st.payment as \"paymentMode\",\n                       alu.en as \"paymentModeEn\",\n                       alu.ar as \"paymentModeAr\",\n                       st.iscash as iscash,\n                       st.createdby,\n                       st.description as notes,\n                       to_char(st.cash_amount, 'FM999999999990.00') as \"cashAmount\",\n                       to_char(st.card_amount, 'FM999999999990.00') as \"cardAmount\",\n                       st.shipping_amount as \"shippingAmount\",\n                       to_char(st.online_amount, 'FM999999999990.00') as \"onlineAmount\",\n                       to_char(st.design_service_redeem_amount, 'FM999999999990.00') as \"designServiceRedeemAmount\",\n                       to_char(st.redeemptsamt, 'FM999999999990.00') as \"redeemAmount\",\n                       coalesce(st.deliveryaddress, ' ') || (' ') || coalesce(st.citycode, ' ') || (' ') || coalesce(st.districtcode, ' ') || (' ') || coalesce(st.country_code, ' ') as deliveryaddress,\n                       concat(d.num,' - ', d.description) as salesman,\n                       to_char(st.deliverydate, 'DD-MM-YYYY') as \"deliveryDate\" \n       from salestable st \n                       left join dimensions d on st.dimension6_ = d.num\n                       left join inventlocation w on w.inventlocationid = st.inventlocationid\n                       left join custtable c on c.accountnum = st.custaccount\n                       left join paymterm p on p.paymtermid = st.payment\n                       left join app_lang als on als.id = st.status\n                       left join app_lang alt on alt.id = st.transkind \n                       left join app_lang alu on alu.id = st.payment   \n       LEFT   JOIN LATERAL (\n          SELECT json_agg(\n          json_build_object(\n              'salesid', s3.salesid,\n              'nameAr', i2.itemname   ,\n              'nameEn',i2.namealias,\n              'salesid',s3.salesid,\n              'custaccount' ,s3.custaccount,\n              'itemid',s3.itemid,\n              'batchno',s3.batchno,\n              'configid',s3.configid,\n              'inventsizeid',s3.inventsizeid,\n              'saleslineqty',s3.salesqty,\n              'netAmount',to_char(s3.lineamount, 'FM999999999990.00'),\n              'lineAmount',to_char(s3.lineamount, 'FM999999999990.00'),\n              'batches',s3.batches,\n              'shippingDate',to_char(s3.lastmodifieddate, 'DD-MM-YYYY'),\n              'salesQty',to_char(s3.salesqty, 'FM999999999D'),\n              'salesprice',to_char(s3.salesprice, 'FM999999999990.00'),\n              'vatAmount',to_char((s3.vatamount/s3.salesqty)*s3.salesqty, 'FM999999999990.00'),\n              'colorantprice',to_char(s3.colorantprice, 'FM999999999990.00'),\n              'lineTotalDisc',to_char((s3.linetotaldisc/s3.salesqty)*s3.salesqty, 'FM999999999990.00'),\n              'vat',s3.vat,\n              'colorant',s3.colorantid,\n              'linenum',s3.linenum \n          )) AS lines\n          FROM   salesline s3 left join inventtable i2 on i2.itemid =s3.itemid \n          WHERE  s3.salesid = st.salesid \n       ) salesline ON true\n          where (st.custaccount ='" + params.custaccount + "' or st.invoiceaccount='" + params.custaccount + "')\n          and st.transkind in ('SALESORDER')\n          and st.status in ('PRINTED','POSTED')\n           and st.lastmodifieddate between '" + fromDate + "' ::timestamp and ('" + toDate + "'::timestamp + '1 day'::interval)\n       ORDER  BY st.lastmodifieddate ; \n       ";
+                        query = "SELECT \n        st.salesid as \"salesId\",cust1.walkincustomer,salesline.lines as salesLine,\n                       st.intercompanyoriginalsalesid as \"interCompanyOriginalSalesId\",\n                       st.custaccount as \"custAccount\",\n                       st.invoiceaccount as \"invoiceAccount\",\n                       st.status as status,\n                       st.transkind as transkind,\n                       als.en as \"statusEn\",\n                       als.ar as \"statusAr\",\n                       alt.en as \"transkindEn\",\n                       alt.ar as \"transkindAr\",\n                       st.salesname as customername,\n                       st.mobileno as custmobilenumber,\n                       to_char(st.vatamount, 'FM999999999990.00')  as vatamount,\n                       to_char(st.netamount, 'FM999999999990.00')  as \"netAmount\",\n                       to_char(st.disc, 'FM999999999990.00')  as disc,\n                       to_char(st.amount , 'FM999999999990.00') as amount,\n                       to_char(st.shipping_amount, 'FM999999999990.00') as \"shippingAmount\",\n                       st.salesname as cname,\n                       st.salesname as \"cnamealias\",\n                       st.voucherdiscchecked as \"voucherdiscchecked\",\n                       st.vouchernum as \"vouchernum\",\n                       st.payment_type as \"paymentType\",\n                       c.phone as \"cphone\",\n                       to_char(st.createddatetime, 'DD-MM-YYYY') as createddatetime,\n                       st.lastmodifieddate as lastmodifieddate,\n                       st.originalprinted as \"originalPrinted\",\n                       st.inventlocationid as \"inventLocationId\",\n                       w.namealias as wnamealias,\n                       w.name as wname,\n                       st.payment as \"paymentMode\",\n                       alu.en as \"paymentModeEn\",\n                       alu.ar as \"paymentModeAr\",\n                       st.iscash as iscash,\n                       st.createdby,\n                       st.description as notes,\n                       to_char(st.cash_amount, 'FM999999999990.00') as \"cashAmount\",\n                       to_char(st.card_amount, 'FM999999999990.00') as \"cardAmount\",\n                       st.shipping_amount as \"shippingAmount\",\n                       to_char(st.online_amount, 'FM999999999990.00') as \"onlineAmount\",\n                       to_char(st.design_service_redeem_amount, 'FM999999999990.00') as \"designServiceRedeemAmount\",\n                       to_char(st.redeemptsamt, 'FM999999999990.00') as \"redeemAmount\",\n                       coalesce(st.deliveryaddress, ' ') || (' ') || coalesce(st.citycode, ' ') || (' ') || coalesce(st.districtcode, ' ') || (' ') || coalesce(st.country_code, ' ') as deliveryaddress,\n                       concat(d.num,' - ', d.description) as salesman,\n                       to_char(st.deliverydate, 'DD-MM-YYYY') as \"deliveryDate\" \n       from salestable st \n       left join  custtable cust1 on  st.invoiceaccount=cust1.accountnum\n                       left join dimensions d on st.dimension6_ = d.num\n                       left join inventlocation w on w.inventlocationid = st.inventlocationid\n                       left join custtable c on c.accountnum = st.custaccount\n                       left join paymterm p on p.paymtermid = st.payment\n                       left join app_lang als on als.id = st.status\n                       left join app_lang alt on alt.id = st.transkind \n                       left join app_lang alu on alu.id = st.payment   \n       LEFT   JOIN LATERAL (\n          SELECT json_agg(\n          json_build_object(\n              'salesid', s3.salesid,\n              'nameAr', i2.itemname   ,\n              'nameEn',i2.namealias,\n              'salesid',s3.salesid,\n              'custaccount' ,s3.custaccount,\n              'itemid',s3.itemid,\n              'batchno',s3.batchno,\n              'configid',s3.configid,\n              'inventsizeid',s3.inventsizeid,\n              'saleslineqty',s3.salesqty,\n              'netAmount',to_char(s3.lineamount, 'FM999999999990.00'),\n              'lineAmount',to_char(s3.lineamount, 'FM999999999990.00'),\n              'batches',s3.batches,\n              'shippingDate',to_char(s3.lastmodifieddate, 'DD-MM-YYYY'),\n              'salesQty',to_char(s3.salesqty, 'FM999999999D'),\n              'salesprice',to_char(s3.salesprice, 'FM999999999990.00'),\n              'vatAmount',to_char((s3.vatamount/s3.salesqty)*s3.salesqty, 'FM999999999990.00'),\n              'colorantprice',to_char(s3.colorantprice, 'FM999999999990.00'),\n              'lineTotalDisc',to_char((s3.linetotaldisc/s3.salesqty)*s3.salesqty, 'FM999999999990.00'),\n              'vat',s3.vat,\n              'colorant',s3.colorantid,\n              'linenum',s3.linenum \n          )) AS lines\n          FROM   salesline s3 left join inventtable i2 on i2.itemid =s3.itemid \n          WHERE  s3.salesid = st.salesid \n       ) salesline ON true\n          where (st.custaccount ='" + params.custaccount + "' or st.invoiceaccount='" + params.custaccount + "')\n          and st.transkind in ('SALESORDER')\n          and st.status in ('PRINTED','POSTED')\n          and cust1.walkincustomer\n           and st.lastmodifieddate between '" + fromDate + "' ::timestamp and ('" + toDate + "'::timestamp + '1 day'::interval)\n       ORDER  BY st.lastmodifieddate ; \n       ";
                         return [4 /*yield*/, this.db.query(query)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -162,6 +246,57 @@ var HistoricalCustomerReport = /** @class */ (function () {
                         }
                         return [4 /*yield*/, tempArray];
                     case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    HistoricalCustomerReport.prototype.oldDataUrl = function (params) {
+        return __awaiter(this, void 0, void 0, function () {
+            var token, url, data, e_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, this.getToken()];
+                    case 1:
+                        token = _a.sent();
+                        console.log(token);
+                        url = "http://pos.al-jazeerapaints.com:200/API/HistoricalData?MobileNo=" + params.custaccount + "&fromDate=" + params.fromDate + "&toDate=" + params.toDate;
+                        axios.defaults.headers["Token"] = token;
+                        console.log(url);
+                        return [4 /*yield*/, axios.get(url)];
+                    case 2:
+                        data = _a.sent();
+                        // console.log(data);
+                        // this.otpStore.set(params.mobile, { token: data.data.otp_token, validate: false });
+                        return [2 /*return*/, data.data];
+                    case 3:
+                        e_1 = _a.sent();
+                        throw { message: Props_1.Props.DATA_NOT_FOUND };
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    HistoricalCustomerReport.prototype.getToken = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var token, url, data, error_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        token = void 0;
+                        url = Props_1.Props.REDEEM_URL + "?clientId=" + Props_1.Props.REDEEM_CLIENT_ID + "&clientSecret=" + Props_1.Props.REDEEM_CLIENT_SECRET;
+                        console.log(url);
+                        return [4 /*yield*/, axios.post(url)];
+                    case 1:
+                        data = _a.sent();
+                        token = data.headers.token;
+                        return [2 /*return*/, token];
+                    case 2:
+                        error_2 = _a.sent();
+                        throw error_2;
+                    case 3: return [2 /*return*/];
                 }
             });
         });

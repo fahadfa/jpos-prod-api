@@ -41,6 +41,25 @@ var RawQuery = /** @class */ (function () {
     function RawQuery() {
         this.db = typeorm_1.getManager();
     }
+    RawQuery.ConstData = function (code) {
+        return __awaiter(this, void 0, void 0, function () {
+            var data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, typeorm_1.getManager().query("select data from app_const_data where code='" + code + "' ")];
+                    case 1:
+                        data = _a.sent();
+                        if (data && data[0] && data[0].data) {
+                            return [2 /*return*/, data[0].data];
+                        }
+                        else {
+                            return [2 /*return*/, data];
+                        }
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     RawQuery.prototype.getCustomerOverDue = function (accountNum) {
         return __awaiter(this, void 0, void 0, function () {
             var query;
@@ -162,19 +181,26 @@ var RawQuery = /** @class */ (function () {
             });
         });
     };
-    RawQuery.prototype.updateSalesTable = function (salesId, status, date) {
+    RawQuery.prototype.updateSalesTable = function (salesId, status, date, apptype) {
         if (date === void 0) { date = null; }
+        if (apptype === void 0) { apptype = null; }
         return __awaiter(this, void 0, void 0, function () {
             var query, saleslineQuery, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = "UPDATE salestable\n        SET originalprinted = 'true',\n        status = '" + status + "'";
+                        query = "UPDATE salestable\n        SET originalprinted = true,\n        status = '" + status + "' ";
                         if (date) {
-                            query += "\n      ,lastmodifieddate = '" + date + "' ";
+                            query += "\n      , lastmodifieddate = '" + date + "' ";
                         }
+                        query += apptype ? ", apptype = " + apptype + " " : " ";
                         query += " WHERE salesid = '" + salesId + "' or salesgroup = '" + salesId + "' or deliverystreet = '" + salesId + "' ";
-                        saleslineQuery = "UPDATE salesline SET status = '" + status + "' ,lastmodifieddate = '" + date + "'  WHERE salesid = '" + salesId + "' ";
+                        saleslineQuery = "UPDATE salesline SET status = '" + status + "'  ";
+                        if (date) {
+                            saleslineQuery += "\n      ,lastmodifieddate = '" + date + "' ";
+                        }
+                        saleslineQuery += " WHERE salesid = '" + salesId + "' ";
+                        console.log(query);
                         return [4 /*yield*/, this.db.query(query)];
                     case 1:
                         data = _a.sent();
@@ -272,7 +298,7 @@ var RawQuery = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = "\n    select \n        a.itemid,\n        a.configid,\n        a.inventsizeid,\n        a.batchno as \"batchNo\",\n        a.batchno as batchno,\n        a.availabilty,\n        a.reservedquantity as \"reservedQuantity\",\n        (a.availabilty + a.reservedquantity) as \"totalAvailable\",\n        a.batchexpdate,\n        a.nameen as nameEn,\n        a.namear as nameAr,\n        a.sizenameen as \"sizeNameEn\",\n        a.sizenamear as \"sizeNameAr\" from\n        (select \n        UPPER(i.itemid) as itemid,\n        bs.namealias as nameen,\n        bs.itemname as namear,\n        UPPER(i.configid) as configid,\n        UPPER(i.inventsizeid) as inventsizeid,\n        UPPER(i.batchno) as batchno,\n        to_char((CASE \n          WHEN UPPER(i.batchno) = '-' THEN now()\n          WHEN UPPER(i.batchno) = '--' THEN now()\n          ELSE b.expdate\n          END\n        ),'yyyy-MM-dd') as batchexpdate,\n        sz.description as \"sizenameen\",\n        sz.\"name\" as \"sizenamear\",\n        sum(qty) as availabilty,\n        abs(sum(case\n          when reserve_status ='RESERVED' then qty\n          else 0\n          end\n          )) as reservedquantity\n        from inventtrans i\n        left join inventbatch b on i.batchno = b.inventbatchid and i.itemid = b.itemid\n        inner join inventtable bs on i.itemid = bs.itemid\n        left join inventsize sz on lower(sz.inventsizeid) = lower(i.inventsizeid) and sz.itemid = i.itemid\n        inner join configtable c on c.itemid = i.itemid and lower(c.configid) = lower(i.configid)\n        where transactionclosed  = true and inventlocationid = '" + reqData.inventlocationid + "'\n        ";
+                        query = "\n    select \n        a.itemid,\n        a.configid,\n        a.inventsizeid,\n        a.batchno as \"batchNo\",\n        a.batchno as batchno,\n        a.availabilty,\n        a.reservedquantity as \"reservedQuantity\",\n        (a.availabilty + a.reservedquantity) as \"totalAvailable\",\n        a.batchexpdate,\n        a.nameen as nameEn,\n        a.namear as nameAr,\n        a.sizenameen as \"sizeNameEn\",\n        a.sizenamear as \"sizeNameAr\" from\n        (select \n        UPPER(i.itemid) as itemid,\n        bs.namealias as nameen,\n        bs.itemname as namear,\n        UPPER(i.configid) as configid,\n        UPPER(i.inventsizeid) as inventsizeid,\n        UPPER(i.batchno) as batchno,\n        to_char((CASE \n          WHEN UPPER(i.batchno) = '-' THEN now()\n          WHEN UPPER(i.batchno) = '--' THEN now()\n          ELSE b.expdate\n          END\n        ),'yyyy-MM-dd') as batchexpdate,\n        sz.description as \"sizenameen\",\n        sz.\"name\" as \"sizenamear\",\n        sum(qty) as availabilty,\n        abs(sum(case\n          when reserve_status ='RESERVED' then qty\n          else 0\n          end\n          )) as reservedquantity\n        from inventtrans i\n        left join inventbatch b on i.batchno = b.inventbatchid and i.itemid = b.itemid and i.configid = b.configid \n        inner join inventtable bs on i.itemid = bs.itemid\n        left join inventsize sz on lower(sz.inventsizeid) = lower(i.inventsizeid) and sz.itemid = i.itemid\n        inner join configtable c on c.itemid = i.itemid and lower(c.configid) = lower(i.configid)\n        where transactionclosed  = true and inventlocationid = '" + reqData.inventlocationid + "' and i.itemid not like 'HSN-%'\n        ";
                         if (reqData.itemId) {
                             query = query + (" and LOWER(i.itemid) = LOWER('" + reqData.itemId + "')");
                             if (reqData.configid) {
@@ -353,7 +379,7 @@ var RawQuery = /** @class */ (function () {
                             query = "\n                select \n                sl.itemid as itemid,\n                sl.salesid as invoiceid,\n                CAST(sl.salesqty as  INTEGER) as qty,\n                sl.configid as configid,\n                sl.inventsizeid as inventsizeid,\n                dp.name_en as nameEn,\n                dp.name_ar as nameAr\n                from salesline sl \n                left join designer_products dp on dp.code = sl.itemid\n                where salesid= '" + reqData.salesid + "'\n                ";
                         }
                         else {
-                            query = "\n                select\n                distinct on (i.id, sl.link_id)\n                i.itemid as itemid,\n                bs.namealias as nameEn,\n                bs.itemname as nameAr,\n                CAST(i.qty AS INTEGER) as qty,\n                i.configid as configid,\n                i.inventsizeid as inventsizeid,\n                i.invoiceid as invoiceid,\n                i.transrefid as transrefid,\n                s.\"name\" as sizenameen,\n                s.description as sizenamear,\n                i.batchno as batchno,\n                i.batchno as \"batchNo\",\n                to_char((CASE \n                  WHEN i.batchno = '-' THEN now()\n                  WHEN i.batchno = '--' THEN now()\n                  ELSE b.expdate\n                  END\n                ),'yyyy-MM-dd') as batchExpDate,\n                i.sales_line_id as \"salesLineId\",\n                sl.is_item_free  as \"isItemFree\",\n                sl.link_id as \"linkId\",\n                sl.colorantid as \"colorantId\",\n                c.hexcode as hexcode\n            from inventtrans  i\n            left join salesline sl on sl.id = i.sales_line_id \n            left join inventbatch b on i.batchno = b.inventbatchid and b.itemid = i.itemid and b.configid = i.configid\n            left join inventtable bs on i.itemid = bs.itemid\n            left join inventsize s on s.inventsizeid = i.inventsizeid and s.itemid = i.itemid\n            left join configtable c on c.configid = i.configid and c.itemid = i.itemid\n             ";
+                            query = "\n                select\n                distinct on (i.id, sl.link_id)\n                i.itemid as itemid,\n                bs.namealias as nameEn,\n                bs.itemname as nameAr,\n                CAST(i.qty AS INTEGER) as qty,\n                i.configid as configid,\n                i.inventsizeid as inventsizeid,\n                i.invoiceid as invoiceid,\n                i.transrefid as transrefid,\n                s.\"name\" as sizenameen,\n                st.invoicedate as \"invoiceDate\",\n                s.description as sizenamear,\n                i.batchno as batchno,\n                i.batchno as \"batchNo\",\n                to_char((CASE \n                  WHEN i.batchno = '-' THEN now()\n                  WHEN i.batchno = '--' THEN now()\n                  ELSE b.expdate\n                  END\n                ),'yyyy-MM-dd') as batchExpDate,\n                i.sales_line_id as \"salesLineId\",\n                sl.is_item_free  as \"isItemFree\",\n                sl.link_id as \"linkId\",\n                sl.colorantid as \"colorantId\",\n                c.hexcode as hexcode\n            from inventtrans  i\n            inner join salestable st on st.salesid = i.invoiceid\n            left join salesline sl on sl.id = i.sales_line_id \n            left join inventbatch b on i.batchno = b.inventbatchid and b.itemid = i.itemid and b.configid = i.configid\n            left join inventtable bs on i.itemid = bs.itemid\n            left join inventsize s on s.inventsizeid = i.inventsizeid and s.itemid = i.itemid\n            left join configtable c on c.configid = i.configid and c.itemid = i.itemid\n             ";
                             if (reqData.salesid) {
                                 if (reqData.type == "RETURNORDER" ||
                                     reqData.type == "INVENTORYMOVEMENT" ||
@@ -367,7 +393,7 @@ var RawQuery = /** @class */ (function () {
                                     query += "where (i.invoiceid = '" + reqData.salesid + "' or i.transrefid = '" + reqData.salesid + "') and transactionclosed=" + transactionclosed + " ";
                                 }
                                 else if (reqData.type == "SALESORDER") {
-                                    query += "where  i.transrefid = '" + reqData.salesid + "' ";
+                                    query += "where  i.transrefid = '" + reqData.salesid + "'  and reserve_status != 'REJECTED'";
                                 }
                                 else {
                                     query += "where  i.transrefid = '" + reqData.salesid + "' and transactionclosed=" + transactionclosed + " ";
@@ -402,7 +428,7 @@ var RawQuery = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = "\n    select transrefid, itemid, sum(qty) as quantity, configid as \"configId\", inventsizeid, batchno from inventtrans \n    where transrefid = '" + data + "'\n    group by itemid, configid, inventsizeid, batchno, transrefid\n    ";
+                        query = "\n    select transrefid, itemid, sum(qty) as quantity, configid as \"configId\", inventsizeid, batchno from inventtrans \n    where transrefid = '" + data + "' and reserve_status !='REJECTED'\n    group by itemid, configid, inventsizeid, batchno, transrefid\n    ";
                         return [4 /*yield*/, this.db.query(query)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -621,7 +647,7 @@ var RawQuery = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = "\n        select amount as price, tinventsizeid as inventsizeid, configid, itemrelation as itemid\n        from pricedisctable \n        where (itemcode = 0) and (accountcode = 1 or accountcode = 0) \n        and currency = '" + data.currency + "' and \n        itemrelation = '" + data.itemid + "' and (configid='" + data.configid + "' or configid='--')  and \n        accountrelation = '" + data.custaccount + "' and tinventsizeid = '" + data.inventsizeid + "'\n        ";
+                        query = "\n        select amount as price, tinventsizeid as inventsizeid, configid, itemrelation as itemid\n        from pricedisctable \n        where (itemcode = 0) and (accountcode = 1 or accountcode = 0) \n        and currency = '" + data.currency + "' and \n        itemrelation = '" + data.itemid + "' and (configid='" + data.configid + "')  and \n        accountrelation = '" + data.custaccount + "' and tinventsizeid = '" + data.inventsizeid + "'\n        ";
                         return [4 /*yield*/, this.db.query(query)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -634,7 +660,7 @@ var RawQuery = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = "\n            select amount as price, tinventsizeid as inventsizeid, configid, itemrelation as itemid\n            from pricedisctable \n            where (itemcode = 0) and (accountcode = 1 or accountcode = 0) \n            and currency = '" + data.currency + "' and \n            itemrelation = '" + data.itemid + "' and (configid='" + data.configid + "' or configid='--') and \n            accountrelation = '" + data.pricegroup + "' and tinventsizeid = '" + data.inventsizeid + "'\n            ";
+                        query = "\n            select amount as price, tinventsizeid as inventsizeid, configid, itemrelation as itemid\n            from pricedisctable \n            where (itemcode = 0) and (accountcode = 1 or accountcode = 0) \n            and currency = '" + data.currency + "' and \n            itemrelation = '" + data.itemid + "' and (configid='" + data.configid + "') and \n            accountrelation = '" + data.pricegroup + "' and tinventsizeid = '" + data.inventsizeid + "'\n            ";
                         return [4 /*yield*/, this.db.query(query)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -647,7 +673,7 @@ var RawQuery = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = "\n            select amount as price, tinventsizeid as inventsizeid, configid, itemrelation as itemid, accountrelation as accountrelation\n            from pricedisctable \n            where relation = 4 and (itemcode = 0) and (accountcode = 1 or accountcode = 0) \n            and currency = '" + data.currency + "' and \n            lower(itemrelation) = lower('" + data.itemid + "') and (lower(configid)=lower('" + data.configid + "') or configid='--') and \n            (lower(accountrelation) = lower('" + data.pricegroup + "') or lower(accountrelation) = lower('" + data.custaccount + "') \n            ) and lower(tinventsizeid) in (" + data.inventsizeids + ")\n            ";
+                        query = "\n            select amount as price, tinventsizeid as inventsizeid, configid, itemrelation as itemid, accountrelation as accountrelation\n            from pricedisctable \n            where relation = 4 and (itemcode = 0) and accountcode in (1,0) \n            and currency = '" + data.currency + "' and \n            lower(itemrelation) = lower('" + data.itemid + "') and (lower(configid)=lower('" + data.configid + "')) and \n            lower(accountrelation) IN (lower('" + data.pricegroup + "'), lower('" + data.custaccount + "') \n            ) and lower(tinventsizeid) in (" + data.inventsizeids + ")\n            ";
                         console.log(query);
                         return [4 /*yield*/, this.db.query(query)];
                     case 1: return [2 /*return*/, _a.sent()];
@@ -661,7 +687,7 @@ var RawQuery = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = "\n        select  amount \n        from pricedisctable \n        where (itemcode = 0) and (accountcode = 1 or accountcode = 0) \n        and currency = '" + data.currency + "' and itemrelation = '" + data.itemid + "' and (configid='" + data.configid + "' or configid='--')\n        and tinventsizeid = '" + data.inventsizeid + "' and \n        (accountrelation = '" + data.pricegroup + "' or  accountrelation = '" + data.custaccount + "') limit 1\n        ";
+                        query = "\n        select  amount \n        from pricedisctable \n        where (itemcode = 0) and (accountcode = 1 or accountcode = 0) \n        and currency = '" + data.currency + "' and itemrelation = '" + data.itemid + "' and (configid='" + data.configid + "')\n        and tinventsizeid = '" + data.inventsizeid + "' and \n        (accountrelation = '" + data.pricegroup + "' or  accountrelation = '" + data.custaccount + "') limit 1\n        ";
                         return [4 /*yield*/, this.db.query(query)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -929,7 +955,7 @@ var RawQuery = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = "select \n            statusid as status from workflow\n            where orderid= '" + salesid + "' limit 1";
+                        query = "select \n            statusid as status, selected_lines as \"salesTable\" from workflow\n            where orderid= '" + salesid + "' limit 1";
                         return [4 /*yield*/, this.db.query(query)];
                     case 1:
                         data = _a.sent();
@@ -938,13 +964,13 @@ var RawQuery = /** @class */ (function () {
             });
         });
     };
-    RawQuery.prototype.workflowconditions = function (usergroupconfigid) {
+    RawQuery.prototype.workflowconditions = function (usergroupconfigid, inventlocationid) {
         return __awaiter(this, void 0, void 0, function () {
             var query, data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = "select \n            returnorderapprovalrequired  as \"approvalRequired\", \n            returnorderrmapprovalrequired as \"rmApprovalRequired\",\n            returnorderraapprovalrequired \"raApprovalRequired\", \n            projectcustomer, \n            agentcustomer from  usergroupconfig\n            where id= '" + usergroupconfigid + "' limit 1";
+                        query = "select \n            returnorderapprovalrequired  as \"approvalRequired\", \n            returnorderrmapprovalrequired as \"rmApprovalRequired\",\n            returnorderraapprovalrequired \"raApprovalRequired\", \n            projectcustomer, return_order_days as \"returnOrderDays\",\n            agentcustomer from  usergroupconfig\n            where usergroupid= '" + usergroupconfigid + "' and inventlocationid='" + inventlocationid + "' limit 1";
                         return [4 /*yield*/, this.db.query(query)];
                     case 1:
                         data = _a.sent();
@@ -959,7 +985,7 @@ var RawQuery = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = "select rmsigningauthority as rm, rasigningauthority as ra, designer_signing_authority as designer_signing_authority \n        from usergroupconfig where usergroupid = '" + usergroupid + "' limit 1";
+                        query = "select rmsigningauthority as rm, rasigningauthority as ra, designer_signing_authority as designer_signing_authority, sales_coordinator_signing_authority as salescoordinator\n        from usergroupconfig where usergroupid = '" + usergroupid + "' limit 1";
                         return [4 /*yield*/, this.db.query(query)];
                     case 1:
                         data = _a.sent();
@@ -1260,17 +1286,15 @@ var RawQuery = /** @class */ (function () {
             });
         });
     };
-    RawQuery.prototype.getItemTaxGroupByItemIds = function (ids) {
+    RawQuery.prototype.getItemTaxGroupByItemIds = function (taxgroup) {
         return __awaiter(this, void 0, void 0, function () {
             var data;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.db.query("select taxitemgroupid,itemid  from inventtablemodule where itemid in(" + ids
-                            .map(function (id) { return "'" + id + "'"; })
-                            .join(",") + ") and moduletype=2")];
+                    case 0: return [4 /*yield*/, this.db.query("select it.taxitemgroup from taxgroupdata tg\n      inner join taxonitem it on tg.taxcode = it.taxcode \n      where tg.taxgroup = '" + taxgroup + "'")];
                     case 1:
                         data = _a.sent();
-                        return [2 /*return*/, data.length > 0 ? data : []];
+                        return [2 /*return*/, data.length > 0 ? data[0].taxitemgroup : null];
                 }
             });
         });
@@ -1317,12 +1341,13 @@ var RawQuery = /** @class */ (function () {
     };
     RawQuery.CheckUserInfo = function (userInfo) {
         return __awaiter(this, void 0, void 0, function () {
-            var data;
+            var data, e_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        _a.trys.push([0, 3, , 4]);
                         if (!userInfo) return [3 /*break*/, 2];
-                        return [4 /*yield*/, typeorm_1.getManager().query("select groupid from user_info where user_name='" + userInfo.userName + "'")];
+                        return [4 /*yield*/, typeorm_1.getManager().query("select groupid, status from user_info where user_name='" + userInfo.userName + "'")];
                     case 1:
                         data = _a.sent();
                         data = data ? data[0] : {};
@@ -1337,6 +1362,12 @@ var RawQuery = /** @class */ (function () {
                                     return [2 /*return*/, false];
                                 }
                             }
+                            if (data.status == "ACTIVE") {
+                                return [2 /*return*/, true];
+                            }
+                            else {
+                                return [2 /*return*/, "INACTIVE"];
+                            }
                             return [2 /*return*/, true];
                         }
                         else {
@@ -1344,6 +1375,11 @@ var RawQuery = /** @class */ (function () {
                         }
                         _a.label = 2;
                     case 2: return [2 /*return*/, true];
+                    case 3:
+                        e_2 = _a.sent();
+                        console.log(e_2);
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
                 }
             });
         });
@@ -1384,11 +1420,12 @@ var RawQuery = /** @class */ (function () {
                         items = itemsList.map(function (d) { return "lower('" + d + "')"; }).join(",");
                         sizes = sizesList.map(function (d) { return "lower('" + d + "')"; }).join(",");
                         colors = colorsList.map(function (d) { return "lower('" + d + "')"; }).join(",");
-                        query = "select itemid, configid, inventsizeid,  sum(qty) as qty from inventtrans  \n    where lower(itemid) in (" + items + ")\n    and lower(configid) in (" + colors + ")\n    and lower(inventsizeid) in (" + sizes + ")\n    and inventlocationid = '" + inventlocationid + "' and transactionclosed = true ";
+                        query = "select itemid, lower(configid) as configid, lower(inventsizeid) as inventsizeid,  sum(qty) as qty from inventtrans  \n    where lower(itemid) in (" + items + ")\n    and lower(configid) in (" + colors + ")\n    and lower(inventsizeid) in (" + sizes + ")\n    and inventlocationid = '" + inventlocationid + "' and transactionclosed = true ";
                         if (salesId) {
                             query += " and invoiceid != '" + salesId + "' ";
                         }
-                        query += "group by itemid, configid, inventsizeid ";
+                        query += "group by itemid, lower(configid), lower(inventsizeid) ";
+                        console.log(query);
                         return [4 /*yield*/, this.db.query(query)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -1406,6 +1443,7 @@ var RawQuery = /** @class */ (function () {
                         colors = colorsList.map(function (d) { return "lower('" + d + "')"; }).join(",");
                         batches = batchList.map(function (d) { return "lower('" + d + "')"; }).join(",");
                         query = "select itemid, configid, inventsizeid, batchno,  sum(qty) as qty from inventtrans  \n    where lower(itemid) in (" + items + ")\n    and lower(configid) in (" + colors + ")\n    and lower(inventsizeid) in (" + sizes + ")\n    and lower(batchno) in (" + batches + ")\n    and inventlocationid = '" + inventlocationid + "' and transactionclosed = true\n    group by itemid, configid, inventsizeid, batchno";
+                        console.log(query);
                         return [4 /*yield*/, this.db.query(query)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -1582,6 +1620,64 @@ var RawQuery = /** @class */ (function () {
                     case 1:
                         data = _a.sent();
                         return [2 /*return*/, data.length > 0 ? data[0].name_en : "-"];
+                }
+            });
+        });
+    };
+    RawQuery.prototype.getAppLangName = function (key) {
+        return __awaiter(this, void 0, void 0, function () {
+            var ids, data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        ids = key
+                            .split(",")
+                            .map(function (a) { return "'" + a + "'"; })
+                            .join(",");
+                        return [4 /*yield*/, this.db.query("select al.en,al.ar from app_lang al \n    where al.id  in(" + ids + ")")];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, data.length > 0 ? data[0] : null];
+                }
+            });
+        });
+    };
+    RawQuery.prototype.getUserswithGroupid = function (groupid) {
+        return __awaiter(this, void 0, void 0, function () {
+            var query, data, err_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        query = "select distinct ui.email from usergroupconfig ugc \n      left join user_info ui on ui.groupid = ugc.usergroupid\n      where \n      ugc.usergroupid ='" + groupid + "' and\n      ui.status ILIKE '%active%'\n      group by ui.email;";
+                        return [4 /*yield*/, this.db.query(query)];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, data];
+                    case 2:
+                        err_2 = _a.sent();
+                        return [2 /*return*/, Promise.resolve([])];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    RawQuery.prototype.getUserswithInventLocation = function (inventlocation) {
+        return __awaiter(this, void 0, void 0, function () {
+            var query, data, err_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        query = "select distinct ui.email from usergroupconfig ugc \n      left join user_info ui on ui.groupid = ugc.usergroupid\n      where \n      ugc.inventlocationid ='" + inventlocation + "' and\n      ui.status ILIKE '%active%'\n      group by ui.email;";
+                        return [4 /*yield*/, this.db.query(query)];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, data];
+                    case 2:
+                        err_3 = _a.sent();
+                        return [2 /*return*/, Promise.resolve([])];
+                    case 3: return [2 /*return*/];
                 }
             });
         });

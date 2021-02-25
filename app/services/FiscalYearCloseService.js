@@ -114,13 +114,13 @@ var FiscalYearCloseService = /** @class */ (function () {
                         return [2 /*return*/, returnData];
                     case 3:
                         if (cond == "Duplicate") {
-                            throw { message: "DUPLICATE_RECORD" };
+                            throw { status: 0, message: "DUPLICATE_RECORD" };
                         }
                         else if (cond == "notClosed") {
-                            throw { message: "BALANCES_ARE_NOT_EQUAL" };
+                            throw { status: 0, message: "BALANCES_ARE_NOT_EQUAL" };
                         }
                         else {
-                            throw { message: "INVALID_DATA" };
+                            throw { status: 0, message: "INVALID_DATA" };
                         }
                         _a.label = 4;
                     case 4: return [3 /*break*/, 6];
@@ -142,8 +142,9 @@ var FiscalYearCloseService = /** @class */ (function () {
                         return [4 /*yield*/, this.fiscalyearcloseRepository.entity(id)];
                     case 1:
                         data = _a.sent();
-                        if (!data)
-                            throw { message: "RECORD_NOT_FOUND" };
+                        if (!data) {
+                            throw { status: 0, message: "RECORD_NOT_FOUND" };
+                        }
                         return [4 /*yield*/, this.fiscalyearcloseRepository.delete(data)];
                     case 2:
                         result = _a.sent();

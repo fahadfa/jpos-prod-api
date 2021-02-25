@@ -106,7 +106,7 @@
     }
 
     table.dash {
-      border: 1px dashed #cccccc;
+      /* border: 1px dashed #cccccc; */
       border-collapse: collapse;
     }
 
@@ -121,7 +121,7 @@
       <p id="bg__text__watermark">فقط للاختبار</p>
     </div>
 
-    <div class="mainheading">تقرير المبيعات</div>
+    <!-- <div class="mainheading">{{title.ar}}</div> -->
 
     <table id="headertbl" width="98%">
       <tr>
@@ -176,6 +176,9 @@
 
     <table class="dash" width="100%" cellpadding="0" cellspacing="0">
       <thead>
+        <tr>
+          <th class="mainheading"  colspan="12" style="border: 0px dashed #cccccc;">{{title.ar}}</th>
+        </tr>
         <tr>
           <th>معرف الحركة</th>
           <th>نوع الحركة</th>

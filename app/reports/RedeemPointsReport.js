@@ -77,23 +77,33 @@ var RedeemPointsReport = /** @class */ (function () {
     };
     RedeemPointsReport.prototype.report = function (result, params) {
         return __awaiter(this, void 0, void 0, function () {
-            var renderData, file;
+            var renderData, title, file;
             return __generator(this, function (_a) {
-                renderData = params;
-                renderData.data = result;
-                renderData.printDate = App_1.App.convertUTCDateToLocalDate(new Date(App_1.App.DateNow()), parseInt(params.timeZoneOffSet))
-                    .replace(/T/, " ") // replace T with a space
-                    .replace(/\..+/, "");
-                renderData.fromDate = new Date(renderData.fromDate).toLocaleDateString();
-                renderData.toDate = new Date(renderData.toDate).toLocaleDateString();
-                file = params.lang == "en" ? "redeem-points-en" : "redeem-points-ar";
-                try {
-                    return [2 /*return*/, App_1.App.HtmlRender(file, renderData)];
+                switch (_a.label) {
+                    case 0:
+                        renderData = params;
+                        renderData.data = result;
+                        renderData.printDate = App_1.App.convertUTCDateToLocalDate(new Date(App_1.App.DateNow()), parseInt(params.timeZoneOffSet))
+                            .replace(/T/, " ") // replace T with a space
+                            .replace(/\..+/, "");
+                        renderData.fromDate = new Date(renderData.fromDate).toLocaleDateString();
+                        renderData.toDate = new Date(renderData.toDate).toLocaleDateString();
+                        return [4 /*yield*/, this.rawQuery.getAppLangName("REDEEM_POINTS_REPORT")];
+                    case 1:
+                        title = _a.sent();
+                        if (title) {
+                            renderData.title = title;
+                            console.table(title);
+                        }
+                        file = params.lang == "en" ? "redeem-points-en" : "redeem-points-ar";
+                        try {
+                            return [2 /*return*/, App_1.App.HtmlRender(file, renderData)];
+                        }
+                        catch (error) {
+                            throw error;
+                        }
+                        return [2 /*return*/];
                 }
-                catch (error) {
-                    throw error;
-                }
-                return [2 /*return*/];
             });
         });
     };

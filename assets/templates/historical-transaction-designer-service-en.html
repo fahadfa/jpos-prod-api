@@ -240,7 +240,7 @@
                                             <td>:</td>
 
                                             <td>
-                                                {{cphone}}
+                                                {{custmobilenumber}}
                                             </td>
                                         </tr>
                                         <tr class="billing">
@@ -254,7 +254,8 @@
                                             <td>Customer</td>
                                             <td>:</td>
                                             <td>
-                                                {{cnamealias}}
+                                                {{#if this.invoiceAccount}} {{this.invoiceAccount}} {{else}} {{this.custAccount}} {{/if}}
+                                                -{{cnamealias}}
                                             </td>
                                         </tr>
                                         <tr class="billing">

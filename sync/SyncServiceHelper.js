@@ -52,22 +52,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var pg_1 = require("pg");
 var Config = __importStar(require("../utils/Config"));
 var App_1 = require("../utils/App");
-var Log_1 = require("../utils/Log");
 var format = require("pg-format");
 var STORE_ID = process.env.ENV_STORE_ID || "LOCAL";
 var moment = require("moment");
 pg_1.types.setTypeParser(1114, function (stringValue) {
     return stringValue.replace(" ", "T");
 });
-var log = Log_1.log;
-Config.setStagingConfig();
+Config.setEnvConfig();
 var SyncServiceHelper = /** @class */ (function () {
     function SyncServiceHelper() {
     }
-    SyncServiceHelper.SetLog = function (slog) {
-        log = slog;
-    };
-    SyncServiceHelper.BatchQuery = function (config, sqls) {
+    SyncServiceHelper.BatchQuery = function (config, sqls, log) {
         var sqls_1, sqls_1_1;
         return __awaiter(this, void 0, void 0, function () {
             var e_1, _a, db, res, sql, e_1_1, e_2, err_1;
@@ -154,7 +149,7 @@ var SyncServiceHelper = /** @class */ (function () {
             });
         });
     };
-    SyncServiceHelper.ExecuteQuery = function (config, sql) {
+    SyncServiceHelper.ExecuteQuery = function (config, sql, log) {
         return __awaiter(this, void 0, void 0, function () {
             var showLog, res, db, e_3;
             return __generator(this, function (_a) {
@@ -206,7 +201,7 @@ var SyncServiceHelper = /** @class */ (function () {
             });
         });
     };
-    SyncServiceHelper.PrepareQuery = function (table, metaData, rows, filterIds, type, pk) {
+    SyncServiceHelper.PrepareQuery = function (table, metaData, rows, filterIds, type, pk, log) {
         var metaData_1, metaData_1_1;
         return __awaiter(this, void 0, void 0, function () {
             var e_4, _a, columns, sql, records_1, filterRows, sql_1, ele, e_4_1, records_2, filterRows;
@@ -310,7 +305,7 @@ var SyncServiceHelper = /** @class */ (function () {
                 return type;
         }
     };
-    SyncServiceHelper.ChackAvalibleQuery = function (table, metaData, primaryKeys, pk) {
+    SyncServiceHelper.ChackAvalibleQuery = function (table, metaData, primaryKeys, pk, log) {
         return __awaiter(this, void 0, void 0, function () {
             var columns, sql;
             return __generator(this, function (_a) {
@@ -368,14 +363,14 @@ var SyncServiceHelper = /** @class */ (function () {
             });
         });
     };
-    SyncServiceHelper.ErrorMessage = function (type, err) {
+    SyncServiceHelper.ErrorMessage = function (type, err, log) {
         return __awaiter(this, void 0, void 0, function () {
             var sql;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         sql = "\n    INSERT INTO sync_error \n    (id, store_id, \"type\", error_msg, error_desc) \n    VALUES(\n      '" + App_1.App.UniqueNumber() + "', '" + STORE_ID + "', '" + type + "', '" + JSON.stringify(err) + "', '" + (err.message ? err.message : "") + "'\n    )\n  ";
-                        return [4 /*yield*/, SyncServiceHelper.BatchQuery(SyncServiceHelper.StageDBOptions(), [sql])];
+                        return [4 /*yield*/, SyncServiceHelper.BatchQuery(SyncServiceHelper.StageDBOptions(), [sql], log)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -397,6 +392,8 @@ var SyncServiceHelper = /** @class */ (function () {
             user: Config.stageDbOptions.username,
             password: Config.stageDbOptions.password,
             database: Config.stageDbOptions.database,
+            max: 25,
+            idleTimeoutMillis: 0,
         };
     };
     // public static LocalDBOptions() {
@@ -415,9 +412,11 @@ var SyncServiceHelper = /** @class */ (function () {
             user: Config.dbOptions.username,
             password: Config.dbOptions.password,
             database: Config.dbOptions.database,
+            max: 25,
+            idleTimeoutMillis: 0,
         };
     };
-    SyncServiceHelper.UpdateCall = function (type, data) {
+    SyncServiceHelper.UpdateCall = function (type, log, data) {
         return __awaiter(this, void 0, void 0, function () {
             var sql, stageDb;
             return __generator(this, function (_a) {
@@ -440,9 +439,8 @@ var SyncServiceHelper = /** @class */ (function () {
                         else if (type == "MAC") {
                             sql = "UPDATE sync_source SET  mac_address = '" + data + "', updated_on = '" + moment().toISOString() + "'  WHERE id='" + STORE_ID + "' ";
                         }
-                        log.info(sql);
                         if (!sql) return [3 /*break*/, 2];
-                        return [4 /*yield*/, SyncServiceHelper.BatchQuery(stageDb, [sql])];
+                        return [4 /*yield*/, SyncServiceHelper.BatchQuery(stageDb, [sql], log)];
                     case 1:
                         _a.sent();
                         _a.label = 2;
@@ -451,7 +449,7 @@ var SyncServiceHelper = /** @class */ (function () {
             });
         });
     };
-    SyncServiceHelper.StoreSource = function (storeid) {
+    SyncServiceHelper.StoreSource = function (storeid, log) {
         return __awaiter(this, void 0, void 0, function () {
             var sql, stageDb, syncResults, error_1;
             return __generator(this, function (_a) {
@@ -461,7 +459,7 @@ var SyncServiceHelper = /** @class */ (function () {
                         stageDb = SyncServiceHelper.StageDBOptions();
                         sql = "select * from sync_source where id='" + storeid + "' ";
                         log.info(sql);
-                        return [4 /*yield*/, SyncServiceHelper.ExecuteQuery(stageDb, sql)];
+                        return [4 /*yield*/, SyncServiceHelper.ExecuteQuery(stageDb, sql, log)];
                     case 1:
                         syncResults = _a.sent();
                         syncResults = syncResults.rows;
@@ -472,6 +470,70 @@ var SyncServiceHelper = /** @class */ (function () {
                         log.error(error_1);
                         throw error_1;
                     case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     *
+     * @param type  "INSERT", "UPDATE", "SELECT"
+     * @param entity
+     */
+    SyncServiceHelper.SyncReUpdateSQL = function (type, entity) {
+        switch (type) {
+            case "INSERT":
+                return "insert into sync_reupdate (id, store_id, table_name, table_pk, table_pk_value, type, sync_date, add_on ) values ('" + entity.id + "','" + entity.store_id + "','" + entity.table_name + "','" + entity.table_pk + "','" + entity.table_pk_value + "','" + entity.type + "','" + entity.sync_date + "', '" + JSON.stringify(entity.add_on) + "')";
+            case "UPDATE":
+                return "update sync_reupdate set is_update = true, updated_on = now() where is_update = false and store_id = '" + entity.store_id + "' and table_name='" + entity.table_name + "' and table_pk_value = '" + entity.table_pk_value + "'";
+            case "SELECT":
+                return "select distinct store_id, table_name, table_pk, table_pk_value, is_resync, type from sync_reupdate where store_id = '" + entity.store_id + "' and table_name in ('" + entity.table_name + "') and is_update = false ;";
+            default:
+                return null;
+        }
+    };
+    SyncServiceHelper.BuildDMLSelectPkQuery = function (tableName, pk, value) {
+        var sql = "select * from " + tableName + " where " + pk + "= '" + value + "' ";
+        return sql;
+    };
+    SyncServiceHelper.BuildBatchQuery = function (soruceRes, sync, log, targetDb, batchSql) {
+        return __awaiter(this, void 0, void 0, function () {
+            var rowsAvalible, rowsNotAvalible, sql, rowsLength, primaryKeys, res, metaDataTable;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        rowsAvalible = null;
+                        rowsNotAvalible = null;
+                        sql = null;
+                        if (!(soruceRes && soruceRes.rows.length != 0)) return [3 /*break*/, 7];
+                        rowsLength = soruceRes.rows.length;
+                        primaryKeys = soruceRes.rows.map(function (ele) { return ele[sync.map_pk]; });
+                        return [4 /*yield*/, SyncServiceHelper.ChackAvalibleQuery(sync.map_table, soruceRes.metaData, primaryKeys, sync.map_pk, log)];
+                    case 1:
+                        sql = _a.sent();
+                        return [4 /*yield*/, SyncServiceHelper.ExecuteQuery(targetDb, sql, log)];
+                    case 2:
+                        res = _a.sent();
+                        rowsAvalible = res.rows.map(function (ele) { return ele[sync.map_pk]; });
+                        rowsNotAvalible = primaryKeys.filter(function (ele) { return rowsAvalible.indexOf(ele) < 0; });
+                        log.debug("\t\tUpdate Records: " + sync.map_table + " --> " + rowsAvalible.length);
+                        log.debug("\t\tInsert Records: " + sync.map_table + " --> " + rowsNotAvalible.length);
+                        return [4 /*yield*/, SyncServiceHelper.MetadataTable(targetDb, sync.map_table)];
+                    case 3:
+                        metaDataTable = _a.sent();
+                        if (!(rowsAvalible && rowsAvalible.length > 0)) return [3 /*break*/, 5];
+                        return [4 /*yield*/, SyncServiceHelper.PrepareQuery(sync.map_table, metaDataTable, soruceRes.rows, rowsAvalible, "UPDATE", sync.map_pk, log)];
+                    case 4:
+                        sql = _a.sent();
+                        batchSql.push(sql);
+                        _a.label = 5;
+                    case 5:
+                        if (!(rowsNotAvalible && rowsNotAvalible.length > 0)) return [3 /*break*/, 7];
+                        return [4 /*yield*/, SyncServiceHelper.PrepareQuery(sync.map_table, metaDataTable, soruceRes.rows, rowsNotAvalible, "INSERT", sync.map_pk, log)];
+                    case 6:
+                        sql = _a.sent();
+                        batchSql.push(sql);
+                        _a.label = 7;
+                    case 7: return [2 /*return*/];
                 }
             });
         });

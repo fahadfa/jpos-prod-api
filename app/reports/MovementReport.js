@@ -34,6 +34,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
 var App_1 = require("../../utils/App");
@@ -43,6 +46,8 @@ var InventTransDAO_1 = require("../repos/InventTransDAO");
 var UpdateInventoryService_1 = require("../services/UpdateInventoryService");
 var WorkflowService_1 = require("../services/WorkflowService");
 var typeorm_2 = require("typeorm");
+var uuid_1 = __importDefault(require("uuid"));
+var UnSyncedTransactions_1 = require("../../entities/UnSyncedTransactions");
 var MovementReport = /** @class */ (function () {
     function MovementReport() {
         this.db = typeorm_1.getManager();
@@ -54,7 +59,7 @@ var MovementReport = /** @class */ (function () {
     }
     MovementReport.prototype.execute = function (params) {
         return __awaiter(this, void 0, void 0, function () {
-            var queryRunner, id, status_1, data_1, salesLine, date, query, salesLineQuery, voucherData, query_1, inventtransQuery, inventtransHsnQuery, error_1;
+            var queryRunner, id, unSyncedData_1, status_1, data_1, salesLine, linesCount, date, query, salesLineQuery, voucherData, query_1, inventtransQuery, inventtransHsnQuery, lineids, inventtransids, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -67,8 +72,9 @@ var MovementReport = /** @class */ (function () {
                         _a.sent();
                         _a.label = 3;
                     case 3:
-                        _a.trys.push([3, 13, 15, 17]);
+                        _a.trys.push([3, 17, 19, 21]);
                         id = params.salesId;
+                        unSyncedData_1 = [];
                         return [4 /*yield*/, this.query_to_data(id)];
                     case 4:
                         data_1 = _a.sent();
@@ -86,19 +92,23 @@ var MovementReport = /** @class */ (function () {
                         data_1.salesLine.map(function (v) {
                             data_1.quantity += parseInt(v.salesQty);
                         });
-                        if (!(data_1.status != "POSTED")) return [3 /*break*/, 11];
+                        if (!(data_1.status != "POSTED")) return [3 /*break*/, 15];
+                        return [4 /*yield*/, this.db.query(" select count(1) as apptype from salesline where salesid in ('" + params.salesId + "')")];
+                    case 6:
+                        linesCount = _a.sent();
+                        linesCount = linesCount.length > 0 ? linesCount[0].apptype : 0;
                         date = new Date().toISOString();
-                        query = "UPDATE salestable SET originalprinted = '" + true + "', status = 'POSTED'";
+                        query = "UPDATE salestable SET originalprinted = '" + true + "', status = 'POSTED', apptype=" + linesCount + " ";
                         if (date) {
                             query += ",lastmodifieddate = '" + date + "' ";
                         }
                         query += " WHERE salesid = '" + params.salesId.toUpperCase() + "'";
                         return [4 /*yield*/, queryRunner.query(query)];
-                    case 6:
+                    case 7:
                         _a.sent();
                         salesLineQuery = " UPDATE salesline SET \n        status = 'POSTED',\n        lastmodifieddate = '" + date + "' \n        WHERE salesid = '" + params.salesId + "' ";
                         queryRunner.query(salesLineQuery);
-                        if (!data_1.voucherDiscChecked) return [3 /*break*/, 8];
+                        if (!data_1.voucherDiscChecked) return [3 /*break*/, 9];
                         voucherData = {
                             salesId: data_1.salesId,
                             voucherNum: data_1.voucherNum,
@@ -106,17 +116,17 @@ var MovementReport = /** @class */ (function () {
                         };
                         query_1 = "\n          UPDATE discountvoucher\n          SET  salesid='" + voucherData.salesId + "',\n          is_used=0, \n          used_numbers=used_numbers+1\n          WHERE voucher_num='" + voucherData.voucherNum + "';\n          ";
                         return [4 /*yield*/, queryRunner.query(query_1)];
-                    case 7:
-                        _a.sent();
-                        _a.label = 8;
                     case 8:
+                        _a.sent();
+                        _a.label = 9;
+                    case 9:
                         inventtransQuery = "UPDATE inventtrans SET transactionclosed = " + true + ", reserve_status = 'POSTED' ";
                         if (date) {
                             inventtransQuery += ",dateinvent = '" + date + "' ";
                         }
                         inventtransQuery += " WHERE invoiceid = '" + params.salesId.toUpperCase() + "' and itemid!='HSN-00001'";
                         return [4 /*yield*/, queryRunner.query(inventtransQuery)];
-                    case 9:
+                    case 10:
                         _a.sent();
                         inventtransHsnQuery = "UPDATE inventtrans SET transactionclosed = " + false + ", reserve_status = 'POSTED' ";
                         if (date) {
@@ -124,89 +134,55 @@ var MovementReport = /** @class */ (function () {
                         }
                         inventtransHsnQuery += " WHERE invoiceid = '" + params.salesId.toUpperCase() + "' and itemid='HSN-00001'";
                         return [4 /*yield*/, queryRunner.query(inventtransHsnQuery)];
-                    case 10:
+                    case 11:
                         _a.sent();
-                        _a.label = 11;
-                    case 11: 
-                    // this.rawQuery.updateSalesTable(params.salesId.toUpperCase(), "POSTED", new Date().toISOString());
-                    // let promiseList: any[] = [];
-                    // if (data.transkind == "INVENTORYMOVEMENT") {
-                    // let reqData = {
-                    //   salesId: id,
-                    // };
-                    // await this.workflowService.inventryTransUpdate(reqData);
-                    // let batches: any[] = await this.inventTransDAO.findAll({ invoiceid: params.salesId });
-                    // console.log(batches);
-                    // let groupData: any[] = await this.groupBy(batches, function (item: any) {
-                    //   return [item.itemid, item.batchno, item.configid, item.inventsizeid];
-                    // });
-                    // console.log(groupData);
-                    // let inventoryOnHandBatches: any[] = [];
-                    // groupData.forEach(function (groupitem: any) {
-                    //   const qty = groupitem.reduce((res: number, item: any) => res + parseInt(item.qty), 0);
-                    //   groupitem[0].qty = qty;
-                    //   inventoryOnHandBatches.push({ ...groupitem[0] });
-                    // });
-                    // for (let item of batches) {
-                    // item.transactionClosed = true;
-                    // this.inventTransDAO.save(item);
-                    // await this.updateInventoryService.updateInventtransTable(item, false, false, queryRunner)
-                    // }
-                    // for (let item of inventoryOnHandBatches) {
-                    // item.transactionClosed = true;
-                    // this.inventTransDAO.save(item);
-                    // promiseList.push(this.updateInventoryService.updateInventoryOnhandTable(item, false, queryRunner));
-                    // }
-                    // }
-                    // await Promise.all(promiseList);
-                    // console.log(data);
-                    return [4 /*yield*/, queryRunner.commitTransaction()];
+                        unSyncedData_1.push({
+                            id: uuid_1.default(),
+                            transactionId: params.salesId,
+                            transactionTable: "salestable",
+                            updatedOn: new Date(),
+                        });
+                        return [4 /*yield*/, this.db.query("select id from salesline where salesid = '" + params.salesId + "'")];
                     case 12:
-                        // this.rawQuery.updateSalesTable(params.salesId.toUpperCase(), "POSTED", new Date().toISOString());
-                        // let promiseList: any[] = [];
-                        // if (data.transkind == "INVENTORYMOVEMENT") {
-                        // let reqData = {
-                        //   salesId: id,
-                        // };
-                        // await this.workflowService.inventryTransUpdate(reqData);
-                        // let batches: any[] = await this.inventTransDAO.findAll({ invoiceid: params.salesId });
-                        // console.log(batches);
-                        // let groupData: any[] = await this.groupBy(batches, function (item: any) {
-                        //   return [item.itemid, item.batchno, item.configid, item.inventsizeid];
-                        // });
-                        // console.log(groupData);
-                        // let inventoryOnHandBatches: any[] = [];
-                        // groupData.forEach(function (groupitem: any) {
-                        //   const qty = groupitem.reduce((res: number, item: any) => res + parseInt(item.qty), 0);
-                        //   groupitem[0].qty = qty;
-                        //   inventoryOnHandBatches.push({ ...groupitem[0] });
-                        // });
-                        // for (let item of batches) {
-                        // item.transactionClosed = true;
-                        // this.inventTransDAO.save(item);
-                        // await this.updateInventoryService.updateInventtransTable(item, false, false, queryRunner)
-                        // }
-                        // for (let item of inventoryOnHandBatches) {
-                        // item.transactionClosed = true;
-                        // this.inventTransDAO.save(item);
-                        // promiseList.push(this.updateInventoryService.updateInventoryOnhandTable(item, false, queryRunner));
-                        // }
-                        // }
-                        // await Promise.all(promiseList);
-                        // console.log(data);
-                        _a.sent();
-                        return [2 /*return*/, data_1];
+                        lineids = _a.sent();
+                        return [4 /*yield*/, this.db.query("select id from inventtrans where invoiceid = '" + params.salesId + "'")];
                     case 13:
-                        error_1 = _a.sent();
-                        return [4 /*yield*/, queryRunner.rollbackTransaction()];
+                        inventtransids = _a.sent();
+                        lineids.map(function (v) {
+                            unSyncedData_1.push({
+                                id: uuid_1.default(),
+                                transactionId: v.id,
+                                transactionTable: "salesline",
+                                updatedOn: new Date(),
+                            });
+                        });
+                        inventtransids.map(function (v) {
+                            unSyncedData_1.push({
+                                id: uuid_1.default(),
+                                transactionId: v.id,
+                                transactionTable: "inventtrans",
+                                updatedOn: new Date(),
+                            });
+                        });
+                        return [4 /*yield*/, queryRunner.manager.getRepository(UnSyncedTransactions_1.UnSyncedTransactions).save(unSyncedData_1)];
                     case 14:
                         _a.sent();
-                        throw error_1;
-                    case 15: return [4 /*yield*/, queryRunner.release()];
+                        _a.label = 15;
+                    case 15: return [4 /*yield*/, queryRunner.commitTransaction()];
                     case 16:
                         _a.sent();
+                        return [2 /*return*/, data_1];
+                    case 17:
+                        error_1 = _a.sent();
+                        return [4 /*yield*/, queryRunner.rollbackTransaction()];
+                    case 18:
+                        _a.sent();
+                        throw error_1;
+                    case 19: return [4 /*yield*/, queryRunner.release()];
+                    case 20:
+                        _a.sent();
                         return [7 /*endfinally*/];
-                    case 17: return [2 /*return*/];
+                    case 21: return [2 /*return*/];
                 }
             });
         });

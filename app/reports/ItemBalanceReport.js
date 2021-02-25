@@ -37,9 +37,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
 var App_1 = require("../../utils/App");
+var RawQuery_1 = require("../common/RawQuery");
 var ItemBalanceReport = /** @class */ (function () {
     function ItemBalanceReport() {
         this.db = typeorm_1.getManager();
+        this.rawQuery = new RawQuery_1.RawQuery();
     }
     ItemBalanceReport.prototype.execute = function (params) {
         return __awaiter(this, void 0, void 0, function () {
@@ -108,27 +110,37 @@ var ItemBalanceReport = /** @class */ (function () {
     };
     ItemBalanceReport.prototype.report = function (result, params) {
         return __awaiter(this, void 0, void 0, function () {
-            var renderData, file;
+            var renderData, title, file;
             return __generator(this, function (_a) {
-                // console.log(result.salesLine[0].product.nameEnglish);
-                renderData = result;
-                renderData.fromDate = params.fromDate;
-                renderData.toDate = params.toDate;
-                renderData.inventlocationid = params.inventlocationid;
-                renderData.printDate = new Date(params.printDate).toISOString().replace(/T/, " ").replace(/\..+/, "");
-                if (params.type == "excel") {
-                    file = params.lang == "en" ? "itembalance-excel" : "itembalance-excel-ar";
+                switch (_a.label) {
+                    case 0:
+                        // console.log(result.salesLine[0].product.nameEnglish);
+                        renderData = result;
+                        renderData.fromDate = params.fromDate;
+                        renderData.toDate = params.toDate;
+                        renderData.inventlocationid = params.inventlocationid;
+                        renderData.printDate = new Date(params.printDate).toISOString().replace(/T/, " ").replace(/\..+/, "");
+                        return [4 /*yield*/, this.rawQuery.getAppLangName("ITEM_BALANCE_REPORT")];
+                    case 1:
+                        title = _a.sent();
+                        if (title) {
+                            result.title = title;
+                            console.table(title);
+                        }
+                        if (params.type == "excel") {
+                            file = params.lang == "en" ? "itembalance-excel" : "itembalance-excel-ar";
+                        }
+                        else {
+                            file = params.lang == "en" ? "itembalance-report" : "itembalance-report-ar";
+                        }
+                        try {
+                            return [2 /*return*/, App_1.App.HtmlRender(file, renderData)];
+                        }
+                        catch (error) {
+                            throw error;
+                        }
+                        return [2 /*return*/];
                 }
-                else {
-                    file = params.lang == "en" ? "itembalance-report" : "itembalance-report-ar";
-                }
-                try {
-                    return [2 /*return*/, App_1.App.HtmlRender(file, renderData)];
-                }
-                catch (error) {
-                    throw error;
-                }
-                return [2 /*return*/];
             });
         });
     };
@@ -144,7 +156,7 @@ var ItemBalanceReport = /** @class */ (function () {
                         tDate.setHours(0, 0, 0);
                         fromDate = App_1.App.convertUTCDateToLocalDate(fDate, params.timeZoneOffSet);
                         toDate = App_1.App.convertUTCDateToLocalDate(tDate, params.timeZoneOffSet);
-                        query = "\n    select \n    ib.itemid, ib.configid, ib.inventsizeid, ib.batchno, ib.inventlocationid, \n    sum(qty_in) as \"qtyIn\",\n    sum(qty_out) as \"qtyOut\",\n    (select\n      SUM(j.qty) \n      from inventtrans j where j.itemid = ib.itemid and \n      lower(j.configid) = lower(ib.configid) and \n      lower(j.inventsizeid) = lower(ib.inventsizeid) and \n      j.batchno = ib.batchno and \n      j.inventlocationid = ib.inventlocationid\n      and j.transactionclosed = true\n      and j.dateinvent <= '" + params.toDate + "' :: date + '1 day'::interval\n      group by j.itemid,  j.configid, j.inventsizeid, j.batchno, j.inventlocationid\n      ) as availability,\n      bs.namealias as \"nameEn\",\n      bs.itemname as \"nameAr\",\n      w.name as \"WareHouseNameAr\", \n      w.namealias as \"WareHouseNameEn\",\n      sz.description as \"sizeNameEn\",\n      sz.name as \"sizeNameAr\",\n      ib.location,\n       to_char(b.expdate, 'yyyy-MM-dd') as batchexpdate\n    from (\n      select\n      distinct on (i.id, i.invoiceid, UPPER(i.itemid), UPPER(i.configid), UPPER(i.inventsizeid), i.batchno, i.qty, i.sales_line_id)\n      UPPER(i.itemid) as itemid,\n      UPPER(i.configid) as configid,\n      UPPER(i.inventsizeid) as inventsizeid,\n      UPPER(i.batchno) as batchno,\n      case when qty>0 then abs(qty) else 0 end as qty_in,\n      case when qty<0 then abs(qty) else 0 end as qty_out,\n      i.inventlocationid as inventlocationid,\n      i.location as location\n  from inventtrans  i\n      where i.dateinvent >= '" + fromDate + "' ::timestamp\n      AND  i.dateinvent < ('" + toDate + "' ::timestamp + '1 day'::interval) ";
+                        query = "\n    select \n    ib.itemid, ib.configid, ib.inventsizeid, ib.batchno, ib.inventlocationid, \n    sum(qty_in) as \"qtyIn\",\n    sum(qty_out) as \"qtyOut\",\n    (select\n      SUM(j.qty) \n      from inventtrans j where j.itemid = ib.itemid and \n      lower(j.configid) = lower(ib.configid) and \n      lower(j.inventsizeid) = lower(ib.inventsizeid) and \n      j.batchno = ib.batchno and \n      j.inventlocationid = ib.inventlocationid\n      and j.transactionclosed = true\n      and j.dateinvent <= '" + params.toDate + "' :: date + '1 day'::interval\n      group by j.itemid,  j.configid, j.inventsizeid, j.batchno, j.inventlocationid\n      ) as availability,\n      bs.namealias as \"nameEn\",\n      bs.itemname as \"nameAr\",\n      w.name as \"WareHouseNameAr\", \n      w.namealias as \"WareHouseNameEn\",\n      sz.description as \"sizeNameEn\",\n      sz.name as \"sizeNameAr\",\n      ib.location,\n       to_char(b.expdate, 'yyyy-MM-dd') as batchexpdate\n    from (\n      select\n      distinct on (i.id, i.invoiceid, UPPER(i.itemid), UPPER(i.configid), UPPER(i.inventsizeid), i.batchno, i.qty, i.sales_line_id)\n      UPPER(i.itemid) as itemid,\n      UPPER(i.configid) as configid,\n      UPPER(i.inventsizeid) as inventsizeid,\n      UPPER(i.batchno) as batchno,\n      case when qty>0 then abs(qty) else 0 end as qty_in,\n      case when qty<0 then abs(qty) else 0 end as qty_out,\n      i.inventlocationid as inventlocationid,\n      i.location as location\n  from inventtrans  i\n      where i.dateinvent >= '" + fromDate + "' ::timestamp\n      AND  i.dateinvent < ('" + toDate + "' ::timestamp + '1 day'::interval) and i.itemid not like 'HSN-%'";
                         if (!(params.key == "ALL")) return [3 /*break*/, 2];
                         warehouseQuery = "select regionalwarehouse from usergroupconfig where inventlocationid= '" + params.inventlocationid + "' limit 1";
                         return [4 /*yield*/, this.db.query(warehouseQuery)];
@@ -177,6 +189,7 @@ var ItemBalanceReport = /** @class */ (function () {
                         query =
                             query +
                                 "  ) as ib \n      inner join inventlocation w on w.inventlocationid=ib.inventlocationid\n      left join inventbatch b on ib.batchno = b.inventbatchid  and ib.itemid = b.itemid and ib.configid = b.configid \n      left join inventtable bs on ib.itemid = bs.itemid\n      left join inventsize sz on sz.inventsizeid = ib.inventsizeid and sz.itemid = ib.itemid\n      GROUP BY\n      ib.itemid,  ib.configid, \n      ib.inventsizeid, ib.batchno, b.expdate, bs.namealias, \n      bs.itemname, sz.name, sz.description, \n      ib.inventlocationid, w.name, w.namealias, ib.location order by ib.itemid\n                   ";
+                        console.log(query);
                         return [4 /*yield*/, this.db.query(query)];
                     case 4:
                         data = _a.sent();

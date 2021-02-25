@@ -67,10 +67,7 @@ var CusttableService = /** @class */ (function () {
                         data = _a.sent();
                         _a.label = 3;
                     case 3:
-                        // let count = this.rawQuery.customers_count();
-                        console.log(data);
                         if (data) {
-                            // data.Custgroup = {};
                             return [2 /*return*/, data];
                         }
                         else {
@@ -147,7 +144,6 @@ var CusttableService = /** @class */ (function () {
                                 customergroup_1.indexOf(element) == customergroup_1.length - 1 ? "'" + element + "'" : "'" + element + "', ";
                         });
                         sabicCustomers_1.forEach(function (element) {
-                            console.log(element);
                             item.sabiccustomers +=
                                 sabicCustomers_1.indexOf(element) == sabicCustomers_1.length - 1 ? "'" + element + "'" : "'" + element + "', ";
                         });
@@ -205,13 +201,6 @@ var CusttableService = /** @class */ (function () {
                     case 1:
                         data = _a.sent();
                         data.forEach(function (element) {
-                            // if (element.rcusttype && Props.RCUSTTYPE[element.rcusttype]) {
-                            //   element.rcusttypeen = Props.RCUSTTYPE[element.rcusttype][1];
-                            //   element.rcusttypear = Props.RCUSTTYPE[element.rcusttype][2];
-                            // } else {
-                            //   element.rcusttypeen = "Individual";
-                            //   element.rcusttypear = "أفراد";
-                            // }
                             element.phone = !element.phone || element.phone.length <= 1 ? "N/A" : element.phone;
                         });
                         return [2 /*return*/, data];
@@ -240,17 +229,13 @@ var CusttableService = /** @class */ (function () {
                     case 3:
                         _a.trys.push([3, 9, 11, 13]);
                         delete reqData.Custgroup;
-                        console.log(reqData.Custgroup);
                         return [4 /*yield*/, this.validate(reqData)];
                     case 4:
                         cond = _a.sent();
-                        console.log(cond);
                         if (!(cond == true)) return [3 /*break*/, 7];
                         reqData.walkincustomer = true;
-                        //let customer = await this.custtableDAO.save(reqData);
                         return [4 /*yield*/, queryRunner.manager.getRepository(Custtable_1.Custtable).save(reqData)];
                     case 5:
-                        //let customer = await this.custtableDAO.save(reqData);
                         _a.sent();
                         returnData = { id: reqData.accountnum, message: "SAVED_SUCCESSFULLY" };
                         return [4 /*yield*/, queryRunner.commitTransaction()];
@@ -259,10 +244,10 @@ var CusttableService = /** @class */ (function () {
                         return [2 /*return*/, returnData];
                     case 7:
                         if (cond == "phone") {
-                            throw { message: "RECORD_ALREADY_EXISTS" };
+                            throw { status: 0, message: "RECORD_ALREADY_EXISTS" };
                         }
                         else {
-                            throw { message: "INVALID_DATA" };
+                            throw { status: 0, message: "INVALID_DATA" };
                         }
                         _a.label = 8;
                     case 8: return [3 /*break*/, 13];
@@ -287,17 +272,13 @@ var CusttableService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log(item.accountnum);
                         previousData = null;
                         if (!(!item.accountnum || item.accountnum == "" || item.accountnum == "0")) return [3 /*break*/, 1];
                         item.accountnum = null;
                         return [3 /*break*/, 3];
-                    case 1:
-                        console.log(item.accountnum);
-                        return [4 /*yield*/, this.custtableDAO.findOne({ accountnum: item.accountnum })];
+                    case 1: return [4 /*yield*/, this.custtableDAO.findOne({ accountnum: item.accountnum })];
                     case 2:
                         previousData = _a.sent();
-                        console.log(previousData);
                         _a.label = 3;
                     case 3:
                         mdata = [];
@@ -307,7 +288,6 @@ var CusttableService = /** @class */ (function () {
                         mdata = _a.sent();
                         _a.label = 5;
                     case 5:
-                        // console.log(mdata);
                         if (!item.accountnum) {
                             if (mdata.length > 0) {
                                 return [2 /*return*/, "phone"];
@@ -331,7 +311,6 @@ var CusttableService = /** @class */ (function () {
                                     item.paymtermid = "CASH";
                                     item.dataareaId = this.sessionInfo.dataareaid;
                                 }
-                                // item.accountnum = await this.getAccountNum();
                             }
                         }
                         item.lastmodifieddate = new Date(App_1.App.DateNow());
@@ -359,7 +338,6 @@ var CusttableService = /** @class */ (function () {
                         year = new Date().getFullYear().toString().substr(2, 2);
                         data.nextrec = prevYear == year ? data.nextrec : 1;
                         accountNum = data.format.replace(hashString, regionNumber + "-" + showroomId + "-" + year + "-" + data.nextrec);
-                        console.log(accountNum);
                         return [4 /*yield*/, this.rawQuery.updateNumberSequence(data.numbersequence, data.nextrec)];
                     case 3:
                         _a.sent();

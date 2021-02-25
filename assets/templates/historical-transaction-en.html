@@ -92,7 +92,7 @@
     }
 
     table.dash {
-      border: 1px dashed #cccccc;
+      /* border: 1px dashed #cccccc; */
       border-collapse: collapse;
     }
 
@@ -191,7 +191,7 @@
         <p id="bg__text__watermark">Only for testing</p>
       </div>
 
-     
+      {{#each salesLine}} 
       <table id="headertbl">
         <tr>
           <td colspan="3" valign="top" style="width: 33%;">
@@ -305,7 +305,13 @@
                 <td>:</td>
                 <td>300533832200003</td>
               </tr>
-
+              {{#if this.interCompanyOriginalSalesId}}
+              <tr class="billing">
+                <td class="textboldtd">Sales Id</td>
+                <td>:</td>
+                <td>{{this.interCompanyOriginalSalesId}}</td>
+              </tr>
+              {{/if}}
               <tr class="billing">
                 <td class="textboldtd">Sales Man</td>
                 <td>:</td>
@@ -368,7 +374,7 @@
           </tr>
         </thead>
         <tbody>
-          {{#each salesLine}}
+          {{#each lines}}
           <tr class="tab-data">
             <td class="tdcenter">{{this.sNo}}</td>
             <td class="tdleft">
@@ -507,10 +513,10 @@
         </tr>
       </table>
 
-     
+      {{/each}} 
     </section>
 
-    {{#unless this.originalPrinted}}
+    <!-- {{#unless this.originalPrinted}}
     <section style="page-break-before: always;">
       <div id="bg__watermark">
         <p id="bg__text__watermark">Only for testing</p>
@@ -547,7 +553,8 @@
                 <td class="textboldtd" valign="top">Customer</td>
                 <td valign="top">:</td>
                 <td>
-                  {{this.invoiceAccount}} - {{this.customername}}
+                  {{#if this.invoiceAccount}} {{this.invoiceAccount}} {{else}} {{this.custAccount}} {{/if}}
+                  - {{this.customername}}
                 </td>
               </tr>
               <tr class="billing">
@@ -829,6 +836,6 @@
       {{/each}}
     </section>
 
-    {{/unless}}
+    {{/unless}} -->
   </body>
 </html>

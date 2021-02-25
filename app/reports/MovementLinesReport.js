@@ -77,34 +77,44 @@ var MovementLinesReport = /** @class */ (function () {
     };
     MovementLinesReport.prototype.report = function (result, params) {
         return __awaiter(this, void 0, void 0, function () {
-            var renderData, file;
+            var renderData, title, file;
             return __generator(this, function (_a) {
-                // console.log(result.salesLine[0].product.nameEnglish);
-                renderData = {
-                    data: result,
-                    fromDate: params.fromDate,
-                    toDate: params.toDate,
-                    wareHouseId: params.inventlocationid,
-                    status: params.status,
-                    printDate: App_1.App.convertUTCDateToLocalDate(new Date(App_1.App.DateNow()), parseInt(params.timeZoneOffSet))
-                        .replace(/T/, " ") // replace T with a space
-                        .replace(/\..+/, ""),
-                };
-                console.log(params.lang);
-                file = "";
-                if (params.type == "excel") {
-                    file = params.lang == "en" ? "mol-en-excel" : "mol-ar-excel";
+                switch (_a.label) {
+                    case 0:
+                        // console.log(result.salesLine[0].product.nameEnglish);
+                        renderData = {
+                            data: result,
+                            fromDate: params.fromDate,
+                            toDate: params.toDate,
+                            wareHouseId: params.inventlocationid,
+                            status: params.status,
+                            printDate: App_1.App.convertUTCDateToLocalDate(new Date(App_1.App.DateNow()), parseInt(params.timeZoneOffSet))
+                                .replace(/T/, " ") // replace T with a space
+                                .replace(/\..+/, ""),
+                        };
+                        return [4 /*yield*/, this.rawQuery.getAppLangName("MOVEMENT_REPORT")];
+                    case 1:
+                        title = _a.sent();
+                        if (title) {
+                            renderData.title = title;
+                            console.table(title);
+                        }
+                        console.log(params.lang);
+                        file = "";
+                        if (params.type == "excel") {
+                            file = params.lang == "en" ? "mol-en-excel" : "mol-ar-excel";
+                        }
+                        else {
+                            file = params.lang == "en" ? "mol-en-report" : "mol-ar-report";
+                        }
+                        try {
+                            return [2 /*return*/, App_1.App.HtmlRender(file, renderData)];
+                        }
+                        catch (error) {
+                            throw error;
+                        }
+                        return [2 /*return*/];
                 }
-                else {
-                    file = params.lang == "en" ? "mol-en-report" : "mol-ar-report";
-                }
-                try {
-                    return [2 /*return*/, App_1.App.HtmlRender(file, renderData)];
-                }
-                catch (error) {
-                    throw error;
-                }
-                return [2 /*return*/];
             });
         });
     };

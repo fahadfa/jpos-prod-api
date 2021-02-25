@@ -46,108 +46,137 @@ var AuthService = /** @class */ (function () {
         this.menuGroupRepository = new MenuGroupDAO_1.MenuGroupDAO();
     }
     AuthService.prototype.signin = function (reqData) {
-        console.log(reqData);
         return this.Response(reqData);
+    };
+    AuthService.prototype.refreshToken = function (reqData) {
+        return __awaiter(this, void 0, void 0, function () {
+            var responseData, jwtData, _a, error_1;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 5, , 6]);
+                        if (!reqData) {
+                            throw { status: 0, message: "Invalid Data" };
+                        }
+                        responseData = {};
+                        return [4 /*yield*/, App_1.App.DecodeJWT(reqData.token)];
+                    case 1:
+                        jwtData = _b.sent();
+                        if (!(jwtData && jwtData.identity)) return [3 /*break*/, 3];
+                        responseData.identity = jwtData.identity;
+                        _a = responseData;
+                        return [4 /*yield*/, App_1.App.EncodeJWT(responseData)];
+                    case 2:
+                        _a.access_token = _b.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        if (jwtData && jwtData.message) {
+                            throw { status: 0, message: jwtData.message, expiredAt: jwtData.expiredAt };
+                        }
+                        else {
+                            throw { status: 0, message: "Invalid JWT" };
+                        }
+                        _b.label = 4;
+                    case 4: return [2 /*return*/, responseData];
+                    case 5:
+                        error_1 = _b.sent();
+                        throw error_1;
+                    case 6: return [2 /*return*/];
+                }
+            });
+        });
     };
     AuthService.prototype.reteriveUserDetails = function (accountObj) {
         return __awaiter(this, void 0, void 0, function () {
-            var responseData, menuList, salesmanids, wareHouse, wareHouseNamear, wareHouseNameEn, offlineSystems, error_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var responseData, menuList, salesmanids, wareHouse, wareHouseNamear, wareHouseNameEn, _a, offlineSystems, error_2;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _a.trys.push([0, 10, , 11]);
+                        _b.trys.push([0, 13, , 14]);
                         responseData = {};
                         return [4 /*yield*/, this.menuGroupRepository.search({ group: { groupid: accountObj.groupid }, active: true })];
                     case 1:
-                        menuList = _a.sent();
+                        menuList = _b.sent();
                         salesmanids = [];
                         return [4 /*yield*/, this.unflatten(menuList)];
                     case 2:
-                        menuList = _a.sent();
+                        menuList = _b.sent();
                         if (!(accountObj.userGroupConfig && accountObj.userGroupConfig.inventlocationid)) return [3 /*break*/, 6];
                         return [4 /*yield*/, this.rawQuery.getWareHouseDetails(accountObj.userGroupConfig.inventlocationid)];
                     case 3:
-                        wareHouse = _a.sent();
+                        wareHouse = _b.sent();
                         if (!(accountObj.userGroupConfig.salesmanid && accountObj.userGroupConfig.salesmanid !== "")) return [3 /*break*/, 5];
                         return [4 /*yield*/, this.rawQuery.salesmanList(accountObj.userGroupConfig.salesmanid)];
                     case 4:
-                        salesmanids = _a.sent();
+                        salesmanids = _b.sent();
                         return [3 /*break*/, 6];
                     case 5:
                         salesmanids = [];
-                        _a.label = 6;
+                        _b.label = 6;
                     case 6:
                         wareHouseNamear = wareHouse && wareHouse.length > 0 ? wareHouse[0].name : "";
                         wareHouseNameEn = wareHouse && wareHouse.length > 0 ? wareHouse[0].namealias : "";
-                        if (accountObj != null) {
-                            responseData.user = {};
-                            responseData.user.id = accountObj.id;
-                            responseData.user.userName = accountObj.userName;
-                            responseData.user.fullName = accountObj.fullName;
-                            responseData.user.email = accountObj.email;
-                            responseData.user.role = accountObj.role;
-                            responseData.user.status = accountObj.status;
-                            responseData.user.securitytoken = accountObj.securitytoken;
-                            responseData.user.phone = accountObj.phone;
-                            responseData.user.groupid = accountObj.groupid;
-                            responseData.menuList = menuList;
-                            responseData.user.role = accountObj.userGroup ? accountObj.userGroup.role : null;
-                            responseData.usergroupconfigid = accountObj.userGroupConfig.id;
-                            responseData.user.usergroupconfigid = accountObj.userGroupConfig.id;
-                            responseData.user.wareHouseName = accountObj.userGroup ? accountObj.userGroup.groupname : null;
-                            responseData.user.wareHouseNameEn = wareHouseNameEn;
-                            responseData.user.wareHouseNameAr = wareHouseNamear;
-                            responseData.warehouse = accountObj.userGroupConfig.inventlocationid;
-                            responseData.dataareaid = accountObj.userGroupConfig.dataareaid;
-                            responseData.user.dataareaid = accountObj.userGroupConfig.dataareaid;
-                            responseData.user.inventlocationid = accountObj.userGroupConfig.inventlocationid;
-                            responseData.user.defaultcustomerid = accountObj.userGroupConfig.defaultcustomerid;
-                            responseData.user.additionalcustomer = accountObj.userGroupConfig.additionalcustomer;
-                            responseData.user.sabiccustomers = accountObj.userGroupConfig.sabiccustomers;
-                            responseData.user.customergroup = accountObj.userGroupConfig.customergroup;
-                            responseData.user.workflowcustomers = accountObj.userGroupConfig.workflowcustomers;
-                            responseData.user.salesmanid = salesmanids;
-                            responseData.user.ledgerAccount = accountObj.userGroupConfig.ledgeraccount;
-                            responseData.user.showroomCountryCode = accountObj.userGroupConfig.showroomCountryCode;
-                            responseData.user.showroomCityCode = accountObj.userGroupConfig.showroomCityCode;
-                            responseData.user.showroomDistrictCode = accountObj.userGroupConfig.showroomDistrictCode;
-                            responseData.identity = {};
-                            responseData.identity = responseData.user;
-                            delete responseData.user;
-                            responseData.access_token = App_1.App.EncodeJWT({ identity: responseData.identity });
-                            responseData.token = {};
-                            responseData.token.refresh = responseData.access_token;
-                        }
-                        else {
-                            return [2 /*return*/, Promise.reject({
-                                    message: "INVALID_USERNAME/PASSWORD",
-                                })];
-                        }
-                        if (!(process && process.env && process.env.ENV_STORE_ID && process.env.ENV_STORE_ID != "")) return [3 /*break*/, 7];
+                        if (!(accountObj != null)) return [3 /*break*/, 8];
+                        responseData.user = {};
+                        responseData.user.id = accountObj.id;
+                        responseData.user.userName = accountObj.userName;
+                        responseData.user.fullName = accountObj.fullName;
+                        responseData.user.email = accountObj.email;
+                        responseData.user.role = accountObj.role;
+                        responseData.user.status = accountObj.status;
+                        responseData.user.securitytoken = accountObj.securitytoken;
+                        responseData.user.phone = accountObj.phone;
+                        responseData.user.groupid = accountObj.groupid;
+                        responseData.menuList = menuList;
+                        responseData.user.role = accountObj.userGroup ? accountObj.userGroup.role : null;
+                        responseData.usergroupconfigid = accountObj.userGroupConfig.id;
+                        responseData.user.usergroupconfigid = accountObj.userGroupConfig.id;
+                        responseData.user.wareHouseName = accountObj.userGroup ? accountObj.userGroup.groupname : null;
+                        responseData.user.wareHouseNameEn = wareHouseNameEn;
+                        responseData.user.wareHouseNameAr = wareHouseNamear;
+                        responseData.warehouse = accountObj.userGroupConfig.inventlocationid;
+                        responseData.dataareaid = accountObj.userGroupConfig.dataareaid;
+                        responseData.user.dataareaid = accountObj.userGroupConfig.dataareaid;
+                        responseData.user.inventlocationid = accountObj.userGroupConfig.inventlocationid;
+                        responseData.user.defaultcustomerid = accountObj.userGroupConfig.defaultcustomerid;
+                        responseData.user.additionalcustomer = accountObj.userGroupConfig.additionalcustomer;
+                        responseData.user.sabiccustomers = accountObj.userGroupConfig.sabiccustomers;
+                        responseData.user.customergroup = accountObj.userGroupConfig.customergroup;
+                        responseData.user.workflowcustomers = accountObj.userGroupConfig.workflowcustomers;
+                        responseData.user.salesmanid = salesmanids;
+                        responseData.user.ledgerAccount = accountObj.userGroupConfig.ledgeraccount;
+                        responseData.user.showroomCountryCode = accountObj.userGroupConfig.showroomCountryCode;
+                        responseData.user.showroomCityCode = accountObj.userGroupConfig.showroomCityCode;
+                        responseData.user.showroomDistrictCode = accountObj.userGroupConfig.showroomDistrictCode;
+                        responseData.identity = {};
+                        responseData.identity = responseData.user;
+                        delete responseData.user;
+                        _a = responseData;
+                        return [4 /*yield*/, App_1.App.EncodeJWT({ identity: responseData.identity })];
+                    case 7:
+                        _a.access_token = _b.sent();
+                        return [3 /*break*/, 9];
+                    case 8: return [2 /*return*/, Promise.reject({ status: 0, message: "INVALID_USERNAME_PASSWORD" })];
+                    case 9:
+                        if (!(process && process.env && process.env.ENV_STORE_ID && process.env.ENV_STORE_ID != "")) return [3 /*break*/, 10];
                         if (responseData &&
                             responseData.identity &&
                             responseData.identity.inventlocationid != process.env.ENV_STORE_ID) {
-                            return [2 /*return*/, Promise.reject({
-                                    message: "User not releated to this store.",
-                                })];
+                            return [2 /*return*/, Promise.reject({ status: 0, message: "USER_NOT_RELATED_TO_THIS_STORE" })];
                         }
-                        return [3 /*break*/, 9];
-                    case 7: return [4 /*yield*/, this.rawQuery.offlineSystems()];
-                    case 8:
-                        offlineSystems = _a.sent();
+                        return [3 /*break*/, 12];
+                    case 10: return [4 /*yield*/, this.rawQuery.offlineSystems()];
+                    case 11:
+                        offlineSystems = _b.sent();
                         offlineSystems = offlineSystems.find(function (v) { return v.id == responseData.identity.inventlocationid; });
-                        console.log(offlineSystems);
                         if (offlineSystems) {
-                            return [2 /*return*/, Promise.reject({
-                                    message: "This User Cannot Login From Online ",
-                                })];
                         }
-                        _a.label = 9;
-                    case 9: return [2 /*return*/, Promise.resolve(responseData)];
-                    case 10:
-                        error_1 = _a.sent();
-                        return [2 /*return*/, Promise.reject(error_1)];
-                    case 11: return [2 /*return*/];
+                        _b.label = 12;
+                    case 12: return [2 /*return*/, Promise.resolve(responseData)];
+                    case 13:
+                        error_2 = _b.sent();
+                        return [2 /*return*/, Promise.reject(error_2)];
+                    case 14: return [2 /*return*/];
                 }
             });
         });
@@ -176,38 +205,35 @@ var AuthService = /** @class */ (function () {
                         isVid = true;
                         responseData = {};
                         query = { userName: reqData.userName.trim(), email: reqData.userName };
-                        console.log("---------query------------");
-                        console.log(query);
                         return [4 /*yield*/, this.userinfoDAO.findOne(query)];
                     case 1:
                         profileObj = _a.sent();
-                        console.log(profileObj);
                         if (profileObj == null) {
-                            return [2 /*return*/, Promise.reject({ message: "INVALID_USERNAME/PASSWORD" })];
+                            return [2 /*return*/, Promise.reject({ status: 0, message: "INVALID_USERNAME_PASSWORD" })];
                         }
                         else {
                             auth = false;
                             auth = App_1.App.HashCompareSync(reqData.password, profileObj.password);
-                            console.log("Auth: " + auth);
                             if (auth == true) {
                                 if (profileObj.status == "ACTIVE") {
                                     try {
-                                        return [2 /*return*/, this.reteriveUserDetails(profileObj)];
+                                        if (profileObj.userGroup.status == "Inactive") {
+                                            return [2 /*return*/, Promise.reject({ status: 0, message: "GROUP_DEACTIVATED_PLEASE_CONTACT_ADMIN" })];
+                                        }
+                                        else {
+                                            return [2 /*return*/, this.reteriveUserDetails(profileObj)];
+                                        }
                                     }
                                     catch (err) {
-                                        return [2 /*return*/, Promise.reject({ message: "NO_GROUP_FOR_THIS_USER" })];
+                                        return [2 /*return*/, Promise.reject({ status: 0, message: "NO_GROUP_FOR_THIS_USER" })];
                                     }
                                 }
                                 else {
-                                    return [2 /*return*/, Promise.reject({
-                                            message: "ACCOUNT_DEACTIVATED_PLEASE_CONTACT_ADMIN",
-                                        })];
+                                    return [2 /*return*/, Promise.reject({ status: 0, message: "ACCOUNT_DEACTIVATED_PLEASE_CONTACT_ADMIN" })];
                                 }
                             }
                             else {
-                                return [2 /*return*/, Promise.reject({
-                                        message: "INVALID_USERNAME/PASSWORD",
-                                    })];
+                                return [2 /*return*/, Promise.reject({ status: 0, message: "INVALID_USERNAME_PASSWORD" })];
                             }
                         }
                         return [2 /*return*/];
@@ -217,7 +243,7 @@ var AuthService = /** @class */ (function () {
     };
     AuthService.prototype.forgotPassword = function (reqData) {
         return __awaiter(this, void 0, void 0, function () {
-            var profileObj, error_2, error_3;
+            var profileObj, error_3, error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -250,15 +276,14 @@ var AuthService = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 8];
                     case 7:
-                        error_2 = _a.sent();
-                        console.log(error_2);
+                        error_3 = _a.sent();
                         throw { message: "RESET_TOKEN_NOT_SENT", status: 0 };
                     case 8: return [3 /*break*/, 10];
                     case 9: throw { message: "INVALID_USERNAME", status: 0 };
                     case 10: return [2 /*return*/, { message: "PASSWORD_RESET_TOKEN_SENT_TO_MAIL", status: 1 }];
                     case 11:
-                        error_3 = _a.sent();
-                        throw error_3;
+                        error_4 = _a.sent();
+                        throw error_4;
                     case 12: return [2 /*return*/];
                 }
             });
@@ -266,12 +291,11 @@ var AuthService = /** @class */ (function () {
     };
     AuthService.prototype.resetPassword = function (reqData) {
         return __awaiter(this, void 0, void 0, function () {
-            var profileObj, data, error_4;
+            var profileObj, data, error_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 7, , 8]);
-                        console.log(reqData);
                         profileObj = null;
                         return [4 /*yield*/, this.userinfoDAO.findOne({ userName: reqData.userName, email: reqData.userName })];
                     case 1:
@@ -294,8 +318,8 @@ var AuthService = /** @class */ (function () {
                     case 5: throw { message: "INVALID_TOKEN", status: 0 };
                     case 6: return [3 /*break*/, 8];
                     case 7:
-                        error_4 = _a.sent();
-                        throw error_4;
+                        error_5 = _a.sent();
+                        throw error_5;
                     case 8: return [2 /*return*/];
                 }
             });

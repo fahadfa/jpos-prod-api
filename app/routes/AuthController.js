@@ -91,6 +91,28 @@ var AuthController = /** @class */ (function () {
                 }
             });
         }); });
+        this.router.post("/token", function (request, response) { return __awaiter(_this, void 0, void 0, function () {
+            var reqData, result, error_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        reqData = request.body.data;
+                        result = null;
+                        return [4 /*yield*/, this.authService.refreshToken(reqData)];
+                    case 1:
+                        result = _a.sent();
+                        response.send({ status: 1, data: result });
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_3 = _a.sent();
+                        console.log(error_3);
+                        response.send({ status: 0, error: error_3 });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); });
         //signin Controller
         this.router.post("/", function (request, response) { return __awaiter(_this, void 0, void 0, function () {
             var reqData, sessionInfo, result;

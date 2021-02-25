@@ -9,9 +9,15 @@
     @page {
       size: A4;
       margin: 10px;
+      @top-center { content: "My awesome title"; }
     }
 
     @media print {
+      header{
+    position: fixed;
+    bottom: 0;
+
+      }
       tfoot {
         display: table-footer-group;
       }
@@ -75,6 +81,23 @@
       margin: 50% auto;
     }
 
+
+    #header__watermark {
+      display: block;
+      min-width: 100%;
+      /* opacity: 0.5; */
+    }
+
+    #header__text__watermark {
+      color: black;
+      text-align: center;
+      font-weight: 600;
+      font-size: 20px;
+      margin: 20px auto;
+      position: fixed;
+      margin-left: 50%;
+    }
+
     .mainheading {
       text-align: center;
       font-weight: 600;
@@ -105,7 +128,7 @@
     }
 
     table.dash {
-      border: 1px dashed #cccccc;
+      /* border: 1px dashed #cccccc; */
       border-collapse: collapse;
     }
 
@@ -113,6 +136,8 @@
     table.dash th {
       border: 1px dashed #cccccc;
     }
+
+    
   </style>
 
   <body>
@@ -120,8 +145,7 @@
       <p id="bg__text__watermark">Only for testing</p>
     </div>
 
-    <div class="mainheading">Sales Report</div>
-
+    
     <table id="headertbl" width="98%">
       <tr>
         <td valign="top" style="width:50%">
@@ -168,7 +192,11 @@
     </table>
 
     <table class="dash" width="100%" cellpadding="0" cellspacing="0">
+    
       <thead>
+        <tr>
+          <th class="mainheading"  colspan="12" style="border: 0px dashed #cccccc;">{{title.en}}</th>
+        </tr>
         <tr>
           <th width="20%">Sales Id</th>
           <th width="5%">Last Modified Date</th>

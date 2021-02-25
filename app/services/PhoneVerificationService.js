@@ -102,7 +102,7 @@ var PhoneVerificationService = /** @class */ (function () {
                         data = _a.sent();
                         returnData = { id: data.id, message: "SAVED_SUCCESSFULLY" };
                         return [2 /*return*/, returnData];
-                    case 3: throw { message: "INVALID_DATA" };
+                    case 3: throw { status: 0, message: "INVALID_DATA" };
                     case 4: return [3 /*break*/, 6];
                     case 5:
                         error_3 = _a.sent();
@@ -122,8 +122,9 @@ var PhoneVerificationService = /** @class */ (function () {
                         return [4 /*yield*/, this.phoneVerificationDAO.entity(id)];
                     case 1:
                         data = _a.sent();
-                        if (!data)
-                            throw { message: "RECORD_NOT_FOUND" };
+                        if (!data) {
+                            throw { status: 0, message: "RECORD_NOT_FOUND" };
+                        }
                         data.lastmodifiedBy = this.sessionInfo.id;
                         return [4 /*yield*/, this.phoneVerificationDAO.delete(data)];
                     case 2:
@@ -153,17 +154,8 @@ var PhoneVerificationService = /** @class */ (function () {
                         previousItem = _a.sent();
                         _a.label = 3;
                     case 3:
-                        // let condData = await this.menuRepository.search({ name: item.name });
                         if (!item.id) {
                             item.createdDateTime = new Date(App_1.App.DateNow());
-                            // if (condData.length > 0) {
-                            //     return "name";
-                            // } else {
-                            // let uid = App.UniqueCode();
-                            // item.id = uid;
-                            // item.createdBy = this.sessionInfo.id;
-                            // item.createdOn = new Date(App.DateNow());
-                            // }
                         }
                         else {
                             if (item.lastModifiedDate &&
@@ -198,22 +190,70 @@ var PhoneVerificationService = /** @class */ (function () {
                         return [4 /*yield*/, this.save(phoneVerification)];
                     case 1:
                         data = _a.sent();
-                        message = "Your OTP is";
-                        return [4 /*yield*/, this.sms.sendMessage(phoneVerification.countryCode, phoneVerification.phoneNumber, phoneVerification.otpSent)];
+                        message = "Your OTP is ";
+                        return [4 /*yield*/, this.sms.sendMessage(phoneVerification.countryCode, phoneVerification.phoneNumber, message + phoneVerification.otpSent)];
                     case 2:
                         _a.sent();
                         return [2 /*return*/, { id: data.id, message: "OTP Sent" }];
                     case 3:
                         error_5 = _a.sent();
-                        throw { message: error_5 };
+                        throw error_5;
                     case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    PhoneVerificationService.prototype.sendOtpToGroup = function (item) {
+        return __awaiter(this, void 0, void 0, function () {
+            var query, groupPhoneNums, sendMsgPromisesList_1, saveList_1, otp_1, otpexpire_1, data, ids, error_6;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 4, , 5]);
+                        if (!item.groupid) {
+                            throw { status: 0, message: "Provide GroupId" };
+                        }
+                        query = "select ui.phone from user_info ui where ui.groupid ='" + item.groupid + "';";
+                        return [4 /*yield*/, this.phoneVerificationDAO.executeQuery(query)];
+                    case 1:
+                        groupPhoneNums = _a.sent();
+                        sendMsgPromisesList_1 = [];
+                        saveList_1 = [];
+                        otp_1 = App_1.App.generateOTP(4);
+                        otpexpire_1 = new Date(App_1.App.DateNow());
+                        groupPhoneNums.forEach(function (uiitem) {
+                            var phoneVerification = new PhoneVerification_1.PhoneVerification();
+                            phoneVerification.phoneNumber = uiitem.phone;
+                            phoneVerification.otpSent = otp_1;
+                            phoneVerification.customerId = item.groupid;
+                            phoneVerification.dataareaid = _this.sessionInfo.dataareaid;
+                            phoneVerification.createdBy = _this.sessionInfo.userName;
+                            phoneVerification.createdDateTime = new Date(App_1.App.DateNow());
+                            phoneVerification.countryCode = item.countryCode ? item.countryCode : 966;
+                            phoneVerification.otpExpiryTime = new Date(otpexpire_1.getTime() + 10 * 60 * 1000);
+                            saveList_1.push(phoneVerification);
+                            sendMsgPromisesList_1.push(_this.sms.sendMessage(phoneVerification.countryCode, phoneVerification.phoneNumber, phoneVerification.otpSent));
+                        });
+                        return [4 /*yield*/, this.phoneVerificationDAO.saveAll(saveList_1)];
+                    case 2:
+                        data = _a.sent();
+                        return [4 /*yield*/, Promise.all(sendMsgPromisesList_1)];
+                    case 3:
+                        _a.sent();
+                        ids = data.reduce(function (a, b) { return a.id + "," + b.id; });
+                        return [2 /*return*/, { id: ids, message: "OTP Sent" }];
+                    case 4:
+                        error_6 = _a.sent();
+                        throw error_6;
+                    case 5: return [2 /*return*/];
                 }
             });
         });
     };
     PhoneVerificationService.prototype.verfiyOtp = function (item) {
         return __awaiter(this, void 0, void 0, function () {
-            var phoneVerification, error_6;
+            var phoneVerification, error_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -226,8 +266,6 @@ var PhoneVerificationService = /** @class */ (function () {
                         phoneVerification = _a.sent();
                         if (!phoneVerification) return [3 /*break*/, 7];
                         if (!(phoneVerification.otpSent == item.otp)) return [3 /*break*/, 5];
-                        console.log(phoneVerification.otpExpiryTime, new Date(App_1.App.DateNow()));
-                        console.log(phoneVerification.otpExpiryTime < new Date(App_1.App.DateNow()));
                         if (!(phoneVerification.otpExpiryTime.getTime() > new Date(App_1.App.DateNow()).getTime())) return [3 /*break*/, 3];
                         phoneVerification.verificationStatus = "Verified";
                         return [4 /*yield*/, this.save(phoneVerification)];
@@ -236,13 +274,13 @@ var PhoneVerificationService = /** @class */ (function () {
                         return [2 /*return*/, { message: "VERIFIED", status: true }];
                     case 3: throw Props_1.Props.OTP_EXPIRED;
                     case 4: return [3 /*break*/, 6];
-                    case 5: throw { message: "INVALID_OTP" };
+                    case 5: throw { status: 0, message: "INVALID_OTP" };
                     case 6: return [3 /*break*/, 8];
-                    case 7: throw { message: "INVALID_MOBILE_NUMBER" };
+                    case 7: throw { status: 0, message: "INVALID_MOBILE_NUMBER" };
                     case 8: return [3 /*break*/, 10];
                     case 9:
-                        error_6 = _a.sent();
-                        throw error_6;
+                        error_7 = _a.sent();
+                        throw error_7;
                     case 10: return [2 /*return*/];
                 }
             });
