@@ -12,7 +12,7 @@
             size: A4;
             margin: 10px;
         }
-        
+
 
         body {
             /* font-family: 'Raleway Dots'; */
@@ -27,6 +27,7 @@
             /* margin: auto; */
             /* color: #2e5170 !important; */
         }
+
         .color {
             color: #2e5170;
         }
@@ -242,25 +243,26 @@
         }
 
         #bg__watermark {
-        display: block;
-        min-width: 100%;
-        opacity: 0.5;               
-    }
-    #bg__text__watermark {
-        color: lightgrey;
-        font-size: 120px;
-        text-align: center;
-        transform: rotate(-45deg);
-        transform-origin: 50% 50%;
-        -webkit-transform: rotate(-45deg);
-        -webkit-transform-origin: 50% 50%;
-        opacity: 0.9;
-        filter: alpha(opacity=50);
-        background-color: transparent;
-        background-size: 100%;
-        position: fixed;
-        margin: 50% auto;
-    }
+            display: block;
+            min-width: 100%;
+            opacity: 0.5;
+        }
+
+        #bg__text__watermark {
+            color: lightgrey;
+            font-size: 120px;
+            text-align: center;
+            transform: rotate(-45deg);
+            transform-origin: 50% 50%;
+            -webkit-transform: rotate(-45deg);
+            -webkit-transform-origin: 50% 50%;
+            opacity: 0.9;
+            filter: alpha(opacity=50);
+            background-color: transparent;
+            background-size: 100%;
+            position: fixed;
+            margin: 50% auto;
+        }
     </style>
 
 </head>
@@ -276,7 +278,7 @@
         <p id="bg__text__watermark">Only for testing</p>
     </div>
 
-<div >
+    <div>
         <!-- <div class="page-header" style="text-align: center">
         <table align="center" style="background:#fff;width:94%">
             <tr class="header">
@@ -338,7 +340,7 @@
                 <tr>
                     <td>
                         <div class="">
-                            <div >
+                            <div>
                                 <h1 style="text-align:center;border-bottom: 1px dotted #262a41;width: 93%;margin:auto">
                                 </h1>
                                 <table align="center" width="98%">
@@ -371,7 +373,7 @@
                                                     <td>Customer</td>
                                                     <td>:</td>
                                                     <td>
-                                                        {{cnamealias}} 
+                                                        {{cnamealias}}
                                                     </td>
                                                 </tr>
                                                 <tr class="billing">
@@ -433,7 +435,7 @@
                                         <th class="th">Vat</th>
                                         <th class="th">Total</th>
                                     </tr>
-                                    {{#each salesLine}} 
+                                    {{#each salesLine}}
 
                                     <tr class="tab-data">
                                         <td class="td">{{this.sNo}}</td>
@@ -455,7 +457,7 @@
                                                             {{this.prodNameEn}}
                                                         </span>
                                                         <span>
-                                                         
+
                                                         </span>
 
 
@@ -463,13 +465,13 @@
                                                 </tr>
                                                 <tr class="desc-font">
                                                     <td>
-                                                    <span class="td">Color Name | Size</span>
-                                                    <span>:</span>
-                                                    <span>
-                                                        {{this.configid}} |{{this.inventsizeid}}
-                                                        <!-- Solid Brown | TIN P 1LT -->
-                                                    </span>
-                                                </td>
+                                                        <span class="td">Color Name | Size</span>
+                                                        <span>:</span>
+                                                        <span>
+                                                            {{this.configid}} |{{this.inventsizeid}}
+                                                            <!-- Solid Brown | TIN P 1LT -->
+                                                        </span>
+                                                    </td>
 
                                                 </tr>
 
@@ -489,18 +491,18 @@
                                         </td>
                                         <td class="td">{{ this.colorantprice}}</td>
                                         <td class="td">
-                                            {{this.vatAmount}} 
+                                            {{this.vatAmount}}
 
                                         </td>
                                         <td class="td">
-                                            {{this.lineAmount}} 
+                                            {{this.lineAmount}}
                                         </td>
-                                        
+
                                     </tr>
-                                   
-                                    
-                                
-                                   
+
+
+
+
                                     {{/each}}
 
                 </tr>

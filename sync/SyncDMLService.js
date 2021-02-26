@@ -367,7 +367,7 @@ var SyncDMLService = /** @class */ (function () {
         });
     };
     SyncDMLService.prototype.buildDMLSelectQuery = function (sync, offset, currentTime) {
-        var sql = "select * from " + sync.map_table + " where " + sync.cond + "  \n    and " + sync.sync_column + " >= '" + sync.last_update + "' \n    order by " + sync.sync_column + "  \n    offset " + offset + " limit " + this.limitData;
+        var sql = "select * from " + sync.map_table + " where " + sync.cond + "  \n    and " + sync.sync_column + " >= '" + sync.last_update + "' \n    offset " + offset + " limit " + this.limitData;
         return sql;
     };
     SyncDMLService.prototype.buildDMLSyncDeleteQuery = function (deleteData) {
