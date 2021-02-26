@@ -2344,6 +2344,7 @@ var SalesTableService = /** @class */ (function () {
                         if (reqData.designServiceRedeemAmount > 0) {
                             promiseList.push(this.saveSalesOrderDesignerService(reqData, queryRunner));
                         }
+                        promiseList.push(this.saveSalesOrderRedeem(reqData, queryRunner));
                         _b.label = 21;
                     case 21:
                         Log_1.log.info("6---------------------------- " + reqData.paymentType + reqData.onlineAmount);

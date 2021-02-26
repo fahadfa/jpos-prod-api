@@ -170,6 +170,9 @@ var AuthService = /** @class */ (function () {
                         offlineSystems = _b.sent();
                         offlineSystems = offlineSystems.find(function (v) { return v.id == responseData.identity.inventlocationid; });
                         if (offlineSystems) {
+                            return [2 /*return*/, Promise.reject({
+                                    message: "USER_CANNOT_LOGIN_FROM_WEBSITE",
+                                })];
                         }
                         _b.label = 12;
                     case 12: return [2 /*return*/, Promise.resolve(responseData)];
