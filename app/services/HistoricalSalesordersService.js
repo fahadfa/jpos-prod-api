@@ -452,6 +452,7 @@ var HistoricalSalesordersService = /** @class */ (function () {
                         salesData = data;
                         salesLine = data.salesLine;
                         delete salesData.salesLine;
+                        salesData.invoiceDate = salesData.lastModifiedDate;
                         salesData.linesCount = salesLine.length;
                         return [4 /*yield*/, queryRunner.manager.getRepository(SalesTable_1.SalesTable).save(salesData)];
                     case 3:

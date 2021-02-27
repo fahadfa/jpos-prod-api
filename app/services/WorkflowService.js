@@ -187,7 +187,16 @@ var WorkflowService = /** @class */ (function () {
                         _b.sent();
                         if (!(salesData.transkind == "RETURNORDER")) return [3 /*break*/, 12];
                         //  else {
-                        if (condition.rmApprovalRequired) {
+                        if (salesData.reservation > parseInt(condition.returnOrderDays)) {
+                            item.statusId = "PENDINGCOORDINATORAPPROVAL";
+                            if (RM_AND_RA.salescoordinator && RM_AND_RA.salescoordinator != "") {
+                                item.pendingWith = RM_AND_RA.salescoordinator;
+                            }
+                            else {
+                                throw { status: 0, message: "NO_COORDINATOR_ADDED_TO_YOUR_GROUP_PLEASE_CONTACT_SYSTEM_ADMIN" };
+                            }
+                        }
+                        else if (condition.rmApprovalRequired) {
                             item.statusId = "PENDINGRMAPPROVAL";
                             if (RM_AND_RA.rm && RM_AND_RA.rm != "") {
                                 item.pendingWith = RM_AND_RA.rm;
