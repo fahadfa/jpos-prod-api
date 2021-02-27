@@ -90,7 +90,7 @@ var SyncPrevTransactionsService = /** @class */ (function () {
                         transactionclosed = false;
                         // log.info(optDate);
                         // log.info(current_date);
-                        if (optDate === current_date) {
+                        if (optDate >= current_date) {
                             sCond = " CREATEDDATETIME BETWEEN dateadd(day, -120, '" + this.dateObj.date + "') AND  '" + this.dateObj.date + "' ORDER BY RECID ASC ";
                             slCond = " CREATEDDATETIME BETWEEN dateadd(day, -120, '" + this.dateObj.date + "') AND  '" + this.dateObj.date + "') ORDER BY RECID ASC ";
                             tCond = "  DATEPHYSICAL BETWEEN dateadd(day, -120, '" + this.dateObj.date + "') AND  '" + this.dateObj.date + "' ORDER BY RECID ASC ";
