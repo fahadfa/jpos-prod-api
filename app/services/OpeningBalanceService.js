@@ -88,6 +88,7 @@ var OpeningBalanceService = /** @class */ (function () {
                         //await sql.connect();
                         // const conn = new sql.connect(config);
                         Log_1.log.info(reqData);
+                        reqData.date = new Date().toISOString().slice(0, 10);
                         fs_1 = require("fs");
                         rawdata = {
                             date: reqData.date,
