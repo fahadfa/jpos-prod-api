@@ -1,27 +1,32 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Worflow Status</title>
-  </head>
 
-  <body>
-    <p>Hi Team</p>
-    Workflow <b>{{data.id}}</b> for Transaction <b>{{data.orderid}}</b> is <b>{{data.status}}</b>
-    <!-- has been {{data.statusId}} {{data.pendingWithDept}} -->
-    <!-- approved by 
+<head>
+  <title>Worflow Status</title>
+</head>
+
+<body>
+  <p>Hi Team</p>
+  Workflow <b>{{data.id}}</b> for Transaction <b>{{data.orderid}}</b> is <b>{{data.status}}</b>
+  <!-- has been {{data.statusId}} {{data.pendingWithDept}} -->
+  <!-- approved by 
     Regional Manager 
     and pending for Sales Co-Ordinator approval.  -->
-    <br />
-    <br />
-    Workflow ID :<b>{{data.id}}</b><br />
-    Transaction ID :<b>{{data.orderid}}</b> <br />
-    {{# if data.partyid}} Customer : <b>{{data.partyid}}</b>-<b>{{data.partyname}}</b> {{/if}}
+  <br />
+  <br />
+  Workflow ID :<b>{{data.id}}</b><br />
+  Transaction ID :<b>{{data.orderid}}</b> <br />
+  {{# if data.partyid}} Customer : <b>{{data.partyid}}</b>-<b>{{data.partyname}}</b><br/> {{/if}}
+  
+  {{# if data.rejectReason}} Note : <b>{{data.rejectReason}}</b></br> {{/if}}
+  
 
-    <br /><br />
+  <br /><br />
 
-    For any Queries reach out to IT Team.<br /><br />
+  For any Queries reach out to IT Team.<br /><br />
 
-    Thanks, <br />
-    JPOS.
-  </body>
+  Thanks, <br />
+  JPOS.
+</body>
+
 </html>

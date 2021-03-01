@@ -767,6 +767,7 @@ var WorkflowService = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         _c.trys.push([0, 15, , 16]);
+                        data.rejectReason = data && data.selected_lines && data.selected_lines.info && data.selected_lines.info.note && data.selected_lines.info.note.rejectReason ? data.selected_lines.info.note.rejectReason : null;
                         if (!data.pendingwith) return [3 /*break*/, 7];
                         return [4 /*yield*/, this.rawQuery.getUserswithGroupid(data.pendingwith)];
                     case 1:
