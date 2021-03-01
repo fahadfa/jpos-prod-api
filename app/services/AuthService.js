@@ -37,6 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var UserinfoDAO_1 = require("../repos/UserinfoDAO");
 var App_1 = require("../..//utils/App");
+var Props_1 = require("../../constants/Props");
 var RawQuery_1 = require("../common/RawQuery");
 var MenuGroupDAO_1 = require("../repos/MenuGroupDAO");
 var AuthService = /** @class */ (function () {
@@ -88,7 +89,7 @@ var AuthService = /** @class */ (function () {
     };
     AuthService.prototype.reteriveUserDetails = function (accountObj) {
         return __awaiter(this, void 0, void 0, function () {
-            var responseData, menuList, salesmanids, wareHouse, wareHouseNamear, wareHouseNameEn, _a, offlineSystems, error_2;
+            var responseData, menuList, salesmanids, wareHouse, wareHouseNamear, wareHouseNameEn, _a, testStoreIds, error_2;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -165,14 +166,17 @@ var AuthService = /** @class */ (function () {
                             return [2 /*return*/, Promise.reject({ status: 0, message: "USER_NOT_RELATED_TO_THIS_STORE" })];
                         }
                         return [3 /*break*/, 12];
-                    case 10: return [4 /*yield*/, this.rawQuery.offlineSystems()];
+                    case 10: return [4 /*yield*/, RawQuery_1.RawQuery.ConstData("OFFLINE_STORES")];
                     case 11:
-                        offlineSystems = _b.sent();
-                        offlineSystems = offlineSystems.find(function (v) { return v.id == responseData.identity.inventlocationid; });
-                        if (offlineSystems) {
+                        testStoreIds = _b.sent();
+                        Props_1.Props.testStoreIds = testStoreIds.data;
+                        if (Props_1.Props.testStoreIds.includes(responseData.identity.inventlocationid)) {
+                            // offlineSystems = offlineSystems.find((v: any) => v.id == responseData.identity.inventlocationid);
+                            // if (offlineSystems) {
                             return [2 /*return*/, Promise.reject({
                                     message: "USER_CANNOT_LOGIN_FROM_WEBSITE",
                                 })];
+                            //
                         }
                         _b.label = 12;
                     case 12: return [2 /*return*/, Promise.resolve(responseData)];

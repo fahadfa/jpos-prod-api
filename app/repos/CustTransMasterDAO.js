@@ -104,7 +104,7 @@ var CustTransMasterDAO = /** @class */ (function () {
                         custData.creditLimit = creditLimit;
                         custData.usedCredit = custData.usedCredit ? custData.usedCredit : 0;
                         availableCredit = parseFloat(custData.creditLimit) - parseFloat(custData.usedCredit);
-                        return [4 /*yield*/, this.db.query("select \n        invoice as \"salesId\",\n        accountnum as \"accountNum\",\n        sum(amountmst) as \"invoiceAmount\",\n        sum(balance) as balance,\n        transdate as \"invoicedate\",\n        duedate as \"actualDueDate\",\n        duedate  as \"duedate\"\n      from  cust_trans ct where  ct.accountnum in ('" + account + "') and  payment=0 group by invoice, accountnum, transdate, duedate having sum(amountmst) >0;\n        ")];
+                        return [4 /*yield*/, this.db.query("select \n        invoice as \"salesId\",\n        accountnum as \"accountNum\",\n        sum(amountmst) as \"invoiceAmount\",\n        sum(balance) as balance,\n        transdate as \"invoicedate\",\n        duedate as \"actualDueDate\",\n        duedate  as \"duedate\"\n      from  cust_trans ct where  transtype IN (2) and  ct.accountnum in ('" + account + "') and  payment=0 group by invoice, accountnum, transdate, duedate having sum(amountmst) >0;\n        ")];
                     case 3:
                         custTransOverDues = _a.sent();
                         salesIds = custTransOverDues.map(function (item) {

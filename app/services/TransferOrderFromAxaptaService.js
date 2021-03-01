@@ -91,7 +91,7 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                     case 3: return [2 /*return*/, _a.sent()];
                     case 4: throw { status: 0, message: "INVOICE_ID_NOT_RELATED_TO_THIS_STORE" };
                     case 5: return [3 /*break*/, 7];
-                    case 6: throw { status: 0, message: "cant receive order from test participating stores" };
+                    case 6: throw { status: 0, message: "cant receive order from jpos installed stores" };
                     case 7: return [3 /*break*/, 9];
                     case 8:
                         error_1 = _a.sent();
