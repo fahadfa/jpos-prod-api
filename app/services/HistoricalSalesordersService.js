@@ -191,6 +191,7 @@ var HistoricalSalesordersService = /** @class */ (function () {
                         salesData_1.voucherNum = data.VOUCHERNUM;
                         salesData_1.painter = data.Painter;
                         salesData_1.redeemPoints = data.REDEEMPOINTS;
+                        salesData_1.originalprinted = true;
                         salesData_1.redeemAmount = data.REDEEMAMT;
                         salesData_1.ajpenddisc = data.AJPEndDisc;
                         salesData_1.taxGroup = data.TaxGroup;

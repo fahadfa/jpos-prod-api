@@ -77,6 +77,7 @@ var Props = /** @class */ (function () {
     Props.PROFILE_STATUS_UNVERIFIED = "UNVERIFIED";
     Props.PROFILE_STATUS_CHANGE_REQUIRED = "CHANGE_REQUIRED";
     Props.NO_ITEM_AMOUNT = "No price is attached to this customer price group";
+    Props.SELECT_ITEM_ID = "SELECT_ITEM_ID";
     Props.RCUSTTYPE = {
         0: [0, "Charity", "الاعمال الخيرية"],
         1: [1, "Individual", "أفراد"],

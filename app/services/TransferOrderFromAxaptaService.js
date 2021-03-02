@@ -376,9 +376,9 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                         date = new Date(data.lastmodifieddate).toLocaleString();
                         prevYear = new Date(data.lastmodifieddate).getFullYear().toString().substr(2, 2);
                         year = new Date(App_1.App.DateNow()).getFullYear().toString().substr(2, 2);
-                        data.nextrec = prevYear == year ? data.nextrec : "000001";
+                        data.nextrec = prevYear == year ? data.nextrec : "00001";
                         if (data.nextrec == 1 || data.nextrec == "1") {
-                            data.nextrec = "000001";
+                            data.nextrec = "00001";
                         }
                         salesId = data.format.replace(hashString, year) + "-" + data.nextrec;
                         item.numberSequenceGroup = data.numbersequence;
