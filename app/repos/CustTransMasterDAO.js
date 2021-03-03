@@ -119,7 +119,7 @@ var CustTransMasterDAO = /** @class */ (function () {
                         return [4 /*yield*/, this.db.query(query)];
                     case 4:
                         overDues = _a.sent();
-                        usedAmount = overDues.reduce(function (res, item) { return res + parseInt(item.invoiceAmount); }, 0);
+                        usedAmount = overDues.reduce(function (res, item) { return res + parseFloat(item.invoiceAmount); }, 0);
                         // console.log("usedAmount", usedAmount);
                         availableCredit -= usedAmount;
                         custData.usedCredit = parseFloat(custData.usedCredit) + usedAmount;

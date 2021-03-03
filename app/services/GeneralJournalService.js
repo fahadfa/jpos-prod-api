@@ -121,7 +121,7 @@ var GeneralJournalService = /** @class */ (function () {
     };
     GeneralJournalService.prototype.save = function (reqData) {
         return __awaiter(this, void 0, void 0, function () {
-            var queryRunner, cond, userGroupData, account, ledgerTransData, _i, _a, item, error_3;
+            var queryRunner, cond, userGroupData, account, _i, _a, item, customer, error_3;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -134,11 +134,11 @@ var GeneralJournalService = /** @class */ (function () {
                         _b.sent();
                         _b.label = 3;
                     case 3:
-                        _b.trys.push([3, 14, 16, 18]);
+                        _b.trys.push([3, 18, 20, 22]);
                         return [4 /*yield*/, this.validate(reqData)];
                     case 4:
                         cond = _b.sent();
-                        if (!(cond == true)) return [3 /*break*/, 13];
+                        if (!(cond == true)) return [3 /*break*/, 17];
                         reqData.dataareaid = this.sessionInfo.dataareaid;
                         return [4 /*yield*/, this.usergroupconfigDAO.entity(this.sessionInfo.usergroupconfigid)];
                     case 5:
@@ -147,17 +147,34 @@ var GeneralJournalService = /** @class */ (function () {
                         return [4 /*yield*/, queryRunner.manager.getRepository(GeneralJournal_1.GeneralJournal).save(reqData)];
                     case 6:
                         account = _b.sent();
-                        ledgerTransData = [];
                         _i = 0, _a = reqData.legerJournalTras;
                         _b.label = 7;
                     case 7:
-                        if (!(_i < _a.length)) return [3 /*break*/, 11];
+                        if (!(_i < _a.length)) return [3 /*break*/, 15];
                         item = _a[_i];
                         if (!(item.amountCurCredit == 0 && item.amountCurDebit == 0)) return [3 /*break*/, 8];
                         throw { status: 0, message: "INVALID_AMOUNT" };
                     case 8:
+                        if (!(reqData.log == "cash" && !userGroupData.ledgeraccount)) return [3 /*break*/, 9];
+                        throw { status: 0, message: "INVALID_LEDGER_ACCOUNT" };
+                    case 9:
                         item.journalNum = reqData.journalNum;
                         item.region = userGroupData.regionId;
+                        if (!(reqData.log == "cash" && item.accountType == 0)) return [3 /*break*/, 10];
+                        item.accountNum =
+                            item.accountNum && item.accountNum != "" ? item.accountNum : userGroupData.ledgeraccount;
+                        return [3 /*break*/, 12];
+                    case 10:
+                        if (!(reqData.log == "cash" && item.accountType == 1)) return [3 /*break*/, 12];
+                        return [4 /*yield*/, this.rawQuery.getCustomer(item.accountNum)];
+                    case 11:
+                        customer = _b.sent();
+                        customer = customer && customer.length > 0 ? customer[0] : null;
+                        if (customer && customer.walkincustomer == true) {
+                            item.accountNum = userGroupData.defaultcustomerid;
+                        }
+                        _b.label = 12;
+                    case 12:
                         item.department = userGroupData.departmentid;
                         item.costcenter = userGroupData.costCenterId;
                         item.employee = userGroupData.employeeid;
@@ -171,33 +188,33 @@ var GeneralJournalService = /** @class */ (function () {
                         item.lastModifiedBy = this.sessionInfo.userName;
                         item.lastModifiedDate = new Date(App_1.App.DateNow());
                         return [4 /*yield*/, queryRunner.manager.getRepository(LedgerJournalTrans_1.LedgerJournalTrans).save(item)];
-                    case 9:
+                    case 13:
                         _b.sent();
-                        _b.label = 10;
-                    case 10:
+                        _b.label = 14;
+                    case 14:
                         _i++;
                         return [3 /*break*/, 7];
-                    case 11: 
+                    case 15: 
                     // let account: GeneralJournal = await this.generalJournalDAO.save(reqData);
                     // let legerJournalTras: LedgerJournalTrans[] = await this.legerJournalTrasDAO.save(reqData.legerJournalTras);
                     return [4 /*yield*/, queryRunner.commitTransaction()];
-                    case 12:
+                    case 16:
                         // let account: GeneralJournal = await this.generalJournalDAO.save(reqData);
                         // let legerJournalTras: LedgerJournalTrans[] = await this.legerJournalTrasDAO.save(reqData.legerJournalTras);
                         _b.sent();
                         return [2 /*return*/, { id: reqData.journalNum, message: "SAVED_SUCCESSFULLY" }];
-                    case 13: return [3 /*break*/, 18];
-                    case 14:
+                    case 17: return [3 /*break*/, 22];
+                    case 18:
                         error_3 = _b.sent();
                         return [4 /*yield*/, queryRunner.rollbackTransaction()];
-                    case 15:
+                    case 19:
                         _b.sent();
                         throw error_3;
-                    case 16: return [4 /*yield*/, queryRunner.release()];
-                    case 17:
+                    case 20: return [4 /*yield*/, queryRunner.release()];
+                    case 21:
                         _b.sent();
                         return [7 /*endfinally*/];
-                    case 18: return [2 /*return*/];
+                    case 22: return [2 /*return*/];
                 }
             });
         });

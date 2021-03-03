@@ -115,7 +115,8 @@ function en(n) {
     var words = decimalFind.map(function (value) {
         return covertToSTring(value, units, tens, scales, and);
     });
-    return words.join(and);
+    var point = " point ";
+    return words.join(point);
 }
 exports.en = en;
 function ar(n) {
@@ -182,6 +183,7 @@ function ar(n) {
     var words = decimalFind.map(function (value) {
         return covertToSTring(value, units, tens, scales, and);
     });
-    return words.join(and);
+    var point = " نقطة ";
+    return words.join(point);
 }
 exports.ar = ar;

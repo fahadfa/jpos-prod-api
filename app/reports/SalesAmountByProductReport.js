@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
@@ -60,7 +71,7 @@ var SalesAmountByProductReport = /** @class */ (function () {
      */
     SalesAmountByProductReport.prototype.execute = function (params) {
         return __awaiter(this, void 0, void 0, function () {
-            var data, sNo_1, error_1;
+            var result_1, data, sNo_1, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -68,14 +79,18 @@ var SalesAmountByProductReport = /** @class */ (function () {
                         if (params && (!params.itemid && (params.configid || params.inventsizeid))) {
                             throw { message: Props_1.Props.SELECT_ITEM_ID };
                         }
+                        result_1 = params;
                         return [4 /*yield*/, this.salesData(params)];
                     case 1:
                         data = _a.sent();
                         sNo_1 = 1;
+                        result_1.total = 0;
                         data.map(function (i) {
                             i.sNo = sNo_1++;
+                            result_1.total += parseFloat(i.lineAmount);
                         });
-                        return [2 /*return*/, data];
+                        result_1.data = data;
+                        return [2 /*return*/, result_1];
                     case 2:
                         error_1 = _a.sent();
                         throw error_1;
@@ -86,28 +101,67 @@ var SalesAmountByProductReport = /** @class */ (function () {
     };
     SalesAmountByProductReport.prototype.report = function (result, params) {
         return __awaiter(this, void 0, void 0, function () {
-            var renderData, title, file;
+            var oldData, lines, commonparams, title, renderData, grandTotal, output, file;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        // console.log(result.salesLine[0].product.nameEnglish);
-                        renderData = { data: result };
-                        renderData.user = params.user;
-                        renderData.printDate = new Date(params.printDate).toISOString().replace(/T/, " ").replace(/\..+/, "");
+                        oldData = result;
+                        lines = result.data;
+                        delete result.data;
+                        commonparams = result;
+                        commonparams.printDate = new Date(params.printDate).toISOString().replace(/T/, " ").replace(/\..+/, "");
                         return [4 /*yield*/, this.rawQuery.getAppLangName("SALES_AMOUNT_BY_PRODUCT")];
                     case 1:
                         title = _a.sent();
                         if (title) {
-                            renderData.title = title;
+                            commonparams.title = title;
                         }
+                        ;
+                        renderData = [];
+                        grandTotal = 0;
+                        return [4 /*yield*/, this.chunkArray(lines, 10)];
+                    case 2:
+                        lines = _a.sent();
+                        lines.forEach(function (element) {
+                            var data = __assign({}, commonparams);
+                            data.linesTotal = 0;
+                            data.data = element;
+                            element.forEach(function (element) {
+                                data.linesTotal += parseFloat(element.lineAmount);
+                            });
+                            grandTotal += data.linesTotal;
+                            renderData.push(data);
+                        });
+                        output = { grandTotal: grandTotal, data: renderData };
+                        console.log(output);
                         file = params.lang == "en" ? "salesamountbyproduct-en" : "salesamountbyproduct-ar";
                         try {
-                            return [2 /*return*/, App_1.App.HtmlRender(file, renderData)];
+                            return [2 /*return*/, App_1.App.HtmlRender(file, output)];
                         }
                         catch (error) {
                             throw error;
                         }
                         return [2 /*return*/];
+                }
+            });
+        });
+    };
+    SalesAmountByProductReport.prototype.chunkArray = function (myArray, chunk_size) {
+        return __awaiter(this, void 0, void 0, function () {
+            var index, arrayLength, tempArray, myChunk;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        index = 0;
+                        arrayLength = myArray.length;
+                        tempArray = [];
+                        for (index = 0; index < arrayLength; index += chunk_size) {
+                            myChunk = myArray.slice(index, index + chunk_size);
+                            // Do something if you want with the group
+                            tempArray.push(myChunk);
+                        }
+                        return [4 /*yield*/, tempArray];
+                    case 1: return [2 /*return*/, _a.sent()];
                 }
             });
         });

@@ -667,13 +667,13 @@ var WorkflowService = /** @class */ (function () {
     };
     WorkflowService.prototype.workflowUpdate = function (data) {
         return __awaiter(this, void 0, void 0, function () {
-            var transkind, salesData, reqData, date, inventtransQuery, salesSaveData, offlineSystems, salesData, reqData, date, inventtransQuery, salesSaveData, salesSaveData, e_1;
+            var transkind, salesData, reqData, date, inventtransQuery, salesSaveData, salesData, reqData, date, inventtransQuery, salesSaveData, salesSaveData, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 18, , 19]);
+                        _a.trys.push([0, 16, , 17]);
                         transkind = ["SALESORDER", "INVENTORYMOVEMENT", "RETURNORDER"];
-                        if (!(data && data.statusid.includes("REJECTED"))) return [3 /*break*/, 13];
+                        if (!(data && data.statusid.includes("REJECTED"))) return [3 /*break*/, 11];
                         if (!(process.env.ENV_STORE_ID && data.inventlocationid == process.env.ENV_STORE_ID)) return [3 /*break*/, 5];
                         return [4 /*yield*/, this.salesTableDAO.transferorderEntity(data.orderid)];
                     case 1:
@@ -699,16 +699,11 @@ var WorkflowService = /** @class */ (function () {
                     case 3:
                         _a.sent();
                         _a.label = 4;
-                    case 4: return [3 /*break*/, 12];
-                    case 5: return [4 /*yield*/, this.rawQuery.offlineSystems()];
+                    case 4: return [3 /*break*/, 10];
+                    case 5: return [4 /*yield*/, this.salesTableDAO.transferorderEntity(data.orderid)];
                     case 6:
-                        offlineSystems = _a.sent();
-                        offlineSystems = offlineSystems.find(function (v) { return v.id == data.inventlocationid; });
-                        if (!!offlineSystems) return [3 /*break*/, 10];
-                        return [4 /*yield*/, this.salesTableDAO.transferorderEntity(data.orderid)];
-                    case 7:
                         salesData = _a.sent();
-                        if (!transkind.includes(salesData.transkind)) return [3 /*break*/, 9];
+                        if (!transkind.includes(salesData.transkind)) return [3 /*break*/, 8];
                         reqData = {
                             salesId: data.orderid,
                         };
@@ -719,43 +714,41 @@ var WorkflowService = /** @class */ (function () {
                         }
                         inventtransQuery += " WHERE invoiceid = '" + salesData.salesId.toUpperCase() + "'";
                         return [4 /*yield*/, this.db.query(inventtransQuery)];
+                    case 7:
+                        _a.sent();
+                        _a.label = 8;
                     case 8:
-                        _a.sent();
-                        _a.label = 9;
-                    case 9: return [3 /*break*/, 12];
-                    case 10:
-                        if (!(process.env.ENV_STORE_ID && data.inventlocationid == process.env.ENV_STORE_ID)) return [3 /*break*/, 12];
                         salesSaveData = {
                             salesId: data.orderid,
                             status: data.statusid,
                         };
                         return [4 /*yield*/, this.salesTableDAO.save(salesSaveData)];
+                    case 9:
+                        _a.sent();
+                        _a.label = 10;
+                    case 10: return [3 /*break*/, 13];
                     case 11:
-                        _a.sent();
-                        _a.label = 12;
-                    case 12: return [3 /*break*/, 15];
-                    case 13:
-                        if (!(process.env.ENV_STORE_ID && data.inventlocationid == process.env.ENV_STORE_ID)) return [3 /*break*/, 15];
+                        if (!(process.env.ENV_STORE_ID && data.inventlocationid == process.env.ENV_STORE_ID)) return [3 /*break*/, 13];
                         salesSaveData = {
                             salesId: data.orderid,
                             status: data.statusid,
                         };
                         return [4 /*yield*/, this.salesTableDAO.save(salesSaveData)];
+                    case 12:
+                        _a.sent();
+                        _a.label = 13;
+                    case 13:
+                        if (!!process.env.ENV_STORE_ID) return [3 /*break*/, 15];
+                        return [4 /*yield*/, this.sendEmailsToGroup(data)];
                     case 14:
                         _a.sent();
                         _a.label = 15;
-                    case 15:
-                        if (!!process.env.ENV_STORE_ID) return [3 /*break*/, 17];
-                        return [4 /*yield*/, this.sendEmailsToGroup(data)];
+                    case 15: return [3 /*break*/, 17];
                     case 16:
-                        _a.sent();
-                        _a.label = 17;
-                    case 17: return [3 /*break*/, 19];
-                    case 18:
                         e_1 = _a.sent();
                         Log_1.log.error(e_1);
-                        return [3 /*break*/, 19];
-                    case 19: return [2 /*return*/];
+                        return [3 /*break*/, 17];
+                    case 17: return [2 /*return*/];
                 }
             });
         });
@@ -767,7 +760,14 @@ var WorkflowService = /** @class */ (function () {
                 switch (_c.label) {
                     case 0:
                         _c.trys.push([0, 15, , 16]);
-                        data.rejectReason = data && data.selected_lines && data.selected_lines.info && data.selected_lines.info.note && data.selected_lines.info.note.rejectReason ? data.selected_lines.info.note.rejectReason : null;
+                        data.rejectReason =
+                            data &&
+                                data.selected_lines &&
+                                data.selected_lines.info &&
+                                data.selected_lines.info.note &&
+                                data.selected_lines.info.note.rejectReason
+                                ? data.selected_lines.info.note.rejectReason
+                                : null;
                         if (!data.pendingwith) return [3 /*break*/, 7];
                         return [4 /*yield*/, this.rawQuery.getUserswithGroupid(data.pendingwith)];
                     case 1:
