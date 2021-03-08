@@ -126,6 +126,7 @@ var TransferOrderFromAxaptaService = /** @class */ (function () {
                         salesData.createddatetime = new Date(App_1.App.DateNow());
                         salesData.salesType = 4;
                         salesData.salesLines = [];
+                        salesData.createdby = this.sessionInfo.userName;
                         i = 1;
                         for (_i = 0, _a = data.orderLines; _i < _a.length; _i++) {
                             v = _a[_i];

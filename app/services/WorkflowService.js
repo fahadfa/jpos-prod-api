@@ -91,24 +91,28 @@ var WorkflowService = /** @class */ (function () {
             });
         });
     };
-    WorkflowService.prototype.search = function (item) {
+    WorkflowService.prototype.search = function (reqData) {
         return __awaiter(this, void 0, void 0, function () {
             var data, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        item.pendingWith = this.sessionInfo.userName;
-                        item.groupid = this.sessionInfo.groupid;
-                        return [4 /*yield*/, this.workflowDAO.search(item)];
+                        reqData.pendingWith = this.sessionInfo.userName;
+                        reqData.groupid = this.sessionInfo.groupid;
+                        return [4 /*yield*/, this.workflowDAO.search(reqData)];
                     case 1:
                         data = _a.sent();
                         data.map(function (item) {
                             item.orderTypeAr = Props_1.Props.Workflow_Order_Type[item.orderType][1];
                             item.orderTypeEn = Props_1.Props.Workflow_Order_Type[item.orderType][1];
                             item.ordertype = Props_1.Props.Workflow_Order_Type[item.orderType][1];
-                            item.descriptionEn = Props_1.Props.WORKFLOW_STATUSID[item.statusId][1];
-                            item.descriptionAr = Props_1.Props.WORKFLOW_STATUSID[item.statusId][2];
+                            item.descriptionEn = Props_1.Props.WORKFLOW_STATUSID[item.statusId]
+                                ? Props_1.Props.WORKFLOW_STATUSID[item.statusId][1]
+                                : item.statusId;
+                            item.descriptionAr = Props_1.Props.WORKFLOW_STATUSID[item.statusId]
+                                ? Props_1.Props.WORKFLOW_STATUSID[item.statusId][2]
+                                : item.statusId;
                             item.createdDateTime = new Date(item.createdDateTime).toLocaleDateString();
                             // item.inventoryType = item.SalesTable.movementType.movementType;
                             // item.inventoryTypeAr = item.SalesTable.movementType.movementArabic;

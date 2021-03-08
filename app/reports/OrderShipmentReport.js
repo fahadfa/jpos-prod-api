@@ -426,7 +426,7 @@ var OrderShipmentReport = /** @class */ (function () {
     };
     OrderShipmentReport.prototype.stockOnHandCheck = function (salesLine, inventlocationid, salesid) {
         return __awaiter(this, void 0, void 0, function () {
-            var canConvert, colors, items, sizes, groupSalesLines, newSalesline, itemsInStock;
+            var canConvert, colors, items, sizes, batches, groupSalesLines, newSalesline, itemsInStock;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -434,6 +434,7 @@ var OrderShipmentReport = /** @class */ (function () {
                         colors = [];
                         items = [];
                         sizes = [];
+                        batches = [];
                         groupSalesLines = this.groupBy(salesLine, function (item) {
                             return [item.itemid, item.configid, item.inventsizeid, item.batchno];
                         });
@@ -445,20 +446,21 @@ var OrderShipmentReport = /** @class */ (function () {
                         });
                         newSalesline.map(function (v) {
                             if (v.itemid && v.configid && v.inventsizeid) {
-                                items.push(v.itemid), colors.push(v.configid), sizes.push(v.inventsizeid);
+                                items.push(v.itemid), colors.push(v.configid), sizes.push(v.inventsizeid), batches.push(v.batchno);
                             }
                             else {
                                 return false;
                             }
                         });
-                        return [4 /*yield*/, this.rawQuery.checkItems(inventlocationid, items, colors, sizes, salesid)];
+                        return [4 /*yield*/, this.rawQuery.checkBatchAvailability(inventlocationid, items, colors, sizes, batches)];
                     case 1:
                         itemsInStock = _a.sent();
                         newSalesline.map(function (v) {
                             var index = itemsInStock.findIndex(function (value) {
                                 return value.itemid.toLowerCase() == v.itemid.toLowerCase() &&
                                     value.configid.toLowerCase() == v.configid.toLowerCase() &&
-                                    value.inventsizeid.toLowerCase() == v.inventsizeid.toLowerCase();
+                                    value.inventsizeid.toLowerCase() == v.inventsizeid.toLowerCase() &&
+                                    value.batchno.toLowerCase() == v.batchno.toLowerCase();
                             });
                             if (index >= 0 && v.itemid != "HSN-00001") {
                                 if (parseInt(v.salesQty) > parseInt(itemsInStock[index].qty)) {

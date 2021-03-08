@@ -414,7 +414,11 @@ var DiscountService = /** @class */ (function () {
                                         freeItem = void 0;
                                         promotionalDiscountAmount = 0;
                                         buy_one_get_one = 0;
-                                        promotionalDiscountDetails = promotionalDiscountItems.filter(function (v) { return v.itemid == item.itemid; });
+                                        promotionalDiscountDetails = promotionalDiscountItems.filter(function (v) {
+                                            return v.itemid == item.itemid &&
+                                                (v.inventsizeid == item.inventsizeid || v.inventsizeid == "" || v.inventsizeid == null);
+                                        });
+                                        console.log(promotionalDiscountDetails);
                                         isPromotionDiscount = false;
                                         isBuyOneGetOneDiscount = false;
                                         buyOneGetOneDiscountDetails = void 0;

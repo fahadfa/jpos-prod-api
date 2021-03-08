@@ -1386,6 +1386,10 @@ var LoadService = /** @class */ (function () {
                         return [4 /*yield*/, this.db.query(buyOneGetOneDiscountQuery)];
                     case 2:
                         data = _a.sent();
+                        data = data.filter(function (v) {
+                            return v.itemid == param.itemid &&
+                                (v.inventsizeid == param.inventsizeid || v.inventsizeid == "" || v.inventsizeid == null);
+                        });
                         if (!(data.length > 0)) return [3 /*break*/, 4];
                         data = data[0];
                         data.discountType = "BUY_ONE_GET_ONE";
@@ -1401,6 +1405,10 @@ var LoadService = /** @class */ (function () {
                     case 4: return [4 /*yield*/, this.db.query(promotionalDiscountQuery)];
                     case 5:
                         data = _a.sent();
+                        data = data.filter(function (v) {
+                            return v.itemid == param.itemid &&
+                                (v.inventsizeid == param.inventsizeid || v.inventsizeid == "" || v.inventsizeid == null);
+                        });
                         if (data.length > 0) {
                             data = data[0];
                             data.discountType = "PROMOTIONAL_DISCOUNT";
