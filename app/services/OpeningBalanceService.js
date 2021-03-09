@@ -34,13 +34,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 // let sql = require("mssql");
 var App_1 = require("../../utils/App");
@@ -50,7 +43,6 @@ var NumberSequenceTableDAO_1 = require("../repos/NumberSequenceTableDAO");
 var InventoryOnhandDAO_1 = require("../repos/InventoryOnhandDAO");
 var RawQuery_1 = require("../common/RawQuery");
 var uuid = require("uuid");
-var fs = __importStar(require("fs"));
 var Log_1 = require("../../utils/Log");
 var OpeningBalanceService = /** @class */ (function () {
     function OpeningBalanceService() {
@@ -123,7 +115,7 @@ var OpeningBalanceService = /** @class */ (function () {
     OpeningBalanceService.prototype.save = function (reqData, fromCsv) {
         if (fromCsv === void 0) { fromCsv = false; }
         return __awaiter(this, void 0, void 0, function () {
-            var cond, chunkData, _i, chunkData_1, item, inventtransData, child_process, syncFile, fs_2, returnData, err_2;
+            var cond, chunkData, _i, chunkData_1, item, inventtransData, fs_2, returnData, err_2;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -170,12 +162,12 @@ var OpeningBalanceService = /** @class */ (function () {
                         _a.label = 9;
                     case 9:
                         if (fromCsv == false) {
-                            child_process = require("child_process");
-                            syncFile = __dirname + "/SyncPrevTransactionsServices.ts";
-                            syncFile = fs.existsSync(syncFile)
-                                ? __dirname + "/SyncPrevTransactionsServices.ts"
-                                : __dirname + "/SyncPrevTransactionsServices.js";
-                            child_process.fork(syncFile);
+                            // const child_process = require("child_process");
+                            // let syncFile = `${__dirname}/SyncPrevTransactionsServices.ts`;
+                            // syncFile = fs.existsSync(syncFile)
+                            //   ? `${__dirname}/SyncPrevTransactionsServices.ts`
+                            //   : `${__dirname}/SyncPrevTransactionsServices.js`;
+                            // child_process.fork(syncFile);
                         }
                         else {
                             fs_2 = require("fs");

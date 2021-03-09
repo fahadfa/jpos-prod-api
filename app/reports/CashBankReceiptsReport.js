@@ -54,14 +54,14 @@ var CashBankReceiptsReport = /** @class */ (function () {
                     case 1:
                         data = _a.sent();
                         data.map(function (v) {
-                            v.amount = parseFloat(v.amount);
+                            v.amount = v.amountdb && parseFloat(v.amountdb) > 0 ? parseFloat(v.amountdb) : parseFloat(v.amountcr);
                         });
                         resData = {};
                         query = "select en, ar from app_lang ";
-                        if (params.receiptType == 'cash') {
+                        if (params.receiptType == "cash") {
                             query += " where id = 'CASH_COLLECTION_REPORT' ";
                         }
-                        else if (params.receiptType == 'bank') {
+                        else if (params.receiptType == "bank") {
                             query += " where id = 'BANK_COLLECTION_REPORT' ";
                         }
                         else {
@@ -145,7 +145,7 @@ var CashBankReceiptsReport = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = " \n      select \n      jt.journalnum as journalnum,\n      jt.accountnum as custaccount,\n      concat(jt.accountnum, ' : ',  jt.namearabic) as customer,\n      j.description as remarks,\n      to_char(j.lastmodifieddate, 'DD-MM-YYYY') as date,\n      to_char(jt.amountcurcredit , 'FM999999999990.00') as amount,\n      j.log as type,\n      al.en as \"typeEn\",\n      al.ar as \"typeAr\",\n      j.name as \"warehouse\",\n      w.name as \"wareHouseNameAr\",\n      w.namealias as \"wareHouseNameEn\"\n      from ledgerjournaltrans jt \n      inner join ledgerjournaltable j on j.journalnum = jt.journalnum\n      left join inventlocation w on w.inventlocationid=j.name\n      left join app_lang al on al.id = j.log\n      where jt.accounttype = 1\n    ";
+                        query = " \n      select \n      jt.journalnum as journalnum,\n      jt.accountnum as custaccount,\n      concat(jt.accountnum, ' : ',  jt.namearabic) as customer,\n      j.description as remarks,\n      to_char(j.lastmodifieddate, 'DD-MM-YYYY') as date,\n      to_char(jt.amountcurcredit , 'FM999999999990.00') as amountcr,\n      to_char(jt.amountcurdebit , 'FM999999999990.00') as amountdb,\n      j.log as type,\n      al.en as \"typeEn\",\n      al.ar as \"typeAr\",\n      j.name as \"warehouse\",\n      w.name as \"wareHouseNameAr\",\n      w.namealias as \"wareHouseNameEn\"\n      from ledgerjournaltrans jt \n      inner join ledgerjournaltable j on j.journalnum = jt.journalnum\n      left join inventlocation w on w.inventlocationid=j.name\n      left join app_lang al on al.id = j.log\n      where jt.accounttype = 1\n    ";
                         if (params.fromDate && params.toDate) {
                             fDate = new Date(params.fromDate);
                             fDate.setHours(0, 0, 0);

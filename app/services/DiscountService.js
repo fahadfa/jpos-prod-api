@@ -235,6 +235,7 @@ var DiscountService = /** @class */ (function () {
                         multlineDiscItems = multlineDiscItems.map(function (v) {
                             return v.itemid;
                         });
+                        console.log(multlineDiscItems);
                         reqData.selectedItems.map(function (v) {
                             if (multlineDiscItems.includes(v.itemid)) {
                                 multilineQuantity += parseInt(v.quantity);
@@ -351,7 +352,7 @@ var DiscountService = /** @class */ (function () {
                             return 0;
                         });
                         _loop_1 = function (item) {
-                            var isLineDiscount, linedisc, linePercentage, isNoDiscount, isValidVoucherItem, instantDiscountPercent, isSalesDiscount, _i, instantDiscountRanges_1, data, multilinefilter, salesDiscount, condition, appliedDiscounts, freeQty, freeItem, promotionalDiscountAmount, buy_one_get_one, promotionalDiscountDetails, isPromotionDiscount, isBuyOneGetOneDiscount, buyOneGetOneDiscountDetails, selectedQuantity, parentQuantity, freeItems, _a, _b, _c, j, i, freeItems, _d, _e, _f, j, i, itemDiscount;
+                            var isLineDiscount, linedisc, linePercentage, isNoDiscount, isValidVoucherItem, instantDiscountPercent, isSalesDiscount, _i, instantDiscountRanges_1, data, itemRelatedMultilineDiscRanges, multilinefilter, salesDiscount, condition, appliedDiscounts, freeQty, freeItem, promotionalDiscountAmount, buy_one_get_one, promotionalDiscountDetails, isPromotionDiscount, isBuyOneGetOneDiscount, buyOneGetOneDiscountDetails, selectedQuantity, parentQuantity, freeItems, _a, _b, _c, j, i, freeItems, _d, _e, _f, j, i, itemDiscount;
                             return __generator(this, function (_g) {
                                 switch (_g.label) {
                                     case 0:
@@ -387,8 +388,10 @@ var DiscountService = /** @class */ (function () {
                                             }
                                         }
                                         isMultiLineDiscount = multilineDiscRanges.length > 0 ? true : false;
+                                        itemRelatedMultilineDiscRanges = multilineDiscRanges.filter(function (v) { return checkDiscounts[0].multilinedisc == v.itemrelation; });
                                         if (isMultiLineDiscount) {
-                                            multilinefilter = checkDiscounts.filter(function (v) { return v.multilinedisc == multilineDiscRanges[0].itemrelation && v.itemid == item.itemid; });
+                                            multilinefilter = checkDiscounts.filter(function (v) { return v.multilinedisc == itemRelatedMultilineDiscRanges[0].itemrelation && v.itemid == item.itemid; });
+                                            console.log(multilinefilter);
                                             isMultiLineDiscount = multilinefilter.length > 0 ? true : false;
                                         }
                                         salesDiscount = salesDiscountItems.filter(function (v) { return v.itemid == item.itemid; });
@@ -716,7 +719,7 @@ var DiscountService = /** @class */ (function () {
                                         _g.label = 31;
                                     case 31:
                                         if (!(isMultiLineDiscount && !isNoDiscount)) return [3 /*break*/, 34];
-                                        return [4 /*yield*/, this_1.getMultiLinePercent(item, multilineDiscRanges, checkDiscounts, discounts[0].multilinedisc, multilineQuantity)];
+                                        return [4 /*yield*/, this_1.getMultiLinePercent(item, itemRelatedMultilineDiscRanges, checkDiscounts, discounts[0].multilinedisc, multilineQuantity)];
                                     case 32:
                                         _g.sent();
                                         return [4 /*yield*/, this_1.multiLineDiscount(item, reqData)];
@@ -727,7 +730,7 @@ var DiscountService = /** @class */ (function () {
                                                 discountType: "MULTI_LINE_DISCOUNT",
                                                 discountAmount: parseFloat(item.multilndisc),
                                                 percentage: parseFloat(item.multilnPercent),
-                                                cond: multilineDiscRanges,
+                                                cond: itemRelatedMultilineDiscRanges,
                                             });
                                         }
                                         item.multilndisc;

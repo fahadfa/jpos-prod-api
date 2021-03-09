@@ -49,6 +49,7 @@ var typeorm_1 = require("typeorm");
 var InventtableDAO_1 = require("../repos/InventtableDAO");
 var InventTrans_1 = require("../../entities/InventTrans");
 var Log_1 = require("../../utils/Log");
+var InventTransDAO_1 = require("../repos/InventTransDAO");
 var HistoricalSalesordersService = /** @class */ (function () {
     function HistoricalSalesordersService() {
         this.axios = require("axios");
@@ -59,6 +60,7 @@ var HistoricalSalesordersService = /** @class */ (function () {
         this.salesTableService = new SalesTableService_1.SalesTableService();
         this.rawQuery = new RawQuery_1.RawQuery();
         this.inventtableDAO = new InventtableDAO_1.InventtableDAO();
+        this.inventTransDAO = new InventTransDAO_1.InventorytransDAO();
         this.db = typeorm_1.getManager();
     }
     HistoricalSalesordersService.prototype.get = function (data) {
@@ -442,8 +444,8 @@ var HistoricalSalesordersService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 12, , 13]);
-                        if (!(data.inventLocationId == this.sessionInfo.inventlocationid)) return [3 /*break*/, 10];
+                        _a.trys.push([0, 14, , 15]);
+                        if (!(data.inventLocationId == this.sessionInfo.inventlocationid)) return [3 /*break*/, 12];
                         return [4 /*yield*/, this.salesTableDAO.findOne({ salesId: data.salesId })];
                     case 1:
                         salesData = _a.sent();
@@ -461,31 +463,73 @@ var HistoricalSalesordersService = /** @class */ (function () {
                         _i = 0, salesLine_1 = salesLine;
                         _a.label = 4;
                     case 4:
-                        if (!(_i < salesLine_1.length)) return [3 /*break*/, 8];
+                        if (!(_i < salesLine_1.length)) return [3 /*break*/, 10];
                         item = salesLine_1[_i];
                         item.id = uuid();
                         item.salesId = salesData.salesId;
                         batches = item.batches;
                         delete item.batches;
                         batches.salesLineId = item.id;
-                        return [4 /*yield*/, queryRunner.manager.getRepository(SalesLine_1.SalesLine).save(item)];
+                        return [4 /*yield*/, this.salesLineDelete(data, queryRunner)];
                     case 5:
                         _a.sent();
-                        return [4 /*yield*/, queryRunner.manager.getRepository(InventTrans_1.Inventorytrans).save(batches)];
+                        return [4 /*yield*/, queryRunner.manager.getRepository(SalesLine_1.SalesLine).save(item)];
                     case 6:
                         _a.sent();
-                        _a.label = 7;
+                        return [4 /*yield*/, this.inventryTransUpdate(data, queryRunner)];
                     case 7:
+                        _a.sent();
+                        return [4 /*yield*/, queryRunner.manager.getRepository(InventTrans_1.Inventorytrans).save(batches)];
+                    case 8:
+                        _a.sent();
+                        _a.label = 9;
+                    case 9:
                         _i++;
                         return [3 /*break*/, 4];
-                    case 8: return [2 /*return*/, { status: 1, id: salesData.salesId, message: "SAVED_SUCCESSFULLY" }];
-                    case 9: return [3 /*break*/, 11];
-                    case 10: throw { status: 0, message: "INVOICE_ID_NOT_RELATED_TO_THIS_STORE" };
+                    case 10: return [2 /*return*/, { status: 1, id: salesData.salesId, message: "SAVED_SUCCESSFULLY" }];
                     case 11: return [3 /*break*/, 13];
-                    case 12:
+                    case 12: throw { status: 0, message: "INVOICE_ID_NOT_RELATED_TO_THIS_STORE" };
+                    case 13: return [3 /*break*/, 15];
+                    case 14:
                         error_3 = _a.sent();
                         throw error_3;
-                    case 13: return [2 /*return*/];
+                    case 15: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    HistoricalSalesordersService.prototype.salesLineDelete = function (reqData, queryRunner) {
+        return __awaiter(this, void 0, void 0, function () {
+            var lineData;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.salesLineDAO.findAll({
+                            salesId: reqData.salesId,
+                        })];
+                    case 1:
+                        lineData = _a.sent();
+                        return [4 /*yield*/, queryRunner.manager.getRepository(SalesLine_1.SalesLine).remove(lineData)];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    HistoricalSalesordersService.prototype.inventryTransUpdate = function (reqData, queryRunner) {
+        return __awaiter(this, void 0, void 0, function () {
+            var batches;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.inventTransDAO.findAll({
+                            invoiceid: reqData.salesId,
+                        })];
+                    case 1:
+                        batches = _a.sent();
+                        return [4 /*yield*/, queryRunner.manager.getRepository(InventTrans_1.Inventorytrans).remove(batches)];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
                 }
             });
         });
