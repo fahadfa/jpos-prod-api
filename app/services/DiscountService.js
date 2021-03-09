@@ -390,7 +390,10 @@ var DiscountService = /** @class */ (function () {
                                         isMultiLineDiscount = multilineDiscRanges.length > 0 ? true : false;
                                         itemRelatedMultilineDiscRanges = multilineDiscRanges.filter(function (v) { return checkDiscounts[0].multilinedisc == v.itemrelation; });
                                         if (isMultiLineDiscount) {
-                                            multilinefilter = checkDiscounts.filter(function (v) { return v.multilinedisc == itemRelatedMultilineDiscRanges[0].itemrelation && v.itemid == item.itemid; });
+                                            multilinefilter = [];
+                                            if (itemRelatedMultilineDiscRanges.length > 0) {
+                                                multilinefilter = checkDiscounts.filter(function (v) { return v.multilinedisc == itemRelatedMultilineDiscRanges[0].itemrelation && v.itemid == item.itemid; });
+                                            }
                                             console.log(multilinefilter);
                                             isMultiLineDiscount = multilinefilter.length > 0 ? true : false;
                                         }
