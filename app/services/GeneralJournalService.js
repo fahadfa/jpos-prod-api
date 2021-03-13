@@ -298,6 +298,10 @@ var GeneralJournalService = /** @class */ (function () {
                             i.journalNum = item.journalNum;
                             i.createDateTime = new Date(App_1.App.DateNow());
                             i.createdBy = _this.sessionInfo.userName;
+                            if (previousData) {
+                                item.cashdate = previousData.cashdate;
+                                i.transdDate = previousData.cashdate;
+                            }
                         });
                         return [3 /*break*/, 8];
                     case 7:

@@ -598,7 +598,7 @@ var SalesTableService = /** @class */ (function () {
                                 reqData.transkind = "('ORDERRECEIVE')";
                                 break;
                             case "purchaseorder":
-                                reqData.transkind = "('PURCHASEORDER', 'PURCHASERETURN')";
+                                reqData.transkind = "('PURCHASEORDER', 'PURCHASERETURN', 'PACKINGSLIP')";
                                 break;
                             case "purchaseorderreturn":
                                 reqData.transkind = "('PURCHASERETURN')";
@@ -720,7 +720,7 @@ var SalesTableService = /** @class */ (function () {
                                 reqData.transkind = "('ORDERRECEIVE')";
                                 break;
                             case "purchaseorder":
-                                reqData.transkind = "('PURCHASEORDER')";
+                                reqData.transkind = "('PURCHASEORDER', 'PACKINGSLIP')";
                                 break;
                             case "designerservice":
                                 reqData.transkind = "('DESIGNERSERVICE')";

@@ -121,6 +121,10 @@ var NumberSequenceTable = /** @class */ (function () {
         typeorm_1.Column({ name: "inventlocationid" }),
         __metadata("design:type", String)
     ], NumberSequenceTable.prototype, "inventlocationid", void 0);
+    __decorate([
+        typeorm_1.Column({ name: "lastmodifieddate" }),
+        __metadata("design:type", Date)
+    ], NumberSequenceTable.prototype, "lastmodifieddate", void 0);
     NumberSequenceTable = __decorate([
         typeorm_1.Entity("numbersequencetable")
     ], NumberSequenceTable);

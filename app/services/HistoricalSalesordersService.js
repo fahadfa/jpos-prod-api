@@ -193,7 +193,7 @@ var HistoricalSalesordersService = /** @class */ (function () {
                         salesData_1.voucherNum = data.VOUCHERNUM;
                         salesData_1.painter = data.Painter;
                         salesData_1.redeemPoints = data.REDEEMPOINTS;
-                        salesData_1.originalprinted = true;
+                        salesData_1.originalPrinted = true;
                         salesData_1.redeemAmount = data.REDEEMAMT;
                         salesData_1.ajpenddisc = data.AJPEndDisc;
                         salesData_1.taxGroup = data.TaxGroup;
@@ -313,7 +313,7 @@ var HistoricalSalesordersService = /** @class */ (function () {
                             _loop_1(v);
                         }
                         _loop_2 = function (line) {
-                            var MultiLineDiscRangesQuery, MultiLineDiscRanges, InstantDiscRangesQuery, InstantDiscRanges, filterItems;
+                            var MultiLineDiscRangesQuery, MultiLineDiscRanges, InstantDiscRangesQuery, InstantDiscRanges, filterItems, discountAmount, parentQuantity_1, parentItem, index, lineIndex, promotionalData;
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
                                     case 0:
@@ -375,24 +375,44 @@ var HistoricalSalesordersService = /** @class */ (function () {
                                     case 4:
                                         if (line.promotiondisc && line.promotiondisc > 0) {
                                             filterItems = salesData_1.salesLine.filter(function (value) { return value.itemid == line.itemid && value.inventsizeid == line.inventsizeid; });
+                                            discountAmount = filterItems.reduce(function (res, i) { return res + parseFloat(i.promotiondisc); }, 0);
+                                            parentQuantity_1 = Math.max.apply(Math, filterItems.map(function (o) { return parseInt(o.salesQty); }, 0));
+                                            // console.log(parentQuantity, discountAmount);
                                             filterItems.map(function (v) {
                                                 var index = salesData_1.salesLine.indexOf(v);
-                                                salesData_1.salesLine[index].isItemFree = v.SupplMultipleQty > 0 ? true : false;
+                                                salesData_1.salesLine[index].isItemFree = v.supplMultipleQty > 0 ? true : false;
                                                 salesData_1.salesLine[index].linkId = line.recid;
-                                                line.multipleQty = v.SupplMultipleQty > 0 ? v.SupplMultipleQty : line.multipleQty;
-                                                line.freeQty = v.SupplFreeQty > 0 ? v.SupplFreeQty : line.freeQty;
+                                                line.multipleQty = v.supplMultipleQty > 0 ? v.supplMultipleQty : line.multipleQty;
+                                                line.freeQty = v.supplFreeQty > 0 ? v.supplFreeQty : line.freeQty;
                                             });
-                                            line.isParent = true;
-                                            line.appliedDiscounts.push({
-                                                discountType: "PROMOTIONAL_DISCOUNT",
-                                                discountAmount: parseFloat(line.promotiondisc),
-                                                cond: [
-                                                    {
-                                                        multipleQty: line.multipleQty,
-                                                        freeQty: line.freeQty,
-                                                    },
-                                                ],
-                                            });
+                                            parentItem = filterItems.find(function (j) { return j.salesQty == parentQuantity_1; });
+                                            index = salesData_1.salesLine.indexOf(parentItem);
+                                            lineIndex = salesData_1.salesLine.indexOf(line);
+                                            // console.log(lineIndex, index);
+                                            salesData_1.salesLine[index].isParent = true;
+                                            promotionalData = salesData_1.salesLine[index].appliedDiscounts.find(function (o) { return o.discountType == "PROMOTIONAL_DISCOUNT"; });
+                                            if (index != lineIndex) {
+                                                line.lineTotalDisc = line.lineTotalDisc ? line.lineTotalDisc - line.promotiondisc : line.lineTotalDisc;
+                                                line.vatamount = ((line.salesprice * line.salesQty - line.lineTotalDisc) * line.vat) / 100;
+                                                salesData_1.salesLine[index].lineTotalDisc = salesData_1.salesLine[index].lineTotalDisc + line.promotiondisc;
+                                                salesData_1.salesLine[index].vatamount =
+                                                    ((salesData_1.salesLine[index].salesprice * salesData_1.salesLine[index].salesQty -
+                                                        salesData_1.salesLine[index].lineTotalDisc) *
+                                                        salesData_1.salesLine[index].vat) /
+                                                        100;
+                                            }
+                                            if (!promotionalData) {
+                                                salesData_1.salesLine[index].appliedDiscounts.push({
+                                                    discountType: "PROMOTIONAL_DISCOUNT",
+                                                    discountAmount: discountAmount,
+                                                    cond: [
+                                                        {
+                                                            multipleQty: line.multipleQty,
+                                                            freeQty: line.freeQty,
+                                                        },
+                                                    ],
+                                                });
+                                            }
                                         }
                                         if (line.PromotionDiscEqual && line.PromotionDiscEqual > 0) {
                                             line.linkId =

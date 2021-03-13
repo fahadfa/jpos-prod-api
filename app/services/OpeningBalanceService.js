@@ -115,25 +115,25 @@ var OpeningBalanceService = /** @class */ (function () {
     OpeningBalanceService.prototype.save = function (reqData, fromCsv) {
         if (fromCsv === void 0) { fromCsv = false; }
         return __awaiter(this, void 0, void 0, function () {
-            var cond, chunkData, _i, chunkData_1, item, inventtransData, fs_2, returnData, err_2;
+            var cond, chunkData, _i, chunkData_1, item, inventtransData, _a, _b, item, fs_2, returnData, err_2;
             var _this = this;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
-                        _a.trys.push([0, 12, , 13]);
+                        _c.trys.push([0, 12, , 13]);
                         reqData.data = reqData.data.filter(function (v) { return v.itemid && v.configid && v.inventsizeid && v.batchno && v.qty && v.inventlocationid; });
                         return [4 /*yield*/, this.validate(reqData.data, fromCsv)];
                     case 1:
-                        cond = _a.sent();
+                        cond = _c.sent();
                         if (!(cond == true)) return [3 /*break*/, 10];
                         return [4 /*yield*/, this.rawQuery.deleteBalances(this.sessionInfo.inventlocationid, fromCsv)];
                     case 2:
-                        _a.sent();
+                        _c.sent();
                         return [4 /*yield*/, this.chunkArray(reqData.data, 100)];
                     case 3:
-                        chunkData = _a.sent();
+                        chunkData = _c.sent();
                         _i = 0, chunkData_1 = chunkData;
-                        _a.label = 4;
+                        _c.label = 4;
                     case 4:
                         if (!(_i < chunkData_1.length)) return [3 /*break*/, 7];
                         item = chunkData_1[_i];
@@ -149,17 +149,22 @@ var OpeningBalanceService = /** @class */ (function () {
                         });
                         return [4 /*yield*/, this.inventtransDAO.savearr(item)];
                     case 5:
-                        inventtransData = _a.sent();
-                        _a.label = 6;
+                        inventtransData = _c.sent();
+                        _c.label = 6;
                     case 6:
                         _i++;
                         return [3 /*break*/, 4];
                     case 7:
                         if (!(reqData.numberSequences.length > 0)) return [3 /*break*/, 9];
+                        for (_a = 0, _b = reqData.numberSequences; _a < _b.length; _a++) {
+                            item = _b[_a];
+                            console.log(item);
+                            item.lastmodifieddate = new Date(App_1.App.DateNow());
+                        }
                         return [4 /*yield*/, this.numberSequenceTableDAO.save(reqData.numberSequences)];
                     case 8:
-                        _a.sent();
-                        _a.label = 9;
+                        _c.sent();
+                        _c.label = 9;
                     case 9:
                         if (fromCsv == false) {
                             // const child_process = require("child_process");
@@ -188,10 +193,10 @@ var OpeningBalanceService = /** @class */ (function () {
                         else {
                             throw { status: 0, message: "invalid data" };
                         }
-                        _a.label = 11;
+                        _c.label = 11;
                     case 11: return [3 /*break*/, 13];
                     case 12:
-                        err_2 = _a.sent();
+                        err_2 = _c.sent();
                         Log_1.log.error(err_2);
                         throw err_2;
                     case 13: return [2 /*return*/];
@@ -292,6 +297,7 @@ var OpeningBalanceService = /** @class */ (function () {
                         if (!(_i < numberSequences_1.length)) return [3 /*break*/, 21];
                         item = numberSequences_1[_i];
                         console.log(item);
+                        item.lastmodifieddate = new Date(App_1.App.DateNow());
                         if (!(item.transkind == "SALESQUOTATION")) return [3 /*break*/, 6];
                         query_1 = "SELECT right(MAX(LTRIM(RTRIM(SALESID))),5) + 1 as nextrec FROM SALESTABLE WHERE SALESTYPE=8 AND YEAR(DELIVERYDATE)=YEAR(getdate())";
                         return [4 /*yield*/, this.pool.request().query(query_1)];
