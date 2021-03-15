@@ -61,7 +61,10 @@ var ReceiptReport = /** @class */ (function () {
                         data.transDate = new Date(result.cashdate).toISOString().split("T")[0];
                         data.type = result.log;
                         data.isbank = result.log == "bank" ? true : false;
-                        data.amount = result.legerJournalTras[1].amountCurCredit;
+                        data.amount =
+                            parseFloat(result.legerJournalTras[1].amountCurCredit) > 0
+                                ? parseFloat(result.legerJournalTras[1].amountCurCredit)
+                                : parseFloat(result.legerJournalTras[1].amountCurDebit);
                         data.worden = Words_1.en(data.amount);
                         data.wordar = Words_1.ar(data.amount);
                         data.custid = result.legerJournalTras[1].accountNum;

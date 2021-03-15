@@ -37,7 +37,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
 var App_1 = require("../../utils/App");
-var Props_1 = require("../../constants/Props");
 var SyncSourceService_1 = require("../services/SyncSourceService");
 var SyncSourceController = /** @class */ (function () {
     function SyncSourceController() {
@@ -55,7 +54,7 @@ var SyncSourceController = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 5, , 6]);
+                        _a.trys.push([0, 2, , 3]);
                         reqData = void 0;
                         result = null;
                         this.service.sessionInfo = request.body.sessionInfo;
@@ -63,23 +62,21 @@ var SyncSourceController = /** @class */ (function () {
                         params = request.params;
                         id = params.id;
                         reqData = request.params ? id : null;
-                        return [4 /*yield*/, App_1.App.ValildateUserAccess(this.service.sessionInfo, this.moduleName(), Props_1.Props.ACCESS_READ)];
-                    case 1:
-                        if (!_a.sent()) return [3 /*break*/, 3];
                         return [4 /*yield*/, this.service.entity(reqData)];
-                    case 2:
+                    case 1:
+                        // if (await App.ValildateUserAccess(this.service.sessionInfo, this.moduleName(), Props.ACCESS_READ)) {
                         result = _a.sent();
-                        return [3 /*break*/, 4];
-                    case 3: throw this.service.sessionInfo ? this.service.sessionInfo : { message: Props_1.Props.TOKEN_MESSAGE };
-                    case 4:
+                        // } else {
+                        //   throw this.service.sessionInfo ? this.service.sessionInfo : { message: Props.TOKEN_MESSAGE };
+                        // }
                         response.send({ status: 1, data: result });
-                        return [3 /*break*/, 6];
-                    case 5:
+                        return [3 /*break*/, 3];
+                    case 2:
                         error_1 = _a.sent();
                         console.log(error_1);
                         response.send({ status: 0, error: error_1 });
-                        return [3 /*break*/, 6];
-                    case 6: return [2 /*return*/];
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
                 }
             });
         }); });
@@ -88,29 +85,27 @@ var SyncSourceController = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 5, , 6]);
+                        _a.trys.push([0, 2, , 3]);
                         id = request.query;
                         this.service.sessionInfo = request.body.sessionInfo;
                         result = null;
                         reqData = request.query ? request.query : {};
                         App_1.App.PrintLog(this.constructor.name, "Search", this.service.sessionInfo);
-                        return [4 /*yield*/, App_1.App.ValildateUserAccess(this.service.sessionInfo, this.componentName, Props_1.Props.ACCESS_READ)];
-                    case 1:
-                        if (!_a.sent()) return [3 /*break*/, 3];
                         return [4 /*yield*/, this.service.search(reqData)];
-                    case 2:
+                    case 1:
+                        // if (await App.ValildateUserAccess(this.service.sessionInfo, this.componentName, Props.ACCESS_READ)) {
                         result = _a.sent();
-                        return [3 /*break*/, 4];
-                    case 3: throw this.service.sessionInfo ? this.service.sessionInfo : { message: Props_1.Props.TOKEN_MESSAGE };
-                    case 4:
+                        // } else {
+                        //   throw this.service.sessionInfo ? this.service.sessionInfo : { message: Props.TOKEN_MESSAGE };
+                        // }
                         response.send({ status: 1, data: result });
-                        return [3 /*break*/, 6];
-                    case 5:
+                        return [3 /*break*/, 3];
+                    case 2:
                         error_2 = _a.sent();
                         console.log(error_2);
                         response.send({ status: 0, error: error_2 });
-                        return [3 /*break*/, 6];
-                    case 6: return [2 /*return*/];
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
                 }
             });
         }); });

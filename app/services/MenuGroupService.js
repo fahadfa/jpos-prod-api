@@ -141,7 +141,8 @@ var MenuGroupService = /** @class */ (function () {
                         for (_i = 0, data_1 = data; _i < data_1.length; _i++) {
                             item = data_1[_i];
                             newData.push(item);
-                            newData = newData.concat(item.children);
+                            newData.push.apply(newData, item.children);
+                            // newData = newData.concat(item.children);
                         }
                         saveData_1 = [];
                         newData.forEach(function (element) {

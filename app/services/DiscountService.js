@@ -352,7 +352,7 @@ var DiscountService = /** @class */ (function () {
                             return 0;
                         });
                         _loop_1 = function (item) {
-                            var isLineDiscount, linedisc, linePercentage, isNoDiscount, isValidVoucherItem, instantDiscountPercent, isSalesDiscount, _i, instantDiscountRanges_1, data, itemRelatedMultilineDiscRanges, multilinefilter, salesDiscount, condition, appliedDiscounts, freeQty, freeItem, promotionalDiscountAmount, buy_one_get_one, promotionalDiscountDetails, isPromotionDiscount, isBuyOneGetOneDiscount, buyOneGetOneDiscountDetails, selectedQuantity, parentQuantity, freeItems, _a, _b, _c, j, i, freeItems, _d, _e, _f, j, i, itemDiscount;
+                            var isLineDiscount, linedisc, linePercentage, isNoDiscount, isValidVoucherItem, instantDiscountPercent, isSalesDiscount, _i, instantDiscountRanges_1, data, itemRelatedMultilineDiscRanges, multilinefilter, salesDiscount, condition, appliedDiscounts, freeQty, freeItem, promotionalDiscountAmount, buy_one_get_one, promotionalDiscountDetails, isPromotionDiscount, isBuyOneGetOneDiscount, buyOneGetOneDiscountDetails, selectedQuantity, parentQuantity_1, parentItemData, parentIndex, freeItems, _a, _b, _c, j, i, freeItems, _d, _e, _f, j, i, itemDiscount;
                             return __generator(this, function (_g) {
                                 switch (_g.label) {
                                     case 0:
@@ -440,11 +440,18 @@ var DiscountService = /** @class */ (function () {
                                         selectedQuantity = reqData.selectedItems
                                             .filter(function (v) { return v.itemid == item.itemid && v.inventsizeid == item.inventsizeid; })
                                             .reduce(function (res, item) { return res + parseInt(item.quantity); }, 0);
-                                        parentQuantity = Math.max.apply(Math, reqData.selectedItems
+                                        parentQuantity_1 = Math.max.apply(Math, reqData.selectedItems
                                             .filter(function (v) { return v.linkId == item.linkId && v.isItemFree == false; })
                                             .map(function (o) { return parseInt(o.quantity); }, 0));
-                                        parentQuantity = parentQuantity == -Infinity ? 0 : parentQuantity;
-                                        if (!(promotionalDiscountDetails && item.isParent && parseInt(item.quantity) == parentQuantity)) return [3 /*break*/, 9];
+                                        parentQuantity_1 = parentQuantity_1 == -Infinity ? 0 : parentQuantity_1;
+                                        parentItemData = reqData.selectedItems.find(function (v) {
+                                            return v.itemid == item.itemid && v.inventsizeid == item.inventsizeid && parseInt(item.quantity) == parentQuantity_1;
+                                        });
+                                        parentIndex = reqData.selectedItems.indexOf(parentItemData);
+                                        if (!(promotionalDiscountDetails &&
+                                            item.isParent &&
+                                            parseInt(item.quantity) == parentQuantity_1 &&
+                                            reqData.selectedItems.indexOf(item) == parentIndex)) return [3 /*break*/, 9];
                                         if (!(promotionalDiscountDetails.multipleQty && selectedQuantity >= promotionalDiscountDetails.multipleQty)) return [3 /*break*/, 8];
                                         isPromotionDiscount = true;
                                         freeItems = reqData.selectedItems.filter(function (v) { return v.linkId == item.linkId && v.isItemFree == true; });
@@ -504,7 +511,10 @@ var DiscountService = /** @class */ (function () {
                                         _g.label = 8;
                                     case 8: return [3 /*break*/, 10];
                                     case 9:
-                                        if (promotionalDiscountDetails && item.isParent && parseInt(item.quantity) != parentQuantity) {
+                                        if (promotionalDiscountDetails &&
+                                            item.isParent &&
+                                            parseInt(item.quantity) != parentQuantity_1 &&
+                                            reqData.selectedItems.indexOf(item) != parentIndex) {
                                             item.isParent = false;
                                         }
                                         _g.label = 10;

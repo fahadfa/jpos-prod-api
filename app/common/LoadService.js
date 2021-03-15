@@ -345,6 +345,8 @@ var LoadService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         param.transkind = "PURCHASEORDER";
+                        param.transkind1 = "PURCHASEORDER";
+                        param.transkind2 = "PACKINGSLIP";
                         return [4 /*yield*/, this.search_salesTable(param)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }

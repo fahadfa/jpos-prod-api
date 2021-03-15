@@ -300,7 +300,10 @@ var GeneralJournalService = /** @class */ (function () {
                             i.createdBy = _this.sessionInfo.userName;
                             if (previousData) {
                                 item.cashdate = previousData.cashdate;
-                                i.transdDate = previousData.cashdate;
+                                i.transdDate = item.cashdate;
+                            }
+                            else {
+                                i.transdDate = item.cashdate;
                             }
                         });
                         return [3 /*break*/, 8];

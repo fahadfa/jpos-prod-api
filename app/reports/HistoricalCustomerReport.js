@@ -71,6 +71,7 @@ var HistoricalCustomerReport = /** @class */ (function () {
                     case 2: return [4 /*yield*/, this.oldDataUrl(params)];
                     case 3:
                         olddata = _b.sent();
+                        console.log(olddata);
                         salesTable = olddata && olddata.SalesTable.length > 0 ? olddata.SalesTable : [];
                         salesLines = olddata && olddata.SalesLine.length > 0 ? olddata.SalesLine : [];
                         newLines_1 = {};
@@ -267,11 +268,12 @@ var HistoricalCustomerReport = /** @class */ (function () {
                         return [4 /*yield*/, axios.get(url)];
                     case 2:
                         data = _a.sent();
-                        // console.log(data);
+                        console.log(data);
                         // this.otpStore.set(params.mobile, { token: data.data.otp_token, validate: false });
                         return [2 /*return*/, data.data];
                     case 3:
                         e_1 = _a.sent();
+                        console.log(e_1);
                         throw { message: Props_1.Props.DATA_NOT_FOUND };
                     case 4: return [2 /*return*/];
                 }

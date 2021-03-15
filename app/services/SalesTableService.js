@@ -2287,6 +2287,9 @@ var SalesTableService = /** @class */ (function () {
                         item.taxGroup = reqData.taxGroup;
                         item.lineAmount = parseFloat(item.salesprice) * parseFloat(item.salesQty);
                         item.taxItemGroup = taxItemGroup;
+                        if (item.isItemFree && item.lineTotalDisc == 0) {
+                            item.lineTotalDisc = item.enddiscamt > 0 ? item.enddiscamt : item.lineTotalDisc;
+                        }
                         if (reqData.status == "PAID") {
                             unSyncedData.push({
                                 id: uuid(),
