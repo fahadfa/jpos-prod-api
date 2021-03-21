@@ -17,6 +17,7 @@ var KeyService = /** @class */ (function () {
         try {
             var key = CrpytoData_1.atob(reqData.key);
             var data = CrpytoData_1.encrypt(key);
+            console.log(JSON.stringify(data));
             fs.writeFile(__dirname + "/../../../id_rsa", JSON.stringify(data), function (err) {
                 if (err) {
                     Log_1.log.error(err);

@@ -2129,28 +2129,38 @@ var SalesTableService = /** @class */ (function () {
     SalesTableService.prototype.saveSalesOrderRedeem = function (reqData, queryRunner) {
         if (queryRunner === void 0) { queryRunner = null; }
         return __awaiter(this, void 0, void 0, function () {
-            var redeemData;
+            var redeemData, error_14;
             return __generator(this, function (_a) {
-                try {
-                    redeemData = {
-                        TransactionId: reqData.salesId,
-                        MobileNo: reqData.mobileNo && reqData.mobileNo.length == 9 ? "0" + reqData.mobileNo : reqData.mobileNo,
-                        InvoiceNo: reqData.salesId,
-                        InvoiceAmount: reqData.netAmount,
-                        RedeemPoints: reqData.redeemPoints,
-                        SyncStatus: 0,
-                        InventLocationId: this.sessionInfo.inventlocationid,
-                        LoyaltyStatus: 0,
-                    };
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        redeemData = {
+                            TransactionId: reqData.salesId,
+                            MobileNo: reqData.mobileNo && reqData.mobileNo.length == 9 ? "0" + reqData.mobileNo : reqData.mobileNo,
+                            InvoiceNo: reqData.salesId,
+                            InvoiceAmount: reqData.netAmount,
+                            RedeemPoints: reqData.redeemPoints,
+                            SyncStatus: 0,
+                            InventLocationId: this.sessionInfo.inventlocationid,
+                            LoyaltyStatus: 0,
+                        };
+                        if (!(reqData.mobileNo && reqData.mobileNo != "")) return [3 /*break*/, 2];
+                        return [4 /*yield*/, this.redeemService.Redeem(redeemData)];
+                    case 1:
+                        _a.sent();
+                        _a.label = 2;
+                    case 2: return [3 /*break*/, 4];
+                    case 3:
+                        error_14 = _a.sent();
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
                 }
-                catch (error) { }
-                return [2 /*return*/];
             });
         });
     };
     SalesTableService.prototype.saveSalesOrder = function (reqData) {
         return __awaiter(this, void 0, void 0, function () {
-            var queryRunner, unSyncedData, promiseList, customerRecord, salesLine_7, returnData, batchTobeSaved, salestatus, _a, saleslineArray, cond, customerRecords, customerRecord_1, defaultcustomer, mobileCustomer, salesTable_1, taxItemGroup, _i, salesLine_6, item, salesline, condData, customerDetails, pmobileno, userName, ptokenData, pmessage, pmail, imail, error_14;
+            var queryRunner, unSyncedData, promiseList, customerRecord, salesLine_7, returnData, batchTobeSaved, salestatus, _a, saleslineArray, cond, customerRecords, customerRecord_1, defaultcustomer, mobileCustomer, salesTable_1, taxItemGroup, _i, salesLine_6, item, salesline, condData, customerDetails, pmobileno, userName, ptokenData, pmessage, pmail, imail, error_15;
             var _this = this;
             return __generator(this, function (_b) {
                 switch (_b.label) {
@@ -2237,9 +2247,11 @@ var SalesTableService = /** @class */ (function () {
                         defaultcustomer = defaultcustomer ? defaultcustomer : {};
                         if (customerRecord_1.walkincustomer == true) {
                             reqData.taxGroup = defaultcustomer.taxgroup;
+                            reqData.cashDisc = customerRecord_1.cashdisc;
                         }
                         else {
                             reqData.taxGroup = customerRecord_1.taxgroup;
+                            reqData.cashDisc = customerRecord_1.cashdisc;
                         }
                         reqData.multilineDiscountGroupId = customerRecord_1.multilinedisc;
                         reqData.disc = reqData.disc ? reqData.disc : 0;
@@ -2387,7 +2399,7 @@ var SalesTableService = /** @class */ (function () {
                             }); };
                             promiseList.push(pmessage());
                             pmail = function () { return __awaiter(_this, void 0, void 0, function () {
-                                var _i, salesLine_8, item, template, error_15;
+                                var _i, salesLine_8, item, template, error_16;
                                 return __generator(this, function (_a) {
                                     switch (_a.label) {
                                         case 0:
@@ -2425,8 +2437,8 @@ var SalesTableService = /** @class */ (function () {
                                                 })];
                                         case 1: return [2 /*return*/, _a.sent()];
                                         case 2:
-                                            error_15 = _a.sent();
-                                            Log_1.log.error(error_15);
+                                            error_16 = _a.sent();
+                                            Log_1.log.error(error_16);
                                             return [3 /*break*/, 3];
                                         case 3: return [2 /*return*/];
                                     }
@@ -2436,7 +2448,7 @@ var SalesTableService = /** @class */ (function () {
                         }
                         if (reqData.status == "PAID" && reqData.paymentType == "ONLINE") {
                             imail = function () { return __awaiter(_this, void 0, void 0, function () {
-                                var template, reportData, error_16;
+                                var template, reportData, error_17;
                                 return __generator(this, function (_a) {
                                     switch (_a.label) {
                                         case 0:
@@ -2450,8 +2462,8 @@ var SalesTableService = /** @class */ (function () {
                                             return [4 /*yield*/, App_1.App.SendMail(reqData.custEmail, "Invoice", template, reportData)];
                                         case 3: return [2 /*return*/, _a.sent()];
                                         case 4:
-                                            error_16 = _a.sent();
-                                            Log_1.log.error(error_16);
+                                            error_17 = _a.sent();
+                                            Log_1.log.error(error_17);
                                             return [3 /*break*/, 5];
                                         case 5: return [2 /*return*/];
                                     }
@@ -2478,8 +2490,8 @@ var SalesTableService = /** @class */ (function () {
                         return [2 /*return*/, returnData];
                     case 24: return [3 /*break*/, 31];
                     case 25:
-                        error_14 = _b.sent();
-                        Log_1.log.error(error_14, reqData.salesId);
+                        error_15 = _b.sent();
+                        Log_1.log.error(error_15, reqData.salesId);
                         if (!reqData.isInsert) return [3 /*break*/, 27];
                         return [4 /*yield*/, this.rawQuery.updateNumberSequence(reqData.numberSequenceGroup, parseInt(reqData.nextrec) - 1)];
                     case 26:
@@ -2488,7 +2500,7 @@ var SalesTableService = /** @class */ (function () {
                     case 27: return [4 /*yield*/, queryRunner.rollbackTransaction()];
                     case 28:
                         _b.sent();
-                        throw error_14;
+                        throw error_15;
                     case 29: return [4 /*yield*/, queryRunner.release()];
                     case 30:
                         _b.sent();
@@ -2548,7 +2560,7 @@ var SalesTableService = /** @class */ (function () {
     };
     SalesTableService.prototype.saveOrderShipment = function (reqData) {
         return __awaiter(this, void 0, void 0, function () {
-            var queryRunner, salesLine, transactionClosed, salesData, relatedData, prevData, checkToData, checkPrevData, cond, promiseList, _i, salesLine_9, item, qty, returnData, error_17;
+            var queryRunner, salesLine, transactionClosed, salesData, relatedData, prevData, checkToData, checkPrevData, cond, promiseList, _i, salesLine_9, item, qty, returnData, error_18;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -2669,8 +2681,8 @@ var SalesTableService = /** @class */ (function () {
                         return [2 /*return*/, returnData];
                     case 16: return [3 /*break*/, 23];
                     case 17:
-                        error_17 = _a.sent();
-                        Log_1.log.error(error_17, reqData.salesId);
+                        error_18 = _a.sent();
+                        Log_1.log.error(error_18, reqData.salesId);
                         if (!reqData.isInsert) return [3 /*break*/, 19];
                         return [4 /*yield*/, this.rawQuery.updateNumberSequence(reqData.numberSequenceGroup, parseInt(reqData.nextrec) - 1)];
                     case 18:
@@ -2679,7 +2691,7 @@ var SalesTableService = /** @class */ (function () {
                     case 19: return [4 /*yield*/, queryRunner.rollbackTransaction()];
                     case 20:
                         _a.sent();
-                        throw error_17;
+                        throw error_18;
                     case 21: return [4 /*yield*/, queryRunner.release()];
                     case 22:
                         _a.sent();
@@ -2692,7 +2704,7 @@ var SalesTableService = /** @class */ (function () {
     SalesTableService.prototype.saveReturnOrder = function (reqData, queryRunner) {
         if (queryRunner === void 0) { queryRunner = null; }
         return __awaiter(this, void 0, void 0, function () {
-            var canCommitTransaction, condition, salesLine, cond, checkPrevData, customerRecord, defaultcustomer, desinerService, amount, designerServiceData, promiseList, taxItemGroup, _i, salesLine_10, item, _a, _b, batches, returnData, error_18;
+            var canCommitTransaction, condition, salesLine, cond, checkPrevData, customerRecord, defaultcustomer, desinerService, amount, designerServiceData, promiseList, taxItemGroup, _i, salesLine_10, item, _a, _b, batches, returnData, error_19;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -2870,8 +2882,8 @@ var SalesTableService = /** @class */ (function () {
                     case 30: throw { status: 0, message: "CAN_NOT_CREATE_RETURN_ORDER" };
                     case 31: return [3 /*break*/, 40];
                     case 32:
-                        error_18 = _c.sent();
-                        Log_1.log.error(error_18, reqData.salesId);
+                        error_19 = _c.sent();
+                        Log_1.log.error(error_19, reqData.salesId);
                         if (!reqData.isInsert) return [3 /*break*/, 34];
                         return [4 /*yield*/, this.rawQuery.updateNumberSequence(reqData.numberSequenceGroup, parseInt(reqData.nextrec) - 1)];
                     case 33:
@@ -2883,7 +2895,7 @@ var SalesTableService = /** @class */ (function () {
                     case 35:
                         _c.sent();
                         _c.label = 36;
-                    case 36: throw error_18;
+                    case 36: throw error_19;
                     case 37:
                         if (!canCommitTransaction) return [3 /*break*/, 39];
                         return [4 /*yield*/, queryRunner.release()];
@@ -2898,7 +2910,7 @@ var SalesTableService = /** @class */ (function () {
     };
     SalesTableService.prototype.saveOrderReceive = function (reqData) {
         return __awaiter(this, void 0, void 0, function () {
-            var queryRunner, salesLine, transactionClosed, salesData, promiseList, checkPrevData, transferData, cond, batches_5, _i, salesLine_11, item, _a, _b, batches_6, returnData, error_19;
+            var queryRunner, salesLine, transactionClosed, salesData, promiseList, checkPrevData, transferData, cond, batches_5, _i, salesLine_11, item, _a, _b, batches_6, returnData, error_20;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
@@ -3041,8 +3053,8 @@ var SalesTableService = /** @class */ (function () {
                         return [2 /*return*/, returnData];
                     case 19: return [3 /*break*/, 26];
                     case 20:
-                        error_19 = _c.sent();
-                        Log_1.log.error(error_19, reqData.salesId);
+                        error_20 = _c.sent();
+                        Log_1.log.error(error_20, reqData.salesId);
                         if (!reqData.isInsert) return [3 /*break*/, 22];
                         return [4 /*yield*/, this.rawQuery.updateNumberSequence(reqData.numberSequenceGroup, parseInt(reqData.nextrec) - 1)];
                     case 21:
@@ -3051,7 +3063,7 @@ var SalesTableService = /** @class */ (function () {
                     case 22: return [4 /*yield*/, queryRunner.rollbackTransaction()];
                     case 23:
                         _c.sent();
-                        throw error_19;
+                        throw error_20;
                     case 24: return [4 /*yield*/, queryRunner.release()];
                     case 25:
                         _c.sent();
@@ -3063,7 +3075,7 @@ var SalesTableService = /** @class */ (function () {
     };
     SalesTableService.prototype.saveInventoryMovementOrder = function (reqData) {
         return __awaiter(this, void 0, void 0, function () {
-            var queryRunner, salesLine, transactionClosed, salesData, checkStatus, promiseList, cond, _i, salesLine_12, item, _a, _b, batches, batches, _c, batches_7, batch, returnData, error_20;
+            var queryRunner, salesLine, transactionClosed, salesData, checkStatus, promiseList, cond, _i, salesLine_12, item, _a, _b, batches, batches, _c, batches_7, batch, returnData, error_21;
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
@@ -3215,18 +3227,18 @@ var SalesTableService = /** @class */ (function () {
                         return [2 /*return*/, returnData];
                     case 20: return [3 /*break*/, 27];
                     case 21:
-                        error_20 = _d.sent();
+                        error_21 = _d.sent();
                         if (!reqData.isInsert) return [3 /*break*/, 23];
                         return [4 /*yield*/, this.rawQuery.updateNumberSequence(reqData.numberSequenceGroup, parseInt(reqData.nextrec) - 1)];
                     case 22:
                         _d.sent();
                         _d.label = 23;
                     case 23:
-                        Log_1.log.error(error_20, reqData.salesId);
+                        Log_1.log.error(error_21, reqData.salesId);
                         return [4 /*yield*/, queryRunner.rollbackTransaction()];
                     case 24:
                         _d.sent();
-                        throw error_20;
+                        throw error_21;
                     case 25: return [4 /*yield*/, queryRunner.release()];
                     case 26:
                         _d.sent();
@@ -3238,7 +3250,7 @@ var SalesTableService = /** @class */ (function () {
     };
     SalesTableService.prototype.sendForTransferOrderRequest = function (reqData) {
         return __awaiter(this, void 0, void 0, function () {
-            var queryRunner, unSyncedData_1, transferorder, lineids, error_21;
+            var queryRunner, unSyncedData_1, transferorder, lineids, error_22;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -3293,11 +3305,11 @@ var SalesTableService = /** @class */ (function () {
                                 status: transferorder.status,
                             }];
                     case 10:
-                        error_21 = _a.sent();
+                        error_22 = _a.sent();
                         return [4 /*yield*/, queryRunner.rollbackTransaction()];
                     case 11:
                         _a.sent();
-                        throw error_21;
+                        throw error_22;
                     case 12: return [4 /*yield*/, queryRunner.release()];
                     case 13:
                         _a.sent();
@@ -3309,7 +3321,7 @@ var SalesTableService = /** @class */ (function () {
     };
     SalesTableService.prototype.rejectTransferOrder = function (reqData) {
         return __awaiter(this, void 0, void 0, function () {
-            var transferorder, error_22;
+            var transferorder, error_23;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -3350,8 +3362,8 @@ var SalesTableService = /** @class */ (function () {
                                 status: transferorder.status,
                             }];
                     case 7:
-                        error_22 = _a.sent();
-                        throw error_22;
+                        error_23 = _a.sent();
+                        throw error_23;
                     case 8: return [2 /*return*/];
                 }
             });
@@ -3461,7 +3473,7 @@ var SalesTableService = /** @class */ (function () {
     };
     SalesTableService.prototype.saveSalesOrderAfterOnlinePayment = function (reqData, queryRunner) {
         return __awaiter(this, void 0, void 0, function () {
-            var salesLine, reportData_1, salesTable, promiseList, _i, salesLine_13, item, pmobileno, customerDetails, userName, imail, returnData, error_23;
+            var salesLine, reportData_1, salesTable, promiseList, _i, salesLine_13, item, pmobileno, customerDetails, userName, imail, returnData, error_24;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -3533,7 +3545,7 @@ var SalesTableService = /** @class */ (function () {
                         queryRunner.commitTransaction();
                         return [2 /*return*/, returnData];
                     case 5:
-                        error_23 = _a.sent();
+                        error_24 = _a.sent();
                         if (!reqData.isInsert) return [3 /*break*/, 7];
                         return [4 /*yield*/, this.rawQuery.updateNumberSequence(reqData.numberSequenceGroup, parseInt(reqData.nextrec) - 1)];
                     case 6:
@@ -3542,7 +3554,7 @@ var SalesTableService = /** @class */ (function () {
                     case 7: return [4 /*yield*/, queryRunner.rollbackTransaction()];
                     case 8:
                         _a.sent();
-                        throw error_23;
+                        throw error_24;
                     case 9: return [4 /*yield*/, queryRunner.release()];
                     case 10:
                         _a.sent();
@@ -3675,7 +3687,7 @@ var SalesTableService = /** @class */ (function () {
     };
     SalesTableService.prototype.searchPainters = function (item) {
         return __awaiter(this, void 0, void 0, function () {
-            var query, data_1, paintersId_1, query1, painters_1, error_24;
+            var query, data_1, paintersId_1, query1, painters_1, error_25;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -3715,8 +3727,8 @@ var SalesTableService = /** @class */ (function () {
                     case 3: throw { status: 0, message: Props_1.Props.INVALID_DATA };
                     case 4: return [3 /*break*/, 6];
                     case 5:
-                        error_24 = _a.sent();
-                        throw error_24;
+                        error_25 = _a.sent();
+                        throw error_25;
                     case 6: return [2 /*return*/];
                 }
             });

@@ -47,7 +47,7 @@ var HistoricalCustomerReport = /** @class */ (function () {
     }
     HistoricalCustomerReport.prototype.execute = function (params) {
         return __awaiter(this, void 0, void 0, function () {
-            var custaccount, data, olddata, salesTable, salesLines, newLines_1, inventLocationIds_1, lines_1, wquery, invlocations_1, _a, error_1;
+            var custaccount, data, olddata, salesTable, salesLines, newLines_1, inventLocationIds_1, lines_1, wquery, invlocations_1, _a, newArr, error_1;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -58,22 +58,25 @@ var HistoricalCustomerReport = /** @class */ (function () {
                     case 1:
                         data = _b.sent();
                         console.log(data);
-                        if (!(data && data.length > 0)) return [3 /*break*/, 2];
-                        data = data.map(function (item) {
-                            item.lastmodifieddate = App_1.App.convertUTCDateToLocalDate(new Date(item.lastmodifieddate), params.timeZoneOffSet);
-                            item.salesline = item.salesline.map(function (lines) {
-                                lines.colorant = lines.colorant ? lines.colorant : "--";
-                                return lines;
+                        if (data && data.length > 0) {
+                            data = data.map(function (item) {
+                                item.lastmodifieddate = App_1.App.convertUTCDateToLocalDate(new Date(item.lastmodifieddate), params.timeZoneOffSet);
+                                item.salesline = item.salesline.map(function (lines) {
+                                    lines.colorant = lines.colorant ? lines.colorant : "--";
+                                    return lines;
+                                });
+                                return item;
                             });
-                            return item;
-                        });
-                        return [3 /*break*/, 7];
-                    case 2: return [4 /*yield*/, this.oldDataUrl(params)];
+                        }
+                        return [4 /*yield*/, App_1.App.checkInternet()];
+                    case 2:
+                        if (!_b.sent()) return [3 /*break*/, 7];
+                        return [4 /*yield*/, this.oldDataUrl(params)];
                     case 3:
                         olddata = _b.sent();
-                        console.log(olddata);
                         salesTable = olddata && olddata.SalesTable.length > 0 ? olddata.SalesTable : [];
                         salesLines = olddata && olddata.SalesLine.length > 0 ? olddata.SalesLine : [];
+                        console.log("++++++++++++++++++++++++++ salesTable ++++++++++++++++++++++++", salesTable.length);
                         newLines_1 = {};
                         salesLines.forEach(function (line) {
                             var newLine = {};
@@ -105,7 +108,6 @@ var HistoricalCustomerReport = /** @class */ (function () {
                             }
                         });
                         wquery = "select i.inventlocationid,i.namealias as wnamealias,i.\"name\" as wname from inventlocation i where i.inventlocationid in(" + inventLocationIds_1 + ");";
-                        console.log(wquery);
                         if (!inventLocationIds_1) return [3 /*break*/, 5];
                         return [4 /*yield*/, this.db.query(wquery)];
                     case 4:
@@ -116,7 +118,7 @@ var HistoricalCustomerReport = /** @class */ (function () {
                         _b.label = 6;
                     case 6:
                         invlocations_1 = _a;
-                        data = salesTable.map(function (item) {
+                        newArr = salesTable.map(function (item) {
                             var object = {};
                             object.salesId = item.SALESID;
                             object.createddatetime = new Date(item.CREATEDDATETIME);
@@ -135,10 +137,12 @@ var HistoricalCustomerReport = /** @class */ (function () {
                             // console.log(object);
                             return object;
                         });
+                        // console.log("==================Before data================",data.length);
+                        data.push.apply(data, newArr);
                         _b.label = 7;
                     case 7:
                         // let olddata = await this.oldDataUrl(params);
-                        console.log(data);
+                        console.log("+++++++++++++++++++++++++Final Data+++++++++++++++++++++++++++++++++++++", data.length);
                         return [2 /*return*/, data];
                     case 8: throw { message: "Select custaccount ID" };
                     case 9: return [3 /*break*/, 11];
@@ -164,7 +168,6 @@ var HistoricalCustomerReport = /** @class */ (function () {
                             result.title = title;
                             console.table(title);
                         }
-                        console.log("data:----------", renderData);
                         file = params.lang == "en" ? "historical-customer-en" : "historical-customer-ar";
                         try {
                             completeData = { data: renderData };
@@ -268,7 +271,8 @@ var HistoricalCustomerReport = /** @class */ (function () {
                         return [4 /*yield*/, axios.get(url)];
                     case 2:
                         data = _a.sent();
-                        console.log(data);
+                        // console.log(data.data);
+                        // console.log("===========================================",data.data.lengt)
                         // this.otpStore.set(params.mobile, { token: data.data.otp_token, validate: false });
                         return [2 /*return*/, data.data];
                     case 3:
