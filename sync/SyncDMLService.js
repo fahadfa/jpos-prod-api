@@ -293,15 +293,15 @@ var SyncDMLService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         stageDbConfig = SyncServiceHelper_1.SyncServiceHelper.StageDBOptions();
-                        sql = "select *  from sync_fallback where target_id='" + STORE_ID + "' and is_synced = false order by from_date asc limit 1";
+                        sql = "select *  from sync_fallback where target_id='" + STORE_ID + "' and is_synced = false order by from_date asc limit 100";
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         return [4 /*yield*/, SyncServiceHelper_1.SyncServiceHelper.ExecuteQuery(stageDbConfig, sql, this.log)];
                     case 2:
                         soruceRes = _a.sent();
-                        if (soruceRes && soruceRes.rows && soruceRes.rows[0]) {
-                            return [2 /*return*/, soruceRes.rows[0]];
+                        if (soruceRes && soruceRes.rows && soruceRes.rows) {
+                            return [2 /*return*/, soruceRes.rows];
                         }
                         else {
                             return [2 /*return*/, null];

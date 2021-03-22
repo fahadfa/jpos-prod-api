@@ -37,10 +37,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var typeorm_1 = require("typeorm");
 var App_1 = require("../../utils/App");
+var RawQuery_1 = require("../common/RawQuery");
 var moment = require("moment");
 var SalesByCustomerReport = /** @class */ (function () {
     function SalesByCustomerReport() {
         this.db = typeorm_1.getManager();
+        this.rawQuery = new RawQuery_1.RawQuery();
     }
     /**
      * data structure.
@@ -139,20 +141,27 @@ var SalesByCustomerReport = /** @class */ (function () {
     };
     SalesByCustomerReport.prototype.report = function (result, params) {
         return __awaiter(this, void 0, void 0, function () {
-            var renderData, file;
+            var renderData, title, file;
             return __generator(this, function (_a) {
-                // console.log(result.salesLine[0].product.nameEnglish);
-                renderData = result;
-                renderData.printDate = new Date(params.printDate).toISOString().replace(/T/, " ").replace(/\..+/, "");
-                console.log(params.lang);
-                file = params.lang == "en" ? "sales-by-customer-en" : "sales-by-customer-ar";
-                try {
-                    return [2 /*return*/, App_1.App.HtmlRender(file, renderData)];
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.rawQuery.getAppLangName("SALES_MAN_REPORT_BY_CUSTOMER")];
+                    case 1:
+                        title = _a.sent();
+                        renderData = result;
+                        renderData.printDate = new Date(params.printDate).toISOString().replace(/T/, " ").replace(/\..+/, "");
+                        console.log(params.lang);
+                        file = params.lang == "en" ? "sales-by-customer-en" : "sales-by-customer-ar";
+                        if (title) {
+                            renderData.title = title;
+                        }
+                        try {
+                            return [2 /*return*/, App_1.App.HtmlRender(file, renderData)];
+                        }
+                        catch (error) {
+                            throw error;
+                        }
+                        return [2 /*return*/];
                 }
-                catch (error) {
-                    throw error;
-                }
-                return [2 /*return*/];
             });
         });
     };

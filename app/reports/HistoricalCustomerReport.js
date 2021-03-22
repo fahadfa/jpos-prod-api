@@ -164,10 +164,6 @@ var HistoricalCustomerReport = /** @class */ (function () {
                         return [4 /*yield*/, this.rawQuery.getAppLangName("HISTORICAL_CUSTOMER_REPORT")];
                     case 1:
                         title = _a.sent();
-                        if (title) {
-                            result.title = title;
-                            console.table(title);
-                        }
                         file = params.lang == "en" ? "historical-customer-en" : "historical-customer-ar";
                         try {
                             completeData = { data: renderData };
@@ -179,6 +175,10 @@ var HistoricalCustomerReport = /** @class */ (function () {
                             completeData.walkincustomer = result.length > 0 ? result[0].walkincustomer : "";
                             completeData.phone = result.length > 0 && completeData.walkincustomer ? result[0].phone : "";
                             completeData.custAccount = result.length > 0 ? result[0].custAccount : "";
+                            if (title) {
+                                completeData.title = title;
+                                console.table(title);
+                            }
                             return [2 /*return*/, App_1.App.HtmlRender(file, completeData)];
                         }
                         catch (error) {

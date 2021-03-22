@@ -369,49 +369,56 @@ var SyncService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 isFallBackProceed = true;
                 cron.schedule("*/23 * * * * *", function () { return __awaiter(_this, void 0, void 0, function () {
-                    var data, error_6;
+                    var dataList, _i, dataList_1, data, error_6;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
                             case 0:
-                                _a.trys.push([0, 10, , 11]);
-                                if (!(isFallBackProceed == true)) return [3 /*break*/, 8];
+                                _a.trys.push([0, 12, , 13]);
+                                if (!(isFallBackProceed == true)) return [3 /*break*/, 10];
                                 isFallBackProceed = false;
                                 this.log.debug("(((((((((( SYNC FALLBACK START))))))))))");
                                 return [4 /*yield*/, this.checkInternet()];
                             case 1:
-                                if (!_a.sent()) return [3 /*break*/, 6];
+                                if (!_a.sent()) return [3 /*break*/, 8];
                                 return [4 /*yield*/, this.syncDMLService.fallBackData()];
                             case 2:
-                                data = _a.sent();
-                                this.log.debug(data);
-                                if (!(data && data.id)) return [3 /*break*/, 5];
-                                return [4 /*yield*/, this.syncDMLService.execute("M", 0, data)];
+                                dataList = _a.sent();
+                                _i = 0, dataList_1 = dataList;
+                                _a.label = 3;
                             case 3:
-                                _a.sent();
-                                return [4 /*yield*/, this.syncDMLService.fallBackDataUpdate(data.id)];
+                                if (!(_i < dataList_1.length)) return [3 /*break*/, 7];
+                                data = dataList_1[_i];
+                                if (!(data && data.id)) return [3 /*break*/, 6];
+                                return [4 /*yield*/, this.syncDMLService.execute("M", 0, data)];
                             case 4:
                                 _a.sent();
-                                _a.label = 5;
-                            case 5: return [3 /*break*/, 7];
+                                return [4 /*yield*/, this.syncDMLService.fallBackDataUpdate(data.id)];
+                            case 5:
+                                _a.sent();
+                                _a.label = 6;
                             case 6:
+                                _i++;
+                                return [3 /*break*/, 3];
+                            case 7: return [3 /*break*/, 9];
+                            case 8:
                                 this.log.warn(">>>>>>>>>>>>>>>>> No Internet connection <<<<<<<<<<<<<<<<<<<<");
-                                _a.label = 7;
-                            case 7:
+                                _a.label = 9;
+                            case 9:
                                 this.log.debug("(((((((((( SYNC CLOSE FALLBACK ))))))))))");
                                 isFallBackProceed = true;
-                                return [3 /*break*/, 9];
-                            case 8:
-                                this.log.warn("FALLBACK still processing ...................................");
-                                _a.label = 9;
-                            case 9: return [3 /*break*/, 11];
+                                return [3 /*break*/, 11];
                             case 10:
+                                this.log.warn("FALLBACK still processing ...................................");
+                                _a.label = 11;
+                            case 11: return [3 /*break*/, 13];
+                            case 12:
                                 error_6 = _a.sent();
                                 isFallBackProceed = true;
                                 this.log.error("--------- CRON FALLBACK ERROR ---------");
                                 this.log.error(error_6);
                                 this.log.error("--------- CRON FALLBACK ERROR ---------");
-                                return [3 /*break*/, 11];
-                            case 11: return [2 /*return*/];
+                                return [3 /*break*/, 13];
+                            case 13: return [2 /*return*/];
                         }
                     });
                 }); });
