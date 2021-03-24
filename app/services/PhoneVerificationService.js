@@ -203,9 +203,55 @@ var PhoneVerificationService = /** @class */ (function () {
             });
         });
     };
+    PhoneVerificationService.prototype.sendOtpToEmail = function (item) {
+        return __awaiter(this, void 0, void 0, function () {
+            var phoneVerification, data, error_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        phoneVerification = new PhoneVerification_1.PhoneVerification();
+                        phoneVerification.phoneNumber = item.phoneNumber;
+                        phoneVerification.email = item.phoneNumber;
+                        phoneVerification.otpSent = App_1.App.generateOTP(4);
+                        phoneVerification.customerId = item.customerId;
+                        phoneVerification.dataareaid = this.sessionInfo.dataareaid;
+                        phoneVerification.createdBy = this.sessionInfo.userName;
+                        phoneVerification.createdDateTime = new Date(App_1.App.DateNow());
+                        phoneVerification.countryCode = item.countryCode ? item.countryCode : 966;
+                        phoneVerification.otpExpiryTime = new Date(App_1.App.DateNow());
+                        phoneVerification.otpExpiryTime = new Date(phoneVerification.otpExpiryTime.getTime() + 10 * 60 * 1000);
+                        return [4 /*yield*/, this.save(phoneVerification)];
+                    case 1:
+                        data = _a.sent();
+                        // let message = `Your OTP is `;
+                        return [4 /*yield*/, App_1.App.SendMail(phoneVerification.email, "OTP for Verification", "otpsent", phoneVerification)
+                            // await this.sms.sendMessage(
+                            //   phoneVerification.countryCode,
+                            //   phoneVerification.phoneNumber,
+                            //   message + phoneVerification.otpSent
+                            // );
+                        ];
+                    case 2:
+                        // let message = `Your OTP is `;
+                        _a.sent();
+                        // await this.sms.sendMessage(
+                        //   phoneVerification.countryCode,
+                        //   phoneVerification.phoneNumber,
+                        //   message + phoneVerification.otpSent
+                        // );
+                        return [2 /*return*/, { id: data.id, message: "OTP Sent" }];
+                    case 3:
+                        error_6 = _a.sent();
+                        throw error_6;
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     PhoneVerificationService.prototype.sendOtpToGroup = function (item) {
         return __awaiter(this, void 0, void 0, function () {
-            var query, groupPhoneNums, sendMsgPromisesList_1, saveList_1, otp_1, otpexpire_1, data, ids, error_6;
+            var query, groupPhoneNums, sendMsgPromisesList_1, saveList_1, otp_1, otpexpire_1, data, ids, error_7;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -244,8 +290,8 @@ var PhoneVerificationService = /** @class */ (function () {
                         ids = data.reduce(function (a, b) { return a.id + "," + b.id; });
                         return [2 /*return*/, { id: ids, message: "OTP Sent" }];
                     case 4:
-                        error_6 = _a.sent();
-                        throw error_6;
+                        error_7 = _a.sent();
+                        throw error_7;
                     case 5: return [2 /*return*/];
                 }
             });
@@ -253,7 +299,7 @@ var PhoneVerificationService = /** @class */ (function () {
     };
     PhoneVerificationService.prototype.verfiyOtp = function (item) {
         return __awaiter(this, void 0, void 0, function () {
-            var phoneVerification, error_7;
+            var phoneVerification, error_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -279,8 +325,8 @@ var PhoneVerificationService = /** @class */ (function () {
                     case 7: throw { status: 0, message: "INVALID_MOBILE_NUMBER" };
                     case 8: return [3 /*break*/, 10];
                     case 9:
-                        error_7 = _a.sent();
-                        throw error_7;
+                        error_8 = _a.sent();
+                        throw error_8;
                     case 10: return [2 /*return*/];
                 }
             });

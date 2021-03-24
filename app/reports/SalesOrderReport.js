@@ -83,14 +83,13 @@ var SalesOrderReport = /** @class */ (function () {
                         //   new Date(data.lastmodifieddate),
                         //   parseInt(params.timeZoneOffSet)
                         // ).toLocaleString();
-                        if (process.env.ENV_STORE_ID) {
-                            data_1.lastmodifieddate = App_1.App.convertUTCDateToLocalDate(new Date(data_1.lastmodifieddate), 0); //data.lastmodifieddate
-                            // ? new Date(data.lastmodifieddate).toLocaleString()
-                            // : data.lastmodifieddate;
-                        }
-                        else {
-                            data_1.lastmodifieddate = App_1.App.convertUTCDateToLocalDate(new Date(data_1.lastmodifieddate), parseInt(params.timeZoneOffSet));
-                        }
+                        // if (process.env.ENV_STORE_ID) {
+                        //   data.lastmodifieddate = App.convertUTCDateToLocalDate(new Date(data.lastmodifieddate),0);//data.lastmodifieddate
+                        //     // ? new Date(data.lastmodifieddate).toLocaleString()
+                        //     // : data.lastmodifieddate;
+                        // } else {
+                        data_1.lastmodifieddate = App_1.App.convertUTCDateToLocalDate(new Date(data_1.lastmodifieddate), parseInt(params.timeZoneOffSet));
+                        // }
                         if (data_1.paymentMode != "CASH" && data_1.paymentMode != "ONLINE") {
                             if (data_1.iscash) {
                                 data_1.paymentMode = "Cash";
@@ -215,7 +214,7 @@ var SalesOrderReport = /** @class */ (function () {
                                     vatGrand: Math.round((Number(data_1.vatamount) + Number.EPSILON) * 100) / 100,
                                     vat: data_1.vat,
                                     paymentType: data_1.paymentType,
-                                    shippedDate: data_1.lastmodifieddate.split(",")[0],
+                                    shippedDate: data_1.lastmodifieddate.split(" ")[0],
                                     paymentMode: data_1.paymentType == "ONLINE" ? "Online" : data_1.paymentMode,
                                     paymentModeAr: data_1.paymentType == "ONLINE" ? "عبر الانترنت" : data_1.paymentModeAr,
                                     cashAmount: Math.round((Number(data_1.cashAmount) + Number.EPSILON) * 100) / 100,

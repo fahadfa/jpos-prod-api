@@ -2247,11 +2247,12 @@ var SalesTableService = /** @class */ (function () {
                         defaultcustomer = defaultcustomer ? defaultcustomer : {};
                         if (customerRecord_1.walkincustomer == true) {
                             reqData.taxGroup = defaultcustomer.taxgroup;
-                            reqData.cashDisc = customerRecord_1.cashdisc;
                         }
                         else {
                             reqData.taxGroup = customerRecord_1.taxgroup;
-                            reqData.cashDisc = customerRecord_1.cashdisc;
+                            if (reqData.payment != 'CASH') {
+                                reqData.cashDisc = customerRecord_1.cashdisc;
+                            }
                         }
                         reqData.multilineDiscountGroupId = customerRecord_1.multilinedisc;
                         reqData.disc = reqData.disc ? reqData.disc : 0;
