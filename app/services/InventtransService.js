@@ -91,7 +91,7 @@ var InventtransService = /** @class */ (function () {
                     case 1:
                         data = _a.sent();
                         return [3 /*break*/, 4];
-                    case 2: return [4 /*yield*/, this.rawQuery.inventoryOnHand(params)];
+                    case 2: return [4 /*yield*/, this.rawQuery.sales_inventoryOnHand(params)];
                     case 3:
                         data = _a.sent();
                         _a.label = 4;
