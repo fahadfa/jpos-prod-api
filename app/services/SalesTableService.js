@@ -424,6 +424,9 @@ var SalesTableService = /** @class */ (function () {
                     j.quantity = parseInt(j.quantity);
                 });
             }
+            else {
+                v.batch = [];
+            }
             v.appliedDiscounts = v.appliedDiscounts ? v.appliedDiscounts : [];
             v.appliedDiscounts.map(function (value) {
                 value.percentage = value.percentage ? parseFloat(value.percentage) : 0;
@@ -475,7 +478,7 @@ var SalesTableService = /** @class */ (function () {
             var inventory, availabilty;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.rawQuery.inventoryOnHand({
+                    case 0: return [4 /*yield*/, this.rawQuery.sales_inventoryOnHand({
                             inventlocationid: custAccount == this.sessionInfo.inventlocationid ? custAccount : this.sessionInfo.inventlocationid,
                             itemId: item.itemid,
                             configid: item.color ? item.color.code : null,
@@ -2160,7 +2163,7 @@ var SalesTableService = /** @class */ (function () {
     };
     SalesTableService.prototype.saveSalesOrder = function (reqData) {
         return __awaiter(this, void 0, void 0, function () {
-            var queryRunner, unSyncedData, promiseList, customerRecord, salesLine_7, returnData, batchTobeSaved, salestatus, _a, saleslineArray, cond, customerRecords, customerRecord_1, defaultcustomer, mobileCustomer, salesTable_1, taxItemGroup, _i, salesLine_6, item, salesline, condData, customerDetails, pmobileno, userName, ptokenData, pmessage, pmail, imail, error_15;
+            var queryRunner, unSyncedData, promiseList, salesLine_7, returnData, salestatus, _a, saleslineArray, cond, customerRecords, customerRecord_1, defaultcustomer, mobileCustomer, salesTable_1, taxItemGroup, _i, salesLine_6, item, salesline, condData, customerDetails, pmobileno, userName, ptokenData, pmessage, pmail, imail, error_15;
             var _this = this;
             return __generator(this, function (_b) {
                 switch (_b.label) {
@@ -2178,11 +2181,9 @@ var SalesTableService = /** @class */ (function () {
                         _b.trys.push([3, 25, 29, 31]);
                         unSyncedData = [];
                         promiseList = [];
-                        customerRecord = void 0;
                         salesLine_7 = reqData.salesLine;
                         returnData = void 0;
                         delete reqData.salesLine;
-                        batchTobeSaved = [];
                         reqData.invoiceDate = new Date(App_1.App.DateNow());
                         if (!(reqData && reqData.salesId)) return [3 /*break*/, 5];
                         return [4 /*yield*/, this.rawQuery.checkSalesStatus(reqData.salesId)];
@@ -3377,7 +3378,7 @@ var SalesTableService = /** @class */ (function () {
                 switch (_b.label) {
                     case 0:
                         batches = [];
-                        return [4 /*yield*/, this.rawQuery.inventoryOnHand({
+                        return [4 /*yield*/, this.rawQuery.fifo_inventory_check({
                                 inventlocationid: this.sessionInfo.inventlocationid,
                                 itemId: item.itemid,
                                 configid: item.configId,

@@ -6,6 +6,12 @@
     <meta name="description" content="بيسب" />
   </head>
   <style>
+    footer {
+    position: fixed;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+  }
     body {
       font-family: " Courier New", Courier, monospace !important;
       font-size: 10px;
@@ -177,8 +183,11 @@
       }
 
       @page {
+      margin: 3.6cm 0.5cm 4.5cm 0.5cm;
+    }
+      /* @page {
         margin: 2cm 0.5cm 1cm 0.5cm;
-      }
+      } */
     }
   </style>
 
@@ -535,13 +544,13 @@
         {{/if}}
       </table>
 
-      <table width="100%" style="background: #fff; padding-top: 30px; position: fixed; bottom: 120px">
+      <!-- <table width="100%" style="background: #fff; padding-top: 30px; position: fixed; bottom: 120px">
         <tr>
           <td style="width: 33%; font-size: 15px; text-align: right">المستلم</td>
           <td style="width: 33%; font-size: 15px; text-align: center">البائع</td>
           <td style="width: 33%; font-size: 15px; text-align: left">الشركة</td>
         </tr>
-      </table>
+      </table> -->
 
       {{/each}}
     </section>
@@ -880,17 +889,32 @@
         {{/if}}
       </table>
 
-      <table width="100%" style="background: #fff; padding-top: 30px; position: fixed; bottom: 120px">
+      <!-- <table width="100%" style="background: #fff; padding-top: 30px; position: fixed; bottom: 120px">
         <tr>
           <td style="width: 33%; font-size: 15px; text-align: right">المستلم</td>
           <td style="width: 33%; font-size: 15px; text-align: center">البائع</td>
           <td style="width: 33%; font-size: 15px; text-align: left">الشركة</td>
         </tr>
-      </table>
+      </table> -->
 
       {{/each}}
     </section>
 
     {{/unless}}
+
+    <footer >
+      <div style="width:100%;height:50px;border-top: 1px dotted #8a8989;">
+       
+      </div>
+      <table width="100%" >
+  
+        <tr>
+          <td style="width: 33%; font-size: 15px; text-align: right">المستلم</td>
+          <td style="width: 33%; font-size: 15px; text-align: center">البائع</td>
+          <td style="width: 33%; font-size: 15px; text-align: left">الشركة</td>
+        </tr>
+  
+      </table>
+    </footer>
   </body>
 </html>

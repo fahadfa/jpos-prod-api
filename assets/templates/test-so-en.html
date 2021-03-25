@@ -1,419 +1,424 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
-    <meta http-equiv="Content-Language" content="ar-sy" />
-    <meta name="description" content="بيسب" />
-  </head>
-  <style>
-    body {
-      font-family: " Courier New", Courier, monospace !important;
-      font-size: 10px;
-      background: #fff;
-      padding: 0px;
-      font-weight: normal !important;
-    }
 
-    table {
-      /* page-break-inside: auto; */
-    }
+<head>
+  <meta http-equiv="content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Language" content="ar-sy" />
+  <meta name="description" content="بيسب" />
+</head>
+<style>
+  footer {
+    position: fixed;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+  }
 
-    tr {
-      page-break-inside: avoid;
-      /* page-break-after: always; */
-      border-bottom: 1px dotted #8a8989;
-      padding: 1px;
-    }
+  body {
+    font-family: " Courier New", Courier, monospace !important;
+    font-size: 10px;
+    background: #fff;
+    padding: 0px;
+    font-weight: normal !important;
+  }
 
-    thead {
-      /* display: table-header-group; */
-    }
+  table {
+    /* page-break-inside: auto; */
+  }
 
-    tfoot {
-      /* display: table-footer-group; */
-    }
+  tr {
+    page-break-inside: avoid;
+    /* page-break-after: always; */
+    border-bottom: 1px dotted #8a8989;
+    padding: 1px;
+  }
 
-    th,
-    td {
-      padding: 2px 5px;
-    }
+  thead {
+    /* display: table-header-group; */
+  }
 
-    #bg__watermark {
-      display: block;
-      min-width: 100%;
-      opacity: 0.5;
-    }
+  tfoot {
+    /* display: table-footer-group; */
+  }
 
-    #bg__text__watermark {
-      color: lightgrey;
-      font-size: 120px;
-      text-align: center;
-      transform: rotate(-45deg);
-      transform-origin: 50% 50%;
-      -webkit-transform: rotate(-45deg);
-      -webkit-transform-origin: 50% 50%;
-      opacity: 0.9;
-      filter: alpha(opacity=50);
-      background-color: transparent;
-      background-size: 100%;
-      position: fixed;
-      margin: 50% auto;
-    }
+  th,
+  td {
+    padding: 2px 5px;
+  }
 
-    .mainheading {
-      text-align: center;
-      font-weight: 600;
-      font-size: 20px;
-      margin: 20px auto;
-    }
+  #bg__watermark {
+    display: block;
+    min-width: 100%;
+    opacity: 0.5;
+  }
 
+  #bg__text__watermark {
+    color: lightgrey;
+    font-size: 120px;
+    text-align: center;
+    transform: rotate(-45deg);
+    transform-origin: 50% 50%;
+    -webkit-transform: rotate(-45deg);
+    -webkit-transform-origin: 50% 50%;
+    opacity: 0.9;
+    filter: alpha(opacity=50);
+    background-color: transparent;
+    background-size: 100%;
+    position: fixed;
+    margin: 50% auto;
+  }
+
+  .mainheading {
+    text-align: center;
+    font-weight: 600;
+    font-size: 20px;
+    margin: 20px auto;
+  }
+
+  #headertbl {
+    width: 100%;
+    /* margin-top: 20px !important; */
+    /* padding: 20px !important; */
+    margin-bottom: 40px;
+    padding-top: 40px;
+    /* padding-bottom: 40px; */
+    position: relative;
+    top: 40px;
+  }
+
+  .tdleft {
+    text-align: left;
+  }
+
+  .tdright {
+    text-align: right;
+  }
+
+  .tdcenter {
+    text-align: center;
+  }
+
+  .textbold {
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  table.dash {
+    /* border: 1px dashed #cccccc; */
+    border-collapse: collapse;
+  }
+
+  table.dash tr {
+    /* color:green; */
+    height: 10px;
+  }
+
+  
+
+  table.dash td,
+  table.dash th {
+    border: 1px dashed #cccccc;
+  }
+
+  #gtotal {
+    margin-top: 10px;
+  }
+
+  #gtotal,
+  #gtotal td,
+  #gtotal th {
+    border: 1px solid #eae8e8;
+  }
+
+  #disctable,
+  #disctable td,
+  #disctable th,
+  #tblfootertotal,
+  #tblfootertotal td {
+    border: 0;
+  }
+
+  table.dash tbody {
+    border: 1px dashed #cccccc;
+  }
+
+  .copy-text {
+    color: #000;
+    font-size: 20px;
+    border: 1px solid #000;
+    font-weight: 600;
+    padding: 10px;
+    margin: 20px;
+  }
+
+  .inline-table {
+    border-bottom: 1px solid black;
+    padding: 0px !important;
+    margin: 0px !important;
+  }
+
+  .textboldtd {
+    font-size: 11px;
+    font-weight: bold;
+  }
+
+  @page {
+    size: A4;
+    margin: 10px;
+  }
+
+  @media print {
     #headertbl {
       width: 100%;
-      /* margin-top: 20px !important; */
-      /* padding: 20px !important; */
-      margin-bottom: 40px;
-      padding-top: 40px;
-      /* padding-bottom: 40px; */
-      position: relative;
-      top: 40px;
-    }
-
-    .tdleft {
-      text-align: left;
-    }
-
-    .tdright {
-      text-align: right;
-    }
-
-    .tdcenter {
-      text-align: center;
-    }
-
-    .textbold {
-      font-weight: bold;
-      font-size: 16px;
-    }
-
-    table.dash {
-      /* border: 1px dashed #cccccc; */
-      border-collapse: collapse;
-    }
-
-    table.dash td,
-    table.dash th {
-      border: 1px dashed #cccccc;
-    }
-
-    #gtotal {
-      margin-top: 10px;
-    }
-
-    #gtotal,
-    #gtotal td,
-    #gtotal th {
-      border: 1px solid #eae8e8;
-    }
-
-    #disctable,
-    #disctable td,
-    #disctable th,
-    #tblfootertotal,
-    #tblfootertotal td {
-      border: 0;
-    }
-
-    table.dash tbody {
-      border: 1px dashed #cccccc;
-    }
-
-    .copy-text {
-      color: #000;
-      font-size: 20px;
-      border: 1px solid #000;
-      font-weight: 600;
-      padding: 10px;
-      margin: 20px;
-    }
-
-    .inline-table {
-      border-bottom: 1px solid black;
-      padding: 0px !important;
-      margin: 0px !important;
-    }
-
-    .textboldtd {
-      font-size: 11px;
-      font-weight: bold;
-    }
-
-    @page {
-      size: A4;
-      margin: 10px;
-    }
-
-    @media print {
-      #headertbl {
-        width: 100%;
-        /* margin-top: 60px; */
-        /* margin-bottom: 20px; */
-        /* padding-top: 60px; */
-        /* position: relative;
+      /* margin-top: 60px; */
+      /* margin-bottom: 20px; */
+      /* padding-top: 60px; */
+      /* position: relative;
         top: 50px; */
-      }
+    }
 
-      /* table.dash {
+    /* table.dash {
         margin-top:120px;
         border: 1px dashed #cccccc;
         border-collapse: collapse;
     } */
 
-      tfoot {
-        /* display: table-footer-group; */
-      }
-
-      thead {
-        /* display: table-footer-group; */
-      }
-
-      @page {
-        margin: 2cm 0.5cm 1cm 0.5cm;
-      }
+    tfoot {
+      /* display: table-footer-group; */
     }
 
-    .borderNone {
-      border: none !important;
-      border-bottom: 1px solid #eae8e8 !important;
+    thead {
+      /* display: table-footer-group; */
     }
 
-    .borderLeftNone {
-      border-left: none !important;
+    @page {
+      margin: 3.6cm 0.5cm 5.5cm 0.5cm;
     }
-  </style>
+  }
 
-  <body>
-    <section>
-      <div id="bg__watermark">
-        <!-- <p id="bg__text__watermark">Only for testing</p> -->
-      </div>
+  .borderNone {
+    border: none !important;
+    border-bottom: 1px solid #eae8e8 !important;
+  }
 
-      {{#each salesLine}}
-      <table id="headertbl">
+  .borderLeftNone {
+    border-left: none !important;
+  }
+</style>
+
+<body>
+  <section>
+    <div id="bg__watermark">
+      <!-- <p id="bg__text__watermark">Only for testing</p> -->
+    </div>
+
+    {{#each salesLine}}
+    <table id="headertbl">
+      <tr>
+        <td colspan="3" valign="top" style="width: 33%">
+          <table style="text-align: left">
+            <tr class="billing">
+              <td class="textboldtd" valign="top">From</td>
+              <td valign="top">:</td>
+              <td>{{this.wnamealias}}</td>
+            </tr>
+            <tr class="billing">
+              <td class="textboldtd" valign="top">Phone</td>
+              <td valign="top">:</td>
+
+              <td>{{this.custmobilenumber}}</td>
+            </tr>
+            <tr class="billing">
+              <td class="textboldtd" valign="top">Fax</td>
+              <td valign="top">:</td>
+              <td>{{this.fax}}</td>
+            </tr>
+            <tr class="billing">
+              <td class="textboldtd" valign="top">Customer</td>
+              <td valign="top">:</td>
+              <td>
+                {{#if this.invoiceAccount}} {{this.invoiceAccount}} {{else}} {{this.custAccount}} {{/if}} -
+                {{this.customername}}
+              </td>
+            </tr>
+            <tr class="billing">
+              <td class="textboldtd">Receiving Vat No.</td>
+              <td>:</td>
+              <td>{{this.customerVatNumber}}</td>
+            </tr>
+            <tr class="billing">
+              <td class="textboldtd">Delivery Address</td>
+              <td>:</td>
+              <td>{{this.deliveryaddress}}</td>
+            </tr>
+            <tr class="billing">
+              <td class="textboldtd">Payment Type</td>
+              <td>:</td>
+              <td>{{this.paymentMode}}</td>
+            </tr>
+            <tr class="billing">
+              <td class="textboldtd">Shipping Date</td>
+              <td>:</td>
+              <td>{{this.shippedDate}}</td>
+            </tr>
+          </table>
+        </td>
+        <td colspan="3" valign="bottom" style="width: 33%">
+          <table align="center" style="text-align: center">
+            {{#if this.originalPrinted}}
+            <tr>
+              <td class="copy-text">COPY</td>
+            </tr>
+            {{/if}}
+            <tr>
+              <td>Sales Invoice</td>
+            </tr>
+            <tr>
+              <td><span style="font-size: 14px; font-weight: bold">{{salesId}}</span></td>
+            </tr>
+          </table>
+        </td>
+        <td colspan="4" valign="top" style="width: 33%">
+          <table align="right">
+            <tr class="billing">
+              <td class="textboldtd">User</td>
+              <td>:</td>
+              <td>{{this.createdby}}</td>
+            </tr>
+            <tr class="billing">
+              <td class="textboldtd">Invoice Date</td>
+              <td>:</td>
+              <td class="quotation-date">{{this.lastmodifieddate}}</td>
+            </tr>
+
+            {{#if this.voucherdiscchecked}}
+            <tr class="billing">
+              <td class="textboldtd">Voucher No</td>
+              <td>:</td>
+              <td class="quotation-date">{{this.vouchernum}}</td>
+            </tr>
+            {{/if}}
+
+            <tr class="billing">
+              <td class="textboldtd">Supplier Vat No.</td>
+              <td>:</td>
+              <td>300533832200003</td>
+            </tr>
+
+            <tr class="billing">
+              <td class="textboldtd">Sales Man</td>
+              <td>:</td>
+              <td>{{this.salesman}}</td>
+            </tr>
+
+            <tr class="billing">
+              <td class="textboldtd">Notes</td>
+              <td>:</td>
+              <td>{{this.notes}}</td>
+            </tr>
+            {{#if this.zipcode}}
+            <tr class="billing">
+              <td class="textboldtd">Zipcode</td>
+              <td>:</td>
+              <td>{{this.zipcode}}</td>
+            </tr>
+            {{/if}}
+
+            <tr class="billing">
+              <td class="textboldtd">Page</td>
+              <td>:</td>
+              <td>{{this.page}} | {{this.totalPages}}</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <table class="dash" width="100%" cellpadding="0" cellspacing="0" style="position: relative;top: 2px;">
+      <thead>
         <tr>
-          <td colspan="3" valign="top" style="width: 33%">
-            <table style="text-align: left">
-              <tr class="billing">
-                <td class="textboldtd" valign="top">From</td>
-                <td valign="top">:</td>
-                <td>{{this.wnamealias}}</td>
-              </tr>
-              <tr class="billing">
-                <td class="textboldtd" valign="top">Phone</td>
-                <td valign="top">:</td>
-
-                <td>{{this.custmobilenumber}}</td>
-              </tr>
-              <tr class="billing">
-                <td class="textboldtd" valign="top">Fax</td>
-                <td valign="top">:</td>
-                <td>{{this.fax}}</td>
-              </tr>
-              <tr class="billing">
-                <td class="textboldtd" valign="top">Customer</td>
-                <td valign="top">:</td>
-                <td>
-                  {{#if this.invoiceAccount}} {{this.invoiceAccount}} {{else}} {{this.custAccount}} {{/if}} -
-                  {{this.customername}}
-                </td>
-              </tr>
-              <tr class="billing">
-                <td class="textboldtd">Receiving Vat No.</td>
-                <td>:</td>
-                <td>{{this.customerVatNumber}}</td>
-              </tr>
-              <tr class="billing">
-                <td class="textboldtd">Delivery Address</td>
-                <td>:</td>
-                <td>{{this.deliveryaddress}}</td>
-              </tr>
-              <tr class="billing">
-                <td class="textboldtd">Payment Type</td>
-                <td>:</td>
-                <td>{{this.paymentMode}}</td>
-              </tr>
-              <tr class="billing">
-                <td class="textboldtd">Shipping Date</td>
-                <td>:</td>
-                <td>{{this.shippedDate}}</td>
-              </tr>
-            </table>
-          </td>
-          <td colspan="3" valign="bottom" style="width: 33%">
-            <table align="center" style="text-align: center">
-              {{#if this.originalPrinted}}
-              <tr>
-                <td class="copy-text">COPY</td>
-              </tr>
-              {{/if}}
-              <tr>
-                <td>Sales Invoice</td>
-              </tr>
-              <tr>
-                <td><span style="font-size: 14px; font-weight: bold">{{salesId}}</span></td>
-              </tr>
-            </table>
-          </td>
-          <td colspan="4" valign="top" style="width: 33%">
-            <table align="right">
-              <tr class="billing">
-                <td class="textboldtd">User</td>
-                <td>:</td>
-                <td>{{this.createdby}}</td>
-              </tr>
-              <tr class="billing">
-                <td class="textboldtd">Invoice Date</td>
-                <td>:</td>
-                <td class="quotation-date">{{this.lastmodifieddate}}</td>
-              </tr>
-
-              {{#if this.voucherdiscchecked}}
-              <tr class="billing">
-                <td class="textboldtd">Voucher No</td>
-                <td>:</td>
-                <td class="quotation-date">{{this.vouchernum}}</td>
-              </tr>
-              {{/if}}
-
-              <tr class="billing">
-                <td class="textboldtd">Supplier Vat No.</td>
-                <td>:</td>
-                <td>300533832200003</td>
-              </tr>
-
-              <tr class="billing">
-                <td class="textboldtd">Sales Man</td>
-                <td>:</td>
-                <td>{{this.salesman}}</td>
-              </tr>
-
-              <tr class="billing">
-                <td class="textboldtd">Notes</td>
-                <td>:</td>
-                <td>{{this.notes}}</td>
-              </tr>
-              {{#if this.zipcode}}
-              <tr class="billing">
-                <td class="textboldtd">Zipcode</td>
-                <td>:</td>
-                <td>{{this.zipcode}}</td>
-              </tr>
-              {{/if}}
-
-              <tr class="billing">
-                <td class="textboldtd">Page</td>
-                <td>:</td>
-                <td>{{this.page}} | {{this.totalPages}}</td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-
-      <table class="dash" width="100%" cellpadding="0" cellspacing="0" style="position: relative; top: 2px">
-        <thead>
-          <tr>
-            <th class="th">S.No</th>
-            <th class="th">Item No</th>
-            <th class="th">Description</th>
-            <!-- <th class="th">Shipping Date</th> -->
-            <th class="th">Qty</th>
-            <th class="th">Price</th>
-            <!-- <th class="th">Colorant</th> -->
-            <th class="th">Colorant Price</th>
-            <th class="th">Discount</th>
-            <th class="th">Net Amnt Before VAT</th>
-            <th class="th">
-              <table style="border-collapse: collapse !important; border: none !important; width: 100%">
-                <tr class="td">
-                  <td
-                    class="inline-table"
-                    style="
+          <th class="th">S.No</th>
+          <th class="th">Item No</th>
+          <th class="th">Description</th>
+          <!-- <th class="th">Shipping Date</th> -->
+          <th class="th">Qty</th>
+          <th class="th">Price</th>
+          <!-- <th class="th">Colorant</th> -->
+          <th class="th">Colorant Price</th>
+          <th class="th">Discount</th>
+          <th class="th">Net Amnt Before VAT</th>
+          <th class="th">
+            <table style="border-collapse: collapse !important; border: none !important; width: 100%">
+              <tr class="td">
+                <td class="inline-table" style="
                       border-collapse: collapse !important;
                       border-top: none;
                       border-left: none;
                       border-right: none;
-                    "
-                  >
-                    Vat %
-                  </td>
-                </tr>
-                <tr class="">
-                  <td class="td" style="border-collapse: collapse !important; border: none !important">Amount</td>
-                </tr>
-              </table>
-            </th>
-            <th class="th">Net Amnt After VAT</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each lines}}
-          <tr class="tab-data">
-            <td class="tdcenter">{{this.sNo}}</td>
-            <td class="tdleft">
-              <div style="font-size: 10px">{{this.itemid}}</div>
-            </td>
-            <td class="td description-data">
-              <span style="font-size: 10px">
-                {{this.prodNameEn}}, {{# if this.colorant}} {{this.colorant}}, {{else}} {{this.configid}},
-                {{/if}},{{this.colorantid}}, {{this.inventsizeid}}, {{this.batchno}}
-              </span>
-            </td>
+                    ">
+                  Vat %
+                </td>
+              </tr>
+              <tr class="">
+                <td class="td" style="border-collapse: collapse !important; border: none !important">Amount</td>
+              </tr>
+            </table>
+          </th>
+          <th class="th">Net Amnt After VAT</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each lines}}
+        <tr class="tab-data">
+          <td class="tdcenter">{{this.sNo}}</td>
+          <td class="tdleft">
+            <div style="font-size: 10px">{{this.itemid}}</div>
+          </td>
+          <td class="td description-data">
+            <span style="font-size: 10px">
+              {{this.prodNameEn}}, {{# if this.colorant}} {{this.colorant}}, {{else}} {{this.configid}},
+              {{/if}},{{this.colorantid}}, {{this.inventsizeid}}, {{this.batchno}}
+            </span>
+          </td>
 
-            <!-- <td class="tdcenter">
+          <!-- <td class="tdcenter">
               {{this.shippingDate}}
             </td> -->
 
-            <td class="tdcenter">{{this.salesQty}}</td>
-            <td class="tdright">{{this.salesprice}}</td>
-            <!-- <td class="tdright">
+          <td class="tdcenter">{{this.salesQty}}</td>
+          <td class="tdright">{{this.salesprice}}</td>
+          <!-- <td class="tdright">
               {{this.colorantid}}
             </td> -->
 
-            <td class="tdright">{{this.colorantprice}}</td>
-            <td class="tdright">{{this.lineTotalDisc}}</td>
-            <td class="tdright">{{this.lineAmountBeforeVat}}</td>
-            <td class="tdcenter">
-              <table id="disctable" width="100%">
-                <tr class="td inline-table">
-                  <td class="inline-table" style="border-bottom: 1px solid">{{this.vat}}%</td>
-                </tr>
-                <tr>
-                  <td class="td" style="border: none !important">{{this.vatAmount}}</td>
-                </tr>
-              </table>
-            </td>
-            <td class="tdright">{{this.lineAmount}}</td>
-          </tr>
-          {{/each}}
-        </tbody>
-      </table>
-      <table
-        id="gtotal"
-        class="textbold"
-        align="right"
-        width="100%"
-        cellpadding="0"
-        cellspacing="0"
-        style="position: relative; top: 20px; font-size: 13px !important"
-      >
-        <tr class="tdright">
-          <td class="tdcenter" colspan="2">Sales Order</td>
-          <td class="tdright" colspan="1">Gross Total</td>
-          <td colspan="1">{{this.quantity}}</td>
-          <td colspan="1">{{this.amount}}</td>
+          <td class="tdright">{{this.colorantprice}}</td>
+          <td class="tdright">{{this.lineTotalDisc}}</td>
+          <td class="tdright">{{this.lineAmountBeforeVat}}</td>
+          <td class="tdcenter">
+            <table id="disctable" width="100%">
+              <tr class="td inline-table">
+                <td class="inline-table" style="border-bottom: 1px solid">{{this.vat}}%</td>
+              </tr>
+              <tr>
+                <td class="td" style="border: none !important">{{this.vatAmount}}</td>
+              </tr>
+            </table>
+          </td>
+          <td class="tdright">{{this.lineAmount}}</td>
         </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <table id="gtotal" class="textbold" align="right" width="100%" cellpadding="0" cellspacing="0"
+      style="position: relative; top: 20px;heigh:250px; font-size: 13px !important;">
+      <tr class="tdright">
+        <td class="tdcenter" colspan="2">Sales Order</td>
+        <td class="tdright" colspan="1">Gross Total</td>
+        <td colspan="1">{{this.quantity}}</td>
+        <td colspan="1">{{this.amount}}</td>
+      </tr>
 
-        <!-- <tr class="tdright">
+      <!-- <tr class="tdright">
               <td rowspan="4">&nbsp;</td>
               <td class="tdright">Total Quantity</td>
               <td>:</td>
@@ -421,270 +426,285 @@
                   {{this.quantity}}
               </td>
           </tr> -->
-        <tr class="tdright">
-          <!-- <td rowspan="4">&nbsp;</td> -->
+      <tr class="tdright">
+        <!-- <td rowspan="4">&nbsp;</td> -->
 
-          <td class="tdleft">{{this.paymentMode}} Amount</td>
-          <td class="tdleft">{{this.cashAmount}}</td>
-          <td class="tdcenter borderNone"></td>
+        <td class="tdleft">{{this.paymentMode}} Amount</td>
+        <td class="tdleft">{{this.cashAmount}}</td>
+        <td class="tdcenter borderNone"></td>
 
-          <td class="tdright borderLeftNone">Shipping Charges</td>
-          <td class="tdright">{{this.shippingamount}}</td>
-        </tr>
-        <tr class="tdright">
-          <td class="tdleft">Card Amount</td>
-          <td class="tdleft">{{this.cardAmount}}</td>
-          <td class="tdcenter borderNone"></td>
+        <td class="tdright borderLeftNone">Shipping Charges</td>
+        <td class="tdright">{{this.shippingamount}}</td>
+      </tr>
+      <tr class="tdright">
+        <td class="tdleft">Card Amount</td>
+        <td class="tdleft">{{this.cardAmount}}</td>
+        <td class="tdcenter borderNone"></td>
 
-          <td class="tdright borderLeftNone">Discount</td>
-          <td>{{this.disc}}</td>
-        </tr>
-        <tr class="tdright">
-          <td class="tdleft">Design Service Redeem Amount</td>
-          <td class="tdleft">{{this.designServiceRedeemAmount}}</td>
-          <td class="tdcenter borderNone"></td>
+        <td class="tdright borderLeftNone">Discount</td>
+        <td>{{this.disc}}</td>
+      </tr>
+      <tr class="tdright">
+        <td class="tdleft">Design Service Redeem Amount</td>
+        <td class="tdleft">{{this.designServiceRedeemAmount}}</td>
+        <td class="tdcenter borderNone"></td>
 
-          <td class="tdright borderLeftNone">VAT ({{this.vat}}%)</td>
-          <td>{{this.vatGrand}}</td>
-        </tr>
-        <tr class="tdright">
-          <td class="tdleft">Redeem Amount</td>
-          <td class="tdleft">{{this.redeemAmount}}</td>
-          <td class="tdcenter borderNone"></td>
+        <td class="tdright borderLeftNone">VAT ({{this.vat}}%)</td>
+        <td>{{this.vatGrand}}</td>
+      </tr>
+      <tr class="tdright">
+        <td class="tdleft">Redeem Amount</td>
+        <td class="tdleft">{{this.redeemAmount}}</td>
+        <td class="tdcenter borderNone"></td>
 
-          <td class="tdright borderLeftNone">Net Amount</td>
-          <td>{{this.netAmount}}</td>
-        </tr>
+        <td class="tdright borderLeftNone">Net Amount</td>
+        <td>{{this.netAmount}}</td>
+      </tr>
 
-        {{#if interCompanyOriginalSalesId}}
-        <tr class="tdright">
-          <td class="tdleft" colspan="2">Purchase Reference Number</td>
-          <td class="tdleft" colspan="2">{{interCompanyOriginalSalesId}}</td>
-        </tr>
-        {{/if}}
-      </table>
+      {{#if interCompanyOriginalSalesId}}
+      <tr class="tdright">
+        <td class="tdleft" colspan="2">Purchase Reference Number</td>
+        <td class="tdleft" colspan="2">{{interCompanyOriginalSalesId}}</td>
+      </tr>
+      {{/if}}
+    </table>
+    <!--    
+    <table width="100%" style="background: #fff;padding-top: -40px; border-top: 1px dotted #8a8989;">
+      <tr>
+        <td style="width: 100%; font-size: 15px;visibility: hidden; ">- </td>
+      </tr>
+    </table> -->
+    <!-- 
+    <table width="100%" cellpadding="0" cellspacing="0"
+      style="position: relative; top: 50px; font-size: 13px !important;border-top: 1px dotted #8a8989;">
+      <tr style="height: 70px;">
+        <td style="width: 33%; font-size: 15px;visibility: hidden; ">- </td>
+        <td style="width: 33%; font-size: 15px;visibility: hidden; ">- </td>
+        <td style="width: 33%; font-size: 15px;visibility: hidden; ">- </td>
+      </tr>
 
-      <!-- <div style="padding-top: 120px;">&nbsp;a</div> -->
+      <tr>
+        <td style="width: 33%; font-size: 15px; text-align: left">Recipient</td>
+        <td style="width: 33%; font-size: 15px; text-align: center">Seller</td>
+        <td style="width: 33%; font-size: 15px; text-align: right">Company</td>
+      </tr>
 
-      <table
-        width="100%"
-        style="background: #fff; border-top: 1px dotted #8a8989; padding-top: 40px; position: fixed; bottom: 120px"
-      >
+    </table> -->
+
+
+    <!-- <table width="100%" style="background: #fff;position: relative;   position: fixed; ">
+      <tr>
+        <td style="width: 33%; font-size: 15px; text-align: left">Recipient</td>
+        <td style="width: 33%; font-size: 15px; text-align: center">Seller</td>
+        <td style="width: 33%; font-size: 15px; text-align: right">Company</td>
+      </tr>
+    </table> -->
+
+    {{/each}}
+  </section>
+
+  {{#unless this.originalPrinted}}
+  <section style="page-break-before: always">
+    <div id="bg__watermark">
+      <!-- <p id="bg__text__watermark">Only for testing</p> -->
+    </div>
+
+    {{#each salesLine}}
+    <table id="headertbl">
+      <tr>
+        <td colspan="3" valign="top" style="width: 33%">
+          <table style="text-align: left">
+            <tr class="billing">
+              <td class="textboldtd" valign="top">From</td>
+              <td valign="top">:</td>
+              <td>{{this.wnamealias}}</td>
+            </tr>
+            <tr class="billing">
+              <td class="textboldtd" valign="top">Phone</td>
+              <td valign="top">:</td>
+
+              <td>{{this.custmobilenumber}}</td>
+            </tr>
+            <tr class="billing">
+              <td class="textboldtd" valign="top">Fax</td>
+              <td valign="top">:</td>
+              <td>{{this.fax}}</td>
+            </tr>
+            <tr class="billing">
+              <td class="textboldtd" valign="top">Customer</td>
+              <td valign="top">:</td>
+              <td>{{this.invoiceAccount}} - {{this.customername}}</td>
+            </tr>
+            <tr class="billing">
+              <td class="textboldtd">Receiving Vat No</td>
+              <td>:</td>
+              <td>{{this.cvatNum}}</td>
+            </tr>
+            <tr class="billing">
+              <td class="textboldtd">Deliver Address</td>
+              <td>:</td>
+              <td>{{this.deliveryaddress}}</td>
+            </tr>
+            <tr class="billing">
+              <td class="textboldtd">Payment Type</td>
+              <td>:</td>
+              <td>{{this.paymentMode}}</td>
+            </tr>
+            <tr class="billing">
+              <td class="textboldtd">Shipping Date</td>
+              <td>:</td>
+              <td>{{this.shippedDate}}</td>
+            </tr>
+          </table>
+        </td>
+        <td colspan="3" valign="bottom" style="width: 33%">
+          <table align="center" style="text-align: center">
+            {{#if this.originalPrinted}}
+            <tr>
+              <td class="copy-text">COPY</td>
+            </tr>
+            {{/if}}
+            <tr>
+              <td>Sales Invoice</td>
+            </tr>
+            <tr>
+              <td><span style="font-size: 14px; font-weight: bold">{{salesId}}</span></td>
+            </tr>
+          </table>
+        </td>
+        <td colspan="4" valign="top" style="width: 33%">
+          <table align="right">
+            <tr class="billing">
+              <td class="textboldtd">User</td>
+              <td>:</td>
+              <td>{{this.createdby}}</td>
+            </tr>
+            <tr class="billing">
+              <td class="textboldtd">Invoice Date</td>
+              <td>:</td>
+              <td class="quotation-date">{{this.lastmodifieddate}}</td>
+            </tr>
+
+            {{#if this.voucherdiscchecked}}
+            <tr class="billing">
+              <td class="textboldtd">Voucher No</td>
+              <td>:</td>
+              <td class="quotation-date">{{this.vouchernum}}</td>
+            </tr>
+            {{/if}}
+
+            <tr class="billing">
+              <td class="textboldtd">Supplier Vat No</td>
+              <td>:</td>
+              <td>300533832200003</td>
+            </tr>
+
+            <tr class="billing">
+              <td class="textboldtd">Sales Man</td>
+              <td>:</td>
+              <td>{{this.salesman}}</td>
+            </tr>
+
+            <tr class="billing">
+              <td class="textboldtd">Notes</td>
+              <td>:</td>
+              <td>{{this.notes}}</td>
+            </tr>
+
+            <tr class="billing">
+              <td class="textboldtd">Page</td>
+              <td>:</td>
+              <td>{{this.page}} | {{this.totalPages}}</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+
+    <table class="dash" width="100%" cellpadding="0" cellspacing="0" style="height:">
+      <thead>
         <tr>
-          <td style="width: 33%; font-size: 15px; text-align: left">Recipient</td>
-          <td style="width: 33%; font-size: 15px; text-align: center">Seller</td>
-          <td style="width: 33%; font-size: 15px; text-align: right">Company</td>
-        </tr>
-      </table>
-
-      {{/each}}
-    </section>
-
-    {{#unless this.originalPrinted}}
-    <section style="page-break-before: always">
-      <div id="bg__watermark">
-        <!-- <p id="bg__text__watermark">Only for testing</p> -->
-      </div>
-
-      {{#each salesLine}}
-      <table id="headertbl">
-        <tr>
-          <td colspan="3" valign="top" style="width: 33%">
-            <table style="text-align: left">
-              <tr class="billing">
-                <td class="textboldtd" valign="top">From</td>
-                <td valign="top">:</td>
-                <td>{{this.wnamealias}}</td>
-              </tr>
-              <tr class="billing">
-                <td class="textboldtd" valign="top">Phone</td>
-                <td valign="top">:</td>
-
-                <td>{{this.custmobilenumber}}</td>
-              </tr>
-              <tr class="billing">
-                <td class="textboldtd" valign="top">Fax</td>
-                <td valign="top">:</td>
-                <td>{{this.fax}}</td>
-              </tr>
-              <tr class="billing">
-                <td class="textboldtd" valign="top">Customer</td>
-                <td valign="top">:</td>
-                <td>{{this.invoiceAccount}} - {{this.customername}}</td>
-              </tr>
-              <tr class="billing">
-                <td class="textboldtd">Receiving Vat No</td>
-                <td>:</td>
-                <td>{{this.cvatNum}}</td>
-              </tr>
-              <tr class="billing">
-                <td class="textboldtd">Deliver Address</td>
-                <td>:</td>
-                <td>{{this.deliveryaddress}}</td>
-              </tr>
-              <tr class="billing">
-                <td class="textboldtd">Payment Type</td>
-                <td>:</td>
-                <td>{{this.paymentMode}}</td>
-              </tr>
-              <tr class="billing">
-                <td class="textboldtd">Shipping Date</td>
-                <td>:</td>
-                <td>{{this.shippedDate}}</td>
-              </tr>
-            </table>
-          </td>
-          <td colspan="3" valign="bottom" style="width: 33%">
-            <table align="center" style="text-align: center">
-              {{#if this.originalPrinted}}
-              <tr>
-                <td class="copy-text">COPY</td>
-              </tr>
-              {{/if}}
-              <tr>
-                <td>Sales Invoice</td>
-              </tr>
-              <tr>
-                <td><span style="font-size: 14px; font-weight: bold">{{salesId}}</span></td>
-              </tr>
-            </table>
-          </td>
-          <td colspan="4" valign="top" style="width: 33%">
-            <table align="right">
-              <tr class="billing">
-                <td class="textboldtd">User</td>
-                <td>:</td>
-                <td>{{this.createdby}}</td>
-              </tr>
-              <tr class="billing">
-                <td class="textboldtd">Invoice Date</td>
-                <td>:</td>
-                <td class="quotation-date">{{this.lastmodifieddate}}</td>
-              </tr>
-
-              {{#if this.voucherdiscchecked}}
-              <tr class="billing">
-                <td class="textboldtd">Voucher No</td>
-                <td>:</td>
-                <td class="quotation-date">{{this.vouchernum}}</td>
-              </tr>
-              {{/if}}
-
-              <tr class="billing">
-                <td class="textboldtd">Supplier Vat No</td>
-                <td>:</td>
-                <td>300533832200003</td>
-              </tr>
-
-              <tr class="billing">
-                <td class="textboldtd">Sales Man</td>
-                <td>:</td>
-                <td>{{this.salesman}}</td>
-              </tr>
-
-              <tr class="billing">
-                <td class="textboldtd">Notes</td>
-                <td>:</td>
-                <td>{{this.notes}}</td>
-              </tr>
-
-              <tr class="billing">
-                <td class="textboldtd">Page</td>
-                <td>:</td>
-                <td>{{this.page}} | {{this.totalPages}}</td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-
-      <table class="dash" width="100%" cellpadding="0" cellspacing="0">
-        <thead>
-          <tr>
-            <th class="th">S.No</th>
-            <th class="th">Item No</th>
-            <th class="th">Description</th>
-            <!-- <th class="th">Shipping Date</th> -->
-            <th class="th">Qty</th>
-            <th class="th">Price</th>
-            <!-- <th class="th">Colorant</th> -->
-            <th class="th">Colarant Price</th>
-            <th class="th">Discount</th>
-            <th class="th">Net Amnt Before VAT</th>
-            <th class="th">
-              <table style="border-collapse: collapse !important; border: none !important; width: 100%">
-                <tr class="td">
-                  <td
-                    class="inline-table"
-                    style="
+          <th class="th">S.No</th>
+          <th class="th">Item No</th>
+          <th class="th">Description</th>
+          <!-- <th class="th">Shipping Date</th> -->
+          <th class="th">Qty</th>
+          <th class="th">Price</th>
+          <!-- <th class="th">Colorant</th> -->
+          <th class="th">Colarant Price</th>
+          <th class="th">Discount</th>
+          <th class="th">Net Amnt Before VAT</th>
+          <th class="th">
+            <table style="border-collapse: collapse !important; border: none !important; width: 100%">
+              <tr class="td">
+                <td class="inline-table" style="
                       border-collapse: collapse !important;
                       border-top: none;
                       border-left: none;
                       border-right: none;
-                    "
-                  >
-                    Vat %
-                  </td>
-                </tr>
-                <tr class="">
-                  <td class="td" style="border-collapse: collapse !important; border: none !important">Amount</td>
-                </tr>
-              </table>
-            </th>
-            <th class="th">Net Amnt after VAT</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each lines}}
-          <tr class="tab-data">
-            <td class="tdcenter">{{this.sNo}}</td>
-            <td class="tdleft">
-              <div style="font-size: 10px">{{this.itemid}}</div>
-            </td>
-            <td class="td description-data">
-              <span style="font-size: 10px">
-                {{this.prodNameEn}}, {{# if this.colorant}} {{this.colorant}}, {{else}} {{this.configid}},
-                {{/if}},{{this.colorantid}}, {{this.inventsizeid}}, {{this.batchno}}
-              </span>
-            </td>
+                    ">
+                  Vat %
+                </td>
+              </tr>
+              <tr class="">
+                <td class="td" style="border-collapse: collapse !important; border: none !important">Amount</td>
+              </tr>
+            </table>
+          </th>
+          <th class="th">Net Amnt after VAT</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each lines}}
+        <tr class="tab-data">
+          <td class="tdcenter">{{this.sNo}}</td>
+          <td class="tdleft">
+            <div style="font-size: 10px">{{this.itemid}}</div>
+          </td>
+          <td class="td description-data">
+            <span style="font-size: 10px">
+              {{this.prodNameEn}}, {{# if this.colorant}} {{this.colorant}}, {{else}} {{this.configid}},
+              {{/if}},{{this.colorantid}}, {{this.inventsizeid}}, {{this.batchno}}
+            </span>
+          </td>
 
-            <!-- <td class="tdcenter">
+          <!-- <td class="tdcenter">
               {{this.shippingDate}}
             </td> -->
 
-            <td class="tdcenter">{{this.salesQty}}</td>
-            <td class="tdright">{{this.salesprice}}</td>
-            <!-- <td class="tdright">
+          <td class="tdcenter">{{this.salesQty}}</td>
+          <td class="tdright">{{this.salesprice}}</td>
+          <!-- <td class="tdright">
               {{this.colorantid}}
             </td> -->
 
-            <td class="tdright">{{this.colorantprice}}</td>
-            <td class="tdright">{{this.lineTotalDisc}}</td>
-            <td class="tdright">{{this.lineAmountBeforeVat}}</td>
-            <td class="tdcenter">
-              <table id="disctable" width="100%">
-                <tr class="td inline-table">
-                  <td class="inline-table" style="border-bottom: 1px solid">{{this.vat}}%</td>
-                </tr>
-                <tr>
-                  <td class="td" style="border: none !important">{{this.vatAmount}}</td>
-                </tr>
-              </table>
-            </td>
-            <td class="tdright">{{this.lineAmount}}</td>
-          </tr>
-          {{/each}}
-        </tbody>
-      </table>
-      <table id="gtotal" class="textbold" align="right" width="100%" cellpadding="0" cellspacing="0">
-        <tr class="tdright">
-          <td class="tdcenter" colspan="2">Sales Order</td>
-          <td class="tdright" colspan="1">Gross Total</td>
-          <td colspan="1">{{this.quantity}}</td>
-          <td colspan="1">{{this.amount}}</td>
+          <td class="tdright">{{this.colorantprice}}</td>
+          <td class="tdright">{{this.lineTotalDisc}}</td>
+          <td class="tdright">{{this.lineAmountBeforeVat}}</td>
+          <td class="tdcenter">
+            <table id="disctable" width="100%">
+              <tr class="td inline-table">
+                <td class="inline-table" style="border-bottom: 1px solid">{{this.vat}}%</td>
+              </tr>
+              <tr>
+                <td class="td" style="border: none !important">{{this.vatAmount}}</td>
+              </tr>
+            </table>
+          </td>
+          <td class="tdright">{{this.lineAmount}}</td>
         </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <table id="gtotal" class="textbold" align="right" width="100%" cellpadding="0" cellspacing="0">
+      <tr class="tdright">
+        <td class="tdcenter" colspan="2">Sales Order</td>
+        <td class="tdright" colspan="1">Gross Total</td>
+        <td colspan="1">{{this.quantity}}</td>
+        <td colspan="1">{{this.amount}}</td>
+      </tr>
 
-        <!-- <tr class="tdright">
+      <!-- <tr class="tdright">
                 <td rowspan="4">&nbsp;</td>
                 <td class="tdright">Total Quantity</td>
                 <td>:</td>
@@ -692,64 +712,68 @@
                     {{this.quantity}}
                 </td>
             </tr> -->
-        <tr class="tdright">
-          <!-- <td rowspan="4">&nbsp;</td> -->
+      <tr class="tdright">
+        <!-- <td rowspan="4">&nbsp;</td> -->
 
-          <td class="tdleft">{{this.paymentMode}} Amount</td>
-          <td class="tdleft">{{this.cashAmount}}</td>
-          <td class="tdcenter borderNone"></td>
+        <td class="tdleft">{{this.paymentMode}} Amount</td>
+        <td class="tdleft">{{this.cashAmount}}</td>
+        <td class="tdcenter borderNone"></td>
 
-          <td class="tdright borderLeftNone">Shipping Charges</td>
-          <td class="tdright">{{this.shippingamount}}</td>
-        </tr>
-        <tr class="tdright">
-          <td class="tdleft">Card Amount</td>
-          <td class="tdleft">{{this.cardAmount}}</td>
-          <td class="tdcenter borderNone"></td>
+        <td class="tdright borderLeftNone">Shipping Charges</td>
+        <td class="tdright">{{this.shippingamount}}</td>
+      </tr>
+      <tr class="tdright">
+        <td class="tdleft">Card Amount</td>
+        <td class="tdleft">{{this.cardAmount}}</td>
+        <td class="tdcenter borderNone"></td>
 
-          <td class="tdright borderLeftNone">Discount</td>
-          <td>{{this.disc}}</td>
-        </tr>
-        <tr class="tdright">
-          <td class="tdleft">design Service RedeemAmount</td>
-          <td class="tdleft">{{this.designServiceRedeemAmount}}</td>
-          <td class="tdcenter borderNone"></td>
+        <td class="tdright borderLeftNone">Discount</td>
+        <td>{{this.disc}}</td>
+      </tr>
+      <tr class="tdright">
+        <td class="tdleft">design Service RedeemAmount</td>
+        <td class="tdleft">{{this.designServiceRedeemAmount}}</td>
+        <td class="tdcenter borderNone"></td>
 
-          <td class="tdright borderLeftNone">VAT ({{this.vat}}%)</td>
-          <td>{{this.vatGrand}}</td>
-        </tr>
-        <tr class="tdright">
-          <td class="tdleft">RedeemAmount</td>
-          <td class="tdleft">{{this.redeemAmount}}</td>
-          <td class="tdcenter borderNone"></td>
+        <td class="tdright borderLeftNone">VAT ({{this.vat}}%)</td>
+        <td>{{this.vatGrand}}</td>
+      </tr>
+      <tr class="tdright">
+        <td class="tdleft">RedeemAmount</td>
+        <td class="tdleft">{{this.redeemAmount}}</td>
+        <td class="tdcenter borderNone"></td>
 
-          <td class="tdright borderLeftNone">Net Amount</td>
-          <td>{{this.netAmount}}</td>
-        </tr>
-        {{#if interCompanyOriginalSalesId}}
-        <tr class="tdright">
-          <td class="tdleft" colspan="2">Purchase Reference Number</td>
-          <td class="tdleft" colspan="2">{{interCompanyOriginalSalesId}}</td>
-        </tr>
-        {{/if}}
-      </table>
+        <td class="tdright borderLeftNone">Net Amount</td>
+        <td>{{this.netAmount}}</td>
+      </tr>
+      {{#if interCompanyOriginalSalesId}}
+      <tr class="tdright">
+        <td class="tdleft" colspan="2">Purchase Reference Number</td>
+        <td class="tdleft" colspan="2">{{interCompanyOriginalSalesId}}</td>
+      </tr>
+      {{/if}}
+    </table>
 
-      <!-- <div style="padding-top: 120px;">&nbsp;</div> -->
 
-      <table
-        width="100%"
-        style="background: #fff; border-top: 1px dotted #8a8989; padding-top: 40px; position: fixed; bottom: 120px"
-      >
-        <tr>
-          <td style="width: 33%; font-size: 15px; text-align: left">Recipient</td>
-          <td style="width: 33%; font-size: 15px; text-align: center">Seller</td>
-          <td style="width: 33%; font-size: 15px; text-align: right">Company</td>
-        </tr>
-      </table>
+    {{/each}}
+  </section>
 
-      {{/each}}
-    </section>
+  {{/unless}}
 
-    {{/unless}}
-  </body>
+  <footer >
+    <div style="width:100%;height:50px;border-top: 1px dotted #8a8989;">
+     
+    </div>
+    <table width="100%" >
+
+      <tr>
+        <td style="width: 33%; font-size: 15px; text-align: left">Recipient</td>
+        <td style="width: 33%; font-size: 15px; text-align: center">Seller</td>
+        <td style="width: 33%; font-size: 15px; text-align: right">Company</td>
+      </tr>
+
+    </table>
+  </footer>
+</body>
+
 </html>

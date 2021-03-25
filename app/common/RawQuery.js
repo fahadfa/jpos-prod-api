@@ -362,6 +362,26 @@ var RawQuery = /** @class */ (function () {
             });
         });
     };
+    RawQuery.prototype.fifo_inventory_check = function (reqData) {
+        return __awaiter(this, void 0, void 0, function () {
+            var query, result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        query = "\n        select distinct on (itemid, configid, inventsizeid , batchno)\n        UPPER(i.itemid) as itemid,\n        UPPER(i.configid) as configid,\n        UPPER(i.inventsizeid) as inventsizeid,\n        UPPER(i.batchno) as \"batchNo\",\n        UPPER(i.batchno) as batchno,\n        i.inventlocationid,\n        sum(qty) as availabilty\n        from inventtrans i\n        where i.transactionclosed  = true and i.inventlocationid = '" + reqData.inventlocationid + "' and i.itemid not like 'HSN-%' and\n         UPPER(i.itemid) = UPPER('" + reqData.itemId + "') and \n         UPPER(i.configid)=UPPER('" + reqData.configid + "') and\n         UPPER(i.inventsizeid)=UPPER('" + reqData.inventsizeid + "') ";
+                        if (reqData.salesId) {
+                            query = query + (" and UPPER(i.invoiceid)!=UPPER('" + reqData.salesId + "')");
+                        }
+                        query += " group by UPPER(i.itemid), UPPER(i.configid), UPPER(i.inventsizeid), UPPER(i.batchno),  i.inventlocationid having sum(qty) > 0 ";
+                        console.log(query);
+                        return [4 /*yield*/, this.db.query(query)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, result];
+                }
+            });
+        });
+    };
     RawQuery.prototype.inventoryOnHandForColorant = function (reqData) {
         return __awaiter(this, void 0, void 0, function () {
             var result;

@@ -528,9 +528,30 @@ var LoadService = /** @class */ (function () {
             });
         });
     };
-    LoadService.prototype.districts = function (param) {
+    LoadService.prototype.description = function (param) {
         return __awaiter(this, void 0, void 0, function () {
             var query, data, error_9;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        query = "select coalesce(trim(s.description),'') as description from salestable s\n      where description is not null\n      and description ilike ('%" + param.key.toLowerCase() + "%')\n      and inventlocationid='" + param.session.inventlocationid + "'\n      group by trim(s.description)";
+                        console.log(query);
+                        return [4 /*yield*/, this.db.query(query)];
+                    case 1:
+                        data = _a.sent();
+                        return [2 /*return*/, data];
+                    case 2:
+                        error_9 = _a.sent();
+                        throw error_9;
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    LoadService.prototype.districts = function (param) {
+        return __awaiter(this, void 0, void 0, function () {
+            var query, data, error_10;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -542,8 +563,8 @@ var LoadService = /** @class */ (function () {
                         // console.log(data);
                         return [2 /*return*/, data];
                     case 2:
-                        error_9 = _a.sent();
-                        throw error_9;
+                        error_10 = _a.sent();
+                        throw error_10;
                     case 3: return [2 /*return*/];
                 }
             });
@@ -551,7 +572,7 @@ var LoadService = /** @class */ (function () {
     };
     LoadService.prototype.salesman = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var query, data, error_10;
+            var query, data, error_11;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -562,8 +583,8 @@ var LoadService = /** @class */ (function () {
                         data = _a.sent();
                         return [2 /*return*/, data];
                     case 2:
-                        error_10 = _a.sent();
-                        throw error_10;
+                        error_11 = _a.sent();
+                        throw error_11;
                     case 3: return [2 /*return*/];
                 }
             });
@@ -620,7 +641,7 @@ var LoadService = /** @class */ (function () {
     };
     LoadService.prototype.locationsalesman = function (param) {
         return __awaiter(this, void 0, void 0, function () {
-            var query, data, error_11;
+            var query, data, error_12;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -631,8 +652,8 @@ var LoadService = /** @class */ (function () {
                         data = _a.sent();
                         return [2 /*return*/, data];
                     case 2:
-                        error_11 = _a.sent();
-                        throw error_11;
+                        error_12 = _a.sent();
+                        throw error_12;
                     case 3: return [2 /*return*/];
                 }
             });
@@ -640,7 +661,7 @@ var LoadService = /** @class */ (function () {
     };
     LoadService.prototype.currency = function (param) {
         return __awaiter(this, void 0, void 0, function () {
-            var query, data, error_12;
+            var query, data, error_13;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -652,8 +673,8 @@ var LoadService = /** @class */ (function () {
                         // console.log(data);
                         return [2 /*return*/, data];
                     case 2:
-                        error_12 = _a.sent();
-                        throw error_12;
+                        error_13 = _a.sent();
+                        throw error_13;
                     case 3: return [2 /*return*/];
                 }
             });
@@ -1544,7 +1565,7 @@ var LoadService = /** @class */ (function () {
     };
     LoadService.prototype.checkIsBase = function (param) {
         return __awaiter(this, void 0, void 0, function () {
-            var data, error_13;
+            var data, error_14;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -1567,8 +1588,8 @@ var LoadService = /** @class */ (function () {
                         }
                         return [3 /*break*/, 3];
                     case 2:
-                        error_13 = _a.sent();
-                        return [2 /*return*/, error_13];
+                        error_14 = _a.sent();
+                        return [2 /*return*/, error_14];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -1576,7 +1597,7 @@ var LoadService = /** @class */ (function () {
     };
     LoadService.prototype.checkForColorantOption = function (param) {
         return __awaiter(this, void 0, void 0, function () {
-            var data, product, isBase, error_14;
+            var data, product, isBase, error_15;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -1615,8 +1636,8 @@ var LoadService = /** @class */ (function () {
                         _a.label = 3;
                     case 3: return [2 /*return*/, data];
                     case 4:
-                        error_14 = _a.sent();
-                        return [2 /*return*/, error_14];
+                        error_15 = _a.sent();
+                        return [2 /*return*/, error_15];
                     case 5: return [2 /*return*/];
                 }
             });

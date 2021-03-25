@@ -164,7 +164,7 @@ var SalesOrderReport = /** @class */ (function () {
                         salesLine = _a.sent();
                         list_1 = [];
                         j = 0;
-                        return [4 /*yield*/, this.chunkArray(salesLine, 8)];
+                        return [4 /*yield*/, this.chunkArray(salesLine, 4)];
                     case 14:
                         chunkArray = _a.sent();
                         console.log(chunkArray);

@@ -138,8 +138,8 @@ var InventoryOnHandReport = /** @class */ (function () {
                     case 0:
                         query = "";
                         query = "\n    select distinct on (itemid,configid,inventsizeid " + (params.batchCheck ? ", batchno " : "") + ")\n    UPPER(i.itemid) as itemid,\n    bs.namealias as nameen,\n    bs.itemname as namear,\n    UPPER(i.configid) as configid,\n    UPPER(i.inventsizeid) as inventsizeid,\n    " + (params.batchCheck
-                            ? "UPPER(i.batchno) as batchno,\n    to_char(b.expdate, 'yyyy-MM-dd') as batchexpdate,"
-                            : "") + "\n    sz.description as \"sizenameen\",\n    sz.\"name\" as \"sizenamear\",\n    sum(qty) as availabilty,\n    abs(sum(case\n      when reserve_status ='RESERVED' then qty\n      else 0\n      end\n      )) as reservedquantity,\n    w.name as warehousenamear, \n    w.namealias as warehousenameen\n    from inventtrans i\n    left join inventbatch b on i.batchno = b.inventbatchid and i.itemid = b.itemid and lower(i.configid) = lower(b.configid) \n    inner join inventtable bs on i.itemid = bs.itemid\n    left join inventsize sz on lower(sz.inventsizeid) = lower(i.inventsizeid) and sz.itemid = i.itemid\n    inner join configtable c on c.itemid = i.itemid and lower(c.configid) = lower(i.configid)\n    inner join inventlocation w on w.inventlocationid=i.inventlocationid\n    ";
+                            ? "UPPER(i.batchno) as batchno,\n        to_char((CASE \n          WHEN UPPER(i.batchno) = '-' THEN now()\n          WHEN UPPER(i.batchno) = '--' THEN now()\n          ELSE b.expdate\n          END\n        ),'yyyy-MM-dd') as batchexpdate,"
+                            : "") + "\n    UPPER(i.inventsizeid) as \"sizenameen\",\n    UPPER(i.inventsizeid) as \"sizenamear\",\n    sum(qty) as availabilty,\n    sum(qty) as \"physicalAvailable\",\n    abs(sum(case\n      when reserve_status ='RESERVED' then qty\n      else 0\n      end\n      )) as reservedquantity,\n      w.name as warehousenamear, \n      w.namealias as warehousenameen\n    from inventtrans i\n    left join inventbatch b on i.batchno = b.inventbatchid and i.itemid = b.itemid and lower(i.configid) = lower(b.configid) \n    inner join inventtable bs on i.itemid = bs.itemid\n    inner join inventlocation w on w.inventlocationid=i.inventlocationid\n    ";
                         // if (params.key == "ALL") {
                         //   const warehouseQuery = `select regionalwarehouse from usergroupconfig where id= '${this.sessionInfo.usergroupconfigid}' limit 1`;
                         //   let regionalWarehouses = await this.db.query(warehouseQuery);
@@ -154,32 +154,24 @@ var InventoryOnHandReport = /** @class */ (function () {
                         query += " where i.inventlocationid='" + inventlocationid + "'  ";
                         // }
                         if (params.itemId) {
-                            query = query + (" and LOWER(i.itemid) = LOWER('" + params.itemId + "')");
+                            query = query + (" and UPPER(i.itemid) = UPPER('" + params.itemId + "')");
                         }
                         if (params.configId) {
-                            query = query + (" and LOWER(i.configid)=LOWER('" + params.configId + "')");
+                            query = query + (" and UPPER(i.configid)=UPPER('" + params.configId + "')");
                         }
                         if (params.inventsizeid) {
-                            query = query + (" and LOWER(i.inventsizeid)=LOWER('" + params.inventsizeid + "')");
+                            query = query + (" and UPPER(i.inventsizeid)=UPPER('" + params.inventsizeid + "')");
                         }
                         if (params.batchno && params.batchCheck) {
-                            query = query + (" and LOWER(i.batchno)=LOWER('" + params.batchno + "') ");
+                            query = query + (" and UPPER(i.batchno)=UPPER('" + params.batchno + "') ");
                         }
-                        query += " and transactionclosed  = true and i.itemid not like 'HSN-%' group by UPPER(i.itemid), UPPER(i.configid), UPPER(i.inventsizeid), i.inventlocationid,\n      bs.namealias, bs.itemname, w.name, w.namealias,  sz.description, sz.\"name\" " + (params.batchCheck ? ", UPPER(i.batchno), b.expdate" : "") + " ";
-                        // if (params.withZero) {
-                        //   query += ` (a.availabilty + a.reservedquantity) >= 0 `;
-                        // } else {
-                        //   query += ` (a.availabilty + a.reservedquantity) > 0 `;
-                        // }
-                        // query += ` order by a.itemid `;
-                        console.log(query);
+                        query += " and transactionclosed  = true and i.itemid not like 'HSN-%' group by UPPER(i.itemid), UPPER(i.configid), UPPER(i.inventsizeid), i.inventlocationid,\n      bs.namealias, bs.itemname, w.name, w.namealias  " + (params.batchCheck ? ", UPPER(i.batchno), b.expdate" : "") + " ";
                         return [4 /*yield*/, this.db.query(query)];
                     case 1:
                         result = _a.sent();
-                        console.log(result);
+                        // console.log(result)
                         result.map(function (v) {
                             v.totalAvailable = parseInt(v.availabilty) + parseInt(v.reservedquantity);
-                            v.physicalAvailable = v.availabilty;
                             v.reservedQuantity = parseInt(v.reservedquantity);
                         });
                         if (params.withZero) {

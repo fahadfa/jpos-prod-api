@@ -78,7 +78,7 @@ exports.mailOptions = {
 };
 exports.setEnvConfig = function () {
     var envData = process.env.ENV_JPOS;
-    console.log(envData);
+    // console.log(envData);
     if (envData) {
         envData = JSON.parse(envData);
         if (envData.dbHost) {
@@ -90,7 +90,7 @@ exports.setEnvConfig = function () {
             exports.dbOptions.logging = false;
         }
     }
-    console.log(envData);
+    // console.log(envData);
     exports.setStagingConfig();
 };
 var CrpytoData_1 = require("./CrpytoData");
@@ -99,38 +99,19 @@ var Props_1 = require("../constants/Props");
 exports.setStagingConfig = function () {
     try {
         var data = fs_1.readFileSync(__dirname + "/../../id_rsa", "utf-8");
-        console.log("readFileSync Data:", data);
-        var decodeData = CrpytoData_1.decrypt(JSON.parse(data));
-        data = JSON.parse(decodeData);
-        console.log(decodeData);
         if (data) {
-            exports.stageDbOptions.host = data.host;
-            exports.stageDbOptions.port = data.port;
-            exports.stageDbOptions.username = data.username;
-            exports.stageDbOptions.database = data.database;
-            exports.stageDbOptions.password = data.password;
-            console.log(" \n\n Production DB set succesfully .... \n\n ");
-        }
-    }
-    catch (error) {
-        console.error(error);
-    }
-};
-var CrpytoData_1 = require("./CrpytoData");
-var fs_1 = require("fs");
-exports.setStagingConfig = function () {
-    try {
-        var data = fs_1.readFileSync(__dirname + "/../id_rsa", "utf-8");
-        console.log("readFileSync Data:", data);
-        var decodeData = CrpytoData_1.decrypt(JSON.parse(data));
-        data = JSON.parse(decodeData);
-        if (data) {
-            exports.stageDbOptions.host = data.host;
-            exports.stageDbOptions.port = data.port;
-            exports.stageDbOptions.username = data.username;
-            exports.stageDbOptions.database = data.database;
-            exports.stageDbOptions.password = data.password;
-            console.log(" \n\n Production DB set succesfully .... \n\n ");
+            // console.log("readFileSync Data:", data);
+            var decodeData = CrpytoData_1.decrypt(JSON.parse(data));
+            data = JSON.parse(decodeData);
+            // console.log(decodeData);
+            if (data) {
+                exports.stageDbOptions.host = data.host;
+                exports.stageDbOptions.port = data.port;
+                exports.stageDbOptions.username = data.username;
+                exports.stageDbOptions.database = data.database;
+                exports.stageDbOptions.password = data.password;
+                console.log(" \n\n Production DB set succesfully .... \n\n ");
+            }
         }
     }
     catch (error) {

@@ -293,7 +293,7 @@ var SyncDMLService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         stageDbConfig = SyncServiceHelper_1.SyncServiceHelper.StageDBOptions();
-                        sql = "select *  from sync_fallback where target_id='" + STORE_ID + "' and is_synced = false order by from_date asc limit 100";
+                        sql = "select *  from sync_fallback where target_id='" + STORE_ID + "' and is_synced = false order by from_date asc limit 10";
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);

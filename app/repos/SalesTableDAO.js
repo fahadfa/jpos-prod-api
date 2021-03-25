@@ -64,7 +64,7 @@ var SalesTableDAO = /** @class */ (function () {
                         ],
                         join: {
                             alias: "salestable",
-                            innerJoinAndSelect: {
+                            leftJoinAndSelect: {
                                 salesLine: "salestable.salesLine",
                                 inventtrans: "salesLine.inventtrans",
                                 color: "salesLine.color",
