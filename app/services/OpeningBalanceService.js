@@ -167,14 +167,6 @@ var OpeningBalanceService = /** @class */ (function () {
                         _c.label = 9;
                     case 9:
                         if (fromCsv == false) {
-                            // const child_process = require("child_process");
-                            // let syncFile = `${__dirname}/SyncPrevTransactionsServices.ts`;
-                            // syncFile = fs.existsSync(syncFile)
-                            //   ? `${__dirname}/SyncPrevTransactionsServices.ts`
-                            //   : `${__dirname}/SyncPrevTransactionsServices.js`;
-                            // child_process.fork(syncFile);
-                        }
-                        else {
                             fs_2 = require("fs");
                             fs_2.unlinkSync(__dirname + "/data.json");
                         }
@@ -213,7 +205,7 @@ var OpeningBalanceService = /** @class */ (function () {
                     case 0:
                         if (fromCsv == true) {
                             console.log(data);
-                            filteredData = data.filter(function (v) { return v.inventlocationid.trim() != process.env.ENV_STORE_ID; });
+                            filteredData = data.filter(function (v) { return v.inventlocationid.trim() != process.env.ENV_STORE_ID && v.itemid && v.configid && v.inventsizeid && v.itemid != ''; });
                             if (filteredData.length > 0) {
                                 return [2 /*return*/, "INVENTORY_NOT_RELATED_TO_THIS_STORE"];
                             }

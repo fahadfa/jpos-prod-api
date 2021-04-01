@@ -2141,7 +2141,7 @@ var SalesTableService = /** @class */ (function () {
                             TransactionId: reqData.salesId,
                             MobileNo: reqData.mobileNo && reqData.mobileNo.length == 9 ? "0" + reqData.mobileNo : reqData.mobileNo,
                             InvoiceNo: reqData.salesId,
-                            InvoiceAmount: reqData.netAmount,
+                            InvoiceAmount: reqData.redeemAmount,
                             RedeemPoints: reqData.redeemPoints,
                             SyncStatus: 0,
                             InventLocationId: this.sessionInfo.inventlocationid,
@@ -2155,7 +2155,7 @@ var SalesTableService = /** @class */ (function () {
                     case 2: return [3 /*break*/, 4];
                     case 3:
                         error_14 = _a.sent();
-                        return [3 /*break*/, 4];
+                        throw error_14;
                     case 4: return [2 /*return*/];
                 }
             });
@@ -2163,7 +2163,7 @@ var SalesTableService = /** @class */ (function () {
     };
     SalesTableService.prototype.saveSalesOrder = function (reqData) {
         return __awaiter(this, void 0, void 0, function () {
-            var queryRunner, unSyncedData, promiseList, salesLine_7, returnData, salestatus, _a, saleslineArray, cond, customerRecords, customerRecord_1, defaultcustomer, mobileCustomer, salesTable_1, taxItemGroup, _i, salesLine_6, item, salesline, condData, customerDetails, pmobileno, userName, ptokenData, pmessage, pmail, imail, error_15;
+            var queryRunner, unSyncedData, promiseList, salesLine_7, returnData, salestatus, _a, saleslineArray, cond, customerRecords, customerRecord_1, defaultcustomer, mobileCustomer, salesTable_1, taxItemGroup, _i, salesLine_6, item, salesline, condData, customerDetails, pmobileno, userName, redeemData, ptokenData, pmessage, pmail, imail, error_15;
             var _this = this;
             return __generator(this, function (_b) {
                 switch (_b.label) {
@@ -2178,7 +2178,7 @@ var SalesTableService = /** @class */ (function () {
                         _b.sent();
                         _b.label = 3;
                     case 3:
-                        _b.trys.push([3, 25, 29, 31]);
+                        _b.trys.push([3, 26, 30, 32]);
                         unSyncedData = [];
                         promiseList = [];
                         salesLine_7 = reqData.salesLine;
@@ -2226,7 +2226,7 @@ var SalesTableService = /** @class */ (function () {
                         if (!(cond == "ALREADY_PAID")) return [3 /*break*/, 10];
                         throw { status: 0, message: "ALREADY_PAID" };
                     case 10:
-                        if (!(cond == true)) return [3 /*break*/, 24];
+                        if (!(cond == true)) return [3 /*break*/, 25];
                         !reqData.warehouse ? (reqData.warehouse = {}) : (reqData.warehouse = reqData.warehouse);
                         reqData.warehouse.inventLocationId = this.sessionInfo.inventlocationid;
                         reqData.url = reqData.onlineAmount > 0 ? Props_1.Props.ECOMMERCE_PAYMENT_URL + reqData.salesId : null;
@@ -2324,7 +2324,7 @@ var SalesTableService = /** @class */ (function () {
                         salesline = _b.sent();
                         queryRunner.manager.getRepository(UnSyncedTransactions_1.UnSyncedTransactions).save(unSyncedData);
                         promiseList = [];
-                        if (!(reqData.status == "PAID")) return [3 /*break*/, 21];
+                        if (!(reqData.status == "PAID")) return [3 /*break*/, 22];
                         return [4 /*yield*/, this.rawQuery.salesTableData(reqData.interCompanyOriginalSalesId)];
                     case 20:
                         condData = _b.sent();
@@ -2361,9 +2361,19 @@ var SalesTableService = /** @class */ (function () {
                         if (reqData.designServiceRedeemAmount > 0) {
                             promiseList.push(this.saveSalesOrderDesignerService(reqData, queryRunner));
                         }
-                        promiseList.push(this.saveSalesOrderRedeem(reqData, queryRunner));
-                        _b.label = 21;
+                        if (!(reqData.redeemAmount > 0 && reqData.redeemPoints > 0)) return [3 /*break*/, 22];
+                        return [4 /*yield*/, this.redeemService.getCustomerPoints({ mobile: reqData.mobileNo && reqData.mobileNo.length == 9 ? "0" + reqData.mobileNo : reqData.mobileNo, inventLocationId: this.sessionInfo.inventlocationid })];
                     case 21:
+                        redeemData = _b.sent();
+                        console.log(redeemData);
+                        if (redeemData && redeemData.BalancePoints >= reqData.redeemPoints) {
+                            promiseList.push(this.saveSalesOrderRedeem(reqData, queryRunner));
+                        }
+                        else {
+                            throw { status: 0, message: "ZERO_BALANCE_POINTS" };
+                        }
+                        _b.label = 22;
+                    case 22:
                         Log_1.log.info("6---------------------------- " + reqData.paymentType + reqData.onlineAmount);
                         if (reqData.onlineAmount > 0 && reqData.status != "PAID") {
                             ptokenData = function () { return __awaiter(_this, void 0, void 0, function () {
@@ -2474,11 +2484,11 @@ var SalesTableService = /** @class */ (function () {
                             promiseList.push(imail());
                         }
                         return [4 /*yield*/, Promise.all(promiseList)];
-                    case 22:
+                    case 23:
                         _b.sent();
                         // throw { message: "error" };
                         return [4 /*yield*/, queryRunner.commitTransaction()];
-                    case 23:
+                    case 24:
                         // throw { message: "error" };
                         _b.sent();
                         Log_1.log.info("7----------------------------");
@@ -2490,24 +2500,24 @@ var SalesTableService = /** @class */ (function () {
                             url: reqData.url,
                         };
                         return [2 /*return*/, returnData];
-                    case 24: return [3 /*break*/, 31];
-                    case 25:
+                    case 25: return [3 /*break*/, 32];
+                    case 26:
                         error_15 = _b.sent();
                         Log_1.log.error(error_15, reqData.salesId);
-                        if (!reqData.isInsert) return [3 /*break*/, 27];
+                        if (!reqData.isInsert) return [3 /*break*/, 28];
                         return [4 /*yield*/, this.rawQuery.updateNumberSequence(reqData.numberSequenceGroup, parseInt(reqData.nextrec) - 1)];
-                    case 26:
+                    case 27:
                         _b.sent();
-                        _b.label = 27;
-                    case 27: return [4 /*yield*/, queryRunner.rollbackTransaction()];
-                    case 28:
+                        _b.label = 28;
+                    case 28: return [4 /*yield*/, queryRunner.rollbackTransaction()];
+                    case 29:
                         _b.sent();
                         throw error_15;
-                    case 29: return [4 /*yield*/, queryRunner.release()];
-                    case 30:
+                    case 30: return [4 /*yield*/, queryRunner.release()];
+                    case 31:
                         _b.sent();
                         return [7 /*endfinally*/];
-                    case 31: return [2 /*return*/];
+                    case 32: return [2 /*return*/];
                 }
             });
         });
@@ -3519,7 +3529,9 @@ var SalesTableService = /** @class */ (function () {
                             promiseList.push(this.saveSalesOrderDesignerService(reqData, queryRunner));
                         }
                         userName = this.sessionInfo.userName;
-                        promiseList.push(this.saveSalesOrderRedeem(reqData, queryRunner));
+                        if (reqData.redeemAmount > 0 && reqData.redeemPoints > 0) {
+                            promiseList.push(this.saveSalesOrderRedeem(reqData, queryRunner));
+                        }
                         imail = function () { return __awaiter(_this, void 0, void 0, function () {
                             var template;
                             return __generator(this, function (_a) {

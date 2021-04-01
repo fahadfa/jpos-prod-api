@@ -274,6 +274,11 @@ var ReturnOrderAmountService = /** @class */ (function () {
                             discount: parseFloat(returnOrderData.disc),
                             vatPrice: parseFloat(returnOrderData.vatamount),
                         };
+                        if (returnOrderData.salesLine && returnOrderData.salesLine.length > 0) {
+                            if (returnOrderData.salesLine[0].itemid == 'HSN-00004') {
+                                date_dif = 0;
+                            }
+                        }
                         returnOrderData.reservation = date_dif;
                         returnData.returnOrderData = returnOrderData;
                         returnData.designServiceRedeemAmount = parseFloat(returnOrderData.designServiceRedeemAmount);

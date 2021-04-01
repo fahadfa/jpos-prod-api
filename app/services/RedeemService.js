@@ -40,14 +40,13 @@ var PhoneVerificationService_1 = require("../services/PhoneVerificationService")
 var RedeemService = /** @class */ (function () {
     function RedeemService() {
         this.axios = require("axios");
-        this.url = "https://api-qa.jazeerapaints.com/api";
         this.otpStore = new Map();
         this.otp_token = "WTRNVnBLa3Q5UE5tTy9MczVtRWY0QT09";
         this.phoneVerificationService = new PhoneVerificationService_1.PhoneVerificationService();
     }
     RedeemService.prototype.getCustomerPoints = function (params) {
         return __awaiter(this, void 0, void 0, function () {
-            var token, url, data, error_1;
+            var token, url, data, redeemData, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -55,12 +54,17 @@ var RedeemService = /** @class */ (function () {
                         return [4 /*yield*/, this.getToken()];
                     case 1:
                         token = _a.sent();
-                        url = "http://pos.al-jazeerapaints.com:200/api/CustomerPoints?mobileNum=" + params.mobile + "&inventLocationId=" + params.inventLocationId;
+                        url = Props_1.Props.AXAPTA_URL + ("CustomerPoints?mobileNum=" + params.mobile + "&inventLocationId=" + params.inventLocationId);
+                        console.log(url);
                         this.axios.defaults.headers["Token"] = token;
                         return [4 /*yield*/, this.axios.get(url)];
                     case 2:
                         data = _a.sent();
-                        return [2 /*return*/, data.data];
+                        redeemData = data.data;
+                        if (redeemData && redeemData.BalancePoints < 0) {
+                            redeemData.BalancePoints = 0;
+                        }
+                        return [2 /*return*/, redeemData];
                     case 3:
                         error_1 = _a.sent();
                         throw error_1;
@@ -79,7 +83,7 @@ var RedeemService = /** @class */ (function () {
                         return [4 /*yield*/, this.getToken()];
                     case 1:
                         token = _a.sent();
-                        url = "http://pos.al-jazeerapaints.com:200/api/CustomerSlabs?mobileNum=" + params.mobile;
+                        url = Props_1.Props.AXAPTA_URL + ("CustomerSlabs?mobileNum=" + params.mobile);
                         this.axios.defaults.headers["Token"] = token;
                         return [4 /*yield*/, this.axios.get(url)];
                     case 2:
@@ -93,7 +97,6 @@ var RedeemService = /** @class */ (function () {
             });
         });
     };
-    //0550590391
     RedeemService.prototype.getOtp = function (params) {
         return __awaiter(this, void 0, void 0, function () {
             var reqData, data, error_3;
@@ -146,7 +149,7 @@ var RedeemService = /** @class */ (function () {
                         return [4 /*yield*/, this.getToken()];
                     case 1:
                         token = _a.sent();
-                        url = "http://pos.al-jazeerapaints.com:200/api/ActiveSlabs";
+                        url = Props_1.Props.AXAPTA_URL + "ActiveSlabs";
                         this.axios.defaults.headers["Token"] = token;
                         return [4 /*yield*/, this.axios.get(url)];
                     case 2:
@@ -170,7 +173,7 @@ var RedeemService = /** @class */ (function () {
                         return [4 /*yield*/, this.getToken()];
                     case 1:
                         token = _a.sent();
-                        url = "http://pos.al-jazeerapaints.com:200/api/Redeem";
+                        url = Props_1.Props.AXAPTA_URL + "Redeem";
                         this.axios.defaults.headers["Token"] = token;
                         return [4 /*yield*/, this.axios.post(url, reqData)];
                     case 2:

@@ -235,6 +235,7 @@ var HistoricalSalesordersService = /** @class */ (function () {
                                 salesLine.inventLocationId = v.INVENTLOCATIONID;
                                 salesData_1.inventLocationId = v.INVENTLOCATIONID;
                                 salesLine.inventTransid = v.INVENTTRANSID;
+                                salesLine.colorantId = v.INVENTTRANSID;
                                 salesLine.colorantprice = 0;
                                 salesLine.salesDeliverNow = v.SALESDELIVERNOW;
                                 salesLine.salesStatus = v.SALESSTATUS;

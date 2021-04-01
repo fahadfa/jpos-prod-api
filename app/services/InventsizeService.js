@@ -205,7 +205,7 @@ var InventsizeService = /** @class */ (function () {
                         prices = _d.sent();
                         _loop_1 = function (size) {
                             var amount = prices.filter(function (v) {
-                                return v.inventsizeid.toLowerCase() == size.code.toLowerCase() && v.accountrelation == queryData.custaccount;
+                                return v.inventsizeid.toLowerCase() == size.code.toLowerCase() && v.accountrelation == queryData.custaccount && parseInt(v.price) > 0;
                             });
                             if (amount.length <= 0) {
                                 amount = prices.filter(function (v) {

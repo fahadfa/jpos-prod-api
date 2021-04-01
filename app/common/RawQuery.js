@@ -195,7 +195,7 @@ var RawQuery = /** @class */ (function () {
                     case 0:
                         query = "UPDATE salestable\n        SET originalprinted = true,\n        status = '" + status + "' ";
                         if (date) {
-                            query += "\n      , lastmodifieddate = '" + date + "' ";
+                            query += "\n      , lastmodifieddate = '" + date + "', invoicedate='" + date + "' ";
                         }
                         query += apptype ? ", apptype = " + apptype + " " : " ";
                         query += " WHERE salesid = '" + salesId + "' or salesgroup = '" + salesId + "' or deliverystreet = '" + salesId + "' ";

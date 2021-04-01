@@ -51,11 +51,11 @@ var QuotationReport = /** @class */ (function () {
     }
     QuotationReport.prototype.execute = function (params) {
         return __awaiter(this, void 0, void 0, function () {
-            var id, status_1, data_1, salesLine, i_1, error_1;
+            var id, status_1, data_1, salesLine, i, quantity_1, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 13, , 14]);
+                        _a.trys.push([0, 14, , 15]);
                         id = params.salesId;
                         return [4 /*yield*/, this.query_to_data(id)];
                     case 1:
@@ -111,21 +111,55 @@ var QuotationReport = /** @class */ (function () {
                     case 12:
                         salesLine = _a.sent();
                         data_1.vat = salesLine && salesLine.length > 0 ? parseInt(salesLine[0].vat) : "-";
-                        data_1.salesLine = salesLine;
-                        data_1.quantity = 0;
-                        i_1 = 1;
-                        data_1.salesLine.map(function (v) {
-                            v.sNo = i_1;
-                            i_1 += 1;
-                            v.salesQty = parseInt(v.salesQty);
-                            v.vat = parseInt(v.vat);
-                            data_1.quantity += parseInt(v.salesQty);
-                        });
-                        return [2 /*return*/, data_1];
+                        return [4 /*yield*/, this.chunkArray(salesLine, 10)];
                     case 13:
+                        salesLine = _a.sent();
+                        i = 1;
+                        quantity_1 = 0;
+                        data_1.salesLine = salesLine.map(function (v) {
+                            var salesLine = {};
+                            salesLine.salesLine = v;
+                            salesLine.quantity = 0;
+                            v.forEach(function (element) {
+                                element.salesQty = parseInt(element.salesQty);
+                                element.vat = parseInt(element.vat);
+                                salesLine.quantity += element.salesQty;
+                                salesLine.vatamount = data_1.vatamount;
+                                salesLine.netAmount = data_1.netAmount;
+                                salesLine.disc = data_1.disc;
+                                salesLine.amount = data_1.amount;
+                            });
+                            quantity_1 += salesLine.quantity;
+                            return salesLine;
+                        });
+                        data_1.salesLine.map(function (v) {
+                            v.wname = data_1.wname;
+                            v.wnamealias = data_1.wnamealias;
+                            v.custmobilenumber = data_1.custmobilenumber;
+                            v.fax = data_1.fax;
+                            v.customername = data_1.customername;
+                            v.cvatNum = data_1.cvatNum;
+                            v.deliveryaddress = data_1.deliveryaddress;
+                            v.quantity = quantity_1;
+                            v.isSalesOrder = data_1.isSalesOrder;
+                            v.isSalesQuotation = data_1.isSalesQuotation;
+                            v.isPurchOrder = data_1.isPurchOrder;
+                            v.isPurchQuotation = data_1.isPurchQuotation;
+                            v.vat = parseInt(data_1.vat);
+                            v.originalPrinted = data_1.originalPrinted;
+                        });
+                        // data.salesLine.map((v: any) => {
+                        //   v.sNo = i;
+                        //   i += 1;
+                        //   v.salesQty = parseInt(v.salesQty);
+                        //   v.vat = parseInt(v.vat);
+                        //   data.quantity += parseInt(v.salesQty);
+                        // });
+                        return [2 /*return*/, data_1];
+                    case 14:
                         error_1 = _a.sent();
                         throw error_1;
-                    case 14: return [2 /*return*/];
+                    case 15: return [2 /*return*/];
                 }
             });
         });
@@ -147,6 +181,26 @@ var QuotationReport = /** @class */ (function () {
                     throw error;
                 }
                 return [2 /*return*/];
+            });
+        });
+    };
+    QuotationReport.prototype.chunkArray = function (myArray, chunk_size) {
+        return __awaiter(this, void 0, void 0, function () {
+            var index, arrayLength, tempArray, myChunk;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        index = 0;
+                        arrayLength = myArray.length;
+                        tempArray = [];
+                        for (index = 0; index < arrayLength; index += chunk_size) {
+                            myChunk = myArray.slice(index, index + chunk_size);
+                            // Do something if you want with the group
+                            tempArray.push(myChunk);
+                        }
+                        return [4 /*yield*/, tempArray];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
             });
         });
     };

@@ -120,6 +120,7 @@ var WorkflowService = /** @class */ (function () {
                             item.inventoryTypeAr = item.SalesTable ? item.SalesTable.movementType : null;
                             item.selectedLines = item.selectedLines ? item.selectedLines.lines : null;
                             item.invoiceDate = item.SalesTable ? new Date(item.SalesTable.invoiceDate).toLocaleDateString() : null;
+                            item.salesOrderCreatedDate = item.SalesTable ? new Date(item.SalesTable.createddatetime).toLocaleDateString() : null;
                             item.invoiceId = item.SalesTable ? item.SalesTable.interCompanyOriginalSalesId : null;
                             item.info = item.SalesTable ? item.SalesTable.info : null;
                             delete item.SalesTable;

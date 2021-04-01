@@ -74,7 +74,7 @@ var ReturnOrderReport = /** @class */ (function () {
     }
     ReturnOrderReport.prototype.execute = function (params) {
         return __awaiter(this, void 0, void 0, function () {
-            var queryRunner, unSyncedData_1, data_1, batchesList, result, new_data_1, i_1, date, linesCount, statusQuery, salesLineQuery, inventtransQuery, lineids, inventtransids, designerServices, _i, designerServices_1, service, salesLine, salesLineData, _loop_1, _a, salesLineData_1, item, sNo_1, error_1;
+            var queryRunner, unSyncedData_1, data_1, batchesList, result, new_data_1, i_1, date, linesCount, statusQuery, salesLineQuery, inventtransQuery, lineids, inventtransids, designerServices, _i, designerServices_1, service, salesLine, salesLineData, _loop_1, _a, salesLineData_1, item, sNo_1, quantity_1, error_1;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -87,7 +87,7 @@ var ReturnOrderReport = /** @class */ (function () {
                         _b.sent();
                         _b.label = 3;
                     case 3:
-                        _b.trys.push([3, 20, 22, 24]);
+                        _b.trys.push([3, 21, 23, 25]);
                         unSyncedData_1 = [];
                         return [4 /*yield*/, this.query_to_data(params)];
                     case 4:
@@ -231,33 +231,83 @@ var ReturnOrderReport = /** @class */ (function () {
                         }
                         sNo_1 = 1;
                         data_1.vat = salesLine.length > 0 ? salesLine[0].vat : "-";
+                        quantity_1 = 0;
                         salesLine.map(function (val) {
                             val.sNo = sNo_1;
                             sNo_1 += 1;
+                            quantity_1 += parseInt(val.salesQty);
+                        });
+                        return [4 /*yield*/, this.chunkArray(salesLine, 10)];
+                    case 19:
+                        salesLine = _b.sent();
+                        data_1.salesLine = salesLine.map(function (v) {
+                            var salesLine = {};
+                            salesLine.salesLine = v;
+                            salesLine.vat = data_1.vat;
+                            salesLine.wareHouseNameEn = data_1.wareHouseNameEn;
+                            salesLine.salesId = data_1.salesId;
+                            salesLine.fromWareHouse = data_1.fromWareHouse;
+                            salesLine.custaccount = data_1.custaccount;
+                            salesLine.invoiceAccount = data_1.invoiceAccount;
+                            salesLine.createdDateTime = data_1.createdDateTime;
+                            salesLine.ReturnDate = data_1.ReturnDate;
+                            salesLine.lastModifiedDate = data_1.lastModifiedDate;
+                            salesLine.status = data_1.status;
+                            salesLine.statusEn = data_1.statusEn;
+                            salesLine.statusAr = data_1.statusAr;
+                            salesLine.transkindEn = data_1.transkindEn;
+                            salesLine.transkindAr = data_1.transkindAr;
+                            salesLine.name = data_1.name;
+                            salesLine.discount = data_1.discount;
+                            salesLine.phone = data_1.phone;
+                            salesLine.grossAmount = data_1.grossAmount;
+                            salesLine.netAmount = data_1.netAmount;
+                            salesLine.vatAmount = data_1.vatAmount;
+                            salesLine.cashAmount = data_1.cashAmount;
+                            salesLine.cardAmount = data_1.cardAmount;
+                            salesLine.onlineAmount = data_1.onlineAmount;
+                            salesLine.designServiceRedeemAmount = data_1.designServiceRedeemAmount;
+                            salesLine.redeemAmount = data_1.redeemAmount;
+                            salesLine.originalPrinted = data_1.originalPrinted;
+                            salesLine.createdBy = data_1.createdBy;
+                            salesLine.salesOrderId = data_1.salesOrderId;
+                            salesLine.notes = data_1.notes;
+                            salesLine.wareHouseNameAr = data_1.wareHouseNameAr;
+                            salesLine.wareHouseNameEn = data_1.wareHouseNameEn;
+                            salesLine.salesman = data_1.salesman;
+                            salesLine.createddatetime = data_1.createddatetime;
+                            salesLine.isCopy = data_1.isCopy;
+                            return salesLine;
                         });
                         //--------------------End-------------------//
-                        data_1.salesLine = salesLine;
-                        data_1.quantity = 0;
-                        data_1.salesLine.map(function (v) {
-                            data_1.quantity += parseInt(v.salesQty);
-                        });
+                        // data.salesLine = salesLine;
+                        // data.quantity = 0;
+                        // data.salesLine.map((v: any) => {
+                        //   data.quantity += parseInt(v.salesQty);
+                        // });
                         // console.log(data);
                         return [4 /*yield*/, queryRunner.commitTransaction()];
-                    case 19:
+                    case 20:
+                        //--------------------End-------------------//
+                        // data.salesLine = salesLine;
+                        // data.quantity = 0;
+                        // data.salesLine.map((v: any) => {
+                        //   data.quantity += parseInt(v.salesQty);
+                        // });
                         // console.log(data);
                         _b.sent();
                         return [2 /*return*/, data_1];
-                    case 20:
+                    case 21:
                         error_1 = _b.sent();
                         return [4 /*yield*/, queryRunner.rollbackTransaction()];
-                    case 21:
+                    case 22:
                         _b.sent();
                         throw error_1;
-                    case 22: return [4 /*yield*/, queryRunner.release()];
-                    case 23:
+                    case 23: return [4 /*yield*/, queryRunner.release()];
+                    case 24:
                         _b.sent();
                         return [7 /*endfinally*/];
-                    case 24: return [2 /*return*/];
+                    case 25: return [2 /*return*/];
                 }
             });
         });
@@ -349,6 +399,8 @@ var ReturnOrderReport = /** @class */ (function () {
             var renderData, file;
             return __generator(this, function (_a) {
                 renderData = result;
+                console.log("===========================data===============================");
+                console.log(renderData);
                 file = params.lang == "en" ? "ro-en" : "ro-ar";
                 try {
                     return [2 /*return*/, App_1.App.HtmlRender(file, renderData)];
@@ -407,6 +459,26 @@ var ReturnOrderReport = /** @class */ (function () {
                     case 0:
                         query = "\n          select \n         *\n          from salesline sl\n        where sl.salesid='" + params.salesId + "' and sl.salesqty=0 order by linenum ASC\n  ";
                         return [4 /*yield*/, this.db.query(query)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    ReturnOrderReport.prototype.chunkArray = function (myArray, chunk_size) {
+        return __awaiter(this, void 0, void 0, function () {
+            var index, arrayLength, tempArray, myChunk;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        index = 0;
+                        arrayLength = myArray.length;
+                        tempArray = [];
+                        for (index = 0; index < arrayLength; index += chunk_size) {
+                            myChunk = myArray.slice(index, index + chunk_size);
+                            // Do something if you want with the group
+                            tempArray.push(myChunk);
+                        }
+                        return [4 /*yield*/, tempArray];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });

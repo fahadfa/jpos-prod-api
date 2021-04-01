@@ -85,12 +85,17 @@ var SalesOrdersReport = /** @class */ (function () {
                                 resData_1.discount += parseFloat(v.discount);
                                 resData_1.vatAmount += parseFloat(v.vatAmount);
                                 resData_1.netAmount += parseFloat(v.netAmount);
+                                resData_1.cashAmount += parseFloat(v.cashAmount);
+                                resData_1.cardAmount += parseFloat(v.cardAmount);
+                                resData_1.designServiceRedeemAmount += parseFloat(v.designServiceRedeemAmount);
+                                resData_1.redeemAmount += parseFloat(v.redeemAmount);
                             }
                         });
                         resData_1.grossAmount = resData_1.grossAmount.toFixed(2);
                         resData_1.discount = resData_1.discount.toFixed(2);
                         resData_1.vatAmount = resData_1.vatAmount.toFixed(2);
                         resData_1.netAmount = resData_1.netAmount.toFixed(2);
+                        // console.log(resData/)
                         resData_1.cashAmount = resData_1.cashAmount.toFixed(2);
                         resData_1.cardAmount = resData_1.cardAmount.toFixed(2);
                         resData_1.designServiceRedeemAmount = resData_1.designServiceRedeemAmount.toFixed(2);
