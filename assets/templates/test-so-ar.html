@@ -270,15 +270,17 @@
         </td>
         <td valign="bottom" style="width: 40%">
           <table align="center" style="text-align: center">
-            {{#if originalPrinted}}
+           
             <tr>
               <td class="copy-text">
+                {{#if originalPrinted}}
                 <span> نسخة</span><br>
+                {{/if}}
                 <span> فاتورة مبيعات</span><br>
                 <span> {{salesId}}</span>
               </td>
             </tr>
-            {{/if}}
+           
 
           </table>
         </td>
@@ -509,14 +511,20 @@
         </td>
         <td valign="bottom" style="width: 40%">
           <table align="center" style="text-align: center">
-            {{#if originalPrinted}}
+           
             <tr>
-              <span> نسخة</span><br>
-              <span> فاتورة مبيعات</span><br>
-              <span> {{salesId}}</span>
+              <td class="copy-text">
+                {{#if originalPrinted}} 
+                <span> نسخة</span><br>
+                {{/if}}
+                <span> فاتورة مبيعات</span><br>
+                <span> {{salesId}}</span>
+              </td>
+         
+             
         </td>
       </tr>
-      {{/if}}
+     
 
     </table>
     </td>
